@@ -383,7 +383,7 @@ for var in variables:
         #Save as a netcdf for later processing
         var_OUT.to_netcdf(path = f'lagged_ensemble_by_variable/{var}_lagged_average.nc4', mode ='w')
         
-#%%Scatterplot and heatmap lagged average
+#%%Scatterplot and heatmap lagged average - RZSM
 
 def flatten_RZSM():
     #Create an array with the length final_length and with 2 columns for gridMET and SubX
@@ -579,7 +579,7 @@ except FileNotFoundError:
         ax.set(xlim=(0,max_ETo_val))
         ax.set(ylim=(0,max_ETo_val))
         plt.plot(x_line,y_line,color='r')
-        ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=9) #add text
+        ax.text(3, 20,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
         plt.savefig(f'{image_dir}/ETo_MSE_lagged_average.tif', dpi=300)
         plt.close()
     
@@ -590,7 +590,7 @@ except FileNotFoundError:
         heatmap, xedges, yedges = np.histogram2d(x,y, bins=100)
         extent = [0, yedges[-1], 0, yedges[-1]]
         plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
+        plt.text(3, 20,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
         plt.xlabel('SMERGE ETo (m3/m3)')
         plt.ylabel('SubX ETo (m3/m3)')
         plt.savefig(f'{image_dir}/ETo_heatmap_lagged_average.tif',dpi=300)
@@ -607,7 +607,7 @@ except FileNotFoundError:
         ax.set(xlim=(0,max_ETo_val))
         ax.set(ylim=(0,max_ETo_val))
         plt.plot(x_line,y_line,color='r')
-        ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=9) #add text
+        ax.text(1, 27,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=9) #add text
         plt.savefig(f'{image_dir}/ETo_MSE_lagged_average_mean.tif', dpi=300)
         plt.close()
         
@@ -619,63 +619,11 @@ except FileNotFoundError:
         heatmap, xedges, yedges = np.histogram2d(mean_x, mean_y, bins=100)
         extent = [0, yedges[-1], 0, yedges[-1]]
         plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=14, color = 'red')
+        plt.text(1, 27,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=9) #add text
         plt.xlabel('SMERGE ETo (m3/m3)')
         plt.ylabel('SubX ETo (m3/m3)')
         plt.savefig(f'{image_dir}/ETo_heatmap_lagged_average_mean.tif',dpi=300)
         plt.close()        
-# var_OUT.READ_DESCRIPTION_ATTRS.values
 
+   
 
-#could get the mask to work here. May play around with it later.
-# if var == 'msro':
-#     #Save a dataset to have a soil moisture CONUS mask just like SMERGE
-#     smerge_loc = f'{home}/Data/SMERGE_SM/Raw_data/'
-#     SMERGE_SM = xr.open_dataset(f'{smerge_loc}/smerge_sm_merged_remap.nc4')
-    
-    
-    
-#     #Add new dimenesions and copy the first
-#     SMERGE_SM_arr = np.array(SMERGE_SM.RZSM)
-#     # SMERGE_SM_arr
-#     # var_SM_mask[:,:,:,:] = SMERGE_SM_arr[:,:,:]
-#     # var_SM_mask[var_SM_mask == 0.0] = 'nan' 
-    
-#     # var_where  = np.where(var_SM_mask[:,:,:,:]  != 0.0 )
-    
-#     # # var_SM_mask_where = np.where(var_SM_mask != 0.0)
-#     # lagged_average_xr_mask = lagged_average_xr[var_where] 
-#     # lagged_average_xr_mask1 = np.reshape(lagged_average_xr_mask, lagged_average_xr.shape)
-
-### END mask test
-'''Checking 2 different files to see if I'm actually getting the average
-
-Uncomment for your own to self test and change the directory'''
-
-
-# f1 = sorted(glob(f'{var}*.nc'))[0]
-# f2 = sorted(glob(f'{var}*.nc'))[1]
-# output_check = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/lagged_ensemble_by_variable/test1/mrso_lagged_average.nc4')
-
-# #File1
-# f1 = xr.open_dataset(f1)
-# #File2
-# f2 = xr.open_dataset(f2)
-# #Check the date values
-# f1.S.values[0] #1/11/1999 - contains values
-# f1.S.values[1] #1/10/1999 - no values
-# f2.S.values[1]
-
-# #Get same days for each file... 5 day lag between these two files
-# f1.mrso[0,0,5,0,0].values
-# f2.mrso[0,0,0,0,0].values
-
-# avg = (np.add(f1.mrso[0,0,5,0,0].values ,f2.mrso[0,0,0,0,0].values))/2.0 
-# #convert to array 
-# f1ar = np.array(f1.mrso)
-# f2ar = np.array(f2.mrso)
-
-# #Pick 6th day of the end time series.... Day 0 has no values
-# print(f'Average test is complete and the results and the same? : {var_TEST[0,6,0,0] == avg}')
-
-# #Correct calculation

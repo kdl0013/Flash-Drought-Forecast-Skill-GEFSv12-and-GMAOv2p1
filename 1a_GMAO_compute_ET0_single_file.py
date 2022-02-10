@@ -170,7 +170,7 @@ def Refet_gridMET():
     except FileNotFoundError:
         
         print('Working on computing ET ref from gridMET variables.')
-        slice1 = "1999-01-11"
+        slice1 = "1999-01-10"
         slice2 = "2016-02-09"
         # gridMET_file = gridMET_file.sel(day=slice(f"{slice1}",f"{slice2}"))
         #Open up each file

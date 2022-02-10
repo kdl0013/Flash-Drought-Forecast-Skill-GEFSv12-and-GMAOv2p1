@@ -67,7 +67,7 @@ def ETo_gridMET_SubX_creation(_date) -> float:
         
         #Open gridMET and subset to the correct dates as SubX for full time series
         gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_gridMET_merged.nc').astype('float64')
-        gridMET_file = gridMET_file.sel(day=slice("1999-01-11","2016-02-09"))
+        gridMET_file = gridMET_file.sel(day=slice("1999-01-10","2016-02-09"))
 
         print(f'Working on initialized day {_date} to find gridMET values from SubX models, leads, & coordinates and saving data into {output_dir}.')
         sub_file = xr.open_dataset(f'ETo_{_date}.nc4')
