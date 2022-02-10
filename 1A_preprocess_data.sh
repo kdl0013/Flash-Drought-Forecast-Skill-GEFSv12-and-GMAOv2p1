@@ -3,6 +3,8 @@
 #Download SMERGE soil moisture, gridMET PET, EDDI evaporative demand, and elevation
 #To download SubX data, use script download_SubX_4_models.sh (run in HPC)
 
+#My own environment is spyder
+conda activate spyder 
 module load cdo
 module load nco
 
