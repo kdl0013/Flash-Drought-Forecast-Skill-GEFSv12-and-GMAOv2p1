@@ -1,0 +1,17 @@
+#
+# gridID 1
+#
+gridtype  = lonlat
+gridsize  = 65160
+datatype  = float
+xsize     = 360
+ysize     = 181
+xname     = lon
+xunits    = "degrees_east"
+yname     = lat
+yunits    = "degrees_north"
+xfirst    = 0.0
+xinc      = 1
+yfirst    = 90.0
+yinc      = -1
+scanningMode = 64
