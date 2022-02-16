@@ -505,48 +505,63 @@ except FileNotFoundError:
         plt.close()        
         
         
-#%%
+#%%Scatterplot and heatmap lagged average - ETo
 def flatten_ETO():
     #Create an array with the length final_length and with 2 columns for gridMET and SubX
     ravel_length = len(xr.open_dataset(f'{home_dir}/lagged_ensemble_by_variable/ETo_lagged_average.nc4').to_array().values.ravel())    
     ravel_mean = len(xr.open_dataset(f'{home_dir}/lagged_ensemble_by_variable/ETo_lagged_average.nc4').to_array().mean(dim='realization').values.ravel())    
     
-    correlation_RZSM = np.empty((ravel_length, 2))
-    correlation_RZSM_mean = np.empty((ravel_mean, 2))
+    correlation_ET = np.empty((ravel_length, 2))
+    correlation_ET_mean = np.empty((ravel_mean, 2))
 
     #Open subX lagged average file and smerge file
-    sm_SubX_file = xr.open_dataset(f'{home_dir}/lagged_ensemble_by_variable/ETo_lagged_average.nc4')
-    sm_SMERGE_file = xr.open_dataset(f'{gridMET_dir}/ETo_gridMET_merged.nc')
+    et_SubX_file = xr.open_dataset(f'{home_dir}/lagged_ensemble_by_variable/ETo_lagged_average.nc4')
+    et_gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_gridMET_merged.nc')
     
     #First make the mean file
-    SubX_sm_mean = sm_SubX_file.to_array().mean(dim='realization').values
+    SubX_sm_mean = et_SubX_file.to_array().mean(dim='realization').values
     
     #Add raveled files to correlation_RZSM_mean
     #column 0 is SMERGE
     #column 1 is SubX
-    correlation_RZSM_mean[:,0] = sm_SMERGE_file.ETo_gridmet.values.ravel()
-    correlation_RZSM_mean[:,1] = SubX_sm_mean.ravel()
+    correlation_ET_mean[:,0] = et_gridMET_file.ETo_gridmet.values.ravel()
+    correlation_ET_mean[:,1] = SubX_sm_mean.ravel()
     
-    no_nan_mean = correlation_RZSM_mean[(~np.isnan(correlation_RZSM_mean[:,0]) & (~np.isnan(correlation_RZSM_mean[:,1])))]
+    #Change infinity values to np.nan
+    correlation_ET_mean[(correlation_ET_mean > 1e308) & (correlation_ET_mean < 1000)] = np.nan
+    
+    no_nan_mean = correlation_ET_mean[(~np.isnan(correlation_ET_mean[:,0]) & (~np.isnan(correlation_ET_mean[:,1])))]
+    #It created a new negative infinity (can't use this with MSE)
+    no_nan_mean[np.isinf(no_nan_mean)] = np.nan
+    no_nan_mean = no_nan_mean[(~np.isnan(no_nan_mean[:,0]) & (~np.isnan(no_nan_mean[:,1])))]
+    
     mean_x,mean_y = no_nan_mean[:,0], no_nan_mean[:,1]
     
     #Now find the correlation between the lagged average file with all models and 
     #Smerge - add to correlation_RZSM
     ravel_init = 0
-    ravel_len = int(ravel_length/sm_SubX_file.realization.shape[0])
+    ravel_len = int(ravel_length/et_SubX_file.realization.shape[0])
     ravel_start = ravel_len
-    for model in range(sm_SubX_file.realization.shape[0]):
+    for model in range(et_SubX_file.realization.shape[0]):
         #ravel the first model, add to correlation_RZSM index column 1
         #index column 0 will be smerge
         
         
-        correlation_RZSM[ravel_init:ravel_start,0] = sm_SMERGE_file.RZSM.values.ravel()
-        correlation_RZSM[ravel_init:ravel_start,1] = sm_SubX_file.READ_DESCRIPTION_ATTRS[model,:,:,:].values.ravel()
+        correlation_ET[ravel_init:ravel_start,0] = et_gridMET_file.ETo_gridmet.values.ravel()
+        correlation_ET[ravel_init:ravel_start,1] = et_SubX_file.READ_DESCRIPTION_ATTRS[model,:,:,:].values.ravel()
         
         ravel_init += ravel_len
         ravel_start += ravel_len
+    #change infinity values to np.nan        
+    correlation_ET[(correlation_ET > 1e308) & (correlation_ET < 1000)] = np.nan
+
     
-    no_nan = correlation_RZSM[(~np.isnan(correlation_RZSM[:,0]) & (~np.isnan(correlation_RZSM[:,1])))]
+    no_nan = correlation_ET[(~np.isnan(correlation_ET[:,0]) & (~np.isnan(correlation_ET[:,1])))]
+    
+    #It brings back up negative infinity
+    no_nan[np.isinf(no_nan)] = np.nan
+    no_nan = no_nan[(~np.isnan(no_nan[:,0]) & (~np.isnan(no_nan[:,1])))]
+    
     x,y = no_nan[:,0], no_nan[:,1]
     
     return(x,y,mean_x,mean_y)
@@ -573,13 +588,13 @@ except FileNotFoundError:
         plt.imread(f'{image_dir}/ETo_MSE_lagged_average.tif')
     except FileNotFoundError:
         ax = sns.scatterplot(x = x, y = y,s=0.25)
-        ax.set_title("SubX ETo vs. SMERGE ETo")
-        ax.set_xlabel("SMERGE (m3/m3)")
-        ax.set_ylabel("SubX (m3/m3)")
+        ax.set_title("SubX ETo vs. gridMET ETo")
+        ax.set_xlabel("gridMET (mm/d)")
+        ax.set_ylabel("SubX (mm/d)")
         ax.set(xlim=(0,max_ETo_val))
         ax.set(ylim=(0,max_ETo_val))
         plt.plot(x_line,y_line,color='r')
-        ax.text(3, 20,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
+        ax.text(1, 27,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=9)
         plt.savefig(f'{image_dir}/ETo_MSE_lagged_average.tif', dpi=300)
         plt.close()
     
@@ -590,9 +605,9 @@ except FileNotFoundError:
         heatmap, xedges, yedges = np.histogram2d(x,y, bins=100)
         extent = [0, yedges[-1], 0, yedges[-1]]
         plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(3, 20,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
-        plt.xlabel('SMERGE ETo (m3/m3)')
-        plt.ylabel('SubX ETo (m3/m3)')
+        plt.text(3, 14,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
+        plt.xlabel('gridMET ETo (mm/d)')
+        plt.ylabel('SubX ETo (mm/d)')
         plt.savefig(f'{image_dir}/ETo_heatmap_lagged_average.tif',dpi=300)
         plt.close()
         
@@ -601,8 +616,8 @@ except FileNotFoundError:
         plt.imread(f'{image_dir}/ETo_MSE_lagged_average_mean.tif')
     except FileNotFoundError:
         ax = sns.scatterplot(x = mean_x, y = mean_y,s=0.25)
-        ax.set_title("SubX ETo vs. SMERGE ETo")
-        ax.set_xlabel("SMERGE (m3/m3)")
+        ax.set_title("SubX ETo vs. gridMET ETo")
+        ax.set_xlabel("gridMET (mm/d)")
         ax.set_ylabel("SubX (m3/m3)")
         ax.set(xlim=(0,max_ETo_val))
         ax.set(ylim=(0,max_ETo_val))
@@ -619,9 +634,9 @@ except FileNotFoundError:
         heatmap, xedges, yedges = np.histogram2d(mean_x, mean_y, bins=100)
         extent = [0, yedges[-1], 0, yedges[-1]]
         plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(1, 27,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=9) #add text
-        plt.xlabel('SMERGE ETo (m3/m3)')
-        plt.ylabel('SubX ETo (m3/m3)')
+        plt.text(3, 14,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=14, color = 'red') #add text
+        plt.xlabel('gridMET ETo (mm/d)')
+        plt.ylabel('SubX ETo (mm/d)')
         plt.savefig(f'{image_dir}/ETo_heatmap_lagged_average_mean.tif',dpi=300)
         plt.close()        
 

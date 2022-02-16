@@ -22,7 +22,7 @@ mkdir -p $data_d/SubX/GMAO
 mkdir -p $data_s 
 mkdir -p $data_d/SMERGE_SM/Raw_data
 mkdir -p $data_d/gridMET/ETo_SubX_values
-mkdir -p $data_d/EDDI
+mkdir -p $data_d/EDDI/convert_2_nc
 ################### SMERGE soil moisture ##########################
 {
 cd $data_s
@@ -71,8 +71,17 @@ done
 cdo ensavg tmmn_remap_final.nc tmmx_remap_final.nc tavg_remap_final.nc
 
 echo gridMET files are downloaded and pre-processed
+############## Elevation dataset preprocess ###########
+mkdir $data_d/elevation && cd $data_d/elevation
+data_e=$data_d/elevation
+
+cdo -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
+
 ############## Evaporative Demand Drought Index ##########################
-cd $data_d/EDDI
+echo "Working on EDDI pre-processing"
+
+eddi=$data_d/EDDI
+cd eddi
 
 cat $data_s/0c_download_EDDI.py | sed 's|main_dir|'${main_directory}'|g' \
 > $data_s/0c_TMP_download_EDDI.py 
@@ -85,27 +94,28 @@ bash $data_s/0d_download_EDDI_wget.sh
 
 mkdir wild_card_files
 
+#Some downloads produce double on my computer, this moves the doubles so you
+#could verify if the actual file is present
 for f in *.asc; 
 do  
     if [[ ${#f} -gt 27 ]]; 
 then 
     mv "$f" wild_card_files/; fi;  done
-############## Elevation dataset preprocess ###########
-mkdir $data_d/elevation && cd $data_d/elevation
-data_e=$data_d/elevation
 
-cdo -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
+#convert to a .nc4 file
+for f in *.asc;
+do
+    year=`echo $f | cut -c16-19`
+    month=`echo $f | cut -c20-21`
+    day=`echo $f | cut -c22-23`
+    outName=`echo $f | cut -c1-23`
 
+       cdo -f nc -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd -settaxis,${year}-${month}-${day},00:00:00,1day -setname,EDDI -input,$data_s/SMERGE_4_EDDI.grd convert_2_nc/${outName}.nc4 < $f;
+done
 
-
-
-
-
-
-
-cdo -f nc input,mygrid ofile.nc < ascii_data
-
-
+#Merge files
+cd ${eddi}/convert_2_nc
+cdo mergetime *.nc4 eddi_merged.nc4
 
 
 
