@@ -25,8 +25,8 @@ from multiprocessing import Pool
 from scipy.stats import rankdata
 
 
-dir1 = 'main_dir'
-num_processors = int('procs')
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+num_processors = int('9')
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/GMAO'
@@ -476,7 +476,7 @@ if __name__ == '__main__':
                    
 
 '''This old code was a different formulation for reference ET. It didn't produce
-meaningful results across CONUS (despite needing data more data as input than the currently used refet package). 
+meaningful results across CONUS (despite needing data as input). 
 This is the ASCE reference ET package'''
 #  -- don't run    
 
