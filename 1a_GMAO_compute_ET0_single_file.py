@@ -343,6 +343,9 @@ def multiProcess_EDDI_SubX(_date):
 
                     #Don't loop over the values that shouldn't have values.  We will have 4 missing grid cells,
                     #but the computational cost is well worth it. SMERGE indexes 38,6 and 38,7 are EDDI values that we can compute within CONUS
+                    '''After calculating EDDI, the researcher discovered that this next line of code added some grid cell calculations
+                    that are outside of CONUS. Because this was so computationally taxing, I will just add a new script to change all of the
+                    values that are outside of CONUS grid area.'''
                     if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) ==1) & ((i_X != 38 and i_Y != 6) or (i_X !=38 and i_Y !=7)):
                         Et_out.ETo[0,model,:,i_Y,i_X] = np.nan
                          
