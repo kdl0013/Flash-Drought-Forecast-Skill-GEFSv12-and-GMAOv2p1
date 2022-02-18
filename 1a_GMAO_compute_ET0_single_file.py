@@ -277,20 +277,33 @@ Refet_gridMET()
         4.) Calculate Tukey plotting position
         5.) Calculate EDDI
     
+    
+To make the multiprocessing function faster (because it appears that accessing the same file is
+actually slowing down the processing), I am creating many instances of the 
+ETo_ SubX files into new directories. Then I can np.random a number and then
+we can pull from that directory.
+    
 '''
 
-os.chdir(home_dir)
-
+# for _date in init_date_list:   
 def multiProcess_EDDI_SubX(_date):
-# for _date in init_date_list:    
+ 
     try:
-        xr.open_dataset(glob(f'EDDI_{_date}.nc4')[0])
+        xr.open_dataset(glob(f'{home_dir}/EDDI_{_date}.nc4')[0])
         print(f'{_date} already completed for EDDI. Saved in {home_dir}.')
     except IndexError:
+        
+        #Testing different seed for multiprocessing
+        np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
         
         #to make a 1-week EDDI, we will need to find the sum of 7 days. This
         #will assist with that <week_lead>
         week_lead = 6
+        
+        random_directory = np.random.choice(range(1,41))
+        print(f'Picked random directory ETo{random_directory}')
+        
+        os.chdir(f'{home_dir}/ETo{random_directory}')
         
         print(f'Working on date {_date} for EDDI and saving into {home_dir}')
         #Open file, get dates
@@ -301,68 +314,70 @@ def multiProcess_EDDI_SubX(_date):
         
         #file for SMERGE to not have to run needless loops within CONUS
         smerge_file = xr.open_dataset(f'{smerge_dir}/smerge_sm_merged_remap.nc4')
+      
+        #Now we have a file with date 1999-01-11. Now we need to find all files
+        #with dates that are within 7 days of the current date val
+        #get the dates into a list
+        a_date_in= Et_ref.ETo.lead.values
+        #get the start date
+        a_start_date = pd.to_datetime(Et_ref.S.values[0])
+        #Add the dates based on index value in date_in
+        a_date_out = []
+        
+        for a_i in range(len(a_date_in)):
+            a_date_out.append(a_start_date + dt.timedelta(days = a_i))
+            
+        start_julian = pd.to_datetime(Et_ref.S[0].values).timetuple().tm_yday #julian day
+                                    
+        a_julian_out = [start_julian + i for i in range(len(a_date_out))]
+        
+        INdate_for_month = dt.datetime(int(_date[0:4]),int(_date[5:7]),int(_date[8:10]))
+
+        #Now convert to julian date and append coordinates
+        Et_ref2 = Et_ref.assign_coords(lead = a_julian_out)
         
         for model in range(Et_ref.ETo.shape[1]):
-            # print(f'Working on model {model}')
-            for i_lead in range(Et_ref.ETo.shape[2]):
-                # print(f'Working on lead {i_lead}')
-                date_val = pd.to_datetime(Et_ref.S.values[0]) + dt.timedelta(days=i_lead)
-                julian_start = date_val.timetuple().tm_yday #julian day
-                for i_Y in range(Et_ref.ETo.shape[3]):
-                    # print(i_Y)
-                    for i_X in range(Et_ref.ETo.shape[4]):
-                        # print(i_X)
-                        
-                        #Don't loop over the values that shouldn't have values.  We will have 4 missing grid cells,
-                        #but the computational cost is well worth it.
-                        if np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) ==1:
-                            Et_out.ETo[0,model,i_lead+week_lead,i_Y,i_X] = np.nan
-                        else:
-                            #append everything to a new list
-                            summation_ETo = []
-                            
-                        #Now we have a file with date 1999-01-11. Now we need to find all files
-                        #with dates that are within 7 days of the current date val
-                         #get the dates into a list
-                            a_date_in= Et_ref.ETo.lead.values
-                            #get the start date
-                            a_start_date = pd.to_datetime(Et_ref.S.values[0])
-                            #Add the dates based on index value in date_in
-                            a_date_out = []
-                            
-                            for a_i in range(len(a_date_in)):
-                                a_date_out.append(a_start_date + dt.timedelta(days = a_i))
+            print(f'Working on model {model}')
+            for i_Y in range(Et_ref.ETo.shape[3]):
+                for i_X in range(Et_ref.ETo.shape[4]):
+
+                    #Don't loop over the values that shouldn't have values.  We will have 4 missing grid cells,
+                    #but the computational cost is well worth it. SMERGE indexes 38,6 and 38,7 are EDDI values that we can compute within CONUS
+                    if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) ==1) & ((i_X != 38 and i_Y != 6) or (i_X !=38 and i_Y !=7)):
+                        Et_out.ETo[0,model,:,i_Y,i_X] = np.nan
+                         
+                    else:
+                                                
+                        #append 7-day summation from all files to a new dictionary
+                        summation_ETo = {}
+                    
+                        for val in a_julian_out:
+                            #You must val + week_lead because with EDDI you need 7-day looking backwards into the past.
+                            #We can
+                            if val+week_lead== a_julian_out[-1]:
+                                break
+                            else:
+                                summation_ETo[f'{week_lead+val}']=[]
+                                summation_ETo[f'{week_lead+val}'].append(np.nansum(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values))   
                                 
-                            start_julian = pd.to_datetime(Et_ref.S[0].values).timetuple().tm_yday #julian day
+                        '''Now we have created a dictionary that contains the 7-day sum of Eto by index:
+                            Next we will append to each julian day value in the key in the dictionary with
+                            the same julian day from all files'''
+                        for file in sorted(glob('ETo*.nc4')):
+                            #Remove unnecessary files that won't contain any of the dates, if difference in months
+                            #is >=2, then skip that file because of 45 day lead time.
                             
+                            OUTdate_for_month = dt.datetime(int(file[4:8]),int(file[9:11]),int(file[12:14]))
+                                                        
+                            num_months = (OUTdate_for_month.month - INdate_for_month.month)
                             
-                            a_julian_out = [start_julian + i for i in range(len(a_date_out))]
-                            
-                            #Now convert to julian date and append coordinates
-                            Et_ref2 = Et_ref.assign_coords(lead = a_julian_out)
-                            
-                            #Now for each 7-day total week in each file, we need to find the same corresponding dates
-                            #In all the other files and rank them.
-                            
-                            #Find the first lead, add 6 because these are indexes, xr.sel()
-                            #THIS IS THE SUMMED VALUE OF THE FIRST FILE
-                            summed_ETo = np.nansum(Et_ref2.ETo.isel(X=i_X, Y=i_Y, model=model, S=0).sel(lead=slice(start_julian,start_julian + week_lead)))
-                            summation_ETo.append(summed_ETo)
-                                                                                             
-                                
-                                                                                 
-                            for file in sorted(glob('ETo*.nc4')):
+                            if num_months <3: #skip months that aren't within 1 month
+                                #Dont' re-open the same file
                                 if file[-14:-4] != _date:
                                     
                                     open_f = xr.open_dataset(file)
                                     
-                                    #Now we need to sum the ETo if only the full set of dates
-                                    #is available.
-                                    
-                                    #Test with initial file
-                                    #Need to figure out how to change the lead to dates
-                                    
-                                    '''Convert lead to a vector, then add it back into a netcdf
+                                    '''Convert lead dates to a vector, then add it back into a netcdf
                                     because I cannot convert np.datetime to a pd.datetime, I will need
                                     to iterate over each of the dates in a list from Et_ref'''
                                     
@@ -382,45 +397,25 @@ def multiProcess_EDDI_SubX(_date):
     
                                     Et_ref_open_f = open_f.assign_coords(lead = b_julian_out)
                                     
-                                    
-                                    '''Now that we have the original file Et_ref and the 2nd file Et_ref_open_f,
-                                    now we try and find the same grid coordinates and dates. Because xarray will
-                                    allow a slice for a date which does not exist, then we will have to code a way
-                                    to reject the summed_ETo2 if the first and last dates have no values'''
-                                    
-                                    try: 
-                                        Et_ref_open_f.ETo.isel(X=i_X, Y=i_Y, model=model, S=0).sel(lead=start_julian).values
-                                        Et_ref_open_f.ETo.isel(X=i_X, Y=i_Y, model=model, S=0).sel(lead=start_julian+week_lead).values
-                                        summed_ETo_2 = np.nansum(Et_ref_open_f.ETo.isel(X=i_X, Y=i_Y, model=model, S=0).sel(lead=slice(start_julian,start_julian + week_lead)))
-                                    except KeyError:
-                                        pass
-                                    
-                                    
-                                    try:
-                                        summed_ETo_2
-                                        summation_ETo.append(summed_ETo_2)
-                                    except NameError:
-                                        pass
-                                    
-                                    try:
-                                        del summed_ETo_2
-                                    except NameError:
-                                        pass
+                                    '''Now we need to append to the dictionary with the same julian date values'''
+                                    for val in b_julian_out:
+                                        try:
+                                            summation_ETo[f'{week_lead+val}'].append(np.nansum(Et_ref_open_f.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values))   
+                                        except KeyError:
+                                            pass
                                         
-                            '''Now that we have the total number of files which have all possible days, 
-                            we need to rank them'''
-                            ranking = rankdata([-1 * i for i in summation_ETo]).astype(int)
-                            
-                            '''Now that we have a ranking, we can calculate the ETo probability
-                            using the Tukey plotting position
-                            
-                            P(Eto) = (i-0.33)/(n+0.33)
-                            
-                            where i is the ranking and n is the number of entries'''
-                            
+                                    open_f.close()
+                                '''Now the dictionary is filled with all values from all files, we need to sort
+                                each julian day by having the largest values as number 1 ranking. Then we can append the 
+                                Et_out file with the proper julian day and the EDDI value'''
+
+                                    
+                        '''Now that we have the total number of files which have all possible days, 
+                        we need to rank them'''
+                        for idx,dic in enumerate(summation_ETo):
+                            ranking = rankdata([-1 * i for i in summation_ETo[f'{dic}']]).astype(int)
                             tukey = (ranking[0] - 0.33)/ (len(ranking) + 0.33)
-                            
-                            
+                                 
                             '''Now we can calculate EDDI'''
                             
                             if tukey <= 0.5:
@@ -440,8 +435,11 @@ def multiProcess_EDDI_SubX(_date):
                             
                             
                             '''Now append to an empty file'''
-                            Et_out.ETo[0,model,i_lead+week_lead,i_Y,i_X] = eddi
-           
+                            Et_out.ETo[0,model,week_lead+idx,i_Y,i_X] = eddi
+                            
+                            
+                    
+       
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
@@ -455,13 +453,13 @@ def multiProcess_EDDI_SubX(_date):
                 S = Et_ref.S.values
             ),
             attrs = dict(
-                Description = 'Evaporative demand drought index'),
+                Description = 'Evaporative demand drought index from SubX leads'),
         )                    
         
         #Save as a netcdf for later processing
         var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{_date}.nc4', mode ='w')
         print(f'Saved _date into {home_dir}.')                   
-                    
+                        
 #%%        
 #TODO: see below        
 '''For multiprocessing test, need to move the first file created into a new folder.
@@ -471,12 +469,12 @@ todo that'''
 if __name__ == '__main__':
     p = Pool(num_processors)
     p.map(multiProcess_EDDI_SubX, init_date_list)
-
-#%%
+    
+    #%%
                    
 
 '''This old code was a different formulation for reference ET. It didn't produce
-meaningful results across CONUS (despite needing data more data as input than the currently used refet package). 
+meaningful results across CONUS (despite needing data more data as input than the current). 
 This is the ASCE reference ET package'''
 #  -- don't run    
 

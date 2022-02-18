@@ -18,7 +18,13 @@ processors=8
 data_d=$main_directory/Data
 data_s=$main_directory/Scripts
 
-############## Reference ETo data creation ###########
+subx=$data_d/SubX/GMAO
+######## Reference ETo, EDDI, gridMET data creation. Historical and SubX #######
+#Make several directories because of python multiprocessing being slow.
+cd $subx
+for i in {1..40};do mkdir ETo$i;done
+for i in {1..40};do cp ETo_* ETo$i;done
+
 cat $data_s/1a_GMAO_compute_ET0_single_file.py | sed 's|main_dir|'${main_directory}'|g' | \
     sed 's|procs|'${processors}'|g' > $data_s/1a_TMP_GMAO_compute_ET0_single_file.py
 
@@ -36,11 +42,9 @@ echo Starting on daily reference ET calculation
 python3 $data_s/1b_TMP_GMAO_scatterplots_ET0_RZSM.py
 rm $data_s/1b_TMP_GMAO_scatterplots_ET0_RZSM.py
 
-############## EDDI pre-processing ###########
 
 
-
-
+#TODO: Delete additional ETo files in $subx directory
 
 
 
