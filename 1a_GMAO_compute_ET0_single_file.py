@@ -371,7 +371,7 @@ def multiProcess_EDDI_SubX(_date):
                                                         
                             num_months = (OUTdate_for_month.month - INdate_for_month.month)
                             
-                            if num_months <3: #skip months that aren't within 1 month
+                            if num_months <3: #skip months that aren't within 3 months
                                 #Dont' re-open the same file
                                 if file[-14:-4] != _date:
                                     

@@ -33,6 +33,8 @@ echo Starting on daily reference ET calculation
 python3 $data_s/1a_TMP_GMAO_compute_ET0_single_file.py
 rm $data_s/1a_TMP_GMAO_compute_ET0_single_file.py
 
+for i in {1..40};do rm ETo$i -r;done
+
 ############## Reference ETo and Soil Moisture scatterplot data creation ###########
 cat $data_s/1b_GMAO_scatterplots_ET0_RZSM.py | sed 's|main_dir|'${main_directory}'|g' | \
     sed 's|procs|'${processors}'|g' > $data_s/1b_TMP_GMAO_scatterplots_ET0_RZSM.py
