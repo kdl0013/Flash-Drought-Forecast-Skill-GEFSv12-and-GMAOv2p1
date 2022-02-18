@@ -346,7 +346,7 @@ def multiProcess_EDDI_SubX(_date):
                     '''After calculating EDDI, the researcher discovered that this next line of code added some grid cell calculations
                     that are outside of CONUS. Because this was so computationally taxing, I will just add a new script to change all of the
                     values that are outside of CONUS grid area.'''
-                    if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) ==1) & ((i_X != 38 and i_Y != 6) or (i_X !=38 and i_Y !=7)):
+                    if ((np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) ==1) and ((i_X != 38 and i_Y != 6) or (i_X !=38 and i_Y !=7))):
                         Et_out.ETo[0,model,:,i_Y,i_X] = np.nan
                          
                     else:
@@ -361,11 +361,19 @@ def multiProcess_EDDI_SubX(_date):
                                 break
                             else:
                                 summation_ETo[f'{week_lead+val}']=[]
-                                summation_ETo[f'{week_lead+val}'].append(np.nansum(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values))   
+                                summation_ETo[f'{week_lead+val}'].append({'original_file':np.nansum(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values)})   
                                 
                         '''Now we have created a dictionary that contains the 7-day sum of Eto by index:
                             Next we will append to each julian day value in the key in the dictionary with
                             the same julian day from all files'''
+                            
+                            
+                            #TODO: Need to add another dictionary that keeps up with the initialized date of the file
+                            #this will assist with not having to re run 1000 files each time.
+                            
+                            #TODO: also need to create the file by the _date as the {file} for EDDI (.nc4 file)
+                            #so that we can append to the file. Then we can re-open later with other files and such.
+                            
                         for file in sorted(glob('ETo*.nc4')):
                             #Remove unnecessary files that won't contain any of the dates, if difference in months
                             #is >=2, then skip that file because of 45 day lead time.
@@ -403,7 +411,7 @@ def multiProcess_EDDI_SubX(_date):
                                     '''Now we need to append to the dictionary with the same julian date values'''
                                     for val in b_julian_out:
                                         try:
-                                            summation_ETo[f'{week_lead+val}'].append(np.nansum(Et_ref_open_f.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values))   
+                                            summation_ETo[f'{week_lead+val}'].append({f'{file[-14:-4]}':np.nansum(Et_ref_open_f.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values)})   
                                         except KeyError:
                                             pass
                                         
