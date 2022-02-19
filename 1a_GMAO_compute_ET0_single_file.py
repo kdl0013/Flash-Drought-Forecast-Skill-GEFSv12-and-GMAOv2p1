@@ -289,7 +289,7 @@ we can pull from that directory.
 def multiProcess_EDDI_SubX(_date):
  
     try:
-        xr.open_dataset(glob(f'{home_dir}/EDDI_{_date}.nc4')[0])
+        xr.open_dataset(glob(f'{home_dir}/EDDI_{_date}_completed.nc4')[0])
         print(f'{_date} already completed for EDDI. Saved in {home_dir}.')
     except IndexError:
         
@@ -357,12 +357,13 @@ def multiProcess_EDDI_SubX(_date):
                         for val in a_julian_out:
                             #You must val + week_lead because with EDDI you need 7-day looking backwards into the past.
                             #We can
-                            if val+week_lead== a_julian_out[-1]:
+
+                            if (len(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values)) < 7:
                                 break
                             else:
                                 summation_ETo[f'{week_lead+val}']=[]
-                                summation_ETo[f'{week_lead+val}'].append({'original_file':np.nansum(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values)})   
-                                
+                                summation_ETo[f'{week_lead+val}'].append({f'{_date}':np.nansum(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values)})   
+                                # print(len(Et_ref2.ETo.sel(lead=slice(val,week_lead+val)).isel(S=0, model=model, X=i_X, Y=i_Y).values))
                         '''Now we have created a dictionary that contains the 7-day sum of Eto by index:
                             Next we will append to each julian day value in the key in the dictionary with
                             the same julian day from all files'''
@@ -371,9 +372,7 @@ def multiProcess_EDDI_SubX(_date):
                             #TODO: Need to add another dictionary that keeps up with the initialized date of the file
                             #this will assist with not having to re run 1000 files each time.
                             
-                            #TODO: also need to create the file by the _date as the {file} for EDDI (.nc4 file)
-                            #so that we can append to the file. Then we can re-open later with other files and such.
-                            
+                        
                         for file in sorted(glob('ETo*.nc4')):
                             #Remove unnecessary files that won't contain any of the dates, if difference in months
                             #is >=2, then skip that file because of 45 day lead time.
@@ -419,21 +418,34 @@ def multiProcess_EDDI_SubX(_date):
                                 '''Now the dictionary is filled with all values from all files, we need to sort
                                 each julian day by having the largest values as number 1 ranking. Then we can append the 
                                 Et_out file with the proper julian day and the EDDI value'''
-
-                                    
+                             
                         '''Now that we have the total number of files which have all possible days, 
                         we need to rank them'''
-                        for idx,dic in enumerate(summation_ETo):
-                            ranking = rankdata([-1 * i for i in summation_ETo[f'{dic}']]).astype(int)
-                            tukey = (ranking[0] - 0.33)/ (len(ranking) + 0.33)
-                                 
-                            '''Now we can calculate EDDI'''
+                        #chunk start
+                        out_eddi_dictionary = {}
+                        for idx,julian_date in enumerate(summation_ETo):
                             
-                            if tukey <= 0.5:
-                                w = np.sqrt(-2*np.log(tukey))
-                            else:
-                                w = 1-tukey
+                            out_eddi_dictionary[f'{julian_date}']=[]
+                            
+                            subset_by_date = summation_ETo[f'{julian_date}']
+                            
+                            #When looking at each julian date, now create a ranked list
+                            list_rank = []
+                            for date_init in range(len(subset_by_date)):
+                                list_rank.append(list(subset_by_date[date_init].values())[0])
+                            
+                            
+                                ranking = rankdata([-1 * i for i in list_rank]).astype(int)
+                                tukey = (ranking - 0.33)/ (len(ranking) + 0.33)
                                 
+                            out_eddi = []
+                            '''Now we can calculate EDDI'''
+                            for valu in tukey:
+                                if valu <= 0.5:
+                                    w = out_eddi.append(np.sqrt(-2*np.log(valu)))
+                                else:
+                                    w = out_eddi.append(1-valu)  
+                                        
                             #constants
                             c0 = 2.515517
                             c1 = 0.802853
@@ -441,9 +453,176 @@ def multiProcess_EDDI_SubX(_date):
                             d1 = 1.432788
                             d2 = 0.189269
                             d3 = 0.001308
+                                
+                            final_out_eddi = []
+                            for w in out_eddi:
+                                eddi = final_out_eddi.append(w - ((c0 + c1*w + c2*w**2)/(1 + d1*w + d2*w**2 + d3*w**3)))
+                             
+                            out_eddi_dictionary[f'{julian_date}'].append(final_out_eddi)
+                                #Make a new dictionary instead of trying to append to a new one
+                       #chunk end     
+                        '''Instead of re-looping through all of the files (very slow), we can start appending to 
+                        files one by one with the data that we have already collected.
+                        
+                        The above chunk calculated EDDI, next step is to append to the summation_ETo file becuase that file
+                        has the initialized dates for each EDDI julian day summation'''
+                        
+                        #TODO: Replace summation_ETo values with EDDI values (much much harder than it sounds)
+                        
+                        final_out_dictionary_all_eddi = {}
+                        
+                        for idx,julian_dattt in enumerate(summation_ETo):
+                            final_out_dictionary_all_eddi[f'{julian_dattt}'] = [] #create an empty list to append to
+                            sub_list = summation_ETo[f'{julian_dattt}'] #choose only the summation ETo with correct julian date
+                            sub_keys = [] #initialize a list to keep up with the correct julian date and the actual init dates (because each init date varies with number of samples)
+
+                            #sub list contains a dictionary for each julian date in current loop and the values of ETo
+                            #Save the init date values for each julian date
+                            for idxxx, dictonary in enumerate(sub_list):
+                                sub_keys.append({list(dictonary.keys())[0] :out_eddi_dictionary[f'{julian_dattt}'][0][idxxx]})
                             
-                            eddi = w - ((c0 + c1*w + c2*w**2)/(1 + d1*w + d2*w**2 + d3*w**3))
                             
+                            final_out_dictionary_all_eddi[f'{julian_dattt}'].append(sub_keys) 
+                        
+                        
+                        
+                        '''Now that we have final_out_dictionary_all_eddi which contains the specific values for each init date for the currenly looped X,Y grid cell, 
+                        we can append to a new file (or an already existing file)'''
+                        
+                        #I think I only need to do 1 year's worth of data at most, make all files first (they are empty)
+                        for file_2 in init_date_list:
+                            
+                            
+                            #make files
+                            #need to convert the initialized date into julian date and add 45
+                            #init date is actually the date-1 (so 01-10-1999 only has data beginning 01-11-1999 with 44 more days)
+                            
+                            st_day =  pd.to_datetime(file_2)
+                            day_doyey = st_day.timetuple().tm_yday + 1 #julian day
+
+                            #add more julian dates
+                            day_julian_a = [pd.to_datetime(day_doyey) + dt.timedelta(days=i) for i in range(45)]
+                            day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
+
+                            
+                            S_values = [pd.to_datetime(file_2)+ dt.timedelta(days=1),pd.to_datetime(file_2)]
+                            
+                            
+                            var_OUT = xr.Dataset(
+                            data_vars = dict(
+                                    EDDI = (['S', 'model','lead','Y','X'], Et_out.ETo.values),
+                                ),
+                                    coords = dict(
+                                    X = Et_ref.X.values,
+                                    Y = Et_ref.Y.values,
+                                    lead = day_julian_b,
+                                    model = Et_ref.model.values,
+                                    S = S_values
+                                ),
+                                attrs = dict(
+                                    Description = 'Evaporative demand drought index from SubX leads'),
+                            )                    
+                            
+                            #Save as a netcdf for later processing
+                            var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{file_2}.nc4', mode ='w')
+                              
+
+                            '''Now that we have created new files, we can append each file with the data that was found'''
+                            for i_val in final_out_dictionary_all_eddi:
+                                #for some reason it's a list in a list, this fixes that
+                                BB = final_out_dictionary_all_eddi[f'{i_val}'][0]
+                                
+                                for dic_values in BB:
+                                    #Open up the file
+                                    eddi_open = xr.open_dataset(f'{home_dir}/EDDI_{list(dic_values.keys())[0]}.nc4')
+                                    
+                                    print(dic_values)
+                                
+                                
+                                #Open each init date_file and append to the proper date
+                                
+                                
+                                
+                                
+                                #Find the index of the i_val
+                                lead_values = eddi_open.lead.values 
+                                index_val=np.where(lead_values == int(i_val))[0][0]
+
+                                
+                                eddi_open.EDDI[0,model,index_val,i_Y,i_X] = 
+
+
+
+                                                             
+                            try:
+                                #try to append to an existing file
+                                file_open = xr.open_dataset(f'{home_dir}/EDDI_{_date}.nc4', mode = 'w')
+                                
+                                    # for ii in range(len(final_out_dictionary_all_eddi)):
+                                    
+                                   
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    #
+                                    for b in BB:
+                                        print(b)
+                                        
+                                    
+                                    
+                                    print(i)
+                                for 
+                            
+                            #TODO: add code to append eddi values
+                            
+                            
+                        except IndexError:
+                            #create new file because it doesn't exist to an xarray object
+                            var_OUT = xr.Dataset(
+                                data_vars = dict(
+                                    EDDI = (['S', 'model','lead','Y','X'], Et_out.ETo.values),
+                                ),
+                                coords = dict(
+                                    X = Et_ref.X.values,
+                                    Y = Et_ref.Y.values,
+                                    lead = a_julian_out,
+                                    model = Et_ref.model.values,
+                                    S = Et_ref.S.values
+                                ),
+                                attrs = dict(
+                                    Description = 'Evaporative demand drought index from SubX leads'),
+                            )                    
+                            
+                            
+                            
+                            
+                            #Now append any and all possible values into this file, only use the 
+                            
+                            
+                            #Save as a netcdf for later processing
+                            var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{_date}.nc4', mode ='w')
+                            print(f'Saved _date into {home_dir}.')       
+                                                                        
+                       
+                            
+                            for idxxx, dictonary in enumerate(sub_list):
+                                final_out_dictionary_all_eddi[f'{julian_dattt}'].append({sub_keys[idxxx]:out_eddi_dictionary[f'{julian_dattt}'][0][idxxx]})   
+                                
+                                
+                            #Now we have the dates, now combine the julian date/init_date from sub_keys/sub_list to  out_eddi_dict
+                            
+                            
+                            
+                            
+                            
+                            
+                            print(idx,val)
+                        
+                        
+                                    
+                  
                             
                             '''Now append to an empty file'''
                             Et_out.ETo[0,model,week_lead+idx,i_Y,i_X] = eddi
@@ -451,25 +630,7 @@ def multiProcess_EDDI_SubX(_date):
                             
                     
        
-        #Convert to an xarray object
-        var_OUT = xr.Dataset(
-            data_vars = dict(
-                EDDI = (['S', 'model','lead','Y','X'], Et_out.ETo.values),
-            ),
-            coords = dict(
-                X = Et_ref.X.values,
-                Y = Et_ref.Y.values,
-                lead = a_date_out,
-                model = Et_ref.model.values,
-                S = Et_ref.S.values
-            ),
-            attrs = dict(
-                Description = 'Evaporative demand drought index from SubX leads'),
-        )                    
-        
-        #Save as a netcdf for later processing
-        var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{_date}.nc4', mode ='w')
-        print(f'Saved _date into {home_dir}.')                   
+             
                         
 #%%        
 #TODO: see below        
