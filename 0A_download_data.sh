@@ -50,7 +50,7 @@ then
 
 ulimit -n 6500
 cdo mergetime *.nc4 smerge_sm_merged.nc4
-cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd smerge_sm_merged.nc4 smerge_sm_merged_remap.nc4
+cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/CONUS_mask.grd smerge_sm_merged.nc4 smerge_sm_merged_remap.nc4
 }
 ################### gridMET METDATA ##########################
 echo "Starting METDATA download of PET (alfalfa)"
@@ -65,7 +65,7 @@ bash $data_s/0b_download_metdata_wget.sh
 for var in srad tmmn tmmx vs rmin rmax;
 do
 echo Starting variable $var
- cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd -mergetime ${var}_*.nc ${var}_remap_final.nc;
+ cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/CONUS_mask.grd -mergetime ${var}_*.nc ${var}_remap_final.nc;
 done
 
 cdo ensavg tmmn_remap_final.nc tmmx_remap_final.nc tavg_remap_final.nc
@@ -75,7 +75,7 @@ echo gridMET files are downloaded and pre-processed
 mkdir $data_d/elevation && cd $data_d/elevation
 data_e=$data_d/elevation
 
-cdo -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
+cdo -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/CONUS_mask.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
 
 ############## Evaporative Demand Drought Index ##########################
 echo "Working on EDDI pre-processing"
@@ -110,7 +110,7 @@ do
     day=`echo $f | cut -c22-23`
     outName=`echo $f | cut -c1-23`
 
-       cdo -f nc -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/regrid_CONUSmask_all_variables.grd -settaxis,${year}-${month}-${day},00:00:00,1day -setname,EDDI -input,$data_s/SMERGE_4_EDDI.grd convert_2_nc/${outName}.nc4 < $f;
+       cdo -f nc -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/CONUS_mask.grd -settaxis,${year}-${month}-${day},00:00:00,1day -setname,EDDI -input,$data_s/SMERGE_4_EDDI.grd convert_2_nc/${outName}.nc4 < $f;
 done
 
 #Merge files

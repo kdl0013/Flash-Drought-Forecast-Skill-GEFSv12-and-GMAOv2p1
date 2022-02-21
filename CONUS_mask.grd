@@ -2,16 +2,16 @@
 # gridID 1
 #
 gridtype  = lonlat
-gridsize  = 65160
+gridsize  = 1593
 datatype  = float
-xsize     = 360
-ysize     = 181
-xname     = lon
+xsize     = 59
+ysize     = 27
+xname     = X
 xunits    = "degrees_east"
-yname     = lat
+yname     = Y
 yunits    = "degrees_north"
-xfirst    = 0.0
+xfirst    = 235
 xinc      = 1
-yfirst    = 90.0
+yfirst    = 50
 yinc      = -1
 scanningMode = 64
