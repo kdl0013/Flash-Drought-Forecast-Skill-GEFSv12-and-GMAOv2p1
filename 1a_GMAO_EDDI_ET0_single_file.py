@@ -54,7 +54,7 @@ def return_date_list(var):
         date_list.append(file[-13:-3])
     return(date_list)
         
-init_date_list = return_date_list(var = 'mrso')    
+init_date_list = return_date_list(var = 'cape')    
                   #max     #min   #dew   #rad   #wind
 #open files [need tasmax, tasmin, tdps, dswrf, windSpeed]
 
@@ -66,6 +66,7 @@ def multiProcess_Refet_SubX(_date):
     
     try:
         xr.open_dataset(glob(f'ETo_{_date}.nc4')[0])
+
         print(f'{_date} already completed for ETo. Saved in {home_dir}.')
     except IndexError:
             
@@ -589,6 +590,78 @@ if __name__ == '__main__':
 #%%
                    
 
+
+
+
+'''Convert each .npy file from multiProcess_EDDI_SubX output as a netcdf file'''
+#Read a subx file
+subX_file = xr.open_dataset('tas_GMAO_2015-09-12.nc')
+
+# test_load_a = f'{home_dir}/test_/EDDI_2005-05-25.npy'
+
+
+for date_1 in init_date_list:
+    
+    test_load = np.load(f'{home_dir}/EDDI_{date_1}.npy')
+    # test_load = np.load(test_load_a)
+    
+    
+    #find S values
+    st_day =  pd.to_datetime(date_1)
+    st_day_2 = st_day + dt.timedelta(days=1)
+     # day_doyey = st_day.timetuple().tm_yday #julian day
+    
+     #add more julian dates
+    day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
+    day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
+    
+    S_values = [pd.to_datetime(date_1)+ dt.timedelta(days=1),pd.to_datetime(date_1)]
+    
+    
+    #convert to netcdf file
+    #Convert to an xarray object
+    var_OUT = xr.Dataset(
+        data_vars = dict(
+            EDDI = (['S','model','lead', 'Y','X'], test_load[:,:,:,:,:]),
+        ),
+        coords = dict(
+            S = S_values,
+            model = subX_file.M.values,
+            lead = day_julian_b,
+            Y = subX_file.Y.values,
+            X= subX_file.X.values,
+        ),
+        attrs = dict(
+            Description = 'Evaporative Demand Drought Index from SubX'),
+    )                    
+    
+    #Save as a netcdf for later processing
+    var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{date_1}.nc4', mode ='w')
+    print(f'Saved file into {home_dir}.')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''This old code was a different formulation for reference ET. It didn't produce
 meaningful results across CONUS (despite needing data more data as input than the current). 
 This is the ASCE reference ET package'''
@@ -826,55 +899,6 @@ This is the ASCE reference ET package'''
         
         
     
-
-
-
-'''Convert each .npy file from multiProcess_EDDI_SubX output as a netcdf file'''
-#Read a subx file
-subX_file = xr.open_dataset('tas_GMAO_2015-09-12.nc')
-
-# test_load_a = f'{home_dir}/test_/EDDI_2005-05-25.npy'
-
-
-for date_1 in init_date_list:
-    
-    test_load = np.load(f'{home_dir}/EDDI_{date_1}.npy')
-    # test_load = np.load(test_load_a)
-    
-    
-    #find S values
-    st_day =  pd.to_datetime(date_1)
-    st_day_2 = st_day + dt.timedelta(days=1)
-     # day_doyey = st_day.timetuple().tm_yday #julian day
-    
-     #add more julian dates
-    day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
-    day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
-    
-    S_values = [pd.to_datetime(date_1)+ dt.timedelta(days=1),pd.to_datetime(date_1)]
-    
-    
-    #convert to netcdf file
-    #Convert to an xarray object
-    var_OUT = xr.Dataset(
-        data_vars = dict(
-            EDDI = (['S','model','lead', 'Y','X'], test_load[:,:,:,:,:]),
-        ),
-        coords = dict(
-            S = S_values,
-            model = subX_file.M.values,
-            lead = day_julian_b,
-            Y = subX_file.Y.values,
-            X= subX_file.X.values,
-        ),
-        attrs = dict(
-            Description = 'Evaporative Demand Drought Index from SubX'),
-    )                    
-    
-    #Save as a netcdf for later processing
-    var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{date_1}.nc4', mode ='w')
-    print(f'Saved file into {home_dir}.')
-
 
 #%%
 '''Test changing subX file order of dimensions to see if I can use cdo operators
