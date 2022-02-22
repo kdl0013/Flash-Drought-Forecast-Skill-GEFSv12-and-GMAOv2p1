@@ -38,15 +38,17 @@ subX_dir = f'{dir1}/Data/SubX/GMAO'
 subX_SM_out_dir = f'{dir1}/Data/SubX/GMAO/SM_converted_m3_m3' #conversion
 
 gridMET_dir = f'{dir1}/Data/gridMET' #reference evapotranspiration
+output_dir = f'{gridMET_dir}/ETo_SubX_values' #Refernce ET output directory
 smerge_in_dir = f'{dir1}/Data/SMERGE_SM/Raw_data' #raw files that have been boxed in CONUS
 SM_SubX_out_dir = f'{dir1}/Data/SMERGE_SM/Raw_data/SM_SubX_values' #Smerge values overlayed on SubX grid
+eddi_dir = f'{dir1}/Data/EDDI/convert_2_nc'
+eddi_subX_dir = f'{dir1}/Data/EDDI/EDDI_SubX_values'
 
 image_dir = f'{dir1}/Outputs/MSE_plots'
+
 os.system(f'mkdir -p {image_dir}')
-
 os.system(f'mkdir {SM_SubX_out_dir}')
-
-output_dir = f'{gridMET_dir}/ETo_SubX_values' #Refernce ET output directory
+os.system(f'mkdir {eddi_subX_dir}')
 os.system(f'mkdir {output_dir}')
 
 os.chdir(subX_dir) #Set directory for SubX
@@ -56,15 +58,82 @@ date_list = [i[-13:-3] for i in date_list]
 
 
 #%%
+def ETo_gridMET_SubX_creation(_date) -> float:    
+    try:
+        xr.open_dataset(f'{eddi_subX_dir}/EDDI_SubX_{_date}.nc')
+        print(f'Already completed date {_date}. Saved in {eddi_subX_dir}')
+    except FileNotFoundError:
+        
+    
+        #Open gridMET and subset to the correct dates as SubX for full time series
+        eddi_file = xr.open_dataset(f'{eddi_dir}/eddi_merged.nc4').astype('float64')
+        eddi_file = eddi_file.sel(time=slice("1999-01-10","2016-02-09"))
 
+        print(f'Working on initialized day {_date} to find gridMET values from SubX models, leads, & coordinates and saving data into {output_dir}.')
+        sub_file = xr.open_dataset(f'{subX_dir}/EDDI_{_date}.nc4')
+        
+        #Remove dimension S[1] because it has not data (it's a GMAO GEOS specific issue)
+        sub_file_arr = sub_file.ETo[0,:,:,:,:].values
+        
+        
+        '''Now that we have the subx reference ET file open, now we need to open up the 
+        gridMET time series (all a single file). Select the same dates as SubX for 
+        the full time series.
+        
+        Goal is to take each SubX file, and find the corresponding historical observed file (Y,X value), 
+        and then append the SubX value and historical value to seperate arrays. Then 
+        we can run the scatterplot to determine how close the observed is with SubX.
+        
+        #Next step is to make a copy of the subX file and just fill in that copied dataset
+        #with values from gridMET gleam ref ET. This will assist with the ravel() function
+        #to be used later
+        
+        Find the same date(s) values from each dataset and append to output dataset
+        '''
+        eddi_out = (np.zeros_like(sub_file_arr).squeeze()).astype('float64')
+     
+        for model in range(sub_file.ETo.shape[1]):
+            for i_lead in range(sub_file.ETo.shape[2]):
+                date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead)
+            
+                for i_Y in range(sub_file.ETo.shape[3]):
+                    for i_X in range(sub_file.ETo.shape[4]):
+                        
+                        eddi_out[model, i_lead, i_Y, i_X] = \
+                            eddi_file.ETo_gridmet.sel(time = date_val).isel(lon = i_X, lat = i_Y).values
+        
+        #Convert to an xarray object
+        var_OUT = xr.Dataset(
+            data_vars = dict(
+                ETo_SubX_value = (['model','lead','Y','X'], eddi_out[:,:,:,:]),
+            ),
+            coords = dict(
+                X = sub_file.X.values,
+                Y = sub_file.Y.values,
+                lead = sub_file.lead.values,
+                model = sub_file.model.values,
+        
+            ),
+            attrs = dict(
+                Description = 'Evaporative Demand Drought Index values on the exact same date and grid \
+                cell as SubX data'),
+        )                    
+            
+        #Save as a netcdf for later processing
+        var_OUT.to_netcdf(path = f'{output_dir}/ETo_SubX_{_date}.nc', mode ='w')
+        #To find the correct date
+        
+        print(f'Completed ETo_SubX_{_date}')
 print(f'Working from directory {subX_dir}')
 
+#%%
 def ETo_gridMET_SubX_creation(_date) -> float:    
     try:
         xr.open_dataset(f'{output_dir}/ETo_SubX_{_date}.nc')
         print(f'Already completed date {_date}. Saved in {output_dir}')
     except FileNotFoundError:
         
+    
         #Open gridMET and subset to the correct dates as SubX for full time series
         gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_gridMET_merged.nc').astype('float64')
         gridMET_file = gridMET_file.sel(day=slice("1999-01-10","2016-02-09"))
@@ -257,7 +326,6 @@ def convert_SubX_to_m3_m3(_date):
         Y = out_sm_SubX.Y.values,
         lead = out_sm_SubX.L.values,
         model = out_sm_SubX.M.values,
-        
         ),
         attrs = dict(
         Description = 'SubX SM (kg/m2) converted to (m3/m3) based on profile depth.'),
@@ -339,14 +407,36 @@ corresponding days and coordinates'''
 #Need to open each day, np.ravel the file, append to an empty array.
 #Once all files are opened, then produce a scatter plot
 
-def flatten_ETo(date_list):
-    #Open gridMET and SubX file
+def flatten_RZSM_ETo_EDDI(date_list):
+    '''Open SMERGE and SubX file'''
     
     ravel_length = len(xr.open_dataset(f'{output_dir}/ETo_SubX_{date_list[0]}.nc').to_array().values.ravel())    
     file_length = len(date_list)
-    
     final_length = ravel_length * file_length
     
+    
+    #Create an array with the length final_length and with 2 columns for gridMET and SubX
+    correlation_RZSM = np.empty((final_length, 2))
+
+    count_value = 0 #Keep a counter for index
+    ravel_end = ravel_length
+    for date_ in date_list:
+        
+        #Open SMERGE file and ravel, and append to empty array
+        smerge_file = xr.open_dataset(f'{SM_SubX_out_dir}/SM_SubX_{date_}.nc').to_array().values.ravel()
+        #Open SubX ETo file. Remove 1st dimension becuase it's useless
+        sub_file = xr.open_dataset(f'{subX_SM_out_dir}/SM_SubX_m3_m3_{date_}.nc4').SM_SubX_m3_m3_value[0,:,:,:,:].values.ravel()
+        #append smerge to first column (0 index)
+        #append SubX to 2nd columnn (1st index)
+        correlation_RZSM[count_value:ravel_end,0] = smerge_file[:]
+        correlation_RZSM[count_value:ravel_end,1] = sub_file[:]
+        
+        #Update counter to append properly
+        count_value += ravel_length
+        ravel_end += ravel_length
+        
+        
+    '''Open gridMET and SubX file'''
     #Create an array with the length final_length and with 2 columns for gridMET and SubX
     correlation_ETo = np.empty((final_length, 2))
 
@@ -367,7 +457,171 @@ def flatten_ETo(date_list):
         count_value += ravel_length
         ravel_end += ravel_length
         
-    return(correlation_ETo)
+        
+    '''Open EDDI and SubX file'''
+    #Create an array with the length final_length and with 2 columns for gridMET and SubX
+    correlation_EDDI = np.empty((final_length, 2))
+
+    count_value = 0 #Keep a counter for index
+    ravel_end = ravel_length
+    for date_ in date_list:
+        
+        #Open gridMET file and ravel, and append to empty array
+        g_file = xr.open_dataset(f'{output_dir}/EDDI_SubX_{date_}.nc').to_array().values.ravel()
+        #Open SubX ETo file. Remove 1st dimension becuase it's useless
+        s_file = xr.open_dataset(f'{subX_dir}/EDDI_{date_}.nc4').ETo[0,:,:,:,:].values.ravel()
+        #append gridMET to first column (0 index)
+        #append SubX to 2nd columnn (1st index)
+        correlation_EDDI[count_value:ravel_end,0] = g_file[:]
+        correlation_EDDI[count_value:ravel_end,1] = s_file[:]
+        
+        #Update counter to append properly
+        count_value += ravel_length
+        ravel_end += ravel_length
+           
+    return(correlation_RZSM, correlation_RZSM, correlation_EDDI)
+
+
+#TODO: keep working heres
+def average_realization(date_list):
+    '''Open gridMET and SubX file'''
+    ravel_length = len(xr.open_dataset(f'{output_dir}/ETo_SubX_{date_list[0]}.nc').to_array().mean(dim='model').values.ravel())    
+    file_length = len(date_list)
+    
+    final_length = ravel_length * file_length
+    
+    #Create an array with the length final_length and with 2 columns for gridMET and SubX
+    correlation_RZSM_realization_mean = np.empty((final_length, 2))
+
+    count_value = 0 #Keep a counter for index
+    ravel_end = ravel_length
+    for date_ in date_list:
+        
+        #Open gridMET file and ravel, and append to empty array
+        #Open SMERGE file and ravel, and append to empty array
+        smerge_file = xr.open_dataset(f'{SM_SubX_out_dir}/SM_SubX_{date_}.nc').to_array().mean(dim='model').values.ravel()
+        #Open SubX ETo file. Remove 1st dimension becuase it's useless
+        sub_file = xr.open_dataset(f'{subX_SM_out_dir}/SM_SubX_m3_m3_{date_}.nc4').SM_SubX_m3_m3_value[0,:,:,:,:].mean(dim='model').values.ravel()
+        #append gridMET to first column (0 index)
+        #append SubX to 2nd columnn (1st index)
+        correlation_RZSM_realization_mean[count_value:ravel_end,0] = smerge_file[:]
+        correlation_RZSM_realization_mean[count_value:ravel_end,1] = sub_file[:]
+        
+        #Update counter to append properly
+        count_value += ravel_length
+        ravel_end += ravel_length
+        
+        
+    '''Open gridMET and SubX file'''
+    #Create an array with the length final_length and with 2 columns for gridMET and SubX
+    correlation_ETo_realization_mean = np.empty((final_length, 2))
+
+    count_value = 0 #Keep a counter for index
+    ravel_end = ravel_length
+    for date_ in date_list:
+        
+        #Open gridMET file and ravel, and append to empty array
+        g_file = xr.open_dataset(f'{output_dir}/ETo_SubX_{date_}.nc').to_array().mean(dim='model').values.ravel()
+        #Open SubX ETo file. Remove 1st dimension becuase it's useless
+        s_file = xr.open_dataset(f'{subX_dir}/ETo_{date_}.nc4').ETo[0,:,:,:,:].mean(dim='model').values.ravel()
+        #append gridMET to first column (0 index)
+        #append SubX to 2nd columnn (1st index)
+        correlation_ETo_realization_mean[count_value:ravel_end,0] = g_file[:]
+        correlation_ETo_realization_mean[count_value:ravel_end,1] = s_file[:]
+        
+        #Update counter to append properly
+        count_value += ravel_length
+        ravel_end += ravel_length
+        
+        
+    '''Open EDDI and SubX file'''
+    ravel_length = len(xr.open_dataset(f'{output_dir}/ETo_SubX_{date_list[0]}.nc').to_array().mean(dim='model').values.ravel())    
+    file_length = len(date_list)
+    
+    final_length = ravel_length * file_length
+    
+    #Create an array with the length final_length and with 2 columns for gridMET and SubX
+    correlation_EDDI_realization_mean = np.empty((final_length, 2))
+
+    count_value = 0 #Keep a counter for index
+    ravel_end = ravel_length
+    for date_ in date_list:
+        
+        #Open gridMET file and ravel, and append to empty array
+        g_file = xr.open_dataset(f'{output_dir}/EDDI_SubX_{date_}.nc').to_array().mean(dim='model').values.ravel()
+        #Open SubX ETo file. Remove 1st dimension becuase it's useless
+        s_file = xr.open_dataset(f'{subX_dir}/EDDI_{date_}.nc4').ETo[0,:,:,:,:].mean(dim='model').values.ravel()
+        #append gridMET to first column (0 index)
+        #append SubX to 2nd columnn (1st index)
+        correlation_EDDI_realization_mean[count_value:ravel_end,0] = g_file[:]
+        correlation_EDDI_realization_mean[count_value:ravel_end,1] = s_file[:]
+        
+        #Update counter to append properly
+        count_value += ravel_length
+        ravel_end += ravel_length
+        
+    return(correlation_RZSM_realization_mean)
+
+def average_realization_ETo(date_list):
+    #Open gridMET and SubX file
+    
+    ravel_length = len(xr.open_dataset(f'{output_dir}/ETo_SubX_{date_list[0]}.nc').to_array().mean(dim='model').values.ravel())    
+    file_length = len(date_list)
+    
+    final_length = ravel_length * file_length
+    
+    #Create an array with the length final_length and with 2 columns for gridMET and SubX
+    correlation_ETo_realization_mean = np.empty((final_length, 2))
+
+    count_value = 0 #Keep a counter for index
+    ravel_end = ravel_length
+    for date_ in date_list:
+        
+        #Open gridMET file and ravel, and append to empty array
+        g_file = xr.open_dataset(f'{output_dir}/ETo_SubX_{date_}.nc').to_array().mean(dim='model').values.ravel()
+        #Open SubX ETo file. Remove 1st dimension becuase it's useless
+        s_file = xr.open_dataset(f'{subX_dir}/ETo_{date_}.nc4').ETo[0,:,:,:,:].mean(dim='model').values.ravel()
+        #append gridMET to first column (0 index)
+        #append SubX to 2nd columnn (1st index)
+        correlation_ETo_realization_mean[count_value:ravel_end,0] = g_file[:]
+        correlation_ETo_realization_mean[count_value:ravel_end,1] = s_file[:]
+        
+        #Update counter to append properly
+        count_value += ravel_length
+        ravel_end += ravel_length
+        
+    return(correlation_ETo_realization_mean)
+
+
+# def flatten_ETo(date_list):
+#     #Open gridMET and SubX file
+    
+#     ravel_length = len(xr.open_dataset(f'{output_dir}/ETo_SubX_{date_list[0]}.nc').to_array().values.ravel())    
+#     file_length = len(date_list)
+    
+#     final_length = ravel_length * file_length
+    
+#     #Create an array with the length final_length and with 2 columns for gridMET and SubX
+#     correlation_ETo = np.empty((final_length, 2))
+
+#     count_value = 0 #Keep a counter for index
+#     ravel_end = ravel_length
+#     for date_ in date_list:
+        
+#         #Open gridMET file and ravel, and append to empty array
+#         g_file = xr.open_dataset(f'{output_dir}/ETo_SubX_{date_}.nc').to_array().values.ravel()
+#         #Open SubX ETo file. Remove 1st dimension becuase it's useless
+#         s_file = xr.open_dataset(f'{subX_dir}/ETo_{date_}.nc4').ETo[0,:,:,:,:].values.ravel()
+#         #append gridMET to first column (0 index)
+#         #append SubX to 2nd columnn (1st index)
+#         correlation_ETo[count_value:ravel_end,0] = g_file[:]
+#         correlation_ETo[count_value:ravel_end,1] = s_file[:]
+        
+#         #Update counter to append properly
+#         count_value += ravel_length
+#         ravel_end += ravel_length
+        
+#     return(correlation_ETo)
 
 
 '''Find only the realization mean and plot scatterplot and heatmap'''
@@ -446,89 +700,135 @@ def ETo_plot_setup(date_list):
     
     return(x,y,mean_x,mean_y)
 
-try:
-    plt.imread(f'{image_dir}/ETo_MSE.tif')
-    plt.imread(f'{image_dir}/ETo_heatmap_1.tif')
-    plt.imread(f'{image_dir}/ETo_heatmap_2.tif')
-    plt.imread(f'{image_dir}/ETo_MSE_mean.tif')
-except FileNotFoundError:
-    print('Finding MSE and heatmap for ETo.')    
-    x,y,mean_x,mean_y = ETo_plot_setup(date_list)
-    
-    
-    max_ETo_val = 30
-    
-    x_line = np.linspace(0,max_ETo_val,100)
-    y_line = np.linspace(0,max_ETo_val,100)
-    
+
+#%%
+var = 'ETo'
+comparison_var = 'gridMET'
+comparison_type = 'mm/d'
+max_val = 30
+
+def plot_heatmaps_MSE(var,comparison_var,comparison_type,max_axis_val):
     try:
-        plt.imread(f'{image_dir}/ETo_MSE.tif')
+        plt.imread(f'{image_dir}/{var}_MSE.tif')
+        plt.imread(f'{image_dir}/{var}_heatmap_1.tif')
+        plt.imread(f'{image_dir}/{var}_heatmap_2.tif')
+        plt.imread(f'{image_dir}/{var}_MSE_mean.tif')
     except FileNotFoundError:
-        ax = sns.scatterplot(x = x, y = y,s=0.25)
-        ax.set_title("SubX ETo vs. gridMET ETo")
-        ax.set_xlabel("gridMET (mm/d)")
-        ax.set_ylabel("SubX (mm/d)")
-        ax.set(xlim=(0,max_ETo_val))
-        ax.set(ylim=(0,max_ETo_val))
-        plt.plot(x_line,y_line,color='r')
-        ax.text(1, 27,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=9) #add text
-        plt.savefig(f'{image_dir}/ETo_MSE.tif', dpi=300)
-        plt.close()
-    try:
-        plt.imread(f'{image_dir}/ETo_heatmap_1.tif')
-    except FileNotFoundError:
-        #Plot heatmap 1
-        heatmap, xedges, yedges = np.histogram2d(x, y, bins=100)
-        extent = [xedges[0], yedges[-1], xedges[0], yedges[-1]]
-        plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(3, 20,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
-        plt.xlabel('gridMET ETo (mm/d)')
-        plt.ylabel('SubX ETo (mm/d)')
-        plt.savefig(f'{image_dir}/ETo_heatmap_1.tif',dpi=300)
-        plt.close()
+        print(f'Finding MSE and heatmap for {var}.')    
+        x,y,mean_x,mean_y = ETo_plot_setup(date_list)
+        
+        x_line = np.linspace(0,max_axis_val,100)
+        y_line = np.linspace(0,max_axis_val,100)
+        
+        
+        
+
     
-    try:
-        plt.imread(f'{image_dir}/ETo_heatmap_2.tif')
-    except FileNotFoundError:
-    #Plot heatmap
-        heatmap, xedges, yedges = np.histogram2d(x, y, bins=100)
-        extent = [xedges[0], 15, xedges[0], 15]
-        plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(3, 12,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
-        plt.xlabel('gridMET ETo (mm/d)')
-        plt.ylabel('SubX ETo (mm/d)')
-        plt.savefig(f'{image_dir}/ETo_heatmap_2.tif',dpi=300)
-        plt.close()
+
+#     try:
+#         plt.imread(f'{image_dir}/RZSM_MSE_mean.tif')
+#     except FileNotFoundError:
+#         ax = sns.scatterplot(x = mean_a, y = mean_b,s=0.25)
+#         ax.set_title("SubX RZSM vs. SMERGE RZSM")
+#         ax.set_xlabel("SMERGE (m3/m3)")
+#         ax.set_ylabel("SubX (m3/m3)")
+#         ax.set(xlim=(0,max_RZSM_val))
+#         ax.set(ylim=(0,max_RZSM_val))
+#         plt.plot(x_line,y_line,color='r')
+#         ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(mean_a,mean_b),5)}", fontsize=9) #add text
+#         plt.savefig(f'{image_dir}/RZSM_MSE_mean.tif', dpi=300)
+#         plt.close()
         
          
-    try:
-        plt.imread(f'{image_dir}/ETo_MSE_mean.tif')
-    except FileNotFoundError:
-        ax = sns.scatterplot(x = mean_x, y = mean_y,s=0.25)
-        ax.set_title("SubX ETo vs. gridMET ETo")
-        ax.set_xlabel("gridMET (mm/d)")
-        ax.set_ylabel("SubX (mm/d)")
-        ax.set(xlim=(0,max_ETo_val))
-        ax.set(ylim=(0,max_ETo_val))
-        plt.plot(x_line,y_line,color='r')
-        ax.text(1, 27,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=9) #add text
-        plt.savefig(f'{image_dir}/ETo_MSE_mean.tif', dpi=300)
-        plt.close()
+#     try:
+#         plt.imread(f'{image_dir}/RZSM_heatmap_mean.tif')
+#     except FileNotFoundError:
+#     #Plot heatmap
+#         heatmap, xedges, yedges = np.histogram2d(mean_a, mean_b, bins=100)
+#         extent = [0, yedges[-1], 0, yedges[-1]]
+#         plt.imshow(heatmap.T, extent=extent, origin='lower')
+#         plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(mean_a,mean_b),5)}", fontsize=14, color = 'red')
+#         plt.xlabel('SMERGE RZSM (m3/m3)')
+#         plt.ylabel('SubX RZSM (m3/m3)')
+#         plt.savefig(f'{image_dir}/RZSM_heatmap_mean.tif',dpi=300)
+#         plt.close()        
         
-         
-    try:
-        plt.imread(f'{image_dir}/ETo_heatmap_mean.tif')
-    except FileNotFoundError:
-    #Plot heatmap
-        heatmap, xedges, yedges = np.histogram2d(mean_x, mean_y, bins=100)
-        extent = [xedges[0], yedges[-1], xedges[0], yedges[-1]]
-        plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(3, 12,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=14, color = 'red')
-        plt.xlabel('gridMET ETo (mm/d)')
-        plt.ylabel('SubX ETo (mm/d)')
-        plt.savefig(f'{image_dir}/ETo_heatmap_mean.tif',dpi=300)
-        plt.close()
+        if var =='ETO':
+            v1 = 1
+            v2 = 27
+            v3 = 3
+            v4= 20
+            v5= 12
+        elif var == 'RZSM':
+            v1 = 0.01
+            v2 = 0.94
+            v3 = 0.10
+            v4= 0.75
+            v5= 0.75
+
         
+        
+        
+        try:
+            plt.imread(f'{image_dir}/{var}_MSE.tif')
+        except FileNotFoundError:
+            ax = sns.scatterplot(x = x, y = y,s=0.25)
+            ax.set_title("SubX {var} vs. {comparison_var} {var}")
+            ax.set_xlabel("{comparison_var} {comparison_type}")
+            ax.set_ylabel("SubX {comparison_type}")
+            ax.set(xlim=(0,max_axis_val))
+            ax.set(ylim=(0,max_axis_val))
+            plt.plot(x_line,y_line,color='r')
+            ax.text(v1, v2,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=9) #add text
+            plt.savefig(f'{image_dir}/{var}_MSE.tif', dpi=300)
+            plt.close()
+        try:
+            plt.imread(f'{image_dir}/ETo_heatmap_1.tif')
+        except FileNotFoundError:
+            #Plot heatmap 1
+            heatmap, xedges, yedges = np.histogram2d(x, y, bins=100)
+            extent = [xedges[0], yedges[-1], xedges[0], yedges[-1]]
+            plt.imshow(heatmap.T, extent=extent, origin='lower')
+            plt.text(v3, v4,f"MSE: {np.round(mean_squared_error(x,y),5)}", fontsize=14, color = 'red')
+            plt.xlabel('{comparison_var} {var} {comparison_type}')
+            plt.ylabel('SubX {var} {comparison_type}')
+            plt.savefig(f'{image_dir}/{var}_heatmap_1.tif',dpi=300)
+            plt.close()
+
+             
+        try:
+            plt.imread(f'{image_dir}/{var}_MSE_mean.tif')
+        except FileNotFoundError:
+            ax = sns.scatterplot(x = mean_x, y = mean_y,s=0.25)
+            ax.set_title("SubX {var} vs. {comparison_var} {var}")
+            ax.set_xlabel("{comparison_var} {comparison_type}")
+            ax.set_ylabel("SubX {comparison_type}")
+            ax.set(xlim=(0,max_axis_val))
+            ax.set(ylim=(0,max_axis_val))
+            plt.plot(x_line,y_line,color='r')
+            ax.text(v1, v2,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=9) #add text
+            plt.savefig(f'{image_dir}/{var}_MSE_mean.tif', dpi=300)
+            plt.close()
+            
+             
+        try:
+            plt.imread(f'{image_dir}/ETo_heatmap_mean.tif')
+        except FileNotFoundError:
+        #Plot heatmap
+            heatmap, xedges, yedges = np.histogram2d(mean_x, mean_y, bins=100)
+            extent = [xedges[0], yedges[-1], xedges[0], yedges[-1]]
+            plt.imshow(heatmap.T, extent=extent, origin='lower')
+            plt.text(v3, v5,f"MSE: {np.round(mean_squared_error(mean_x,mean_y),5)}", fontsize=14, color = 'red')
+            plt.xlabel('{comparison_var} {var} {comparison_type}')
+            plt.ylabel('SubX {var} {comparison_type}')
+            plt.savefig(f'{image_dir}/{var}_heatmap_1.tif',dpi=300)
+            plt.close()
+   
+            
+#Plot ETo
+plot_heatmaps_MSE(var='ETo',comparison_var='gridMET',comparison_type = 'mm/d',max_axis_val =30)
+
+
 #%%
 def flatten_RZSM(date_list):
     #Open SMERGE and SubX file
@@ -635,78 +935,83 @@ def SM_plot_setup(date_list):
     return(x,y,mean_x,mean_y)
 
 
-try:
-    plt.imread(f'{image_dir}/RZSM_MSE.tif')
-    plt.imread(f'{image_dir}/RZSM_heatmap.tif')
-    plt.imread(f'{image_dir}/RZSM_MSE_mean.tif')
-    plt.imread(f'{image_dir}/RZSM_heatmap_mean.tif')
+
+#Plot RZSM
+plot_heatmaps_MSE(var='RZSM',comparison_var='SMERGE',comparison_type = 'm3/m3',max_axis_val =1.0)
+
+
+# try:
+#     plt.imread(f'{image_dir}/RZSM_MSE.tif')
+#     plt.imread(f'{image_dir}/RZSM_heatmap.tif')
+#     plt.imread(f'{image_dir}/RZSM_MSE_mean.tif')
+#     plt.imread(f'{image_dir}/RZSM_heatmap_mean.tif')
     
-except FileNotFoundError:
-    print('Finding MSE and heatmap for RZSM.')    
-    a,b,mean_a,mean_b = SM_plot_setup(date_list)
+# except FileNotFoundError:
+#     print('Finding MSE and heatmap for RZSM.')    
+#     a,b,mean_a,mean_b = SM_plot_setup(date_list)
     
     
-    #Plot RZSM MSE
-    max_RZSM_val = 1.0
+#     #Plot RZSM MSE
+#     max_RZSM_val = 1.0
     
-    x_line = np.linspace(0,max_RZSM_val,100)
-    y_line = np.linspace(0,max_RZSM_val,100)
+#     x_line = np.linspace(0,max_RZSM_val,100)
+#     y_line = np.linspace(0,max_RZSM_val,100)
     
-    try:
-        plt.imread(f'{image_dir}/RZSM_MSE.tif')
-    except FileNotFoundError:
-        ax = sns.scatterplot(x = a, y = b,s=0.25)
-        ax.set_title("SubX RZSM vs. SMERGE RZSM")
-        ax.set_xlabel("SMERGE (m3/m3)")
-        ax.set_ylabel("SubX (m3/m3)")
-        ax.set(xlim=(0,max_RZSM_val))
-        ax.set(ylim=(0,max_RZSM_val))
-        plt.plot(x_line,y_line,color='r')
-        ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(a,b),5)}", fontsize=9) #add text
-        plt.savefig(f'{image_dir}/RZSM_MSE.tif', dpi=300)
-        plt.close()
+#     try:
+#         plt.imread(f'{image_dir}/RZSM_MSE.tif')
+#     except FileNotFoundError:
+#         ax = sns.scatterplot(x = a, y = b,s=0.25)
+#         ax.set_title("SubX RZSM vs. SMERGE RZSM")
+#         ax.set_xlabel("SMERGE (m3/m3)")
+#         ax.set_ylabel("SubX (m3/m3)")
+#         ax.set(xlim=(0,max_RZSM_val))
+#         ax.set(ylim=(0,max_RZSM_val))
+#         plt.plot(x_line,y_line,color='r')
+#         ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(a,b),5)}", fontsize=9) #add text
+#         plt.savefig(f'{image_dir}/RZSM_MSE.tif', dpi=300)
+#         plt.close()
     
-    try:
-        plt.imread(f'{image_dir}/RZSM_heatmap.tif')
-    except FileNotFoundError:
-        #Plot heatmap
-        heatmap, xedges, yedges = np.histogram2d(a, b, bins=100)
-        extent = [0, yedges[-1], 0, yedges[-1]]
-        plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(a,b),5)}", fontsize=14, color = 'red')
-        plt.xlabel('SMERGE RZSM (m3/m3)')
-        plt.ylabel('SubX RZSM (m3/m3)')
-        plt.savefig(f'{image_dir}/RZSM_heatmap.tif',dpi=300)
-        plt.close()
+#     try:
+#         plt.imread(f'{image_dir}/RZSM_heatmap.tif')
+#     except FileNotFoundError:
+#         #Plot heatmap
+#         heatmap, xedges, yedges = np.histogram2d(a, b, bins=100)
+#         extent = [0, yedges[-1], 0, yedges[-1]]
+#         plt.imshow(heatmap.T, extent=extent, origin='lower')
+#         plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(a,b),5)}", fontsize=14, color = 'red')
+#         plt.xlabel('SMERGE RZSM (m3/m3)')
+#         plt.ylabel('SubX RZSM (m3/m3)')
+#         plt.savefig(f'{image_dir}/RZSM_heatmap.tif',dpi=300)
+#         plt.close()
         
         
-    try:
-        plt.imread(f'{image_dir}/RZSM_MSE_mean.tif')
-    except FileNotFoundError:
-        ax = sns.scatterplot(x = mean_a, y = mean_b,s=0.25)
-        ax.set_title("SubX RZSM vs. SMERGE RZSM")
-        ax.set_xlabel("SMERGE (m3/m3)")
-        ax.set_ylabel("SubX (m3/m3)")
-        ax.set(xlim=(0,max_RZSM_val))
-        ax.set(ylim=(0,max_RZSM_val))
-        plt.plot(x_line,y_line,color='r')
-        ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(mean_a,mean_b),5)}", fontsize=9) #add text
-        plt.savefig(f'{image_dir}/RZSM_MSE_mean.tif', dpi=300)
-        plt.close()
+#     try:
+#         plt.imread(f'{image_dir}/RZSM_MSE_mean.tif')
+#     except FileNotFoundError:
+#         ax = sns.scatterplot(x = mean_a, y = mean_b,s=0.25)
+#         ax.set_title("SubX RZSM vs. SMERGE RZSM")
+#         ax.set_xlabel("SMERGE (m3/m3)")
+#         ax.set_ylabel("SubX (m3/m3)")
+#         ax.set(xlim=(0,max_RZSM_val))
+#         ax.set(ylim=(0,max_RZSM_val))
+#         plt.plot(x_line,y_line,color='r')
+#         ax.text(0.01, 0.94,f"MSE: {np.round(mean_squared_error(mean_a,mean_b),5)}", fontsize=9) #add text
+#         plt.savefig(f'{image_dir}/RZSM_MSE_mean.tif', dpi=300)
+#         plt.close()
         
          
-    try:
-        plt.imread(f'{image_dir}/RZSM_heatmap_mean.tif')
-    except FileNotFoundError:
-    #Plot heatmap
-        heatmap, xedges, yedges = np.histogram2d(mean_a, mean_b, bins=100)
-        extent = [0, yedges[-1], 0, yedges[-1]]
-        plt.imshow(heatmap.T, extent=extent, origin='lower')
-        plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(mean_a,mean_b),5)}", fontsize=14, color = 'red')
-        plt.xlabel('SMERGE RZSM (m3/m3)')
-        plt.ylabel('SubX RZSM (m3/m3)')
-        plt.savefig(f'{image_dir}/RZSM_heatmap_mean.tif',dpi=300)
-        plt.close()        
+#     try:
+#         plt.imread(f'{image_dir}/RZSM_heatmap_mean.tif')
+#     except FileNotFoundError:
+#     #Plot heatmap
+#         heatmap, xedges, yedges = np.histogram2d(mean_a, mean_b, bins=100)
+#         extent = [0, yedges[-1], 0, yedges[-1]]
+#         plt.imshow(heatmap.T, extent=extent, origin='lower')
+#         plt.text(0.10, 0.75,f"MSE: {np.round(mean_squared_error(mean_a,mean_b),5)}", fontsize=14, color = 'red')
+#         plt.xlabel('SMERGE RZSM (m3/m3)')
+#         plt.ylabel('SubX RZSM (m3/m3)')
+#         plt.savefig(f'{image_dir}/RZSM_heatmap_mean.tif',dpi=300)
+#         plt.close()        
         
     
 #%%POTENTIAL PLOTS THAT DIDN'T WORK OUT  --heatmap will work, plt.scatter will not

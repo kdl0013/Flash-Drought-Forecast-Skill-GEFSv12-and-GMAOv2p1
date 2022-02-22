@@ -26,8 +26,8 @@ from scipy.stats import rankdata
 
 
 
-dir1 = 'main_dir'
-num_processors = int('procs')
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+num_processors = int('8')
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/GMAO'
@@ -69,7 +69,7 @@ def multiProcess_Refet_SubX(_date):
         print(f'{_date} already completed for ETo. Saved in {home_dir}.')
     except IndexError:
             
-        print(f'Working on date {_date} to calculate SubX ETo and save into {home_dir}.')
+        print(f'Working on date {_date}')
         #Open up each file
         tasmax = xr.open_dataset(glob(f'tasmax*{_date}.nc')[0])
         tasmin = xr.open_dataset(glob(f'tasmin*{_date}.nc')[0])
@@ -174,7 +174,7 @@ def Refet_gridMET():
         print('Already completed gridMET Reference ET.')
     except FileNotFoundError:
         
-        print('Working on computing ET ref from gridMET variables and saving into {gridMET_dir}.')
+        print('Working on computing ET ref from gridMET variables.')
         slice1 = "1999-01-10"
         slice2 = "2016-02-09"
         # gridMET_file = gridMET_file.sel(day=slice(f"{slice1}",f"{slice2}"))
@@ -293,7 +293,6 @@ def multiProcess_EDDI_SubX(_date):
         #don't re-work code if the netcdf file is already created
         xr.open_dataset(f'{home_dir}/EDDI_{_date}.nc4')
     except FileNotFoundError:
-        print(f'Calculating EDDI on SubX for {_date} and saving into {home_dir}.')
 # for _date in init_date_list[0:80]:   
         os.chdir(f'{home_dir}')
         week_lead = 6
@@ -329,6 +328,44 @@ def multiProcess_EDDI_SubX(_date):
         subx2 = subx.assign_coords(lead = file_julian_list)
 
         print(f'Working on date {_date} to calculate EDDI and save into {home_dir}')
+
+        #     count=0
+        #     for zz in init_date_list:
+        #         try:
+        #             xr.open_dataset(f'EDDI_{zz}.nc4')
+        #             count+=1
+        #             # print('File already exists')
+        #         except FileNotFoundError:
+        #             '''to convert the initialized date into julian date and add 45
+        #             init date is actually the date-1 (so 01-10-1999 only has data beginning 01-11-1999 with 44 more days)'''
+        #             st_day =  pd.to_datetime(zz)
+        #             st_day_2 = st_day + dt.timedelta(days=1)
+        #              # day_doyey = st_day.timetuple().tm_yday #julian day
+                
+        #              #add more julian dates
+        #             day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
+        #             day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
+                
+        #             S_values = [pd.to_datetime(zz)+ dt.timedelta(days=1),pd.to_datetime(zz)]
+                     
+            
+        #             var_OUT = xr.Dataset(
+        #             data_vars = dict(
+        #                     EDDI = (['S', 'model','lead','Y','X'], Et_out.ETo.values),
+        #                 ),
+        #                     coords = dict(
+        #                     X = Et_out.X.values,
+        #                     Y = Et_out.Y.values,
+        #                     lead = day_julian_b,
+        #                     model = subx2.model.values,
+        #                     S = S_values
+        #                 ),
+        #                 attrs = dict(
+        #                     Description = 'Evaporative demand drought index from SubX leads'),
+        #             )                    
+                    
+        #             #Save as a netcdf for later processing
+        #             var_OUT.to_netcdf(path = f'{home_dir}/EDDI_{zz}.nc4')
                      
         def make_EDDI_npy_files(init_date_list,subx2):
             # count=0

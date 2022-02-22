@@ -26,8 +26,8 @@ from scipy.stats import rankdata
 
 
 
-dir1 = 'main_dir'
-num_processors = int('procs')
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+num_processors = int('8')
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/GMAO'
@@ -286,6 +286,41 @@ we can pull from that directory.
     
 '''
 
+T_FILE = xr.open_dataset(glob(f'ETo_1999-01-10.nc4')[0])
+
+
+
+def make_EDDI_npy_files(init_date_list,T_FILE):
+    # count=0
+    for zz in init_date_list:
+        try:
+            np.load(f'EDDI_{zz}.npy',allow_pickle=True)
+            # count+=1
+            # print('File already exists')
+        except OSError:
+            '''to convert the initialized date into julian date and add 45
+            init date is actually the date-1 (so 01-10-1999 only has data beginning 01-11-1999 with 44 more days)'''
+            st_day =  pd.to_datetime(zz)
+            st_day_2 = st_day + dt.timedelta(days=1)
+             # day_doyey = st_day.timetuple().tm_yday #julian day
+        
+             #add more julian dates
+            day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
+            day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
+        
+            # S_values = [pd.to_datetime(zz)+ dt.timedelta(days=1),pd.to_datetime(zz)]
+            
+            #empty file
+            empty = (np.zeros_like(T_FILE.to_array()).squeeze())
+            np.save(f'{home_dir}/EDDI_{zz}.npy',empty)
+            
+            #save lead values as julian day for later processing
+            np.save(f'{home_dir}/EDDI_{zz}_julian_lead.npy',day_julian_b)
+       
+   
+#Create EDDI files           
+make_EDDI_npy_files(init_date_list = init_date_list,T_FILE = T_FILE)
+
     
 def multiProcess_EDDI_SubX(_date):
     
@@ -329,38 +364,7 @@ def multiProcess_EDDI_SubX(_date):
         subx2 = subx.assign_coords(lead = file_julian_list)
 
         print(f'Working on date {_date} to calculate EDDI and save into {home_dir}')
-                     
-        def make_EDDI_npy_files(init_date_list,subx2):
-            # count=0
-            for zz in init_date_list:
-                try:
-                    np.load(f'EDDI_{zz}.npy',allow_pickle=True)
-                    # count+=1
-                    # print('File already exists')
-                except OSError:
-                    '''to convert the initialized date into julian date and add 45
-                    init date is actually the date-1 (so 01-10-1999 only has data beginning 01-11-1999 with 44 more days)'''
-                    st_day =  pd.to_datetime(zz)
-                    st_day_2 = st_day + dt.timedelta(days=1)
-                     # day_doyey = st_day.timetuple().tm_yday #julian day
-                
-                     #add more julian dates
-                    day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
-                    day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
-                
-                    # S_values = [pd.to_datetime(zz)+ dt.timedelta(days=1),pd.to_datetime(zz)]
-                    
-                    #empty file
-                    empty = (np.zeros_like(subx.to_array()).squeeze())
-                    np.save(f'EDDI_{zz}.npy',empty)
-                    
-                    #save lead values as julian day for later processing
-                    np.save(f'EDDI_{zz}_julian_lead.npy',day_julian_b)
-        
-    
-        #Create EDDI files           
-        make_EDDI_npy_files(init_date_list, subx2)
-        
+                            
         #Open subX file for EDDI (initially it is empty with all 0s)
         eddi_file = np.load(f'EDDI_{_date}.npy')
         
