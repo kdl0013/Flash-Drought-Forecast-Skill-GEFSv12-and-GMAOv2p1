@@ -319,9 +319,9 @@ for var in variables:
                                     var_TEST[mod,(lead_final_ordinal - beginning_start_date_ordinal),Yx,Xx] + \
                                         open_f_arr[mod,lead, Yx,Xx]
                                 
-                                #Checks the number of values for each grid cell 
+                                #Checks the number of values actually inserted because not all days will have the same number of subX forecasts (num_values_TEST)
                                 #so we can take the average
-                                if open_f_arr[mod,lead, Yx,Xx] > 0.0:
+                                if open_f_arr[mod,lead, Yx,Xx] != 0.0:
                                     num_values_TEST[mod,(lead_final_ordinal - beginning_start_date_ordinal),Yx,Xx] += 1
 
             #Run function

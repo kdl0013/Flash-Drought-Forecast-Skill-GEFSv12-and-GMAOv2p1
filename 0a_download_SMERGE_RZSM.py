@@ -22,10 +22,10 @@ from multiprocessing import Pool
 
 home_dir = 'main_dir'
 num_processors = int('procs')
-
+#%%
 # #for testing (don't run)
-# home_dir='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# num_processors=12
+home_dir='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+num_processors=12
 
 #GES DISC link list data 
 link_list_name='subset_SMERGE_RZSM0_40CM_2.0_20220120_141903.txt'

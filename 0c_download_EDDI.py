@@ -29,7 +29,7 @@ os.chdir(script_dir)
 date_list = []
 date_list.append('#!/bin/bash')
 #Date ranges                    
-years = range(1999, 2016)
+years = range(1999, 2017)
 months = range(1, 13) 
 #Loop for file download where EDDI data is saved
 url0 = 'https://downloads.psl.noaa.gov/Projects/EDDI/CONUS_archive/data/'
