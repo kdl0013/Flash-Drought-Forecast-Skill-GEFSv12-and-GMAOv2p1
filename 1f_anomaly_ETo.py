@@ -21,11 +21,11 @@ import gc
 
 
 
-dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-start_ = int('25')
-end_ = start_ + int('25')
-model_NUM = int('0')
-model_NAM1 = 'GMAO'
+dir1 = 'main_dir'
+start_ = int('start_init')
+end_ = start_ + int('init_step')
+model_NUM = int('model_number')
+model_NAM1 = 'model_name'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # start_ = int('0')
@@ -41,6 +41,13 @@ os.chdir(home_dir)
 elevation_dir = f'{dir1}/Data/elevation/'
 gridMET_dir = f'{dir1}/Data/gridMET'
 smerge_dir = f'{dir1}/Data/SMERGE_SM/Raw_data'
+
+mask_file = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
+
+
+conus_mask = xr.open_dataset(mask_file) #open mask file
+conus_mask = conus_mask['CONUS_mask']
+
 ###Files
 file_list = os.listdir()
 
@@ -70,7 +77,7 @@ This code is re-factored from 1b_EDDI.py
 #%%    
 '''process SubX files and create EDDI values'''
 # def multiProcess_EDDI_SubX_TEST(_date):
-def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,str var):
+def ETo_anomaly(start_,end_,model_NUM,init_date_list,_date,var):
     #_date=init_date_list[0]  
     
     # #Make sure that the models aren't overwriting each other 
@@ -94,16 +101,15 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
 
     print(f'Calculating {var} anomaly on SubX for {_date} and saving as .npy in {home_dir}/{var}_anomaly_mod{model_NUM}.') 
     os.chdir(f'{home_dir}/{var}_anomaly_mod{model_NUM}')
-    cdef int week_lead
+
     week_lead = 6
 
     #Used as the grid mask file to not iterate over useless grid cells
     eddi_file = xr.open_dataset(f'{home_dir}/EDDI_2011-06-14.nc4')
   
     #get julian day, timestamps, and the datetime
-    def date_file_info(str _date,str variable):
-        cdef int  start_julian, subtract, a_i
-        cdef list a_date_out, a_julian_out,a_julian_out2
+    def date_file_info( _date, variable):
+
         
         open_f = xr.open_dataset(f'{home_dir}/{variable}_{_date}.nc4')
         a_date_in= open_f[f'{variable}'].lead.values
@@ -151,13 +157,10 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
 
             #(np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7))
             #only work on grid cells with values like SMERGE
-            if (np.count_nonzero(np.isnan(eddi_file.EDDI[0,0,10,i_Y,i_X].values)) !=1)or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7)):
+            if conus_mask[0,i_Y,i_X].values >=0:
 
                 def dict1_subx2():
-                    cdef dict summation_ETo_modN
-                    cdef int idx,julian_d, end_julian, subtract, len_text, idx_lead
-                    cdef list date_out, b_julian_out, b_julian_out2
-                    
+
                     #append 7-day average from all files to a new dictionary, 
                     summation_ETo_modN = {}
                     
@@ -168,23 +171,41 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
                         #Choose just model = 0 because we just need to know if there are 7-days total in any model
                         
                         
-                        if idx % 7 == 0:
-                            try:
-                                if (len(subx2[f'{var}'].sel(lead=slice(julian_d,file_julian_list[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)) == 7:
-                                    summation_ETo_modN[f'{file_julian_list[idx+week_lead]}']=[]
-                                    summation_ETo_modN[f'{file_julian_list[idx+week_lead]}'].append({f'{_date}':np.nanmean(subx2[f'{var}'].sel(lead=slice(julian_d,file_julian_list[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
-                            except IndexError:
-                                pass
+                        if idx < 39:
+                            if (len(subx2[f'{variable}'].sel(lead=slice(julian_d,file_julian_list[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)) == 7:
+                                summation_ETo_modN[f'{file_julian_list[idx+week_lead]}']=[]
+                                summation_ETo_modN[f'{file_julian_list[idx+week_lead]}'].append({f'{_date}':np.mean(subx2[f'{variable}'].sel(lead=slice(julian_d,file_julian_list[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
+
                     '''7-day mean of EDDI by index:
                     Next we will append to each julian day value in the key in the dictionary with
                     the same julian day from all files'''
                     
-                    dates_to_keep = []
-                    '''if within 3 months, keep files'''
-                    len_text=18
-                    for file in sorted(glob(f'{home_dir}/ETo*{_date[-5:]}.nc4')):
-                        if len(file.split('/')[-1]) == len_text:
-                            dates_to_keep.append(file)
+                    #Keep only files within a certain date
+                    def limit_file_list( _date):
+
+                        
+                        month_start = pd.to_datetime(_date).month
+                        
+                        dates_to_keep = []
+                        '''if within 3 months, keep files'''
+                        
+                        #Glob with all files in the same directory causes some issues because 
+                        #ETo and ETo anomaly are in the same directory
+                        len_text=18
+                        for file in sorted(glob(f'{home_dir}/ETo_*.nc4')):
+                            
+                            if len(file.split('/')[-1]) == len_text:
+                                test_1 = month_start - pd.to_datetime(file[-14:-4]).month
+                                test_2 = pd.to_datetime(file[-14:-4]).month - month_start
+                                
+                                if test_1 <=-9 or test_1>= 9:
+                                    dates_to_keep.append(file)
+                                elif abs(test_1) <=3 or abs(test_2) <=3:
+                                    dates_to_keep.append(file)
+                                    
+                        return (dates_to_keep)
+                    
+                    dates_to_keep = limit_file_list(_date)
                                         
                     for file in dates_to_keep:
                         #Dont' re-open the same file
@@ -221,17 +242,15 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
                         
                             Et_ref_open_f = open_f.assign_coords(lead = b_julian_out2)
                             
+                            '''Now we need to append to the dictionary with the same julian date values'''
                             for idx,val in enumerate(b_julian_out2):
-                                idx_lead = idx+week_lead
-                               #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
-                                if idx % 7 == 0:
+                                #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
+                                if idx < 39:
                                     try:
-                                        summation_ETo_modN[f'{b_julian_out2[idx_lead]}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(val,b_julian_out2[idx_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
-                                   #Some shouldn't/can't be appended to dictionary because they are useless
+                                        summation_ETo_modN[f'{b_julian_out2[idx+week_lead]}'].append({f'{file[-14:-4]}':np.mean(Et_ref_open_f[f'{variable}'].sel(lead=slice(val,b_julian_out2[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
                                     except KeyError:
                                         pass
-                                    except IndexError:
-                                        pass
+                            
                     return(summation_ETo_modN)
                 
                 #Contains the julian day value of the current file ETo_{_date} and the 7-day summation
@@ -250,12 +269,8 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
                 EDDI calculation source :
                     M. Hobbins, A. Wood, D. McEvoy, J. Huntington, C. Morton, M. Anderson, and C. Hain (June 2016): The Evaporative Demand Drought Index: Part I – Linking Drought Evolution to Variations in Evaporative Demand. J. Hydrometeor., 17(6),1745-1761, doi:10.1175/JHM-D-15-0121.1.
                 '''
-                def compute_anomaly(dict ETo_7_day_average_modN):
-                    cdef dict out_eddi_dictionary
-                    cdef list mean_value, anomaly_val
-                    cdef float mean_calc
-                    cdef int idx, date_init
-                    cdef str julian_date
+                def compute_anomaly( ETo_7_day_average_modN):
+
                     
                     out_eddi_dictionary = {}
                     #Key value in dictionary is julian_date
@@ -288,11 +303,8 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
                 The above chunk calculated EDDI, next step is to append to the summation_ETo file becuase that file
                 has the initialized dates for each EDDI julian day summation'''
                 
-                def improve_RZSM_dictionary(dict ETo_7_day_average_modN, dict ETo_dict_modN):
-                    cdef dict final_out_dictionary_all_eddi
-                    cdef list sub_keys
-                    cdef int idx, idxxx
-                    cdef str julian_dattt
+                def improve_RZSM_dictionary( ETo_7_day_average_modN,  ETo_dict_modN):
+
                     
                     final_out_dictionary_all_eddi = {}
 
@@ -321,11 +333,8 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
             
                 '''Now that we have created new files, we can append each file with the data that was found'''
                 
-                def add_to_npy_file( ETo_next_dict_modN,  model_NUM):
-                    cdef int idx_, index_val
-                    cdef dict dic_init_and_eddi_val
-                    cdef str init_day, i_val, fileOut
-                    
+                def add_to_npy_file(ETo_next_dict_modN,  model_NUM):
+
                     for idx_,i_val in enumerate(ETo_next_dict_modN):
                       
                     #for some reason it's a list in a list, this fixes that, loop through julian day
@@ -344,11 +353,11 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
                             
                             #add values by julian day
                             # fileOut = f'{var}_anomaly_{init_day}.npy'
-                            fileOut = ("{}_anomaly_{}.nc4".format(var,init_day))
+                            fileOut = ("ETo_anomaly_mod{}/{}_anomaly_{}.nc4".format(model_NUM,var,init_day))
                             
                             eddi_open = xr.open_dataset(fileOut)
                             index_val=np.where(lead_values == int(i_val))[0][0]
-                            eddi_open.Variables[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
+                            eddi_open.Variable[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
                             
                             #For some reason it spits an error
    
@@ -388,81 +397,59 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
         os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt')
     
     #Testing to see if this can help in releasing memory
-    cdef str out = 'done'
-    return(out)
+
+    return()
 #%%
 '''For some odd reason, this function will keep allocating new memory (even though
 there is nothing visible in the function that I can remove). To get around this,
 it appears that I can only do 9 total dates between all 3 of my processes before
 memory gets too high (potential memory leak), so add a break'''
 
-
 #_date=init_date_list[0]
-'''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
-completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
-try:
-    #first line contains a header, nothing with dates
-    completed_dates = completed_dates[:,1]
-except IndexError:
-    completed_dates = ''
-# completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
-#only work on dates that aren't completed
-
-subset_completed_dates = [i[5:] for i in completed_dates]
-
-count=0
-for _date in init_date_list[start_:end_]:    
-    if _date[5:] not in subset_completed_dates:
-        ETo_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
-        count+=1
-        if count == 40:
-            exit()
 
 
-#Old way (this will help if I had to do every grid cell/lead anomalies)
+def run_loop( count_total, start_, end_, model_NUM, init_date_list, var):
+    '''Read ETo_completed_anomaly_npy.txt file to not have to re-run extra code'''
 
-# def run_loop(int count_total,int start_,int end_,int model_NUM,list init_date_list,str var):
-#     '''Read ETo_completed_anomaly_npy.txt file to not have to re-run extra code'''
-#     cdef int count
     
-#     completed_dates = np.loadtxt(f'{script_dir}/ETo_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
-#     try:
-#         #first line contains a header, nothing with dates
-#         completed_dates = completed_dates[:,1]
-#     except IndexError:
-#         completed_dates = ''
-#     # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
-#     #only work on dates that aren't completed
+    completed_dates = np.loadtxt(f'{script_dir}/ETo_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
+    try:
+        #first line contains a header, nothing with dates
+        completed_dates = completed_dates[:,1]
+    except IndexError:
+        completed_dates = ''
+    # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
+    #only work on dates that aren't completed
     
-#     subset_completed_dates = [i[5:] for i in completed_dates]
+    subset_completed_dates = [i[5:] for i in completed_dates]
     
-#     #Save into a new directory after each date
-#     #Make several new copies because it seems to break one of the files
-#     new_directory = f'{home_dir}/{var}_anomaly_mod{model_NUM}/already_completed'
+    #Save into a new directory after each date
+    #Make several new copies because it seems to break one of the files
+    new_directory = f'{home_dir}/{var}_anomaly_mod{model_NUM}/already_completed'
 
-#     count=0
-#     for _date in init_date_list[start_:end_]:    
-#         if _date[5:] not in subset_completed_dates:
-#             out_ = ETo_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
-#             #save
-#             # os.system('sleep 30') #sometimes saving seems to not fully capture 1 file
-#             # #Save multiple times because a file keeps getting broken
-#             # for directory in [new_directory,new_directory2,new_directory3]:
-#             #     os.system(f'cp {home_dir}/{var}_anomaly_mod{model_NUM}/*.nc4 {directory}/')
-#             #     os.system('sleep 10')
+    count=0
+    for _date in init_date_list[start_:end_]:    
+        if _date[5:] not in subset_completed_dates:
+            out_ = ETo_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
+            #save
+            # os.system('sleep 30') #sometimes saving seems to not fully capture 1 file
+            # #Save multiple times because a file keeps getting broken
+            # for directory in [new_directory,new_directory2,new_directory3]:
+            #     os.system(f'cp {home_dir}/{var}_anomaly_mod{model_NUM}/*.nc4 {directory}/')
+            #     os.system('sleep 10')
                 
-#             break
-#     return(count_total + 1)
+            break
+    return(count_total + 1)
 
-# #Run in a seperate loop to possibly avoid memory issue, run_loop will add 1 to count_total
-# #I tested count_total < 40 to keep the loop going, but it still eats up memory
-# count_total = 0
-# for i in range(2):
-#     count_total = run_loop(count_total,start_,end_,model_NUM,init_date_list,var)
-#     if i ==1:
-#         #Break from script to see if memory leak is removed
-#         gc.collect()
-#         exit()
+#Run in a seperate loop to possibly avoid memory issue, run_loop will add 1 to count_total
+#I tested count_total < 40 to keep the loop going, but it still eats up memory
+count_total = 0
+for i in range(2):
+    count_total = run_loop(count_total,start_,end_,model_NUM,init_date_list,var)
+    if i ==1:
+        #Break from script to see if memory leak is removed
+        gc.collect()
+        exit()
 
-# # if __name__ == '__main__':
-# #     call_function(start_, end_, model_NUM, init_date_list, _date)
+# if __name__ == '__main__':
+#     call_function(start_, end_, model_NUM, init_date_list, _date)

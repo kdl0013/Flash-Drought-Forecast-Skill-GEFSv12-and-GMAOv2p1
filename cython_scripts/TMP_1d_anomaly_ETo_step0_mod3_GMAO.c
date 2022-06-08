@@ -1697,7 +1697,6 @@ static const char __pyx_k_loadtxt[] = "loadtxt";
 static const char __pyx_k_nanmean[] = "nanmean";
 static const char __pyx_k_tm_yday[] = "tm_yday";
 static const char __pyx_k_KeyError[] = "KeyError";
-static const char __pyx_k_Variable[] = "Variable";
 static const char __pyx_k_date_out[] = "date_out";
 static const char __pyx_k_datetime[] = "datetime";
 static const char __pyx_k_home_dir[] = "home_dir";
@@ -1711,6 +1710,7 @@ static const char __pyx_k_sub_list[] = "sub_list";
 static const char __pyx_k_subtract[] = "subtract";
 static const char __pyx_k_variable[] = "variable";
 static const char __pyx_k_Data_SubX[] = "/Data/SubX/";
+static const char __pyx_k_Variables[] = "Variables";
 static const char __pyx_k_a_date_in[] = "a_date_in";
 static const char __pyx_k_date_init[] = "date_init";
 static const char __pyx_k_date_list[] = "date_list";
@@ -1787,6 +1787,7 @@ static const char __pyx_k_anomaly_on_SubX_for[] = " anomaly on SubX for ";
 static const char __pyx_k_file_timestamp_list[] = "file_timestamp_list";
 static const char __pyx_k_out_eddi_dictionary[] = "out_eddi_dictionary";
 static const char __pyx_k_and_saving_as_npy_in[] = " and saving as .npy in ";
+static const char __pyx_k_completed_anomaly_nc[] = "_completed_anomaly_nc_";
 static const char __pyx_k_completed_anomaly_npy[] = "_completed_anomaly_npy_";
 static const char __pyx_k_dic_init_and_eddi_val[] = "dic_init_and_eddi_val";
 static const char __pyx_k_ETo_7_day_average_modN[] = "ETo_7_day_average_modN";
@@ -1840,7 +1841,7 @@ static PyObject *__pyx_n_s_S;
 static PyObject *__pyx_kp_u_Scripts;
 static PyObject *__pyx_kp_s_TMP_1d_anomaly_ETo_step0_mod3_GM;
 static PyObject *__pyx_n_s_TMP_1d_anomaly_ETo_step0_mod3_GM_2;
-static PyObject *__pyx_n_s_Variable;
+static PyObject *__pyx_n_s_Variables;
 static PyObject *__pyx_kp_u_Working_on_lat;
 static PyObject *__pyx_n_s_X;
 static PyObject *__pyx_n_s_Y;
@@ -1873,6 +1874,7 @@ static PyObject *__pyx_n_s_b_julian_out2;
 static PyObject *__pyx_n_s_chdir;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_close;
+static PyObject *__pyx_n_u_completed_anomaly_nc;
 static PyObject *__pyx_n_u_completed_anomaly_npy;
 static PyObject *__pyx_n_s_completed_dates;
 static PyObject *__pyx_n_s_compute_anomaly;
@@ -5871,7 +5873,7 @@ static PyObject *__pyx_pf_34TMP_1d_anomaly_ETo_step0_mod3_GMAO_11ETo_anomaly_10a
  * 
  *                             eddi_open = xr.open_dataset(fileOut)             # <<<<<<<<<<<<<<
  *                             index_val=np.where(lead_values == int(i_val))[0][0]
- *                             eddi_open.Variable[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
+ *                             eddi_open.Variables[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
  */
       __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_xr); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 349, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
@@ -5900,7 +5902,7 @@ static PyObject *__pyx_pf_34TMP_1d_anomaly_ETo_step0_mod3_GMAO_11ETo_anomaly_10a
  * 
  *                             eddi_open = xr.open_dataset(fileOut)
  *                             index_val=np.where(lead_values == int(i_val))[0][0]             # <<<<<<<<<<<<<<
- *                             eddi_open.Variable[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
+ *                             eddi_open.Variables[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
  * 
  */
       __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 350, __pyx_L1_error)
@@ -5941,7 +5943,7 @@ static PyObject *__pyx_pf_34TMP_1d_anomaly_ETo_step0_mod3_GMAO_11ETo_anomaly_10a
       /* "TMP_1d_anomaly_ETo_step0_mod3_GMAO.pyx":351
  *                             eddi_open = xr.open_dataset(fileOut)
  *                             index_val=np.where(lead_values == int(i_val))[0][0]
- *                             eddi_open.Variable[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]             # <<<<<<<<<<<<<<
+ *                             eddi_open.Variables[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]             # <<<<<<<<<<<<<<
  * 
  *                             #For some reason it spits an error
  */
@@ -5957,7 +5959,7 @@ static PyObject *__pyx_pf_34TMP_1d_anomaly_ETo_step0_mod3_GMAO_11ETo_anomaly_10a
       __pyx_t_13 = __Pyx_GetItemInt_List(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_eddi_open, __pyx_n_s_Variable); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 351, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_eddi_open, __pyx_n_s_Variables); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_index_val); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
@@ -7414,7 +7416,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Scripts, __pyx_k_Scripts, sizeof(__pyx_k_Scripts), 0, 1, 0, 0},
   {&__pyx_kp_s_TMP_1d_anomaly_ETo_step0_mod3_GM, __pyx_k_TMP_1d_anomaly_ETo_step0_mod3_GM, sizeof(__pyx_k_TMP_1d_anomaly_ETo_step0_mod3_GM), 0, 0, 1, 0},
   {&__pyx_n_s_TMP_1d_anomaly_ETo_step0_mod3_GM_2, __pyx_k_TMP_1d_anomaly_ETo_step0_mod3_GM_2, sizeof(__pyx_k_TMP_1d_anomaly_ETo_step0_mod3_GM_2), 0, 0, 1, 1},
-  {&__pyx_n_s_Variable, __pyx_k_Variable, sizeof(__pyx_k_Variable), 0, 0, 1, 1},
+  {&__pyx_n_s_Variables, __pyx_k_Variables, sizeof(__pyx_k_Variables), 0, 0, 1, 1},
   {&__pyx_kp_u_Working_on_lat, __pyx_k_Working_on_lat, sizeof(__pyx_k_Working_on_lat), 0, 1, 0, 0},
   {&__pyx_n_s_X, __pyx_k_X, sizeof(__pyx_k_X), 0, 0, 1, 1},
   {&__pyx_n_s_Y, __pyx_k_Y, sizeof(__pyx_k_Y), 0, 0, 1, 1},
@@ -7447,6 +7449,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_chdir, __pyx_k_chdir, sizeof(__pyx_k_chdir), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
+  {&__pyx_n_u_completed_anomaly_nc, __pyx_k_completed_anomaly_nc, sizeof(__pyx_k_completed_anomaly_nc), 0, 1, 0, 1},
   {&__pyx_n_u_completed_anomaly_npy, __pyx_k_completed_anomaly_npy, sizeof(__pyx_k_completed_anomaly_npy), 0, 1, 0, 1},
   {&__pyx_n_s_completed_dates, __pyx_k_completed_dates, sizeof(__pyx_k_completed_dates), 0, 0, 1, 1},
   {&__pyx_n_s_compute_anomaly, __pyx_k_compute_anomaly, sizeof(__pyx_k_compute_anomaly), 0, 0, 1, 1},
@@ -8453,7 +8456,7 @@ if (!__Pyx_RefNanny) {
   /* "TMP_1d_anomaly_ETo_step0_mod3_GMAO.pyx":402
  * #_date=init_date_list[0]
  * '''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
- * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')             # <<<<<<<<<<<<<<
+ * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')             # <<<<<<<<<<<<<<
  * try:
  *     #first line contains a header, nothing with dates
  */
@@ -8490,10 +8493,10 @@ if (!__Pyx_RefNanny) {
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_3);
   __pyx_t_3 = 0;
-  __Pyx_INCREF(__pyx_n_u_completed_anomaly_npy);
-  __pyx_t_4 += 23;
-  __Pyx_GIVEREF(__pyx_n_u_completed_anomaly_npy);
-  PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_n_u_completed_anomaly_npy);
+  __Pyx_INCREF(__pyx_n_u_completed_anomaly_nc);
+  __pyx_t_4 += 22;
+  __Pyx_GIVEREF(__pyx_n_u_completed_anomaly_nc);
+  PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_n_u_completed_anomaly_nc);
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 402, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 402, __pyx_L1_error)
@@ -8529,7 +8532,7 @@ if (!__Pyx_RefNanny) {
 
   /* "TMP_1d_anomaly_ETo_step0_mod3_GMAO.pyx":403
  * '''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
- * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
+ * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
  * try:             # <<<<<<<<<<<<<<
  *     #first line contains a header, nothing with dates
  *     completed_dates = completed_dates[:,1]
@@ -8560,7 +8563,7 @@ if (!__Pyx_RefNanny) {
 
       /* "TMP_1d_anomaly_ETo_step0_mod3_GMAO.pyx":403
  * '''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
- * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
+ * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
  * try:             # <<<<<<<<<<<<<<
  *     #first line contains a header, nothing with dates
  *     completed_dates = completed_dates[:,1]
@@ -8609,7 +8612,7 @@ if (!__Pyx_RefNanny) {
 
     /* "TMP_1d_anomaly_ETo_step0_mod3_GMAO.pyx":403
  * '''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
- * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
+ * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
  * try:             # <<<<<<<<<<<<<<
  *     #first line contains a header, nothing with dates
  *     completed_dates = completed_dates[:,1]

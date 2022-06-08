@@ -348,7 +348,7 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
                             
                             eddi_open = xr.open_dataset(fileOut)
                             index_val=np.where(lead_values == int(i_val))[0][0]
-                            eddi_open.Variable[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
+                            eddi_open.Variables[0,index_val,i_Y,i_X] = list(dic_init_and_eddi_val.values())[0]
                             
                             #For some reason it spits an error
    
@@ -399,7 +399,7 @@ memory gets too high (potential memory leak), so add a break'''
 
 #_date=init_date_list[0]
 '''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
-completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
+completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
 try:
     #first line contains a header, nothing with dates
     completed_dates = completed_dates[:,1]

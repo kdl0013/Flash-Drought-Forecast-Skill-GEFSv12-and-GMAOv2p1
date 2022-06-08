@@ -107,7 +107,7 @@ def RZSM_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date
     init_date_list = return_date_list()    
 
 
-    print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .npy in {home_dir}/RZSM_anomaly_mod{model_NUM}.') 
+    print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc in {home_dir}/RZSM_anomaly_mod{model_NUM}.') 
     os.chdir(f'{home_dir}/RZSM_anomaly_mod{model_NUM}')
     cdef int week_lead
     week_lead = 6
@@ -397,7 +397,7 @@ it appears that I can only do 9 total dates between all 3 of my processes before
 memory gets too high (potential memory leak), so add a break'''
 
 #_date=init_date_list[0]
-'''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
+'''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
 completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
 try:
     #first line contains a header, nothing with dates
@@ -409,7 +409,6 @@ except IndexError:
 #only work on dates that aren't completed
 subset_completed_dates = [i[5:] for i in completed_dates]
 
-new_directory = f'{home_dir}/RZSM_anomaly_mod{model_NUM}/already_completed'
 count=0
 for _date in init_date_list[start_:end_]:    
     if _date[5:] not in subset_completed_dates:

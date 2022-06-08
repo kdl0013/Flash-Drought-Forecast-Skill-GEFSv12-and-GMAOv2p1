@@ -28,6 +28,50 @@ HP_conus_mask = conus_mask['USDM-HP_mask']
 #West CONUS_mask
 West_conus_mask = conus_mask['USDM-West_mask']
 
+'''
+
+USDM-West_mask:
+---------------
+
+The U.S. Drought Monitor (USDM) Regions
+ -- For the NCA-LDAS domain
+
+Data description:
+
+ -- This dataset includes CONUS-wide (minus Alaska and Hawaii for now)
+    U.S. Drought Monitor regions, delimited by state-political boundaries.
+    These regions were defined by the U.S. Drought Monitor.
+
+Legend Information:
+
+ -- Each region has been assigned an integer-based index value here.
+    The corresponding region and integer values include:
+    1:  West region
+    2:  Midwest region
+    3:  HighPlains region
+    4:  South region
+    5:  Southeast region
+    6:  Northeast region
+
+ -- Note: There are two separate USDM masks - one which should be used
+     for the HighPlains region and one that should be used for the West
+     region.  The reason for this is that the states of Colorado and
+     Wyoming are in BOTH of these regions, as defined by the USDM.
+     Thus, any analysis of the "HighPlains" region while using the West
+     mask will be INCORRECT.  Same for an analysis of the "West" region
+     while using the HighPlains mask.  The spatial extents for all other
+     regions are identical between the two different masks.
+
+
+For more references and information, please visit:
+ -- https://www.drought.gov/
+ -- https://droughtmonitor.unl.edu/
+
+
+'''
+
+
+
 
 #Test variable
 var='EDDI'
@@ -61,8 +105,8 @@ eddi_subx_all[0]
 
 xr.corr(eddi_subx_all.where(HP_conus_mask == 1),eddi_subx_all.where(HP_conus_mask == 1)).mean().
 
-eddi_ = eddi_subx_all.where(HP_conus_mask == 1).mean().compute()
-
+eddi_mean = eddi_subx_all.where(HP_conus_mask == 1).mean().compute()
+eddi_all = eddi_subx_all.where(HP_conus_mask == 1).compute()
 
 
 

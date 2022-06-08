@@ -24,16 +24,16 @@ import refet
 from multiprocessing import Pool
 from scipy.stats import rankdata
 
-dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors = int('10')
-mod = 'GMAO'
-var = 'variable'
-
-
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# num_processors = 10
+# num_processors = int('10')
 # mod = 'GMAO'
-# var = 'EDDI'
+# var = 'variable'
+
+
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+num_processors = 10
+mod = 'GMAO'
+var = 'EDDI'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'
 script_dir = f'{dir1}/Scripts'

@@ -1,21 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Goal is to look at each SubX file for soil moisture and reference ET and look at the
-scatterplot between observed (soil moisture - SMERGE) and observed (reference ET - gridMET METDATA)
-and between SubX files of the same variable.
-
-File list dates = actual dates values start at 1-11-1999 and end at 2-09-2016
-
-
-
-@author: kdl
+This script will find create a new dataset of actual observations, but with
+the format of SubX data. This will make correlation between datasets easier 
+to calculate.
 """
-
-
-
-#TODO : Add a try and except clause to for when the file has already been completed
-
 
 import xarray as xr
 import numpy as np
@@ -24,9 +13,6 @@ import datetime as dt
 import pandas as pd
 from glob import glob
 from multiprocessing import Pool
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import mean_squared_error
 
 #open a single file for SubX reference ET and a single file from gridMET 
 dir1 = 'main_dir'
@@ -107,7 +93,7 @@ def EDDI_SubX_creation(_date):
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
-                ETo_SubX_value = (['S','model','lead','Y','X'], eddi_out[:,:,:,:,:]),
+                EDDI_SubX_value = (['S','model','lead','Y','X'], eddi_out[:,:,:,:,:]),
             ),
             coords = dict(
                 S = var_file.S.values,
@@ -123,10 +109,10 @@ def EDDI_SubX_creation(_date):
         )                    
             
         #Save as a netcdf for later processing
-        var_OUT.to_netcdf(path = f'{eddi_subX_dir}/ETo_SubX_{_date}.nc4', mode ='w')
+        var_OUT.to_netcdf(path = f'{eddi_subX_dir}/EDDI_SubX_{_date}.nc4', mode ='w')
         #To find the correct date
         
-        print(f'Completed ETo_SubX_{_date}')
+        print(f'Completed EDDI_SubX_{_date}')
 print(f'Working from directory {subX_dir}')
 
 

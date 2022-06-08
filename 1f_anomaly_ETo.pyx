@@ -41,6 +41,13 @@ os.chdir(home_dir)
 elevation_dir = f'{dir1}/Data/elevation/'
 gridMET_dir = f'{dir1}/Data/gridMET'
 smerge_dir = f'{dir1}/Data/SMERGE_SM/Raw_data'
+
+mask_file = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
+
+
+conus_mask = xr.open_dataset(mask_file) #open mask file
+conus_mask = conus_mask['CONUS_mask']
+
 ###Files
 file_list = os.listdir()
 
@@ -151,7 +158,7 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
 
             #(np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7))
             #only work on grid cells with values like SMERGE
-            if (np.count_nonzero(np.isnan(eddi_file.EDDI[0,0,10,i_Y,i_X].values)) !=1)or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7)):
+            if conus_mask[0,i_Y,i_X] >=0:
 
                 def dict1_subx2():
                     cdef dict summation_ETo_modN
@@ -339,7 +346,7 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
             
                 '''Now that we have created new files, we can append each file with the data that was found'''
                 
-                def add_to_npy_file( ETo_next_dict_modN,  model_NUM):
+                def add_to_npy_file(ETo_next_dict_modN,  model_NUM):
                     # cdef int idx_, index_val
                     # cdef dict dic_init_and_eddi_val
                     # cdef str init_day, i_val, fileOut
@@ -417,48 +424,23 @@ memory gets too high (potential memory leak), so add a break'''
 #_date=init_date_list[0]
 
 
-def run_loop(int count_total,int start_,int end_,int model_NUM,list init_date_list,str var):
-    '''Read ETo_completed_anomaly_npy.txt file to not have to re-run extra code'''
-    cdef int count
-    
-    completed_dates = np.loadtxt(f'{script_dir}/ETo_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
-    try:
-        #first line contains a header, nothing with dates
-        completed_dates = completed_dates[:,1]
-    except IndexError:
-        completed_dates = ''
-    # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
-    #only work on dates that aren't completed
-    
-    subset_completed_dates = [i[5:] for i in completed_dates]
-    
-    #Save into a new directory after each date
-    #Make several new copies because it seems to break one of the files
-    new_directory = f'{home_dir}/{var}_anomaly_mod{model_NUM}/already_completed'
+completed_dates = np.loadtxt(f'{script_dir}/ETo_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
+try:
+    #first line contains a header, nothing with dates
+    completed_dates = completed_dates[:,1]
+except IndexError:
+    completed_dates = ''
+# completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
 
-    count=0
-    for _date in init_date_list[start_:end_]:    
-        if _date[5:] not in subset_completed_dates:
-            out_ = ETo_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
-            #save
-            # os.system('sleep 30') #sometimes saving seems to not fully capture 1 file
-            # #Save multiple times because a file keeps getting broken
-            # for directory in [new_directory,new_directory2,new_directory3]:
-            #     os.system(f'cp {home_dir}/{var}_anomaly_mod{model_NUM}/*.nc4 {directory}/')
-            #     os.system('sleep 10')
-                
+#only work on dates that aren't completed
+subset_completed_dates = [i[5:] for i in completed_dates]
+
+count=0
+for _date in init_date_list[start_:end_]:    
+    if _date[5:] not in subset_completed_dates:
+        # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/*.npy {new_directory}/')
+        ETo_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
+        count+=1
+        if count == 40:
+            print('Done')
             break
-    return(count_total + 1)
-
-#Run in a seperate loop to possibly avoid memory issue, run_loop will add 1 to count_total
-#I tested count_total < 40 to keep the loop going, but it still eats up memory
-count_total = 0
-for i in range(2):
-    count_total = run_loop(count_total,start_,end_,model_NUM,init_date_list,var)
-    if i ==1:
-        #Break from script to see if memory leak is removed
-        gc.collect()
-        exit()
-
-# if __name__ == '__main__':
-#     call_function(start_, end_, model_NUM, init_date_list, _date)

@@ -22,18 +22,17 @@ import pandas as pd
 from glob import glob
 import refet
 from multiprocessing import Pool
-from scipy.stats import rankdata
 
-dir1 = 'main_dir'
-num_processors = int('procs')
-mod = 'model_name'
-var = 'variable'
+# dir1 = 'main_dir'
+# num_processors = int('procs')
+# mod = 'model_name'
+# var = 'variable'
 
 
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# num_processors = 10
-# mod = 'GMAO'
-# var = 'EDDI'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+num_processors = 10
+mod = 'GMAO'
+var = 'EDDI'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'
 script_dir = f'{dir1}/Scripts'

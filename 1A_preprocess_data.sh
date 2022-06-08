@@ -23,6 +23,19 @@ subx=$data_d/SubX/${model}
 cy=cython_scripts
 mkdir $data_s/$cy
 
+#Make empty directores for later processing
+for num in {0..3};
+do
+mkdir $subx/EDDI_mod$num
+mkdir $subx/ETo_anomaly_mod$num
+mkdir $subx/RZSM_anomaly_mod$num;
+done
+
+
+mk_directories
+
+
+
 # --- Functions
 mk_TMP_script () {
 name=${1::-3}
@@ -131,9 +144,9 @@ rm $subx/*.npy
 
 #Create new dataset to compare the skill between models
 reformat_observations() {
-cat 1h_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1h_Obs_reformatted_to_SubX.py
+cat 1g_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1g_Obs_reformatted_to_SubX.py
 
-python3 TMP_1h_Obs_reformatted_to_SubX.py
+python3 TMP_1g_Obs_reformatted_to_SubX.py
 }
 
 reformat_observations #call function
