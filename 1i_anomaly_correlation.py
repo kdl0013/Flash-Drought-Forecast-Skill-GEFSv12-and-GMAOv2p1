@@ -19,6 +19,15 @@ import sys
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 mod = 'GMAO'
 subX_dir = f'{dir1}/Data/SubX/{mod}/' #where subX model data lies 
+mask_file = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
+
+
+conus_mask = xr.open_dataset(mask_file) #open mask file
+#High plains CONUS mask
+HP_conus_mask = conus_mask['USDM-HP_mask']
+#West CONUS_mask
+West_conus_mask = conus_mask['USDM-West_mask']
+
 
 #Test variable
 var='EDDI'
@@ -38,11 +47,21 @@ eddi_subX_dir = f'{dir1}/Data/EDDI/EDDI_SubX_values'
 eddi_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4')
 eddi_obs_all = xr.open_mfdataset(f'{eddi_subX_dir}/{var}*.nc')
 
+# eddi_subx_all.EDDI[0,:,6,15,15].values #lead week 1
+
+start_lead = 6
+lead=0
+lead_weeks_as_index = np.arange(start_lead,42,7)
+
+week_1 = eddi_subx_all.EDDI[0,:,start_lead+lead,:,:].where(HP_conus_mask == 1)
+
+xr.corr(week_1.where(HP_conus_mask==1), week_1.where(HP_conus_mask==1)).mean().compute()
 
 eddi_subx_all[0]
 
+xr.corr(eddi_subx_all.where(HP_conus_mask == 1),eddi_subx_all.where(HP_conus_mask == 1)).mean().
 
-
+eddi_ = eddi_subx_all.where(HP_conus_mask == 1).mean().compute()
 
 
 
