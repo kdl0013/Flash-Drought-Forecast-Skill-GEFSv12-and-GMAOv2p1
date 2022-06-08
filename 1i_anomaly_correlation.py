@@ -14,6 +14,7 @@ import datetime as dt
 import pandas as pd
 from glob import glob
 from scipy.stats import rankdata
+from scipy.stats import pearsonr as pr
 import sys
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
@@ -74,7 +75,7 @@ For more references and information, please visit:
 
 
 #Test variable
-var='EDDI'
+var='RZSM'
 
 os.chdir(subX_dir) #Set directory for SubX
 #Get date list for initialized files
@@ -85,11 +86,53 @@ date_list = [i[-14:-4] for i in date_list]
 #EDDI actual values
 eddi_subX_dir = f'{dir1}/Data/EDDI/EDDI_SubX_values' 
 
+#SMERGE actual values
+rzsm_subX_dir = f'{dir1}/Data/SMERGE_SM/SM_SubX_values' 
 #%%
 '''Now find the anomaly correlation by lead time'''
 
-eddi_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4')
-eddi_obs_all = xr.open_mfdataset(f'{eddi_subX_dir}/{var}*.nc')
+rzsm_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4')
+rzsm_obs_all = xr.open_mfdataset(f'{rzsm_subX_dir}/SM*.nc')
+
+#lead times
+start_lead = 6
+lead=0
+lead_weeks_as_index = np.arange(start_lead,42,7)
+
+#Stack X and Y coordinates for easier processing
+rzsm_subx_all_st = rzsm_subx_all.stack(grid = ('X','Y'))
+rzsm_subx_obs_st = rzsm_obs_all.stack(grid = ('X','Y'))
+
+#Nope
+# CONUS_correlation_RZSM = xr.corr(rzsm_subx_all.RZSM_anom[0,:,start_lead+lead,:,:],rzsm_obs_all.SMERGE_SubX_value[0,:,start_lead+lead,:,:]).compute()
+CONUS_correlation_RZSM = pr(rzsm_subx_all_st.RZSM_anom[0,:,start_lead+lead,:],rzsm_subx_obs_st.SMERGE_SubX_value[0,:,start_lead+lead,:])
+
+
+
+CONUS_correlation_RZSM.unstack('grid')
+
+#West region
+week_1 = rzsm_subx_all.RZSM_anom[0,:,start_lead+lead,:,:].where(West_conus_mask == 1)
+
+xr.corr(week_1.where(HP_conus_mask==1), week_1.where(HP_conus_mask==1)).mean().compute()
+
+eddi_subx_all[0]
+
+xr.corr(eddi_subx_all.where(HP_conus_mask == 1),eddi_subx_all.where(HP_conus_mask == 1)).mean().
+
+eddi_mean = eddi_subx_all.where(HP_conus_mask == 1).mean().compute()
+eddi_all = eddi_subx_all.where(HP_conus_mask == 1).compute()
+
+
+
+
+#%%
+
+
+
+
+# eddi_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4')
+# eddi_obs_all = xr.open_mfdataset(f'{eddi_subX_dir}/{var}*.nc')
 
 # eddi_subx_all.EDDI[0,:,6,15,15].values #lead week 1
 
@@ -107,35 +150,6 @@ xr.corr(eddi_subx_all.where(HP_conus_mask == 1),eddi_subx_all.where(HP_conus_mas
 
 eddi_mean = eddi_subx_all.where(HP_conus_mask == 1).mean().compute()
 eddi_all = eddi_subx_all.where(HP_conus_mask == 1).compute()
-
-
-
-
-
-
-subX_dir = f'{dir1}/Data/SubX/{mod}'
-
-subX_SM_out_dir = f'{subX_dir}/SM_converted_m3_m3' #conversion
-#gridMET
-gridMET_dir = f'{dir1}/Data/gridMET' #reference evapotranspiration
-output_dir = f'{gridMET_dir}/ETo_SubX_values' #Refernce ET output directory
-#RZSM
-smerge_in_dir = f'{dir1}/Data/SMERGE_SM/Raw_data' #raw files that have been boxed in CONUS
-SM_SubX_out_dir = f'{dir1}/Data/SMERGE_SM/Raw_data/SM_SubX_values' #Smerge values overlayed on SubX grid
-#EDDI
-eddi_dir = f'{dir1}/Data/EDDI/convert_2_nc'
-eddi_subX_dir = f'{dir1}/Data/EDDI/EDDI_SubX_values'
-
-image_dir = f'{dir1}/Outputs/MSE_plots'
-
-
-
-
-#%%
-
-
-
-
 
 
 

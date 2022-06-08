@@ -410,7 +410,7 @@ def ETo_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date,
     print(f'Completed date {_date} and saved into {home_dir}/{var}_anomaly_mod{model_NUM}.')
     #save the dates that were completed to not re-run
     if model_NUM == 3:
-        os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_npy_{model_NAM1}.txt')
+        os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
     
     #Testing to see if this can help in releasing memory
     cdef str out = 'done'
