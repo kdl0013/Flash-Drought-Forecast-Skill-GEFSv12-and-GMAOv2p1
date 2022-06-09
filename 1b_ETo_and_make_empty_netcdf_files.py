@@ -287,7 +287,7 @@ print('')
 T_FILE = xr.open_dataset(glob('ETo_1999-01-10.nc4')[0])
 
 def make_empty_nc_files(init_date_list,T_FILE):
-    print('Making empty .npy files for EDDI, RZSM, and ETo.')
+    print('Making empty .npy and .nc4 files for EDDI, RZSM, and ETo.')
     # count=0
     
     for var in ['EDDI','RZSM','ETo']:

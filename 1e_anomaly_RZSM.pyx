@@ -365,7 +365,7 @@ def RZSM_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date
                             
                             
                             var2 = 'RZSM'
-                            lead_values = np.load(f'{var2}_anomaly_{init_day}_julian_lead.npy',allow_pickle=True)
+                            lead_values = np.load(f'{home_dir}/{var2}_anomaly_{init_day}_julian_lead.npy',allow_pickle=True)
                             
                             #add values by julian day
                             # fileOut = f'{var}_anomaly_{init_day}.npy'
@@ -389,7 +389,7 @@ def RZSM_anomaly(int start_,int end_,int model_NUM,list init_date_list,str _date
     print(f'Completed date {_date} and saved into {home_dir}/RZSM_anomaly_mod{model_NUM}.')
     #save the dates that were completed to not re-run
     if model_NUM == 3:
-        os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_npy_{model_NAM1}.txt')
+        os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt')
 #%%
 '''For some odd reason, this function will keep allocating new memory (even though
 there is nothing visible in the function that I can remove). To get around this,

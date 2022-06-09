@@ -22,7 +22,6 @@ import pandas as pd
 from glob import glob
 import refet
 from multiprocessing import Pool
-from scipy.stats import rankdata
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # num_processors = int('10')

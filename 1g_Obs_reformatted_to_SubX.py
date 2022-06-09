@@ -93,7 +93,7 @@ def EDDI_SubX_creation(_date):
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
-                EDDI_SubX_value = (['S','model','lead','Y','X'], eddi_out[:,:,:,:,:]),
+                ETo_SubX_value = (['S','model','lead','Y','X'], eddi_out[:,:,:,:,:]),
             ),
             coords = dict(
                 S = var_file.S.values,
@@ -109,10 +109,10 @@ def EDDI_SubX_creation(_date):
         )                    
             
         #Save as a netcdf for later processing
-        var_OUT.to_netcdf(path = f'{eddi_subX_dir}/EDDI_SubX_{_date}.nc4', mode ='w')
+        var_OUT.to_netcdf(path = f'{eddi_subX_dir}/ETo_SubX_{_date}.nc4', mode ='w')
         #To find the correct date
         
-        print(f'Completed EDDI_SubX_{_date}')
+        print(f'Completed ETo_SubX_{_date}')
 print(f'Working from directory {subX_dir}')
 
 
@@ -349,7 +349,7 @@ def SM_SMERGE_SubX_creation(_date):
                     for i_X in range(sub_file.mrso.shape[4]):
                         
                         smerge_out[0,model, i_lead, i_Y, i_X] = \
-                            SMERGE_file.CCI_ano.sel(time = date_val).isel(X = i_X, Y = i_Y).values
+                            SMERGE_file.RZSM.sel(time = date_val).isel(X = i_X, Y = i_Y).values
         
         #Convert to an xarray object
         var_OUT = xr.Dataset(
@@ -365,7 +365,7 @@ def SM_SMERGE_SubX_creation(_date):
         
             ),
             attrs = dict(
-                Description = 'RZSM anomaly values on the exact same date and grid \
+                Description = 'SMERGE SM (m3/m3) values on the exact same date and grid \
                 cell as SubX data'),
         )                    
             

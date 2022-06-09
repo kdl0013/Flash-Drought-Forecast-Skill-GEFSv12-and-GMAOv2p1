@@ -14,8 +14,14 @@ import datetime as dt
 import pandas as pd
 from glob import glob
 from scipy.stats import rankdata
-from scipy.stats import pearsonr as pr
+import xskillscore as xs
 import sys
+import dask
+from climpred import metrics
+import cartopy.crs as ccrs
+
+
+dask_gufunc_kwargs.setdefault("allow_rechunk", True)
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 mod = 'GMAO'
@@ -89,7 +95,13 @@ eddi_subX_dir = f'{dir1}/Data/EDDI/EDDI_SubX_values'
 #SMERGE actual values
 rzsm_subX_dir = f'{dir1}/Data/SMERGE_SM/SM_SubX_values' 
 #%%
-'''Now find the anomaly correlation by lead time'''
+'''Now find the anomaly correlation by lead time'
+
+Important note about GMAO file format.  The only values that have files are the 
+even files starting from 0
+
+'''
+
 
 rzsm_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4')
 rzsm_obs_all = xr.open_mfdataset(f'{rzsm_subX_dir}/SM*.nc')
@@ -126,13 +138,48 @@ eddi_all = eddi_subx_all.where(HP_conus_mask == 1).compute()
 
 
 
+#%% EDDI correlation
+
+
+
+
+'''this is a test
+I can only work with the exact same files because I need to re-format  SubX observations
+'''
+
+rzsm_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4', chunks={'S':-1,'model':-1,'lead':-1,'Y':-1,'X':-1}).load()
+
 #%%
 
 
+RZSM_anom_ACC = metrics.pearson_r(rzsm_subx_all, rzsm_subx_all, dim='S')
+    #%%
 
+rzsm_subx_all.sizes
 
-# eddi_subx_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4')
-# eddi_obs_all = xr.open_mfdataset(f'{eddi_subX_dir}/{var}*.nc')
+rzsm_subx_all.chunks
+
+#rechunk
+rzsm_subx_all.chunk({'S':-1}).sizes
+if rzsm_subx_all.chunks:
+    for 
+    rzsm_subx_all = rzsm_subx_all.chunk({dim:-1})
+
+rzsm_subx_all.chunk(dict('S':-1,'model':-1,'X':-1,'Y':-1))
+rzsm_obs_all = xr.open_mfdataset(f'{subX_dir}/{var}*.nc4', chunks={'S':-1})
+rzsm_subx_all.RZSM_anom[0,:,:,15,15].values
+
+#lead times
+start_lead = 6
+lead=0
+lead_weeks_as_index = np.arange(start_lead,42,7)
+
+#Stack X and Y coordinates for easier processing
+rzsm_subx_all_st = rzsm_subx_all.stack(grid = ('X','Y'))
+rzsm_subx_obs_st = rzsm_obs_all.stack(grid = ('X','Y'))
+
+#Nope
+# CONUS_correlation_RZSM = xr.corr(rzsm_subx_all.RZSM_anom[0,:,start_lead+lead,:,:],rzsm_obs_all.SMERGE_SubX_value[0,:,start_lead+lead,:,:]).compute()
 
 # eddi_subx_all.EDDI[0,:,6,15,15].values #lead week 1
 
