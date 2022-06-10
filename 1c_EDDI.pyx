@@ -158,7 +158,7 @@ def EDDI_function(int start_,int end_,int model_NUM,list init_date_list,str _dat
 
                 def dict1_subx2():
                     cdef dict summation_ETo_modN
-                    cdef int idx,julian_d, end_julian, subtract, len_text, idx_lead
+                    cdef int idx, end_julian, subtract, len_text, idx_lead
                     cdef list date_out, b_julian_out, b_julian_out2
                     
                     #append 7-day average from all files to a new dictionary, 
