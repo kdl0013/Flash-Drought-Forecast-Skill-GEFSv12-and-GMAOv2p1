@@ -47,6 +47,12 @@ python3 $data_s/TMP_${name}_${model}.py
 mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py"
 
 
+#convert soil moisture to m3/m3
+
+cat 1b2_convert_SM_to_m3_m3.py | sed 's|main_dir|'${main_directory}'|g' > $data_s/TMP_1b2_convert_SM_to_m3_m3.py
+
+python3 $data_s/TMP_1b2_convert_SM_to_m3_m3.py
+
 ######## Reference ETo, EDDI, gridMET data creation. Historical and SubX #######
 #Create multiple scripts for multiprocessing of EDDI, RZSM, and ETo anomalies
 #Can also insert the total number of models. $1 = name of file, $2 = 3 models for GMAO
@@ -63,15 +69,17 @@ name=${1::-4}
 
 for val in "${date_arr[@]}";do
     for mod in {0..3};do
-cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_number|'${mod}'|g' | sed 's|model_name|'${model}'|g' > TMP_${name}_step"$val"_mod"$mod"_${model}.pyx;
+cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' > TMP_${name}_step"$val"_${model}.pyx;
     done;
 done
 }
 
+
 #Create tmp scripts to run later
 mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
-mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.pyx"
 mk_anomaly_script_RZSM_ETo_EDDI "1e_anomaly_RZSM.pyx"
+mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.pyx"
+
 
 chmod +x *.pyx
 chmod +x *.py
@@ -92,7 +100,7 @@ mv *.c cython_scripts/
 }
 
 #Compile code using cython
-compile_cython 'ETo'
+compile_cython 'ETo' 
 compile_cython 'EDDI'
 compile_cython 'RZSM'
 
@@ -119,11 +127,18 @@ cd $data_s
 }
 
 
-run_anomaly_RZSM_ETo_EDDI "ETo"
+run_anomaly_RZSM_ETo_EDDI "ETo" 
 wait
 run_anomaly_RZSM_ETo_EDDI "RZSM"
 wait
 run_anomaly_RZSM_ETo_EDDI "EDDI"
+
+
+#Run ETo anomaly scripts
+for i in TMP_1d_anomaly_ETo*.py;do
+python3 $i &
+done
+
 
 #Combine all different models into 1 netcdf file and save in main_dir
 stitch_npy_files () {

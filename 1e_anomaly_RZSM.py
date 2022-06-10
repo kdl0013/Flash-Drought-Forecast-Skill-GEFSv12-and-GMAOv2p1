@@ -95,7 +95,7 @@ This code is re-factored from 1b_EDDI.py
 #%%    
 '''process SubX files and create EDDI values'''
 # def multiProcess_EDDI_SubX_TEST(_date):
-def RZSM_anomaly( start_, end_, model_NUM, init_date_list, _date, var):
+def RZSM_anomaly(start_, end_, model_NUM, init_date_list, _date, var):
     #_date=init_date_list[0]
 
     def return_date_list():
@@ -344,14 +344,11 @@ def RZSM_anomaly( start_, end_, model_NUM, init_date_list, _date, var):
                             # print(dic_init_and_eddi_val)
                             #Open up the file and insert the value
                             init_day = list(dic_init_and_eddi_val.keys())[0]
-                            
-                            '''When appending using several scripts, sometimes the file will
-                            load before another file has finished filling in the file and causing
-                            a ValueError: cannot reshape array of size 15328 into shape (2,4,45,27,59)'''
+
                             
                             
                             var2 = 'RZSM'
-                            lead_values = np.load(f'{var2}_anomaly_{init_day}_julian_lead.npy',allow_pickle=True)
+                            lead_values = np.load(f'{home_dir}/{var2}_anomaly_{init_day}_julian_lead.npy',allow_pickle=True)
                             
                             #add values by julian day
                             # fileOut = f'{var}_anomaly_{init_day}.npy'
@@ -394,7 +391,7 @@ def RZSM_anomaly( start_, end_, model_NUM, init_date_list, _date, var):
     print(f'Completed date {_date} and saved into {home_dir}/RZSM_anomaly_mod{model_NUM}.')
     #save the dates that were completed to not re-run
     if model_NUM == 3:
-        os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_npy_{model_NAM1}.txt')
+        os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt')
 #%%
 '''For some odd reason, this function will keep allocating new memory (even though
 there is nothing visible in the function that I can remove). To get around this,
@@ -403,7 +400,7 @@ memory gets too high (potential memory leak), so add a break'''
 
 #_date=init_date_list[0]
 '''Read EDDI_completed_npy.txt file to not have to re-run extra code'''
-completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
+completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
 try:
     #first line contains a header, nothing with dates
     completed_dates = completed_dates[:,1]
@@ -414,12 +411,12 @@ except IndexError:
 #only work on dates that aren't completed
 subset_completed_dates = [i[5:] for i in completed_dates]
 
-new_directory = f'{home_dir}/RZSM_anomaly_mod{model_NUM}/already_completed'
+new_directory = f'{home_dir}/RZSM_anomaly_mod{model_NUM}s'
 count=0
 for _date in init_date_list[start_:end_]:    
     if _date[5:] not in subset_completed_dates:
         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/*.npy {new_directory}/')
-        RZSM_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
+        RZSM_anomaly(start_, end_, 3, init_date_list, _date='1999-12-26',var='RZSM')
         count+=1
         if count == 40:
             print('Done')

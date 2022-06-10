@@ -21,7 +21,6 @@ num_processors = int('procs')
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 
 subX_dir = f'{dir1}/Data/SubX/GMAO'
-subX_SM_out_dir = f'{dir1}/Data/SubX/GMAO/SM_converted_m3_m3' #conversion
 
 gridMET_dir = f'{dir1}/Data/gridMET' #reference evapotranspiration
 output_ETo_dir = f'{gridMET_dir}/ETo_SubX_values' #Refernce ET output directory

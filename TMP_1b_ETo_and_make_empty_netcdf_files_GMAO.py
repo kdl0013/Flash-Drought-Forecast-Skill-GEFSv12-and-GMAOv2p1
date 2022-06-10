@@ -23,16 +23,16 @@ from glob import glob
 import refet
 from multiprocessing import Pool
 
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# num_processors = int('10')
-# mod = 'GMAO'
-# var = 'variable'
-
-
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors = 10
+num_processors = int('10')
 mod = 'GMAO'
-var = 'EDDI'
+var = 'variable'
+
+
+# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+# num_processors = 10
+# mod = 'GMAO'
+# var = 'EDDI'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'
 script_dir = f'{dir1}/Scripts'
@@ -287,7 +287,7 @@ print('')
 T_FILE = xr.open_dataset(glob('ETo_1999-01-10.nc4')[0])
 
 def make_empty_nc_files(init_date_list,T_FILE):
-    print('Making empty .npy files for EDDI, RZSM, and ETo.')
+    print('Making empty .npy and .nc4 files for EDDI, RZSM, and ETo.')
     # count=0
     
     for var in ['EDDI','RZSM','ETo']:
@@ -312,65 +312,100 @@ def make_empty_nc_files(init_date_list,T_FILE):
                     
             elif var == 'RZSM':
                 filename = f'{var}_anomaly'
-                desc = 'RZSM anomaly. 7-day average mean by julian day.'
+                desc = 'RZSM anomaly. Calculated from 7-day average mean by julian day and lead week.'
                 for model in [0,1,2,3]:
                     model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
                 
             elif var == 'ETo':
                 filename = f'{var}_anomaly'
-                desc = 'ETo anomaly. 7-day average mean by julian day.'
+                desc = 'ETo anomaly. Calculated from 7-day average mean by julian day and lead week.'
                 for model in [0,1,2,3]:
                     model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
             
+            try:
+                np.load(f'{home_dir}/julian_lead_{_date}.npy')
+            except FileNotFoundError:
+                np.save(f'{home_dir}/julian_lead_{_date}.npy',day_julian_b) 
+                
+                
             #don't remake empty files
             try:
-                xr.open_dataset(f'{var}_mod0/{filename}_{_date}.nc4')
+                xr.open_dataset(f'{home_dir}/{filename}_{_date}.nc4')
                 
             except FileNotFoundError:
                 #Make empty files to insert 
                 empty = (np.zeros_like(T_FILE.to_array()).squeeze())
-                #Only do 1 model at a time
-                empty = empty[:,0,:,:,:]
-                empty[:,:,:,:] = np.nan
-                np.save(f'{home_dir}/EDDI_{_date}.npy',empty)
-                np.save(f'{home_dir}/ETo_anomaly_{_date}.npy',empty)
-                np.save(f'{home_dir}/RZSM_anomaly_{_date}.npy',empty)
+                # #Only do 1 model at a time
+                # empty = empty[:,0,:,:,:]
+                # empty[:,:,:,:] = np.nan
+                # np.save(f'{home_dir}/EDDI_{_date}.npy',empty)
+                # np.save(f'{home_dir}/ETo_anomaly_{_date}.npy',empty)
+                # np.save(f'{home_dir}/RZSM_anomaly_{_date}.npy',empty)
                 
                 #save lead values as julian day for later processing
-                np.save(f'{home_dir}/EDDI_{_date}_julian_lead.npy',day_julian_b)
-                np.save(f'{home_dir}/ETo_anomaly_{_date}_julian_lead.npy',day_julian_b)
-                np.save(f'{home_dir}/RZSM_anomaly_{_date}_julian_lead.npy',day_julian_b)
+
                          
                 template = xr.open_dataset(f'ETo_{_date}.nc4')
         
                 #initialize empty file
                 var_OUT = xr.zeros_like(template)
                 
-                #Add data from each model into the empty file
-                for model in model_dirs.items():
-                    var_OUT.ETo[:,int(model[0][-1]),:,:,:] = np.load(f'{filename}_{_date}.npy',allow_pickle=True)
-                    #print(mod)
+                # #Add data from each model into the empty file
+                # for model in model_dirs.items():
+                #     var_OUT.ETo[:,int(model[0][-1]),:,:,:] = np.load(f'{filename}_{_date}.npy',allow_pickle=True)
+                #     #print(mod)
+                  
+                
+                if var == 'RZSM':
+                    #save file as EDDI as netcdf
+                    var_final = xr.Dataset(
+                        data_vars = dict(
+                            RZSM_anom = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
+                        ),
+                        coords = dict(
+                            X = var_OUT.X.values,
+                            Y = var_OUT.Y.values,
+                            lead = var_OUT.lead.values,
+                            S = template.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{desc}'),
+                    )                    
+                elif var == 'EDDI':
+                    #save file as EDDI as netcdf
+                    var_final = xr.Dataset(
+                        data_vars = dict(
+                            EDDI = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
+                        ),
+                        coords = dict(
+                            X = var_OUT.X.values,
+                            Y = var_OUT.Y.values,
+                            lead = var_OUT.lead.values,
+                            S = template.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{desc}'),
+                    )                    
                     
-                #save file as EDDI as netcdf
-                var_final = xr.Dataset(
-                    data_vars = dict(
-                        Variables = (['S','lead','Y','X'], var_OUT.ETo[:,0,:,:,:].values),
-                    ),
-                    coords = dict(
-                        X = var_OUT.X.values,
-                        Y = var_OUT.Y.values,
-                        lead = var_OUT.lead.values,
-                        S = template.S.values
-                    ),
-                    attrs = dict(
-                        Description = f'{desc}'),
-                )                    
-                
-                #Save as a netcdf for later processing
-                
-                for mod in model_dirs.items():
-                    var_final.to_netcdf(path = f'{mod[1]}/{filename}_{_date}.nc4', mode ='w',engine='scipy')
-                    var_final.close()
+                if var == 'ETo':
+                    #save file as EDDI as netcdf
+                    var_final = xr.Dataset(
+                        data_vars = dict(
+                            ETo_anom = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
+                        ),
+                        coords = dict(
+                            X = var_OUT.X.values,
+                            Y = var_OUT.Y.values,
+                            lead = var_OUT.lead.values,
+                            S = template.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{desc}'),
+                    )                    
+                    
+
+                var_final.to_netcdf(path = f'{home_dir}/{filename}_{_date}.nc4', mode ='w',engine='scipy')
+                var_final.close()
 
    
 #Create EDDI files           

@@ -12,13 +12,15 @@ import numpy as np
 from glob import glob
 import os
 
-dir1 = 'main_dir'
-model_NAM = 'model_name'
+# dir1 = 'main_dir'
+# model_NAM = 'model_name'
 
-home_dir = f'{dir1}/Data/SubX/{model_name}'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+model_NAM = 'GMAO'
+
+home_dir = f'{dir1}/Data/SubX/{model_NAM}'
 os.chdir(home_dir)
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# model_NAM = 'GMAO'
+
 
 #Get date list
 test_var='ETo'
@@ -39,8 +41,9 @@ var = 'RZSM'
 sorted(glob(f'{var}_anomaly_*.nc4'))
 
 #RZSM_anomaly
-missing_file_list_anomaly= []
-missing_file_list_original = []
+missing_anomaly_RZSM= [] #subx missing anomaly data files
+missing_original_RZSM = [] #mrso missing data files
+missing_originial_RZSM_m3_m3 = [] #missing converted mrso m3/m3 files
 
 if var == 'EDDI':
     file_list = f'{var}_*.nc4'
@@ -54,18 +57,69 @@ for file in sorted(glob(file_list)):
     therefore, this is a missing data file.
     '''
     if np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values)) == 286740:
-        missing_file_list_anomaly.append(file)
+        missing_anomaly_RZSM.append(file)
         
     open_mrso = xr.open_dataset(f'mrso_{model_NAM}_{file[-14:-4]}.nc') 
     if np.count_nonzero(np.isnan(open_mrso.mrso[0,:,:,:,:].values)) == 286740:
-        missing_file_list_original.append(file)
+        missing_original_RZSM.append(file)
+
+    open_m3_m3 = xr.open_dataset(f'SM_converted_m3_m3/SM_SubX_m3_m3_{file[-14:-4]}.nc4') 
+    if np.count_nonzero(np.isnan(open_m3_m3.SM_SubX_m3_m3_value[0,:,:,:,:].values)) == 286740:
+        missing_originial_RZSM_m3_m3.append(file)
+
+missing_anomaly_RZSM
+missing_original_RZSM
+missing_originial_RZSM_m3_m3
 
 
-missing_file_list_anomaly
-missing_file_list_original
+#%%
+var = 'ETo'
 
+missing_anomaly_ETo = []
+missing_original_ETo = []
+
+if var == 'EDDI':
+    file_list = f'{var}_*.nc4'
+else:
+    file_list = f'{var}_anomaly_*.nc4'
+
+for file in sorted(glob(file_list)):
+    open_f = xr.open_dataset(file)
+    '''after further inspection, if a file has all nan values then it has a total
+    of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
+    therefore, this is a missing data file.
+    '''
+    if np.count_nonzero(np.isnan(open_f.ETo_anom[0,:,:,:,:].values)) == 286740:
+        missing_anomaly_ETo.append(file)
+        
+    open_ETo = xr.open_dataset(f'{var}_{file[-14:-4]}.nc4') 
+    if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
+        missing_original_ETo.append(file)
+
+
+missing_anomaly_ETo
+missing_original_ETo
 #%%           
+#No anomalies for EDDI
+var = 'EDDI'
 
+missing_original_EDDI = []
 
+if var == 'EDDI':
+    file_list = f'{var}_*.nc4'
+else:
+    file_list = f'{var}_anomaly_*.nc4'
+
+for file in sorted(glob(file_list)):
+    open_f = xr.open_dataset(file)
+    '''after further inspection, if a file has all nan values then it has a total
+    of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
+    therefore, this is a missing data file.
+    '''
+    if np.count_nonzero(np.isnan(open_f.EDDI[0,:,:,:,:].values)) == 286740:
+        missing_original_EDDI.append(file)
+        
+
+missing_original_EDDI
 
 

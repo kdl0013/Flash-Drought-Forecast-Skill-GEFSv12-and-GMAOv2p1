@@ -26,14 +26,10 @@ dask_gufunc_kwargs.setdefault("allow_rechunk", True)
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 mod = 'GMAO'
 subX_dir = f'{dir1}/Data/SubX/{mod}/' #where subX model data lies 
-mask_file = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
-
+HP_conus_path = f'{dir1}/Data/CONUS_mask/High_Plains_mask.nc'
+West_conus_path = f'{dir1}/Data/CONUS_mask/West_mask.nc'
 
 conus_mask = xr.open_dataset(mask_file) #open mask file
-#High plains CONUS mask
-HP_conus_mask = conus_mask['USDM-HP_mask']
-#West CONUS_mask
-West_conus_mask = conus_mask['USDM-West_mask']
 
 '''
 
@@ -77,7 +73,8 @@ For more references and information, please visit:
 
 '''
 
-
+#TODO: Only use the High Plains mask for the High Plains region.
+#TODO: Otherwise, use the West mask for all other regions. The numbers are correct
 
 
 #Test variable

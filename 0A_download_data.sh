@@ -124,7 +124,7 @@ do
        cdo -f nc -remapcon,$data_s/CONUS_mask.grd -settaxis,${year}-${month}-${day},00:00:00,1day -setname,EDDI -input,$data_s/SMERGE_4_EDDI.grd EDDI_nc_file/${outName}.nc4 < $f;
 done
 
-
+#SubX conus mask was fixed with the following .py script : 0e_fix_CONUS_mask.py
 
 
 

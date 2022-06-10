@@ -173,7 +173,7 @@ def EDDI_function(int start_,int end_,int model_NUM,list init_date_list,str _dat
                         
                         if idx % 7 == 0:
                             try:
-                                if (len(subx2[f'{variable}'].sel(lead=slice(julian_d,file_julian_list[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)) == 7:
+                                if (len(subx2[f'{variable}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)) == 7:
                                     summation_ETo_modN[f'{file_julian_list[idx+week_lead]}']=[]
                                     summation_ETo_modN[f'{file_julian_list[idx+week_lead]}'].append({f'{_date}':np.nanmean(subx2[f'{variable}'].sel(lead=slice(julian_d,file_julian_list[idx+week_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
                             except IndexError:
@@ -229,7 +229,7 @@ def EDDI_function(int start_,int end_,int model_NUM,list init_date_list,str _dat
                                #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
                                 if idx % 7 == 0:
                                     try:
-                                        summation_ETo_modN[f'{b_julian_out2[idx_lead]}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(val,b_julian_out2[idx_lead])).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_modN[f'{b_julian_out2[idx_lead]}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=model_NUM, X=i_X, Y=i_Y).values)})   
                                    #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
                                         pass
