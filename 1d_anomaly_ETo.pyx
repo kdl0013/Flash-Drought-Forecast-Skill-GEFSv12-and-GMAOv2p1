@@ -92,13 +92,16 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
             
     init_date_list = return_date_list()    
 
-    print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc in {home_dir}') 
+    print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc4 in {home_dir}') 
     #Because of indexing, week lead actually needs to be 6 for slicing
     cdef int week_lead
     week_lead = 7
 
     #Used as the grid mask file to not iterate over useless grid cells
-    eddi_file = xr.open_dataset(f'{home_dir}/EDDI_2011-06-14.nc4')
+    #Used for eliminating iterating over grid cells that don't matter
+    smerge_file = xr.open_dataset(f'{smerge_dir}/smerge_sm_merged_remap.nc4')
+    smerge_file_julian = smerge_file.copy()
+    
   
     #get julian day, timestamps, and the datetime
     def date_file_info(str _date,str variable):
@@ -149,9 +152,9 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
             if _date == '1999-01-10':
                 print(f'Working on lat {i_Y} and lon {i_X}')
 
-            #(np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7))
+            #
             #only work on grid cells with values like SMERGE
-            if (np.count_nonzero(np.isnan(eddi_file.EDDI[0,0,10,i_Y,i_X].values)) !=1)or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7)):
+            if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7)):
 
                 def dict1_subx2():
                     cdef dict summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3
@@ -372,6 +375,8 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                             fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
                             
                             file_open = xr.open_dataset(fileOut)
+                            file_open.close()
+                            
                             index_val=np.where(lead_values == int(i_val))[0][0]
                             
                             #Add data to netcdf file
@@ -390,8 +395,6 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                 #release some memory (doesn't work as well as I'd hoped)
                 # del EDDI_next_dict_modN, EDDI_dict_modN, ETo_7_day_average_modN
                 
-    print(f'Completed date {_date} and saved into {home_dir}.')
-
     os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
     return()
 #END FUNCTION
