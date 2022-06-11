@@ -108,7 +108,7 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
     init_date_list = return_date_list()    
 
 
-    print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc in {home_dir}.') 
+    print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
     # os.chdir(f'{home_dir}/RZSM_anomaly_mod{model_NUM}')
     cdef int week_lead
     #Because of indexing, week lead actually needs to be 6 for slicing
@@ -401,6 +401,8 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                             fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
                             
                             file_open = xr.open_dataset(fileOut)
+                            file_open.close()
+                            
                             index_val=np.where(lead_values == int(i_val))[0][0]
                             
                             #Add data to netcdf file
@@ -423,6 +425,8 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
     #save the dates that were completed to not re-run
 
     os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt')
+    
+    return()
 #%%
 
 #_date=init_date_list[0]
@@ -444,6 +448,6 @@ for _date in init_date_list[start_:end_]:
         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/*.npy {new_directory}/')
         RZSM_anomaly(start_,end_,init_date_list, _date,var)
         count+=1
-        if count == 40:
+        if count == 25:
             print('Done')
             break
