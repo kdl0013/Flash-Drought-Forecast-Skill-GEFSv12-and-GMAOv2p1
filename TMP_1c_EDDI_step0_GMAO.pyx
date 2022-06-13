@@ -21,10 +21,10 @@ import gc
 
 
 
-dir1 = 'main_dir'
-start_ = int('start_init')
-end_ = start_ + int('init_step')
-model_NAM1 = 'model_name'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+start_ = int('0')
+end_ = start_ + int('25')
+model_NAM1 = 'GMAO'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # start_ = int('0')
@@ -97,7 +97,7 @@ def EDDI_function(int start_,int end_,list init_date_list,str _date,str var):
             
     init_date_list = return_date_list()    
 
-    print(f'Calculating EDDI anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
+    print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
     os.chdir(f'{home_dir}')
     cdef int week_lead
     week_lead = 7
@@ -126,7 +126,7 @@ def EDDI_function(int start_,int end_,list init_date_list,str _date,str var):
         
         if pd.to_datetime(_date).year % 4 == 0:
             subtract = 366
-            a_julian_out2 = [i-subtract if i>366 else i for i in a_julian_out] 
+            a_julian_out2 = [i-subtract if i>366 else i for i in a_julian_out]
         else:
             subtract = 365
             a_julian_out2 = [i-subtract if i>365 else i for i in a_julian_out]

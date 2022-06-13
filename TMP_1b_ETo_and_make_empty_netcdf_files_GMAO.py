@@ -410,7 +410,7 @@ def make_empty_nc_files(init_date_list,T_FILE):
    
 #Create EDDI files           
 make_empty_nc_files(init_date_list = init_date_list,T_FILE = T_FILE)
-#%%
+#%%'''Make empty files to keep track of anomaly calculations'''
 
 #Make a completed list file for EDDI, add new names to next code block
 new_eddi = f'EDDI_completed_nc_{mod}.txt'
