@@ -23,18 +23,6 @@ subx=$data_d/SubX/${model}
 cy=cython_scripts
 mkdir $data_s/$cy
 
-#Make empty directores for later processing
-for num in {0..3};
-do
-mkdir $subx/EDDI_mod$num
-mkdir $subx/ETo_anomaly_mod$num
-mkdir $subx/RZSM_anomaly_mod$num;
-done
-
-
-mk_directories
-
-
 
 # --- Functions
 mk_TMP_script () {
@@ -49,9 +37,9 @@ mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py"
 
 #convert soil moisture to m3/m3
 
-cat 1b2_convert_SM_to_m3_m3.py | sed 's|main_dir|'${main_directory}'|g' > $data_s/TMP_1b2_convert_SM_to_m3_m3.py
+cat 1b2_convert_RZSM_to_m3_m3.py | sed 's|main_dir|'${main_directory}'|g' > $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
 
-python3 $data_s/TMP_1b2_convert_SM_to_m3_m3.py
+python3 $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
 
 ######## Reference ETo, EDDI, gridMET data creation. Historical and SubX #######
 #Create multiple scripts for multiprocessing of EDDI, RZSM, and ETo anomalies
@@ -74,12 +62,10 @@ cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' 
 done
 }
 
-
 #Create tmp scripts to run later
 mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
 mk_anomaly_script_RZSM_ETo_EDDI "1e_anomaly_RZSM.pyx"
 mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.pyx"
-
 
 chmod +x *.pyx
 chmod +x *.py

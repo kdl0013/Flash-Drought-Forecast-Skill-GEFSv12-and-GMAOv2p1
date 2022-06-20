@@ -67,11 +67,9 @@ for file in sorted(glob(file_list)):
     if np.count_nonzero(np.isnan(open_m3_m3.SM_SubX_m3_m3_value[0,:,:,:,:].values)) == 286740:
         missing_originial_RZSM_m3_m3.append(file)
 
-missing_anomaly_RZSM
-missing_original_RZSM
-missing_originial_RZSM_m3_m3
-
-
+print(f'Missing data from {len(missing_anomaly_RZSM)} RZSM anomaly files')
+print(f'Missing data from {len(missing_original_RZSM)} RZSM original (subx mrso file) files')
+print(f'Missing data from {len(missing_originial_RZSM_m3_m3)} RZSM m3/m3 subx files')
 #%%
 var = 'ETo'
 
@@ -96,9 +94,11 @@ for file in sorted(glob(file_list)):
     if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
         missing_original_ETo.append(file)
 
+print(f'Missing data from {len(missing_anomaly_ETo)} ETo anomaly files')
+print(f'Missing data from {len(missing_original_ETo)} ETo original (subx file)')
 
-missing_anomaly_ETo
-missing_original_ETo
+# missing_anomaly_ETo
+# missing_original_ETo
 #%%           
 #No anomalies for EDDI
 var = 'EDDI'
@@ -117,9 +117,10 @@ for file in sorted(glob(file_list)):
     therefore, this is a missing data file.
     '''
     if np.count_nonzero(np.isnan(open_f.EDDI[0,:,:,:,:].values)) == 286740:
-        missing_original_EDDI.append(file)
+        missing_original_EDDI.append({f'{file}':np.count_nonzero(np.isnan(open_f.EDDI[0,:,:,:,:].values))})
         
+print(f'Missing data from {len(missing_original_EDDI)} EDDI subx files')
 
-missing_original_EDDI
+# missing_original_EDDI
 
 
