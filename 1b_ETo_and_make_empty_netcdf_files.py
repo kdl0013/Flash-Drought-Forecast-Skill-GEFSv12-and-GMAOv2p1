@@ -371,6 +371,12 @@ def make_empty_nc_files(init_date_list,T_FILE):
                         attrs = dict(
                             Description = f'{desc}'),
                     )                    
+                    
+                    var_final.RZSM_anom[1,:,:,:,:] = np.nan
+                    #Drop S dimension to save storage space
+                    var_final = var_final.dropna(dim='S',how='all')
+                    
+                    
                 elif var == 'EDDI':
                     #save file as EDDI as netcdf
                     var_final = xr.Dataset(
@@ -385,7 +391,11 @@ def make_empty_nc_files(init_date_list,T_FILE):
                         ),
                         attrs = dict(
                             Description = f'{desc}'),
-                    )                    
+                    )                
+                    
+                    var_final.EDDI[1,:,:,:,:] = np.nan
+                    #Drop S dimension to save storage space
+                    var_final = var_final.dropna(dim='S',how='all')
                     
                 if var == 'ETo':
                     #save file as EDDI as netcdf
@@ -403,8 +413,16 @@ def make_empty_nc_files(init_date_list,T_FILE):
                             Description = f'{desc}'),
                     )                    
                     
+                    var_final.ETo_anom[1,:,:,:,:] = np.nan
+                    #Drop S dimension to save storage space
+                    var_final = var_final.dropna(dim='S',how='all')
 
                 var_final.to_netcdf(path = f'{home_dir}/{filename}_{_date}.nc4', mode ='w',engine='scipy')
+                #compress so that when I re-write the file, it is quicker
+                '''But this doesn't work after the file is re-read and re-saved'''
+                os.system(f'ncks -4 -L 1 {home_dir}/{filename}_{_date}.nc4 {home_dir}/{filename}_{_date}_test.nc4')
+                os.system(f'mv {home_dir}/{filename}_{_date}_test.nc4 {home_dir}/{filename}_{_date}.nc4')
+                
                 var_final.close()
 
    
@@ -428,7 +446,7 @@ for name in [new_eddi,new_eto_anom,new_rzsm]:
         os.system(f'echo "Completed {name_index}" > {script_dir}/{name}')
 
 #%%
-
+'''Previous attempts to calculate reference ET'''
 
 
 # #%%

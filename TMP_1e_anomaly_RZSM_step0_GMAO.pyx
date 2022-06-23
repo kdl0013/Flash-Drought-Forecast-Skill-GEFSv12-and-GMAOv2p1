@@ -42,7 +42,7 @@ start_ = int('0')
 end_ = start_ + int('25')
 model_NAM1 = 'GMAO'
 
-# Test for 1 step size and model
+# # Test for 1 step size and model
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # start_ = int('0')
 # end_ = start_ + int('40')
@@ -99,16 +99,7 @@ This code is re-factored from 1b_EDDI.py
 def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
     #_date=init_date_list[0]
 
-    def return_date_list():
-        date_list = []
-        for file in sorted(glob(f'{rzsm_dir}/{var}*.nc4')):
-            date_list.append(file[-14:-4])
-        return(date_list)
-            
-    init_date_list = return_date_list()    
-
-
-    print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc in {home_dir}.') 
+    print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
     # os.chdir(f'{home_dir}/RZSM_anomaly_mod{model_NUM}')
     cdef int week_lead
     #Because of indexing, week lead actually needs to be 6 for slicing
@@ -119,7 +110,7 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
     smerge_file_julian = smerge_file.copy()
     
     #get julian day, timestamps, and the datetime
-    def date_file_info(str _date,str variable):
+    def date_file_info( _date, variable):
         cdef int start_julian, subtract
         cdef list a_date_out, a_julian_out,a_julian_out2
         
@@ -192,18 +183,18 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                         #Choose just model = 0 because we just need to know if there are 7-days total in any model
                         # print(idx)
                         try:
-                            if idx % 7 == 0:
+                            if idx % 7 == 0 and idx !=0:
                                 summation_ETo_mod0[f'{julian_d}']=[]
-                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                        
+                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                
                                 summation_ETo_mod1[f'{julian_d}']=[]
-                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
     
                                 summation_ETo_mod2[f'{julian_d}']=[]
-                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
     
                                 summation_ETo_mod3[f'{julian_d}']=[]
-                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
                         except IndexError:
                             pass
                         #Index error exists because there is no data at the end of the file
@@ -257,12 +248,12 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                             for idx,val in enumerate(b_julian_out2):
                                 idx_lead = idx+week_lead
                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
-                                if idx % 7 == 0:
+                                if idx % 7 == 0 and idx != 0:
                                     try:
-                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
 
                                     #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
@@ -401,6 +392,8 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                             fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
                             
                             file_open = xr.open_dataset(fileOut)
+                            file_open.close()
+                            
                             index_val=np.where(lead_values == int(i_val))[0][0]
                             
                             #Add data to netcdf file
@@ -408,7 +401,6 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
- 
    
                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                             file_open.close()
@@ -416,18 +408,17 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                                            
                 add_to_nc_file(RZSM_next_dict_mod0,RZSM_next_dict_mod1,RZSM_next_dict_mod2,RZSM_next_dict_mod3)
                 
-                #release memory (didn't work)
-                # del EDDI_next_dict_modN, EDDI_dict_modN, ETo_7_day_modN
-                
     print(f'Completed date {_date} and saved into {home_dir}.')
+    
     #save the dates that were completed to not re-run
-
     os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt')
     
     return()
 #%%
 
-#_date=init_date_list[0]
+
+
+# _date=init_date_list[0]
 '''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
 completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
 try:
@@ -449,3 +440,13 @@ for _date in init_date_list[start_:end_]:
         if count == 25:
             print('Done')
             break
+
+
+# count=0
+# for _date in init_date_list[start_:end_]:    
+#     if start_ == 50 and _date == '2000-01-10':
+#         break
+#     else:
+#         RZSM_anomaly(start_,end_,init_date_list, _date,var)
+
+

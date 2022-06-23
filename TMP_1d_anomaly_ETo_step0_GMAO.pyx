@@ -170,19 +170,19 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                     
                     for idx,julian_d in enumerate(file_julian_list):
 
-                        if idx % 7 == 0:
+                        if idx % 7 == 0 and idx !=0:
                             try:
                                 summation_ETo_mod0[f'{julian_d}']=[]
-                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
                                 
                                 summation_ETo_mod1[f'{julian_d}']=[]
-                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
                                 
                                 summation_ETo_mod2[f'{julian_d}']=[]
-                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
                                 
                                 summation_ETo_mod3[f'{julian_d}']=[]
-                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
+                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
                             except IndexError:
                                 pass
 
@@ -236,12 +236,12 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                             for idx,val in enumerate(b_julian_out2):
                                 idx_lead = idx+week_lead
                                #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
-                                if idx % 7 == 0:
+                                if idx % 7 == 0 and idx != 0:
                                     try:
-                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.sel(lead=slice(julian_d-7,julian_d)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
                                    #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
                                         pass
@@ -384,7 +384,6 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                             file_open.ETo_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
                             file_open.ETo_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
                             file_open.ETo_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
-
    
                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                             file_open.close()
@@ -392,39 +391,33 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                     
                 add_to_nc_file(ETo_next_dict_mod0,ETo_next_dict_mod1,ETo_next_dict_mod2,ETo_next_dict_mod3)
                                 
-                #release some memory (doesn't work as well as I'd hoped)
-                # del EDDI_next_dict_modN, EDDI_dict_modN, ETo_7_day_average_modN
-                
-    os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
+    print(f'Completed date {_date} and saved into {home_dir}.')
+           
+    # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
     return()
 #END FUNCTION
 #%%
-'''For some odd reason, this function will keep allocating new memory (even though
-there is nothing visible in the function that I can remove). To get around this,
-it appears that I can only do 9 total dates between all 3 of my processes before
-memory gets too high (potential memory leak), so add a break'''
-
-
-#_date=init_date_list[0]
-'''Read ETo_completed_npy.txt file to not have to re-run extra code'''
-completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
-try:
-    #first line contains a header, nothing with dates
-    completed_dates = completed_dates[:,1]
-except IndexError:
-    completed_dates = ''
-# completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
-#only work on dates that aren't completed
-
-subset_completed_dates = [i[5:] for i in completed_dates]
-
+#Call function
 count=0
-for _date in init_date_list[start_:end_]:    
-    if _date[5:] not in subset_completed_dates:
-        ETo_anomaly(start_, end_, init_date_list, _date,var)
-        count+=1
-        if count == 25:
-            exit()
+for _date in init_date_list[start_:end_]:
+    ETo_anomaly(start_, end_, init_date_list, _date,var)
+    count+=1
+    if count == 24:
+        exit()
+
+# #_date=init_date_list[0]
+# '''Read ETo_completed_npy.txt file to not have to re-run extra code'''
+# completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
+# try:
+#     #first line contains a header, nothing with dates
+#     completed_dates = completed_dates[:,1]
+# except IndexError:
+#     completed_dates = ''
+# # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
+# #only work on dates that aren't completed
+
+# subset_completed_dates = [i[5:] for i in completed_dates]
+
 
 
 #Old way (this will help if I had to do every grid cell/lead anomalies)

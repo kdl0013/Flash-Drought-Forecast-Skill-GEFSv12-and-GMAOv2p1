@@ -14,14 +14,13 @@ module load nco
 #all other directories in order.
 model=GMAO 
 main_directory='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-processors=10
+processors=7
 
 data_d=$main_directory/Data
 data_s=$main_directory/Scripts
 
 subx=$data_d/SubX/${model}
-cy=cython_scripts
-mkdir $data_s/$cy
+mkdir $data_s/cython_scripts
 
 
 # --- Functions
@@ -64,8 +63,9 @@ done
 
 #Create tmp scripts to run later
 mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
-mk_anomaly_script_RZSM_ETo_EDDI "1e_anomaly_RZSM.pyx"
 mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.pyx"
+mk_anomaly_script_RZSM_ETo_EDDI "1e_anomaly_RZSM.pyx"
+
 
 chmod +x *.pyx
 chmod +x *.py
@@ -118,36 +118,13 @@ wait
 run_anomaly_RZSM_ETo_EDDI "RZSM"
 wait
 run_anomaly_RZSM_ETo_EDDI "EDDI"
-
-
-#Run ETo anomaly scripts
-for i in TMP_1d_anomaly_ETo*.py;do
-python3 $i &
-done
-
-
-#Combine all different models into 1 netcdf file and save in main_dir
-stitch_npy_files () {
-cat 1g_stitch_ETo_RZSM_EDDI_nc4.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|mod_name|'${model}'|g' | sed 's|variable|'$1'|g' > TMP_1g_stitch_"$1"_${model}.py 
-
-python3 TMP_1g_stitch_"$1"_${model}.py
-}
-
-stitch_npy_files 'EDDI'
-stitch_npy_files 'RZSM'
-stitch_npy_files 'ETo' 
-
-#delete old temp folders
-rm $subx/EDDI_mod*/ -r
-rm $subx/ETo_anomaly_mod*/ -r
-rm $subx/RZSM_anomaly_mod*/ -r
-rm $subx/*.npy
+wait
 
 #Create new dataset to compare the skill between models
 reformat_observations() {
-cat 1h_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1h_Obs_reformatted_to_SubX.py
+cat 1i_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX.py
 
-python3 TMP_1h_Obs_reformatted_to_SubX.py
+python3 TMP_1i_Obs_reformatted_to_SubX.py
 }
 
 reformat_observations #call function
