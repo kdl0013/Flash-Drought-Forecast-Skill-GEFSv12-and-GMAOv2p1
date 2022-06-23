@@ -431,15 +431,10 @@ except IndexError:
 #only work on dates that aren't completed
 subset_completed_dates = [i[5:] for i in completed_dates]
 
-count=0
 for _date in init_date_list[start_:end_]:    
     if _date[5:] not in subset_completed_dates:
-        # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/*.npy {new_directory}/')
         RZSM_anomaly(start_,end_,init_date_list, _date,var)
-        count+=1
-        if count == 25:
-            print('Done')
-            break
+
 
 
 # count=0

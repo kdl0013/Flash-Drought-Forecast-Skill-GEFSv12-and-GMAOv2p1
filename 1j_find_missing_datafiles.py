@@ -68,9 +68,6 @@ For more references and information, please visit:
 
 '''
 
-
-
-
 #Get date list
 test_var='ETo'
 
@@ -82,26 +79,6 @@ def return_date_list():
         
 init_date_list = return_date_list() 
 
-#%%
-'''Step 1
-re-open anomaly files (ETo and RZSM) and then add the mask for np.nan based on HP_conus_mask
-'''
-
-var='RZSM'
-
-for date in init_date_list:
-    file_list = f'{var}_anomaly_{date}.nc4'
-    a = xr.open_dataset(file_list)
-    a.close()
-    
-    for Y in range(a.Y.shape[0]):
-        for X in range(a.X.shape[0]):
-            if HP_conus_mask.High_Plains[0,Y,X].values in range(1,7):
-                a[f'{var}_anom'][:,:,:,Y,X] = np.nan
-                
-    a.to_netcdf('test.nc4')
-
-
 
 #%%
 '''Now we want to open up each ETo- and RZSM anomaly file (also EDDI), to see
@@ -112,10 +89,11 @@ file_list = f'{var}_anomaly_*.nc4'
 sorted(glob(file_list))
 #test with single file to see 
 #RZSM_anomaly
-missing_anomaly_RZSM= {} #subx missing anomaly data files
+missing_anomaly_RZSM= [] #subx missing anomaly data files
 missing_original_RZSM = [] #mrso missing data files
 missing_originial_RZSM_m3_m3 = [] #missing converted mrso m3/m3 files
 missing_SMERGE_to_SubX_files = [] #when we convert smerge format to subx format for ACC comparison
+
 
 
 for file in sorted(glob(file_list)):
@@ -126,8 +104,9 @@ for file in sorted(glob(file_list)):
     therefore, this is a missing data file.
     '''
     #anomaly. I inspected a file that was filled correctly and it had 528 missing value
-    if np.count_nonzero(open_f.RZSM_anom[0,:,:,:,:].values < 0) < 528:
-        missing_anomaly_RZSM[file] = np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values)) 
+    #If file is completely empty, the file will have all zeros and a unique value of only 1
+    if len(np.unique(open_f.RZSM_anom[:,:,::7,:,:])) <= 1:
+        missing_anomaly_RZSM.append(file)    
         
     open_mrso = xr.open_dataset(f'mrso_{model_NAM}_{file[-14:-4]}.nc') 
     if np.count_nonzero(np.isnan(open_mrso.mrso[0,:,:,:,:].values)) == 286740:
@@ -165,7 +144,8 @@ for file in sorted(glob(file_list)):
     of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
     therefore, this is a missing data file.
     '''
-    if np.count_nonzero(np.isnan(open_f.ETo_anom[0,:,:,:,:].values)) == 138240:
+    #If file is completely empty, the file will have all zeros and a unique value of only 1
+    if len(np.unique(open_f.ETo_anom[:,:,::7,:,:])) <= 1:
         missing_anomaly_ETo.append(file)
         
     open_ETo = xr.open_dataset(f'{var}_{file[-14:-4]}.nc4') 

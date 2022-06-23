@@ -1491,6 +1491,20 @@ static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 /* ImportFrom.proto */
 static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
 
+/* GetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
+#endif
+
+/* PySequenceContains.proto */
+static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
+    int result = PySequence_Contains(seq, item);
+    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
+}
+
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -1573,10 +1587,9 @@ extern int __pyx_module_is_main_TMP_1d_anomaly_ETo_step25_GMAO;
 int __pyx_module_is_main_TMP_1d_anomaly_ETo_step25_GMAO = 0;
 
 /* Implementation of 'TMP_1d_anomaly_ETo_step25_GMAO' */
-static PyObject *__pyx_builtin_exit;
+static PyObject *__pyx_builtin_IndexError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_enumerate;
-static PyObject *__pyx_builtin_IndexError;
 static PyObject *__pyx_builtin_KeyError;
 static const char __pyx_k_[] = "/";
 static const char __pyx_k_S[] = "S";
@@ -1593,7 +1606,9 @@ static const char __pyx_k_os[] = "os";
 static const char __pyx_k_pd[] = "pd";
 static const char __pyx_k_xr[] = "xr";
 static const char __pyx_k_ETo[] = "/ETo*";
-static const char __pyx_k__16[] = ".";
+static const char __pyx_k__16[] = " >> ";
+static const char __pyx_k__17[] = ".";
+static const char __pyx_k__24[] = "";
 static const char __pyx_k_a_i[] = "a_i";
 static const char __pyx_k_end[] = "end_";
 static const char __pyx_k_i_X[] = "i_X";
@@ -1601,7 +1616,9 @@ static const char __pyx_k_i_Y[] = "i_Y";
 static const char __pyx_k_idx[] = "idx";
 static const char __pyx_k_nc4[] = "*.nc4";
 static const char __pyx_k_npy[] = ".npy";
+static const char __pyx_k_str[] = "str";
 static const char __pyx_k_sys[] = "sys";
+static const char __pyx_k_txt[] = ".txt";
 static const char __pyx_k_val[] = "val";
 static const char __pyx_k_var[] = "var";
 static const char __pyx_k_GMAO[] = "GMAO";
@@ -1610,7 +1627,6 @@ static const char __pyx_k_copy[] = "copy";
 static const char __pyx_k_date[] = "_date";
 static const char __pyx_k_days[] = "days";
 static const char __pyx_k_dir1[] = "dir1";
-static const char __pyx_k_exit[] = "exit";
 static const char __pyx_k_file[] = "file";
 static const char __pyx_k_glob[] = "glob";
 static const char __pyx_k_isel[] = "isel";
@@ -1630,6 +1646,7 @@ static const char __pyx_k_array[] = "array";
 static const char __pyx_k_chdir[] = "chdir";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_count[] = "count";
+static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_end_2[] = "end";
 static const char __pyx_k_i_val[] = "i_val";
 static const char __pyx_k_idx_2[] = "idx_";
@@ -1652,6 +1669,7 @@ static const char __pyx_k_format[] = "format";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_open_f[] = "open_f";
 static const char __pyx_k_pandas[] = "pandas";
+static const char __pyx_k_system[] = "system";
 static const char __pyx_k_values[] = "values";
 static const char __pyx_k_xarray[] = "xarray";
 static const char __pyx_k_Scripts[] = "/Scripts";
@@ -1659,6 +1677,7 @@ static const char __pyx_k_and_lon[] = " and lon ";
 static const char __pyx_k_date_in[] = "date_in";
 static const char __pyx_k_fileOut[] = "fileOut";
 static const char __pyx_k_listdir[] = "listdir";
+static const char __pyx_k_loadtxt[] = "loadtxt";
 static const char __pyx_k_nanmean[] = "nanmean";
 static const char __pyx_k_tm_yday[] = "tm_yday";
 static const char __pyx_k_ETo_anom[] = "ETo_anom";
@@ -1738,8 +1757,10 @@ static const char __pyx_k_Working_on_lat[] = "Working on lat ";
 static const char __pyx_k_add_to_nc_file[] = "add_to_nc_file";
 static const char __pyx_k_and_saved_into[] = " and saved into ";
 static const char __pyx_k_date_file_info[] = "date_file_info";
+static const char __pyx_k_echo_Completed[] = "echo Completed ";
 static const char __pyx_k_init_date_list[] = "init_date_list";
 static const char __pyx_k_subset_by_date[] = "subset_by_date";
+static const char __pyx_k_completed_dates[] = "completed_dates";
 static const char __pyx_k_compute_anomaly[] = "compute_anomaly";
 static const char __pyx_k_EDDI_final_dict0[] = "EDDI_final_dict0";
 static const char __pyx_k_EDDI_final_dict1[] = "EDDI_final_dict1";
@@ -1762,14 +1783,17 @@ static const char __pyx_k_anomaly_on_SubX_for[] = " anomaly on SubX for ";
 static const char __pyx_k_file_timestamp_list[] = "file_timestamp_list";
 static const char __pyx_k_out_eddi_dictionary[] = "out_eddi_dictionary";
 static const char __pyx_k_and_saving_as_nc4_in[] = " and saving as .nc4 in ";
+static const char __pyx_k_completed_anomaly_nc[] = "_completed_anomaly_nc_";
 static const char __pyx_k_dic_init_and_eddi_val[] = "dic_init_and_eddi_val";
 static const char __pyx_k_ETo_7_day_average_mod0[] = "ETo_7_day_average_mod0";
 static const char __pyx_k_ETo_7_day_average_mod1[] = "ETo_7_day_average_mod1";
 static const char __pyx_k_ETo_7_day_average_mod2[] = "ETo_7_day_average_mod2";
 static const char __pyx_k_ETo_7_day_average_mod3[] = "ETo_7_day_average_mod3";
 static const char __pyx_k_ETo_7_day_average_modN[] = "ETo_7_day_average_modN";
+static const char __pyx_k_subset_completed_dates[] = "subset_completed_dates";
 static const char __pyx_k_Data_SMERGE_SM_Raw_data[] = "/Data/SMERGE_SM/Raw_data";
 static const char __pyx_k_improve_RZSM_dictionary[] = "improve_RZSM_dictionary";
+static const char __pyx_k_ETo_completed_anomaly_nc[] = "/ETo_completed_anomaly_nc_";
 static const char __pyx_k_smerge_sm_merged_remap_nc4[] = "/smerge_sm_merged_remap.nc4";
 static const char __pyx_k_final_out_dictionary_all_eddi[] = "final_out_dictionary_all_eddi";
 static const char __pyx_k_ETo_anomaly_locals_dict1_subx2[] = "ETo_anomaly.<locals>.dict1_subx2";
@@ -1811,6 +1835,7 @@ static PyObject *__pyx_n_s_ETo_anomaly_locals_date_file_inf;
 static PyObject *__pyx_n_s_ETo_anomaly_locals_dict1_subx2;
 static PyObject *__pyx_n_s_ETo_anomaly_locals_improve_RZSM;
 static PyObject *__pyx_n_s_ETo_anomaly_locals_return_date_l;
+static PyObject *__pyx_kp_u_ETo_completed_anomaly_nc;
 static PyObject *__pyx_n_s_ETo_dict_mod0;
 static PyObject *__pyx_n_s_ETo_dict_mod1;
 static PyObject *__pyx_n_s_ETo_dict_mod2;
@@ -1834,6 +1859,8 @@ static PyObject *__pyx_kp_u_Working_on_lat;
 static PyObject *__pyx_n_s_X;
 static PyObject *__pyx_n_s_Y;
 static PyObject *__pyx_kp_u__16;
+static PyObject *__pyx_kp_u__17;
+static PyObject *__pyx_kp_s__24;
 static PyObject *__pyx_n_u__3;
 static PyObject *__pyx_n_s_a_date_in;
 static PyObject *__pyx_n_s_a_date_out;
@@ -1857,6 +1884,8 @@ static PyObject *__pyx_n_s_b_julian_out2;
 static PyObject *__pyx_n_s_chdir;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_close;
+static PyObject *__pyx_n_u_completed_anomaly_nc;
+static PyObject *__pyx_n_s_completed_dates;
 static PyObject *__pyx_n_s_compute_anomaly;
 static PyObject *__pyx_n_s_copy;
 static PyObject *__pyx_n_s_count;
@@ -1874,13 +1903,14 @@ static PyObject *__pyx_n_s_dic_init_and_eddi_val;
 static PyObject *__pyx_n_s_dict1_subx2;
 static PyObject *__pyx_n_s_dir1;
 static PyObject *__pyx_n_s_dt;
+static PyObject *__pyx_n_s_dtype;
+static PyObject *__pyx_kp_u_echo_Completed;
 static PyObject *__pyx_n_s_elevation_dir;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_end_2;
 static PyObject *__pyx_n_s_end_julian;
 static PyObject *__pyx_n_s_engine;
 static PyObject *__pyx_n_s_enumerate;
-static PyObject *__pyx_n_s_exit;
 static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_fileOut;
 static PyObject *__pyx_n_s_file_datetime;
@@ -1921,6 +1951,7 @@ static PyObject *__pyx_n_s_lead_values;
 static PyObject *__pyx_n_s_len_text;
 static PyObject *__pyx_n_s_listdir;
 static PyObject *__pyx_n_s_load;
+static PyObject *__pyx_n_s_loadtxt;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_mean_calc;
 static PyObject *__pyx_n_s_mean_value;
@@ -1957,9 +1988,11 @@ static PyObject *__pyx_n_s_split;
 static PyObject *__pyx_n_s_start;
 static PyObject *__pyx_n_s_start_date;
 static PyObject *__pyx_n_s_start_julian;
+static PyObject *__pyx_n_s_str;
 static PyObject *__pyx_n_s_sub_keys;
 static PyObject *__pyx_n_s_sub_list;
 static PyObject *__pyx_n_s_subset_by_date;
+static PyObject *__pyx_n_s_subset_completed_dates;
 static PyObject *__pyx_n_s_subtract;
 static PyObject *__pyx_n_s_subx;
 static PyObject *__pyx_n_s_subx2;
@@ -1968,12 +2001,14 @@ static PyObject *__pyx_n_s_summation_ETo_mod1;
 static PyObject *__pyx_n_s_summation_ETo_mod2;
 static PyObject *__pyx_n_s_summation_ETo_mod3;
 static PyObject *__pyx_n_s_sys;
+static PyObject *__pyx_n_s_system;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_timedelta;
 static PyObject *__pyx_n_s_timetuple;
 static PyObject *__pyx_n_s_tm_yday;
 static PyObject *__pyx_n_s_to_datetime;
 static PyObject *__pyx_n_s_to_netcdf;
+static PyObject *__pyx_kp_u_txt;
 static PyObject *__pyx_n_s_val;
 static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_var;
@@ -2001,9 +2036,9 @@ static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
 static PyObject *__pyx_int_3;
 static PyObject *__pyx_int_4;
+static PyObject *__pyx_int_5;
 static PyObject *__pyx_int_6;
 static PyObject *__pyx_int_7;
-static PyObject *__pyx_int_24;
 static PyObject *__pyx_int_38;
 static PyObject *__pyx_int_365;
 static PyObject *__pyx_int_366;
@@ -2013,19 +2048,22 @@ static PyObject *__pyx_slice__2;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__8;
+static PyObject *__pyx_slice__22;
+static PyObject *__pyx_slice__25;
 static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__12;
 static PyObject *__pyx_tuple__14;
-static PyObject *__pyx_tuple__17;
-static PyObject *__pyx_tuple__19;
+static PyObject *__pyx_tuple__18;
+static PyObject *__pyx_tuple__20;
+static PyObject *__pyx_tuple__23;
 static PyObject *__pyx_codeobj__5;
 static PyObject *__pyx_codeobj__7;
 static PyObject *__pyx_codeobj__9;
 static PyObject *__pyx_codeobj__11;
 static PyObject *__pyx_codeobj__13;
 static PyObject *__pyx_codeobj__15;
-static PyObject *__pyx_codeobj__18;
-static PyObject *__pyx_codeobj__20;
+static PyObject *__pyx_codeobj__19;
+static PyObject *__pyx_codeobj__21;
 /* Late includes */
 
 /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":50
@@ -7822,7 +7860,7 @@ static PyObject *__pyx_pf_30TMP_1d_anomaly_ETo_step25_GMAO_2ETo_anomaly(CYTHON_U
  * 
  *                 add_to_nc_file(ETo_next_dict_mod0,ETo_next_dict_mod1,ETo_next_dict_mod2,ETo_next_dict_mod3)             # <<<<<<<<<<<<<<
  * 
- *     print(f'Completed date {_date} and saved into {home_dir}.')
+ * 
  */
         if (!(likely(PyDict_CheckExact(__pyx_v_ETo_next_dict_mod0))||((__pyx_v_ETo_next_dict_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_ETo_next_dict_mod0)->tp_name), 0))) __PYX_ERR(0, 392, __pyx_L1_error)
         if (!(likely(PyDict_CheckExact(__pyx_v_ETo_next_dict_mod1))||((__pyx_v_ETo_next_dict_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_ETo_next_dict_mod1)->tp_name), 0))) __PYX_ERR(0, 392, __pyx_L1_error)
@@ -7861,14 +7899,94 @@ static PyObject *__pyx_pf_30TMP_1d_anomaly_ETo_step25_GMAO_2ETo_anomaly(CYTHON_U
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":394
- *                 add_to_nc_file(ETo_next_dict_mod0,ETo_next_dict_mod1,ETo_next_dict_mod2,ETo_next_dict_mod3)
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":396
  * 
+ *     #save the dates that were completed to not re-run
+ *     os.system(f'echo Completed {_date} >> {script_dir}/ETo_completed_anomaly_nc_{model_NAM1}.txt')             # <<<<<<<<<<<<<<
+ *     print(f'Completed date {_date} and saved into {home_dir}.')
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_os); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_system); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = PyTuple_New(7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_2 = 0;
+  __pyx_t_3 = 127;
+  __Pyx_INCREF(__pyx_kp_u_echo_Completed);
+  __pyx_t_2 += 15;
+  __Pyx_GIVEREF(__pyx_kp_u_echo_Completed);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_kp_u_echo_Completed);
+  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_17);
+  __Pyx_GIVEREF(__pyx_t_17);
+  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_17);
+  __pyx_t_17 = 0;
+  __Pyx_INCREF(__pyx_kp_u__16);
+  __pyx_t_2 += 4;
+  __Pyx_GIVEREF(__pyx_kp_u__16);
+  PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_kp_u__16);
+  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_script_dir); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_17, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
+  __Pyx_GIVEREF(__pyx_t_9);
+  PyTuple_SET_ITEM(__pyx_t_4, 3, __pyx_t_9);
+  __pyx_t_9 = 0;
+  __Pyx_INCREF(__pyx_kp_u_ETo_completed_anomaly_nc);
+  __pyx_t_2 += 26;
+  __Pyx_GIVEREF(__pyx_kp_u_ETo_completed_anomaly_nc);
+  PyTuple_SET_ITEM(__pyx_t_4, 4, __pyx_kp_u_ETo_completed_anomaly_nc);
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_17);
+  __Pyx_GIVEREF(__pyx_t_17);
+  PyTuple_SET_ITEM(__pyx_t_4, 5, __pyx_t_17);
+  __pyx_t_17 = 0;
+  __Pyx_INCREF(__pyx_kp_u_txt);
+  __pyx_t_2 += 4;
+  __Pyx_GIVEREF(__pyx_kp_u_txt);
+  PyTuple_SET_ITEM(__pyx_t_4, 6, __pyx_kp_u_txt);
+  __pyx_t_17 = __Pyx_PyUnicode_Join(__pyx_t_4, 7, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_8 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_4, __pyx_t_17) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_17);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":397
+ *     #save the dates that were completed to not re-run
+ *     os.system(f'echo Completed {_date} >> {script_dir}/ETo_completed_anomaly_nc_{model_NAM1}.txt')
  *     print(f'Completed date {_date} and saved into {home_dir}.')             # <<<<<<<<<<<<<<
  * 
  *     # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
  */
-  __pyx_t_8 = PyTuple_New(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 394, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 397, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
@@ -7876,38 +7994,38 @@ static PyObject *__pyx_pf_30TMP_1d_anomaly_ETo_step25_GMAO_2ETo_anomaly(CYTHON_U
   __pyx_t_2 += 15;
   __Pyx_GIVEREF(__pyx_kp_u_Completed_date);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_kp_u_Completed_date);
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 394, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
-  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_4);
-  __pyx_t_4 = 0;
+  __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_1);
+  __pyx_t_1 = 0;
   __Pyx_INCREF(__pyx_kp_u_and_saved_into);
   __pyx_t_2 += 16;
   __Pyx_GIVEREF(__pyx_kp_u_and_saved_into);
   PyTuple_SET_ITEM(__pyx_t_8, 2, __pyx_kp_u_and_saved_into);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_home_dir); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 394, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 394, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_home_dir); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 397, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_3;
-  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_8, 3, __pyx_t_1);
-  __pyx_t_1 = 0;
-  __Pyx_INCREF(__pyx_kp_u__16);
-  __pyx_t_2 += 1;
-  __Pyx_GIVEREF(__pyx_kp_u__16);
-  PyTuple_SET_ITEM(__pyx_t_8, 4, __pyx_kp_u__16);
-  __pyx_t_1 = __Pyx_PyUnicode_Join(__pyx_t_8, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 394, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 394, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 397, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_17);
+  __Pyx_GIVEREF(__pyx_t_17);
+  PyTuple_SET_ITEM(__pyx_t_8, 3, __pyx_t_17);
+  __pyx_t_17 = 0;
+  __Pyx_INCREF(__pyx_kp_u__17);
+  __pyx_t_2 += 1;
+  __Pyx_GIVEREF(__pyx_kp_u__17);
+  PyTuple_SET_ITEM(__pyx_t_8, 4, __pyx_kp_u__17);
+  __pyx_t_17 = __Pyx_PyUnicode_Join(__pyx_t_8, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 397, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  if (__Pyx_PrintOne(0, __pyx_t_17) < 0) __PYX_ERR(0, 397, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":397
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":400
  * 
  *     # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
  *     return()             # <<<<<<<<<<<<<<
@@ -8194,6 +8312,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ETo_anomaly_locals_dict1_subx2, __pyx_k_ETo_anomaly_locals_dict1_subx2, sizeof(__pyx_k_ETo_anomaly_locals_dict1_subx2), 0, 0, 1, 1},
   {&__pyx_n_s_ETo_anomaly_locals_improve_RZSM, __pyx_k_ETo_anomaly_locals_improve_RZSM, sizeof(__pyx_k_ETo_anomaly_locals_improve_RZSM), 0, 0, 1, 1},
   {&__pyx_n_s_ETo_anomaly_locals_return_date_l, __pyx_k_ETo_anomaly_locals_return_date_l, sizeof(__pyx_k_ETo_anomaly_locals_return_date_l), 0, 0, 1, 1},
+  {&__pyx_kp_u_ETo_completed_anomaly_nc, __pyx_k_ETo_completed_anomaly_nc, sizeof(__pyx_k_ETo_completed_anomaly_nc), 0, 1, 0, 0},
   {&__pyx_n_s_ETo_dict_mod0, __pyx_k_ETo_dict_mod0, sizeof(__pyx_k_ETo_dict_mod0), 0, 0, 1, 1},
   {&__pyx_n_s_ETo_dict_mod1, __pyx_k_ETo_dict_mod1, sizeof(__pyx_k_ETo_dict_mod1), 0, 0, 1, 1},
   {&__pyx_n_s_ETo_dict_mod2, __pyx_k_ETo_dict_mod2, sizeof(__pyx_k_ETo_dict_mod2), 0, 0, 1, 1},
@@ -8217,6 +8336,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_X, __pyx_k_X, sizeof(__pyx_k_X), 0, 0, 1, 1},
   {&__pyx_n_s_Y, __pyx_k_Y, sizeof(__pyx_k_Y), 0, 0, 1, 1},
   {&__pyx_kp_u__16, __pyx_k__16, sizeof(__pyx_k__16), 0, 1, 0, 0},
+  {&__pyx_kp_u__17, __pyx_k__17, sizeof(__pyx_k__17), 0, 1, 0, 0},
+  {&__pyx_kp_s__24, __pyx_k__24, sizeof(__pyx_k__24), 0, 0, 1, 0},
   {&__pyx_n_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 1},
   {&__pyx_n_s_a_date_in, __pyx_k_a_date_in, sizeof(__pyx_k_a_date_in), 0, 0, 1, 1},
   {&__pyx_n_s_a_date_out, __pyx_k_a_date_out, sizeof(__pyx_k_a_date_out), 0, 0, 1, 1},
@@ -8240,6 +8361,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_chdir, __pyx_k_chdir, sizeof(__pyx_k_chdir), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
+  {&__pyx_n_u_completed_anomaly_nc, __pyx_k_completed_anomaly_nc, sizeof(__pyx_k_completed_anomaly_nc), 0, 1, 0, 1},
+  {&__pyx_n_s_completed_dates, __pyx_k_completed_dates, sizeof(__pyx_k_completed_dates), 0, 0, 1, 1},
   {&__pyx_n_s_compute_anomaly, __pyx_k_compute_anomaly, sizeof(__pyx_k_compute_anomaly), 0, 0, 1, 1},
   {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
   {&__pyx_n_s_count, __pyx_k_count, sizeof(__pyx_k_count), 0, 0, 1, 1},
@@ -8257,13 +8380,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_dict1_subx2, __pyx_k_dict1_subx2, sizeof(__pyx_k_dict1_subx2), 0, 0, 1, 1},
   {&__pyx_n_s_dir1, __pyx_k_dir1, sizeof(__pyx_k_dir1), 0, 0, 1, 1},
   {&__pyx_n_s_dt, __pyx_k_dt, sizeof(__pyx_k_dt), 0, 0, 1, 1},
+  {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
+  {&__pyx_kp_u_echo_Completed, __pyx_k_echo_Completed, sizeof(__pyx_k_echo_Completed), 0, 1, 0, 0},
   {&__pyx_n_s_elevation_dir, __pyx_k_elevation_dir, sizeof(__pyx_k_elevation_dir), 0, 0, 1, 1},
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_end_2, __pyx_k_end_2, sizeof(__pyx_k_end_2), 0, 0, 1, 1},
   {&__pyx_n_s_end_julian, __pyx_k_end_julian, sizeof(__pyx_k_end_julian), 0, 0, 1, 1},
   {&__pyx_n_s_engine, __pyx_k_engine, sizeof(__pyx_k_engine), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
-  {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_fileOut, __pyx_k_fileOut, sizeof(__pyx_k_fileOut), 0, 0, 1, 1},
   {&__pyx_n_s_file_datetime, __pyx_k_file_datetime, sizeof(__pyx_k_file_datetime), 0, 0, 1, 1},
@@ -8304,6 +8428,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_len_text, __pyx_k_len_text, sizeof(__pyx_k_len_text), 0, 0, 1, 1},
   {&__pyx_n_s_listdir, __pyx_k_listdir, sizeof(__pyx_k_listdir), 0, 0, 1, 1},
   {&__pyx_n_s_load, __pyx_k_load, sizeof(__pyx_k_load), 0, 0, 1, 1},
+  {&__pyx_n_s_loadtxt, __pyx_k_loadtxt, sizeof(__pyx_k_loadtxt), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_mean_calc, __pyx_k_mean_calc, sizeof(__pyx_k_mean_calc), 0, 0, 1, 1},
   {&__pyx_n_s_mean_value, __pyx_k_mean_value, sizeof(__pyx_k_mean_value), 0, 0, 1, 1},
@@ -8340,9 +8465,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
   {&__pyx_n_s_start_date, __pyx_k_start_date, sizeof(__pyx_k_start_date), 0, 0, 1, 1},
   {&__pyx_n_s_start_julian, __pyx_k_start_julian, sizeof(__pyx_k_start_julian), 0, 0, 1, 1},
+  {&__pyx_n_s_str, __pyx_k_str, sizeof(__pyx_k_str), 0, 0, 1, 1},
   {&__pyx_n_s_sub_keys, __pyx_k_sub_keys, sizeof(__pyx_k_sub_keys), 0, 0, 1, 1},
   {&__pyx_n_s_sub_list, __pyx_k_sub_list, sizeof(__pyx_k_sub_list), 0, 0, 1, 1},
   {&__pyx_n_s_subset_by_date, __pyx_k_subset_by_date, sizeof(__pyx_k_subset_by_date), 0, 0, 1, 1},
+  {&__pyx_n_s_subset_completed_dates, __pyx_k_subset_completed_dates, sizeof(__pyx_k_subset_completed_dates), 0, 0, 1, 1},
   {&__pyx_n_s_subtract, __pyx_k_subtract, sizeof(__pyx_k_subtract), 0, 0, 1, 1},
   {&__pyx_n_s_subx, __pyx_k_subx, sizeof(__pyx_k_subx), 0, 0, 1, 1},
   {&__pyx_n_s_subx2, __pyx_k_subx2, sizeof(__pyx_k_subx2), 0, 0, 1, 1},
@@ -8351,12 +8478,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_summation_ETo_mod2, __pyx_k_summation_ETo_mod2, sizeof(__pyx_k_summation_ETo_mod2), 0, 0, 1, 1},
   {&__pyx_n_s_summation_ETo_mod3, __pyx_k_summation_ETo_mod3, sizeof(__pyx_k_summation_ETo_mod3), 0, 0, 1, 1},
   {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
+  {&__pyx_n_s_system, __pyx_k_system, sizeof(__pyx_k_system), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_timedelta, __pyx_k_timedelta, sizeof(__pyx_k_timedelta), 0, 0, 1, 1},
   {&__pyx_n_s_timetuple, __pyx_k_timetuple, sizeof(__pyx_k_timetuple), 0, 0, 1, 1},
   {&__pyx_n_s_tm_yday, __pyx_k_tm_yday, sizeof(__pyx_k_tm_yday), 0, 0, 1, 1},
   {&__pyx_n_s_to_datetime, __pyx_k_to_datetime, sizeof(__pyx_k_to_datetime), 0, 0, 1, 1},
   {&__pyx_n_s_to_netcdf, __pyx_k_to_netcdf, sizeof(__pyx_k_to_netcdf), 0, 0, 1, 1},
+  {&__pyx_kp_u_txt, __pyx_k_txt, sizeof(__pyx_k_txt), 0, 1, 0, 0},
   {&__pyx_n_s_val, __pyx_k_val, sizeof(__pyx_k_val), 0, 0, 1, 1},
   {&__pyx_n_s_values, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
   {&__pyx_n_s_var, __pyx_k_var, sizeof(__pyx_k_var), 0, 0, 1, 1},
@@ -8372,10 +8501,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_exit = __Pyx_GetBuiltinName(__pyx_n_s_exit); if (!__pyx_builtin_exit) __PYX_ERR(0, 406, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 414, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 149, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 171, __pyx_L1_error)
-  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 186, __pyx_L1_error)
   __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 246, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -8476,10 +8604,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     date_list = []
  *     for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
  */
-  __pyx_tuple__17 = PyTuple_Pack(2, __pyx_n_s_date_list, __pyx_n_s_file); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1d_anomaly_ETo_step25_GMAO_p, __pyx_n_s_return_date_list, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_tuple__18 = PyTuple_Pack(2, __pyx_n_s_date_list, __pyx_n_s_file); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__18);
+  __Pyx_GIVEREF(__pyx_tuple__18);
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1d_anomaly_ETo_step25_GMAO_p, __pyx_n_s_return_date_list, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 50, __pyx_L1_error)
 
   /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":73
  * '''process SubX files and create EDDI values'''
@@ -8488,10 +8616,35 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     #_date=init_date_list[0]
  * 
  */
-  __pyx_tuple__19 = PyTuple_Pack(40, __pyx_n_s_start, __pyx_n_s_end, __pyx_n_s_init_date_list, __pyx_n_s_date, __pyx_n_s_var, __pyx_n_s_return_date_list, __pyx_n_s_return_date_list, __pyx_n_s_week_lead, __pyx_n_s_smerge_file, __pyx_n_s_smerge_file_julian, __pyx_n_s_date_file_info, __pyx_n_s_date_file_info, __pyx_n_s_subx, __pyx_n_s_file_timestamp_list, __pyx_n_s_file_julian_list, __pyx_n_s_file_datetime, __pyx_n_s_var_name, __pyx_n_s_subx2, __pyx_n_s_i_Y, __pyx_n_s_i_X, __pyx_n_s_dict1_subx2, __pyx_n_s_dict1_subx2, __pyx_n_s_ETo_7_day_average_mod0, __pyx_n_s_ETo_7_day_average_mod1, __pyx_n_s_ETo_7_day_average_mod2, __pyx_n_s_ETo_7_day_average_mod3, __pyx_n_s_compute_anomaly, __pyx_n_s_compute_anomaly, __pyx_n_s_ETo_dict_mod0, __pyx_n_s_ETo_dict_mod1, __pyx_n_s_ETo_dict_mod2, __pyx_n_s_ETo_dict_mod3, __pyx_n_s_improve_RZSM_dictionary, __pyx_n_s_improve_RZSM_dictionary, __pyx_n_s_ETo_next_dict_mod0, __pyx_n_s_ETo_next_dict_mod1, __pyx_n_s_ETo_next_dict_mod2, __pyx_n_s_ETo_next_dict_mod3, __pyx_n_s_add_to_nc_file, __pyx_n_s_add_to_nc_file); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 73, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(5, 0, 40, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1d_anomaly_ETo_step25_GMAO_p, __pyx_n_s_ETo_anomaly, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_tuple__20 = PyTuple_Pack(40, __pyx_n_s_start, __pyx_n_s_end, __pyx_n_s_init_date_list, __pyx_n_s_date, __pyx_n_s_var, __pyx_n_s_return_date_list, __pyx_n_s_return_date_list, __pyx_n_s_week_lead, __pyx_n_s_smerge_file, __pyx_n_s_smerge_file_julian, __pyx_n_s_date_file_info, __pyx_n_s_date_file_info, __pyx_n_s_subx, __pyx_n_s_file_timestamp_list, __pyx_n_s_file_julian_list, __pyx_n_s_file_datetime, __pyx_n_s_var_name, __pyx_n_s_subx2, __pyx_n_s_i_Y, __pyx_n_s_i_X, __pyx_n_s_dict1_subx2, __pyx_n_s_dict1_subx2, __pyx_n_s_ETo_7_day_average_mod0, __pyx_n_s_ETo_7_day_average_mod1, __pyx_n_s_ETo_7_day_average_mod2, __pyx_n_s_ETo_7_day_average_mod3, __pyx_n_s_compute_anomaly, __pyx_n_s_compute_anomaly, __pyx_n_s_ETo_dict_mod0, __pyx_n_s_ETo_dict_mod1, __pyx_n_s_ETo_dict_mod2, __pyx_n_s_ETo_dict_mod3, __pyx_n_s_improve_RZSM_dictionary, __pyx_n_s_improve_RZSM_dictionary, __pyx_n_s_ETo_next_dict_mod0, __pyx_n_s_ETo_next_dict_mod1, __pyx_n_s_ETo_next_dict_mod2, __pyx_n_s_ETo_next_dict_mod3, __pyx_n_s_add_to_nc_file, __pyx_n_s_add_to_nc_file); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(5, 0, 40, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1d_anomaly_ETo_step25_GMAO_p, __pyx_n_s_ETo_anomaly, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 73, __pyx_L1_error)
+
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":413
+ * try:
+ *     #first line contains a header, nothing with dates
+ *     completed_dates = completed_dates[:,1]             # <<<<<<<<<<<<<<
+ * except IndexError:
+ *     completed_dates = ''
+ */
+  __pyx_slice__22 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__22)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__22);
+  __Pyx_GIVEREF(__pyx_slice__22);
+  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_slice__22, __pyx_int_1); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
+
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":419
+ * #only work on dates that aren't completed
+ * 
+ * subset_completed_dates = [i[5:] for i in completed_dates]             # <<<<<<<<<<<<<<
+ * 
+ * count=0
+ */
+  __pyx_slice__25 = PySlice_New(__pyx_int_5, Py_None, Py_None); if (unlikely(!__pyx_slice__25)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__25);
+  __Pyx_GIVEREF(__pyx_slice__25);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -8507,9 +8660,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_3 = PyInt_FromLong(3); if (unlikely(!__pyx_int_3)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_4 = PyInt_FromLong(4); if (unlikely(!__pyx_int_4)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_6 = PyInt_FromLong(6); if (unlikely(!__pyx_int_6)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_7 = PyInt_FromLong(7); if (unlikely(!__pyx_int_7)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_24 = PyInt_FromLong(24); if (unlikely(!__pyx_int_24)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_38 = PyInt_FromLong(38); if (unlikely(!__pyx_int_38)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_365 = PyInt_FromLong(365); if (unlikely(!__pyx_int_365)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_366 = PyInt_FromLong(366); if (unlikely(!__pyx_int_366)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -8698,15 +8851,19 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_TMP_1d_anomaly_ETo_step25_GMAO(PyO
   Py_ssize_t __pyx_t_4;
   Py_UCS4 __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  PyObject *(*__pyx_t_7)(PyObject *);
+  PyObject *__pyx_t_7 = NULL;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
+  int __pyx_t_10;
+  PyObject *(*__pyx_t_11)(PyObject *);
+  int __pyx_t_12;
   int __pyx_t_13;
   PyObject *__pyx_t_14 = NULL;
-  int __pyx_t_15;
+  PyObject *__pyx_t_15 = NULL;
+  PyObject *__pyx_t_16 = NULL;
+  PyObject *__pyx_t_17 = NULL;
+  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_19 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -9197,231 +9354,451 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_ETo_anomaly, __pyx_t_2) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":401
- * #%%
- * #Call function
- * count=0             # <<<<<<<<<<<<<<
- * for _date in init_date_list[start_:end_]:
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":407
+ * #_date=init_date_list[0]
+ * '''Read ETo_completed_npy.txt file to not have to re-run extra code'''
+ * completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_count, __pyx_int_0) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
-
-  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":402
- * #Call function
- * count=0
- * for _date in init_date_list[start_:end_]:             # <<<<<<<<<<<<<<
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)
- *     count+=1
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_start); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_loadtxt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_end); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = 0;
+  __pyx_t_5 = 127;
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_script_dir); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_2, 0, 0, &__pyx_t_1, &__pyx_t_3, NULL, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_5;
+  __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __Pyx_INCREF(__pyx_kp_u_);
+  __pyx_t_4 += 1;
+  __Pyx_GIVEREF(__pyx_kp_u_);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_kp_u_);
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_var); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_5;
+  __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __Pyx_INCREF(__pyx_n_u_completed_anomaly_nc);
+  __pyx_t_4 += 22;
+  __Pyx_GIVEREF(__pyx_n_u_completed_anomaly_nc);
+  PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_n_u_completed_anomaly_nc);
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_5;
+  __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_2, 4, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __Pyx_INCREF(__pyx_kp_u_txt);
+  __pyx_t_4 += 4;
+  __Pyx_GIVEREF(__pyx_kp_u_txt);
+  PyTuple_SET_ITEM(__pyx_t_2, 5, __pyx_kp_u_txt);
+  __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_2, 6, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_n_s_str) < 0) __PYX_ERR(0, 407, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
-    __pyx_t_3 = __pyx_t_6; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 402, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 402, __pyx_L1_error)
-  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_t_3) < 0) __PYX_ERR(0, 407, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":411
+ * 
+ * 
+ * try:             # <<<<<<<<<<<<<<
+ *     #first line contains a header, nothing with dates
+ *     completed_dates = completed_dates[:,1]
+ */
+  {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ExceptionSave(&__pyx_t_7, &__pyx_t_8, &__pyx_t_9);
+    __Pyx_XGOTREF(__pyx_t_7);
+    __Pyx_XGOTREF(__pyx_t_8);
+    __Pyx_XGOTREF(__pyx_t_9);
+    /*try:*/ {
+
+      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":413
+ * try:
+ *     #first line contains a header, nothing with dates
+ *     completed_dates = completed_dates[:,1]             # <<<<<<<<<<<<<<
+ * except IndexError:
+ *     completed_dates = ''
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_completed_dates); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 413, __pyx_L2_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_tuple__23); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 413, __pyx_L2_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_t_6) < 0) __PYX_ERR(0, 413, __pyx_L2_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":411
+ * 
+ * 
+ * try:             # <<<<<<<<<<<<<<
+ *     #first line contains a header, nothing with dates
+ *     completed_dates = completed_dates[:,1]
+ */
+    }
+    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+    goto __pyx_L7_try_end;
+    __pyx_L2_error:;
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":414
+ *     #first line contains a header, nothing with dates
+ *     completed_dates = completed_dates[:,1]
+ * except IndexError:             # <<<<<<<<<<<<<<
+ *     completed_dates = ''
+ * # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
+ */
+    __pyx_t_10 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
+    if (__pyx_t_10) {
+      __Pyx_AddTraceback("TMP_1d_anomaly_ETo_step25_GMAO", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_3, &__pyx_t_2) < 0) __PYX_ERR(0, 414, __pyx_L4_except_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GOTREF(__pyx_t_2);
+
+      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":415
+ *     completed_dates = completed_dates[:,1]
+ * except IndexError:
+ *     completed_dates = ''             # <<<<<<<<<<<<<<
+ * # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
+ * #only work on dates that aren't completed
+ */
+      if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_kp_s__24) < 0) __PYX_ERR(0, 415, __pyx_L4_except_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      goto __pyx_L3_exception_handled;
+    }
+    goto __pyx_L4_except_error;
+    __pyx_L4_except_error:;
+
+    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":411
+ * 
+ * 
+ * try:             # <<<<<<<<<<<<<<
+ *     #first line contains a header, nothing with dates
+ *     completed_dates = completed_dates[:,1]
+ */
+    __Pyx_XGIVEREF(__pyx_t_7);
+    __Pyx_XGIVEREF(__pyx_t_8);
+    __Pyx_XGIVEREF(__pyx_t_9);
+    __Pyx_ExceptionReset(__pyx_t_7, __pyx_t_8, __pyx_t_9);
+    goto __pyx_L1_error;
+    __pyx_L3_exception_handled:;
+    __Pyx_XGIVEREF(__pyx_t_7);
+    __Pyx_XGIVEREF(__pyx_t_8);
+    __Pyx_XGIVEREF(__pyx_t_9);
+    __Pyx_ExceptionReset(__pyx_t_7, __pyx_t_8, __pyx_t_9);
+    __pyx_L7_try_end:;
+  }
+
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":419
+ * #only work on dates that aren't completed
+ * 
+ * subset_completed_dates = [i[5:] for i in completed_dates]             # <<<<<<<<<<<<<<
+ * 
+ * count=0
+ */
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_completed_dates); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
+    __pyx_t_6 = __pyx_t_3; __Pyx_INCREF(__pyx_t_6); __pyx_t_4 = 0;
+    __pyx_t_11 = NULL;
+  } else {
+    __pyx_t_4 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 419, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_11 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 419, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
+    if (likely(!__pyx_t_11)) {
+      if (likely(PyList_CheckExact(__pyx_t_6))) {
+        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 402, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 419, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 402, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 419, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
-        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 402, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 419, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 402, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_6, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 419, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
     } else {
-      __pyx_t_6 = __pyx_t_7(__pyx_t_3);
-      if (unlikely(!__pyx_t_6)) {
+      __pyx_t_3 = __pyx_t_11(__pyx_t_6);
+      if (unlikely(!__pyx_t_3)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 402, __pyx_L1_error)
+          else __PYX_ERR(0, 419, __pyx_L1_error)
         }
         break;
       }
-      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GOTREF(__pyx_t_3);
     }
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_date, __pyx_t_6) < 0) __PYX_ERR(0, 402, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_i, __pyx_t_3) < 0) __PYX_ERR(0, 419, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 419, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_3, 5, 0, NULL, NULL, &__pyx_slice__25, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 419, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_subset_completed_dates, __pyx_t_2) < 0) __PYX_ERR(0, 419, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":403
- * count=0
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":421
+ * subset_completed_dates = [i[5:] for i in completed_dates]
+ * 
+ * count=0             # <<<<<<<<<<<<<<
  * for _date in init_date_list[start_:end_]:
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)             # <<<<<<<<<<<<<<
- *     count+=1
- *     if count == 24:
+ *     if _date[5:] not in subset_completed_dates:
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_ETo_anomaly); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 403, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 403, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_end); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 403, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 403, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_date); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 403, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_var); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 403, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = NULL;
-    __pyx_t_13 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_12)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_12);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-        __pyx_t_13 = 1;
-      }
-    }
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[6] = {__pyx_t_12, __pyx_t_2, __pyx_t_8, __pyx_t_9, __pyx_t_10, __pyx_t_11};
-      __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[6] = {__pyx_t_12, __pyx_t_2, __pyx_t_8, __pyx_t_9, __pyx_t_10, __pyx_t_11};
-      __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_13, 5+__pyx_t_13); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_14 = PyTuple_New(5+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_14);
-      if (__pyx_t_12) {
-        __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_12); __pyx_t_12 = NULL;
-      }
-      __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_14, 0+__pyx_t_13, __pyx_t_2);
-      __Pyx_GIVEREF(__pyx_t_8);
-      PyTuple_SET_ITEM(__pyx_t_14, 1+__pyx_t_13, __pyx_t_8);
-      __Pyx_GIVEREF(__pyx_t_9);
-      PyTuple_SET_ITEM(__pyx_t_14, 2+__pyx_t_13, __pyx_t_9);
-      __Pyx_GIVEREF(__pyx_t_10);
-      PyTuple_SET_ITEM(__pyx_t_14, 3+__pyx_t_13, __pyx_t_10);
-      __Pyx_GIVEREF(__pyx_t_11);
-      PyTuple_SET_ITEM(__pyx_t_14, 4+__pyx_t_13, __pyx_t_11);
-      __pyx_t_2 = 0;
-      __pyx_t_8 = 0;
-      __pyx_t_9 = 0;
-      __pyx_t_10 = 0;
-      __pyx_t_11 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_14, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_count, __pyx_int_0) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
 
-    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":404
- * for _date in init_date_list[start_:end_]:
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)
- *     count+=1             # <<<<<<<<<<<<<<
- *     if count == 24:
- *         exit()
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_count); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 404, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_t_6, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_count, __pyx_t_1) < 0) __PYX_ERR(0, 404, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":405
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)
- *     count+=1
- *     if count == 24:             # <<<<<<<<<<<<<<
- *         exit()
+  /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":422
  * 
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_24, 24, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 405, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 405, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (__pyx_t_15) {
-
-      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":406
- *     count+=1
- *     if count == 24:
- *         exit()             # <<<<<<<<<<<<<<
- * 
- * # #_date=init_date_list[0]
- */
-      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_builtin_exit); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 406, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-
-      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":405
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)
- *     count+=1
- *     if count == 24:             # <<<<<<<<<<<<<<
- *         exit()
- * 
- */
-    }
-
-    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":402
- * #Call function
  * count=0
  * for _date in init_date_list[start_:end_]:             # <<<<<<<<<<<<<<
- *     ETo_anomaly(start_, end_, init_date_list, _date,var)
- *     count+=1
+ *     if _date[5:] not in subset_completed_dates:
+ *         ETo_anomaly(start_, end_, init_date_list, _date,var)
  */
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 422, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_start); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 422, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_2, 0, 0, &__pyx_t_6, &__pyx_t_1, NULL, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
+    __pyx_t_1 = __pyx_t_3; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
+    __pyx_t_11 = NULL;
+  } else {
+    __pyx_t_4 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_11 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 422, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_11)) {
+      if (likely(PyList_CheckExact(__pyx_t_1))) {
+        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 422, __pyx_L1_error)
+        #else
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        #endif
+      } else {
+        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 422, __pyx_L1_error)
+        #else
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        #endif
+      }
+    } else {
+      __pyx_t_3 = __pyx_t_11(__pyx_t_1);
+      if (unlikely(!__pyx_t_3)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 422, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_3);
+    }
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_date, __pyx_t_3) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":423
+ * count=0
+ * for _date in init_date_list[start_:end_]:
+ *     if _date[5:] not in subset_completed_dates:             # <<<<<<<<<<<<<<
+ *         ETo_anomaly(start_, end_, init_date_list, _date,var)
+ * 
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_date); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_3, 5, 0, NULL, NULL, &__pyx_slice__25, 1, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_subset_completed_dates); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_t_6, __pyx_t_3, Py_NE)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_13 = (__pyx_t_12 != 0);
+    if (__pyx_t_13) {
+
+      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":424
+ * for _date in init_date_list[start_:end_]:
+ *     if _date[5:] not in subset_completed_dates:
+ *         ETo_anomaly(start_, end_, init_date_list, _date,var)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_ETo_anomaly); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 424, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 424, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_end); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 424, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_14);
+      __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 424, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_15);
+      __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_date); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 424, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_var); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 424, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_17);
+      __pyx_t_18 = NULL;
+      __pyx_t_10 = 0;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
+        __pyx_t_18 = PyMethod_GET_SELF(__pyx_t_6);
+        if (likely(__pyx_t_18)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+          __Pyx_INCREF(__pyx_t_18);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_6, function);
+          __pyx_t_10 = 1;
+        }
+      }
+      #if CYTHON_FAST_PYCALL
+      if (PyFunction_Check(__pyx_t_6)) {
+        PyObject *__pyx_temp[6] = {__pyx_t_18, __pyx_t_2, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17};
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_10, 5+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
+        __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+        __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+        __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+      } else
+      #endif
+      #if CYTHON_FAST_PYCCALL
+      if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
+        PyObject *__pyx_temp[6] = {__pyx_t_18, __pyx_t_2, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17};
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_10, 5+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
+        __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+        __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+        __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+      } else
+      #endif
+      {
+        __pyx_t_19 = PyTuple_New(5+__pyx_t_10); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 424, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_19);
+        if (__pyx_t_18) {
+          __Pyx_GIVEREF(__pyx_t_18); PyTuple_SET_ITEM(__pyx_t_19, 0, __pyx_t_18); __pyx_t_18 = NULL;
+        }
+        __Pyx_GIVEREF(__pyx_t_2);
+        PyTuple_SET_ITEM(__pyx_t_19, 0+__pyx_t_10, __pyx_t_2);
+        __Pyx_GIVEREF(__pyx_t_14);
+        PyTuple_SET_ITEM(__pyx_t_19, 1+__pyx_t_10, __pyx_t_14);
+        __Pyx_GIVEREF(__pyx_t_15);
+        PyTuple_SET_ITEM(__pyx_t_19, 2+__pyx_t_10, __pyx_t_15);
+        __Pyx_GIVEREF(__pyx_t_16);
+        PyTuple_SET_ITEM(__pyx_t_19, 3+__pyx_t_10, __pyx_t_16);
+        __Pyx_GIVEREF(__pyx_t_17);
+        PyTuple_SET_ITEM(__pyx_t_19, 4+__pyx_t_10, __pyx_t_17);
+        __pyx_t_2 = 0;
+        __pyx_t_14 = 0;
+        __pyx_t_15 = 0;
+        __pyx_t_16 = 0;
+        __pyx_t_17 = 0;
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_19, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+      /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":423
+ * count=0
+ * for _date in init_date_list[start_:end_]:
+ *     if _date[5:] not in subset_completed_dates:             # <<<<<<<<<<<<<<
+ *         ETo_anomaly(start_, end_, init_date_list, _date,var)
+ * 
+ */
+    }
+
+    /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":422
+ * 
+ * count=0
+ * for _date in init_date_list[start_:end_]:             # <<<<<<<<<<<<<<
+ *     if _date[5:] not in subset_completed_dates:
+ *         ETo_anomaly(start_, end_, init_date_list, _date,var)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "TMP_1d_anomaly_ETo_step25_GMAO.pyx":1
  * #!/usr/bin/env python3             # <<<<<<<<<<<<<<
  * # -*- coding: utf-8 -*-
  * """
  */
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_3) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /*--- Wrapped vars code ---*/
 
@@ -9431,12 +9808,12 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_14);
+  __Pyx_XDECREF(__pyx_t_15);
+  __Pyx_XDECREF(__pyx_t_16);
+  __Pyx_XDECREF(__pyx_t_17);
+  __Pyx_XDECREF(__pyx_t_18);
+  __Pyx_XDECREF(__pyx_t_19);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init TMP_1d_anomaly_ETo_step25_GMAO", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -12155,6 +12532,80 @@ static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
         #endif
     }
     return value;
+}
+
+/* GetException */
+#if CYTHON_FAST_THREAD_STATE
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb)
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb)
+#endif
+{
+    PyObject *local_type, *local_value, *local_tb;
+#if CYTHON_FAST_THREAD_STATE
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    local_type = tstate->curexc_type;
+    local_value = tstate->curexc_value;
+    local_tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+#else
+    PyErr_Fetch(&local_type, &local_value, &local_tb);
+#endif
+    PyErr_NormalizeException(&local_type, &local_value, &local_tb);
+#if CYTHON_FAST_THREAD_STATE
+    if (unlikely(tstate->curexc_type))
+#else
+    if (unlikely(PyErr_Occurred()))
+#endif
+        goto bad;
+    #if PY_MAJOR_VERSION >= 3
+    if (local_tb) {
+        if (unlikely(PyException_SetTraceback(local_value, local_tb) < 0))
+            goto bad;
+    }
+    #endif
+    Py_XINCREF(local_tb);
+    Py_XINCREF(local_type);
+    Py_XINCREF(local_value);
+    *type = local_type;
+    *value = local_value;
+    *tb = local_tb;
+#if CYTHON_FAST_THREAD_STATE
+    #if CYTHON_USE_EXC_INFO_STACK
+    {
+        _PyErr_StackItem *exc_info = tstate->exc_info;
+        tmp_type = exc_info->exc_type;
+        tmp_value = exc_info->exc_value;
+        tmp_tb = exc_info->exc_traceback;
+        exc_info->exc_type = local_type;
+        exc_info->exc_value = local_value;
+        exc_info->exc_traceback = local_tb;
+    }
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = local_type;
+    tstate->exc_value = local_value;
+    tstate->exc_traceback = local_tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+#else
+    PyErr_SetExcInfo(local_type, local_value, local_tb);
+#endif
+    return 0;
+bad:
+    *type = 0;
+    *value = 0;
+    *tb = 0;
+    Py_XDECREF(local_type);
+    Py_XDECREF(local_value);
+    Py_XDECREF(local_tb);
+    return -1;
 }
 
 /* CLineInTraceback */

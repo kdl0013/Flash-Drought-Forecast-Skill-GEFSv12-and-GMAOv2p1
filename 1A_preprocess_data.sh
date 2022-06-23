@@ -120,14 +120,17 @@ wait
 run_anomaly_RZSM_ETo_EDDI "EDDI"
 wait
 
+
+
+
 #Create new dataset to compare the skill between models
-reformat_observations() {
+reformat_observations_to_SubX_format() {
 cat 1i_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX.py
 
 python3 TMP_1i_Obs_reformatted_to_SubX.py
 }
 
-reformat_observations #call function
+reformat_observations_to_SubX_format #call function
 
 
 
@@ -137,45 +140,9 @@ reformat_observations #call function
 
 
 
-###Test with only ETo because I fixed the script
-{
-
-
-x=1
-while [ $x -le 24 ];do
-run_anomaly_test_RZSM "RZSM"
-wait
-x=$(( x++ ));
-done
-
-}
-
-run_anomaly_test_RZSM "RZSM"
-wait
 
 
 
-
-
-
-run_anomaly "ETo"
-wait
-run_anomaly "RZSM"
-wait
-run_EDDI "EDDI"
-wait
-
-
-copy_broken_files () {
-for mod in {0..3};do
-cp ${subx}/EDDI_mod"$mod"/already_completed/*.npy ${subx}/EDDI_mod"$mod"
-cp ${subx}/RZSM_anomaly_mod"$mod"/already_completed/*.npy ${subx}/RZSM_anomaly_mod"$mod"
-rm ${subx}/ETo_anomaly_mod"$mod"/*.npy
-cp ${subx}/ETo_anomaly_mod"$mod"/already_completed/*.npy ${subx}/ETo_anomaly_mod"$mod";
-done
-}
-
-copy_broken_files
 
 
 ############## Lagged Average Ensemble ##############

@@ -390,7 +390,10 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                           
                     
                 add_to_nc_file(ETo_next_dict_mod0,ETo_next_dict_mod1,ETo_next_dict_mod2,ETo_next_dict_mod3)
-                                
+                
+                
+    #save the dates that were completed to not re-run
+    os.system(f'echo Completed {_date} >> {script_dir}/ETo_completed_anomaly_nc_{model_NAM1}.txt')
     print(f'Completed date {_date} and saved into {home_dir}.')
            
     # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
@@ -398,27 +401,29 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
 #END FUNCTION
 #%%
 #Call function
+
+#_date=init_date_list[0]
+'''Read ETo_completed_npy.txt file to not have to re-run extra code'''
+completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
+
+
+
+try:
+    #first line contains a header, nothing with dates
+    completed_dates = completed_dates[:,1]
+except IndexError:
+    completed_dates = ''
+# completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
+#only work on dates that aren't completed
+
+subset_completed_dates = [i[5:] for i in completed_dates]
+
 count=0
 for _date in init_date_list[start_:end_]:
-    ETo_anomaly(start_, end_, init_date_list, _date,var)
-    count+=1
-    if count == 24:
-        exit()
+    if _date[5:] not in subset_completed_dates:
+        ETo_anomaly(start_, end_, init_date_list, _date,var)
 
-# #_date=init_date_list[0]
-# '''Read ETo_completed_npy.txt file to not have to re-run extra code'''
-# completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
-# try:
-#     #first line contains a header, nothing with dates
-#     completed_dates = completed_dates[:,1]
-# except IndexError:
-#     completed_dates = ''
-# # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
-# #only work on dates that aren't completed
-
-# subset_completed_dates = [i[5:] for i in completed_dates]
-
-
+    
 
 #Old way (this will help if I had to do every grid cell/lead anomalies)
 

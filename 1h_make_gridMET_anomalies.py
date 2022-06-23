@@ -14,11 +14,11 @@ import datetime as dt
 import pandas as pd
 from glob import glob
 import refet
-from multiprocessing import Pool
 
 
-# dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
-dir1 = 'main_dir'
+
+dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
+# dir1 = 'main_dir'
 gridMET_dir = f'{dir1}/Data/gridMET'
 fileOUT_gridMET = f'{gridMET_dir}/ETo_anomaly_gridMET_merged.nc'
 
@@ -44,13 +44,13 @@ try:
     xr.open_dataset(fileOUT_gridMET) #see if file is already created
 except FileNotFoundError:
     for lat in range(open_f.ETo_gridmet.shape[1]):
-        print(f'Working on lat {lat}.')
+        print(f'Working on lat {lat} out of {np.max(range(open_f.ETo_gridmet.shape[1]))} for ETo.')
         for lon in range(open_f.ETo_gridmet.shape[2]):
     
             # all_values = open_f['ETo_gridmet'].isel(lat=lat,lon=lon)
             #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
             #Only need to look at 1 years worth of data because we are adding 
-            for day in range(7,372):
+            for day in range(7,377):
                 
                 #Don't re-run additionaly data if its already in the final file
                 if anomaly_f.ETo_gridmet.isel(lat=lat,lon=lon, day=day).values != 0:
@@ -63,7 +63,7 @@ except FileNotFoundError:
                     #Total of 17 years worth of data from SubX
                     while count!=17:
                         count+=1
-                        weekly_mean = open_f.ETo_gridmet.isel(lat=lat,lon=lon).sel(day=slice(new_day_val-np.timedelta64(7,'D'),new_day_val)).mean()
+                        weekly_mean = np.nanmean(open_f.ETo_gridmet.isel(lat=lat,lon=lon).sel(day=slice(new_day_val-np.timedelta64(7,'D'),new_day_val)))
                         #add to a list
                         mean_dict[f'{new_day_val}']=weekly_mean
                         #if leap year, add 1 year to loop through all years
@@ -84,7 +84,7 @@ except FileNotFoundError:
                         #find the index in anomaly_date_list
                         index_val = anomaly_date_list.index(_date)
                         #add to file
-                        anomaly_f.ETo_gridmet[index_val, lat,lon] = mean_dict[i].values
+                        anomaly_f.ETo_gridmet[index_val, lat,lon] = mean_dict[i]
     
     anomaly_f.to_netcdf(path = fileOUT_gridMET, mode ='w', engine='scipy')
     anomaly_f.close()
@@ -99,13 +99,13 @@ try:
     xr.open_dataset(fileOUT_SMERGE) #see if file is already created
 except FileNotFoundError:
     for lat in range(open_rzsm.RZSM.shape[1]):
-        print(f'Working on lat {lat} out of {np.max(range(open_rzsm.RZSM.shape[1]))}.')
+        print(f'Working on lat {lat} out of {np.max(range(open_rzsm.RZSM.shape[1]))} for RZSM.')
         for lon in range(open_rzsm.RZSM.shape[2]):
     
             # all_values = open_rzsm.RZSM.isel(Y=lat,X=lon)
             #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
             #Only need to look at 1 years worth of data because we are adding 
-            for day in range(7,372):
+            for day in range(7,377):
                 
                 #Don't re-run additionaly data if its already in the final file
                 if anomaly_r.CCI_ano.isel(Y=lat,X=lon, time=day).values != 0:
@@ -118,7 +118,7 @@ except FileNotFoundError:
                     #Total of 17 years worth of data from SubX
                     while count != 17:
                         count+=1
-                        weekly_mean = open_rzsm.RZSM.isel(X=lon,Y=lat).sel(time=slice(new_day_val-np.timedelta64(7,'D'),new_day_val)).mean()
+                        weekly_mean = np.nanmean(open_rzsm.RZSM.isel(X=lon,Y=lat).sel(time=slice(new_day_val-np.timedelta64(7,'D'),new_day_val)))
                         #add to a list
                         mean_dict[f'{new_day_val}']=weekly_mean
                         #if leap year, add 1 year to loop through all years
@@ -139,7 +139,7 @@ except FileNotFoundError:
                         #find the index in anomaly_date_list
                         index_val = anomaly_date_r_list.index(_date)
                         #add to file
-                        anomaly_r.CCI_ano[index_val, lat,lon] = mean_dict[i].values
+                        anomaly_r.CCI_ano[index_val, lat,lon] = mean_dict[i]
     
     anomaly_r.to_netcdf(path = fileOUT_SMERGE, mode ='w', engine='scipy')
     anomaly_r.close()

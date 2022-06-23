@@ -91,7 +91,10 @@ def return_date_list(var):
 init_date_list = return_date_list(var = 'RZSM')    
 
 
-        
+          
+
+np.count_nonzero(open_f.where(HP_conus_mask.High_Plains > 0).to_array())
+np.count_nonzero(open_f.where(HP_conus_mask.High_Plains == 0).to_array())  
     
 
 '''
