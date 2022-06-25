@@ -35,7 +35,6 @@ mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py"
 
 
 #convert soil moisture to m3/m3
-
 cat 1b2_convert_RZSM_to_m3_m3.py | sed 's|main_dir|'${main_directory}'|g' > $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
 
 python3 $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
@@ -62,7 +61,7 @@ done
 }
 
 #Create tmp scripts to run later
-mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
+#mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
 mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.pyx"
 mk_anomaly_script_RZSM_ETo_EDDI "1e_anomaly_RZSM.pyx"
 
@@ -87,7 +86,7 @@ mv *.c cython_scripts/
 
 #Compile code using cython
 compile_cython 'ETo' 
-compile_cython 'EDDI'
+#compile_cython 'EDDI'
 compile_cython 'RZSM'
 
 #Create a new python script that imports the newly created .c extension
@@ -121,6 +120,25 @@ run_anomaly_RZSM_ETo_EDDI "EDDI"
 wait
 
 
+#Fix any broken SubX anomaly files
+fix_broken_subX_anomalies () {
+cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|model_name|'${model}'|g' > TMP_"$model"_$1
+
+#python3 TMP_$1
+}
+
+fix_broken_subX_anomalies "1f_fix_individual_anomalies_ETo.py"
+fix_broken_subX_anomalies "1g_fix_individual_anomalies_RZSM.py"
+
+
+#Create gridMET and SMERGE anomlies (observations)
+make_obs_anomalies() {
+cat 1h_make_gridMET_anomalies.py | sed 's|main_dir|'${main_directory}'|g' > TMP_1h_make_gridMET_anomalies.py
+
+python3 TMP_1h_make_gridMET_anomalies.py
+}
+
+make_obs_anomalies
 
 
 #Create new dataset to compare the skill between models

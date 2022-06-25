@@ -212,41 +212,11 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                     for file in dates_to_keep:
                         #Dont' re-open the same file
                         if file[-14:-4] != _date:
-                            
                             open_f = xr.open_dataset(file)
-                            
-                            '''Convert lead dates to a vector, then add it back into a netcdf
-                            because I cannot convert np.datetime to a pd.datetime, I will need
-                            to iterate over each of the dates in a list from Et_ref'''
-                            
-                            #get the dates into a list
-                            date_in= open_f.SM_SubX_m3_m3_value.lead.values
-                            #get the start date
-                            start_date = pd.to_datetime(open_f.S.values[0])
-                            #Add the dates based on index value in date_in
-                            date_out = []
-                            for i in range(len(date_in)):
-                                date_out.append(start_date + dt.timedelta(days = i))
-                            
-                            #Convert to julian date
-                            end_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
-                            
-                            b_julian_out = [end_julian + i for i in range(len(date_out))]
-                            
-                            '''Find out if that file has a leap year, subtract appropriately'''
-                            if pd.to_datetime(file[-14:-4]).year % 4 == 0:
-                                subtract = 366
-                                b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]
-                            else:
-                                subtract = 365
-                                b_julian_out2 = [i-subtract if i>365 else i for i in b_julian_out]
-                            
-                        
-                            Et_ref_open_f = open_f.assign_coords(lead = b_julian_out2)
+                            Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
                             
                             '''Now we need to append to the dictionary with the same julian date values'''
-                            for idx,val in enumerate(b_julian_out2):
-                                idx_lead = idx+week_lead
+                            for idx,val in enumerate(file_julian_list):
                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
                                 if idx % 7 == 0 and idx != 0:
                                     try:
@@ -278,8 +248,6 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                 each julian day by having the largest values as number 1 ranking. Then we can append the 
                 Et_out file with the proper julian day and the EDDI value
                 
-                EDDI calculation source :
-                    M. Hobbins, A. Wood, D. McEvoy, J. Huntington, C. Morton, M. Anderson, and C. Hain (June 2016): The Evaporative Demand Drought Index: Part I – Linking Drought Evolution to Variations in Evaporative Demand. J. Hydrometeor., 17(6),1745-1761, doi:10.1175/JHM-D-15-0121.1.
                 '''
                 
                 '''Initially I thought I also needed to keep the mean for later reference, 
@@ -378,24 +346,28 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                             # print(dic_init_and_eddi_val)
                             #Open up the file and insert the value
                             init_day = list(dic_init_and_eddi_val.keys())[0]
-                            
-                            '''When appending using several scripts, sometimes the file will
-                            load before another file has finished filling in the file and causing
-                            a ValueError: cannot reshape array of size 15328 into shape (2,4,45,27,59)'''
-                            
-                            
+                        
                             var2 = 'RZSM'
                             lead_values = np.load(f'{home_dir}/julian_lead_{init_day}.npy',allow_pickle=True)
                             
                             #add values by julian day
-                            # fileOut = f'{var}_anomaly_{init_day}.npy'
-                            fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
+                            fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
                             
                             file_open = xr.open_dataset(fileOut)
                             file_open.close()
                             
                             index_val=np.where(lead_values == int(i_val))[0][0]
                             
+                            '''Because of indexing, there was an issue where leap years were being
+                            added to the 6th index in the file instead of the 7th index which is the 
+                            weekly lead. To fix this, just add 1 to index_val and see if that works.
+                            '''
+                            
+                            if pd.to_datetime(init_day).year % 4 ==0:
+                                index_val = index_val +1
+                            else:
+                                index_val=index_val
+                                
                             #Add data to netcdf file
                             file_open.RZSM_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
@@ -431,15 +403,10 @@ except IndexError:
 #only work on dates that aren't completed
 subset_completed_dates = [i[5:] for i in completed_dates]
 
-count=0
 for _date in init_date_list[start_:end_]:    
     if _date[5:] not in subset_completed_dates:
-        # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/*.npy {new_directory}/')
         RZSM_anomaly(start_,end_,init_date_list, _date,var)
-        count+=1
-        if count == 25:
-            print('Done')
-            break
+
 
 
 # count=0

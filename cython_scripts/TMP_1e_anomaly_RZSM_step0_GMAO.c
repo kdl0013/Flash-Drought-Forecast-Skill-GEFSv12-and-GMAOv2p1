@@ -924,7 +924,6 @@ struct __pyx_obj_30TMP_1e_anomaly_RZSM_step0_GMAO___pyx_scope_struct__RZSM_anoma
   PyObject *__pyx_v_i_Y;
   PyObject *__pyx_v_subx2;
   PyObject *__pyx_v_var_name;
-  int __pyx_v_week_lead;
 };
 
 
@@ -1589,7 +1588,6 @@ static const char __pyx_k_sys[] = "sys";
 static const char __pyx_k_txt[] = ".txt";
 static const char __pyx_k_val[] = "val";
 static const char __pyx_k_var[] = "var";
-static const char __pyx_k_Done[] = "Done";
 static const char __pyx_k_GMAO[] = "GMAO";
 static const char __pyx_k_RZSM[] = "RZSM";
 static const char __pyx_k_SM_2[] = "SM";
@@ -1616,7 +1614,6 @@ static const char __pyx_k_year[] = "year";
 static const char __pyx_k_array[] = "array";
 static const char __pyx_k_chdir[] = "chdir";
 static const char __pyx_k_close[] = "close";
-static const char __pyx_k_count[] = "count";
 static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_end_2[] = "end";
 static const char __pyx_k_i_val[] = "i_val";
@@ -1646,7 +1643,6 @@ static const char __pyx_k_xarray[] = "xarray";
 static const char __pyx_k_CCI_ano[] = "CCI_ano";
 static const char __pyx_k_Scripts[] = "/Scripts";
 static const char __pyx_k_and_lon[] = " and lon ";
-static const char __pyx_k_date_in[] = "date_in";
 static const char __pyx_k_fileOut[] = "fileOut";
 static const char __pyx_k_listdir[] = "listdir";
 static const char __pyx_k_loadtxt[] = "loadtxt";
@@ -1690,7 +1686,7 @@ static const char __pyx_k_model_NAM1[] = "model_NAM1";
 static const char __pyx_k_script_dir[] = "script_dir";
 static const char __pyx_k_smerge_day[] = "smerge_day";
 static const char __pyx_k_smerge_dir[] = "smerge_dir";
-static const char __pyx_k_start_date[] = "start_date";
+static const char __pyx_k_anomaly__nc[] = "{}_anomaly_{}.nc";
 static const char __pyx_k_anomaly_val[] = "anomaly_val";
 static const char __pyx_k_dict1_subx2[] = "dict1_subx2";
 static const char __pyx_k_gridMET_dir[] = "gridMET_dir";
@@ -1705,7 +1701,6 @@ static const char __pyx_k_RZSM_anomaly[] = "RZSM_anomaly";
 static const char __pyx_k_a_julian_out[] = "a_julian_out";
 static const char __pyx_k_a_start_date[] = "a_start_date";
 static const char __pyx_k_allow_pickle[] = "allow_pickle";
-static const char __pyx_k_anomaly__nc4[] = "{}_anomaly_{}.nc4";
 static const char __pyx_k_b_julian_out[] = "b_julian_out";
 static const char __pyx_k_julian_dattt[] = "julian_dattt";
 static const char __pyx_k_open_dataset[] = "open_dataset";
@@ -1793,7 +1788,6 @@ static PyObject *__pyx_kp_u_Data_SMERGE_SM_Raw_data;
 static PyObject *__pyx_kp_u_Data_SubX;
 static PyObject *__pyx_kp_u_Data_elevation;
 static PyObject *__pyx_kp_u_Data_gridMET;
-static PyObject *__pyx_n_s_Done;
 static PyObject *__pyx_n_s_EDDI_final_dict0;
 static PyObject *__pyx_n_s_EDDI_final_dict1;
 static PyObject *__pyx_n_s_EDDI_final_dict2;
@@ -1854,7 +1848,7 @@ static PyObject *__pyx_n_s_allow_pickle;
 static PyObject *__pyx_kp_u_and_lon;
 static PyObject *__pyx_kp_u_and_saved_into;
 static PyObject *__pyx_kp_u_and_saving_as_nc4_in;
-static PyObject *__pyx_kp_s_anomaly__nc4;
+static PyObject *__pyx_kp_s_anomaly__nc;
 static PyObject *__pyx_n_s_anomaly_val;
 static PyObject *__pyx_n_s_append;
 static PyObject *__pyx_n_s_array;
@@ -1867,11 +1861,9 @@ static PyObject *__pyx_n_s_close;
 static PyObject *__pyx_n_s_completed_dates;
 static PyObject *__pyx_n_s_compute_anomaly;
 static PyObject *__pyx_n_s_copy;
-static PyObject *__pyx_n_s_count;
 static PyObject *__pyx_n_s_count_nonzero;
 static PyObject *__pyx_n_s_date;
 static PyObject *__pyx_n_s_date_file_info;
-static PyObject *__pyx_n_s_date_in;
 static PyObject *__pyx_n_s_date_init;
 static PyObject *__pyx_n_s_date_list;
 static PyObject *__pyx_n_s_date_out;
@@ -1968,7 +1960,6 @@ static PyObject *__pyx_n_s_smerge_file_julian;
 static PyObject *__pyx_n_s_smerge_julian;
 static PyObject *__pyx_kp_u_smerge_sm_merged_remap_nc4;
 static PyObject *__pyx_n_s_start;
-static PyObject *__pyx_n_s_start_date;
 static PyObject *__pyx_n_s_start_julian;
 static PyObject *__pyx_n_s_str;
 static PyObject *__pyx_n_s_sub_keys;
@@ -2022,7 +2013,6 @@ static PyObject *__pyx_int_5;
 static PyObject *__pyx_int_7;
 static PyObject *__pyx_int_8;
 static PyObject *__pyx_int_10;
-static PyObject *__pyx_int_25;
 static PyObject *__pyx_int_365;
 static PyObject *__pyx_int_366;
 static PyObject *__pyx_int_neg_4;
@@ -3128,19 +3118,10 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
   PyObject *__pyx_v_summation_ETo_mod2 = 0;
   PyObject *__pyx_v_summation_ETo_mod3 = 0;
   int __pyx_v_idx;
-  int __pyx_v_end_julian;
-  int __pyx_v_subtract;
-  CYTHON_UNUSED int __pyx_v_idx_lead;
-  PyObject *__pyx_v_date_out = 0;
-  PyObject *__pyx_v_b_julian_out = 0;
-  PyObject *__pyx_v_b_julian_out2 = 0;
   PyObject *__pyx_v_dates_to_keep = 0;
   PyObject *__pyx_v_file = 0;
   PyObject *__pyx_v_julian_d = NULL;
   PyObject *__pyx_v_open_f = NULL;
-  PyObject *__pyx_v_date_in = NULL;
-  PyObject *__pyx_v_start_date = NULL;
-  PyObject *__pyx_v_i = NULL;
   PyObject *__pyx_v_Et_ref_open_f = NULL;
   PyObject *__pyx_v_val = NULL;
   PyObject *__pyx_r = NULL;
@@ -3949,8 +3930,8 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
  *                     for file in dates_to_keep:
  *                         #Dont' re-open the same file
  *                         if file[-14:-4] != _date:             # <<<<<<<<<<<<<<
- * 
  *                             open_f = xr.open_dataset(file)
+ *                             Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
  */
     if (unlikely(__pyx_v_file == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -3964,16 +3945,16 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
     __pyx_t_10 = (__pyx_t_9 != 0);
     if (__pyx_t_10) {
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":216
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":215
+ *                         #Dont' re-open the same file
  *                         if file[-14:-4] != _date:
- * 
  *                             open_f = xr.open_dataset(file)             # <<<<<<<<<<<<<<
+ *                             Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
  * 
- *                             '''Convert lead dates to a vector, then add it back into a netcdf
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_xr); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_xr); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 215, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_open_dataset); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 216, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_open_dataset); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 215, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
@@ -3988,516 +3969,87 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
       }
       __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_5, __pyx_v_file) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_v_file);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __Pyx_XDECREF_SET(__pyx_v_open_f, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":223
- * 
- *                             #get the dates into a list
- *                             date_in= open_f.SM_SubX_m3_m3_value.lead.values             # <<<<<<<<<<<<<<
- *                             #get the start date
- *                             start_date = pd.to_datetime(open_f.S.values[0])
- */
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_lead); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 223, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_values); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __Pyx_XDECREF_SET(__pyx_v_date_in, __pyx_t_1);
-      __pyx_t_1 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":225
- *                             date_in= open_f.SM_SubX_m3_m3_value.lead.values
- *                             #get the start date
- *                             start_date = pd.to_datetime(open_f.S.values[0])             # <<<<<<<<<<<<<<
- *                             #Add the dates based on index value in date_in
- *                             date_out = []
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_pd); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 225, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_to_datetime); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_open_f, __pyx_n_s_S); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 225, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_values); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 225, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 225, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-        __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_5);
-        if (likely(__pyx_t_12)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_12);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_5, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_12, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_13);
-      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_XDECREF_SET(__pyx_v_start_date, __pyx_t_1);
-      __pyx_t_1 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":227
- *                             start_date = pd.to_datetime(open_f.S.values[0])
- *                             #Add the dates based on index value in date_in
- *                             date_out = []             # <<<<<<<<<<<<<<
- *                             for i in range(len(date_in)):
- *                                 date_out.append(start_date + dt.timedelta(days = i))
- */
-      __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 227, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_XDECREF_SET(__pyx_v_date_out, ((PyObject*)__pyx_t_1));
-      __pyx_t_1 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":228
- *                             #Add the dates based on index value in date_in
- *                             date_out = []
- *                             for i in range(len(date_in)):             # <<<<<<<<<<<<<<
- *                                 date_out.append(start_date + dt.timedelta(days = i))
- * 
- */
-      __pyx_t_23 = PyObject_Length(__pyx_v_date_in); if (unlikely(__pyx_t_23 == ((Py_ssize_t)-1))) __PYX_ERR(0, 228, __pyx_L1_error)
-      __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 228, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
-        __pyx_t_1 = __pyx_t_5; __Pyx_INCREF(__pyx_t_1); __pyx_t_23 = 0;
-        __pyx_t_4 = NULL;
-      } else {
-        __pyx_t_23 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 228, __pyx_L1_error)
-      }
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      for (;;) {
-        if (likely(!__pyx_t_4)) {
-          if (likely(PyList_CheckExact(__pyx_t_1))) {
-            if (__pyx_t_23 >= PyList_GET_SIZE(__pyx_t_1)) break;
-            #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_23); __Pyx_INCREF(__pyx_t_5); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 228, __pyx_L1_error)
-            #else
-            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 228, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            #endif
-          } else {
-            if (__pyx_t_23 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
-            #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_23); __Pyx_INCREF(__pyx_t_5); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 228, __pyx_L1_error)
-            #else
-            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 228, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            #endif
-          }
-        } else {
-          __pyx_t_5 = __pyx_t_4(__pyx_t_1);
-          if (unlikely(!__pyx_t_5)) {
-            PyObject* exc_type = PyErr_Occurred();
-            if (exc_type) {
-              if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 228, __pyx_L1_error)
-            }
-            break;
-          }
-          __Pyx_GOTREF(__pyx_t_5);
-        }
-        __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_5);
-        __pyx_t_5 = 0;
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":229
- *                             date_out = []
- *                             for i in range(len(date_in)):
- *                                 date_out.append(start_date + dt.timedelta(days = i))             # <<<<<<<<<<<<<<
- * 
- *                             #Convert to julian date
- */
-        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_dt); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 229, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_timedelta); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 229, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_13);
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 229, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_days, __pyx_v_i) < 0) __PYX_ERR(0, 229, __pyx_L1_error)
-        __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 229, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_5 = PyNumber_Add(__pyx_v_start_date, __pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 229, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __pyx_t_20 = __Pyx_PyList_Append(__pyx_v_date_out, __pyx_t_5); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 229, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":228
- *                             #Add the dates based on index value in date_in
- *                             date_out = []
- *                             for i in range(len(date_in)):             # <<<<<<<<<<<<<<
- *                                 date_out.append(start_date + dt.timedelta(days = i))
- * 
- */
-      }
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":232
- * 
- *                             #Convert to julian date
- *                             end_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day             # <<<<<<<<<<<<<<
- * 
- *                             b_julian_out = [end_julian + i for i in range(len(date_out))]
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_pd); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_to_datetime); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_open_f, __pyx_n_s_S); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_16 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_values); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_16 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_13))) {
-        __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_13);
-        if (likely(__pyx_t_16)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-          __Pyx_INCREF(__pyx_t_16);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_13, function);
-        }
-      }
-      __pyx_t_5 = (__pyx_t_16) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_16, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_12);
-      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_timetuple); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_13);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_13, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_13);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_tm_yday); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_13); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_v_end_julian = __pyx_t_2;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":234
- *                             end_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
- * 
- *                             b_julian_out = [end_julian + i for i in range(len(date_out))]             # <<<<<<<<<<<<<<
- * 
- *                             '''Find out if that file has a leap year, subtract appropriately'''
- */
-      __pyx_t_13 = PyList_New(0); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 234, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_23 = PyList_GET_SIZE(__pyx_v_date_out); if (unlikely(__pyx_t_23 == ((Py_ssize_t)-1))) __PYX_ERR(0, 234, __pyx_L1_error)
-      __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_23); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
-        __pyx_t_1 = __pyx_t_5; __Pyx_INCREF(__pyx_t_1); __pyx_t_23 = 0;
-        __pyx_t_4 = NULL;
-      } else {
-        __pyx_t_23 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_4 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 234, __pyx_L1_error)
-      }
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      for (;;) {
-        if (likely(!__pyx_t_4)) {
-          if (likely(PyList_CheckExact(__pyx_t_1))) {
-            if (__pyx_t_23 >= PyList_GET_SIZE(__pyx_t_1)) break;
-            #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_5 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_23); __Pyx_INCREF(__pyx_t_5); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 234, __pyx_L1_error)
-            #else
-            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            #endif
-          } else {
-            if (__pyx_t_23 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
-            #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_23); __Pyx_INCREF(__pyx_t_5); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 234, __pyx_L1_error)
-            #else
-            __pyx_t_5 = PySequence_ITEM(__pyx_t_1, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            #endif
-          }
-        } else {
-          __pyx_t_5 = __pyx_t_4(__pyx_t_1);
-          if (unlikely(!__pyx_t_5)) {
-            PyObject* exc_type = PyErr_Occurred();
-            if (exc_type) {
-              if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 234, __pyx_L1_error)
-            }
-            break;
-          }
-          __Pyx_GOTREF(__pyx_t_5);
-        }
-        __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_5);
-        __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_end_julian); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_12 = PyNumber_Add(__pyx_t_5, __pyx_v_i); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 234, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_13, (PyObject*)__pyx_t_12))) __PYX_ERR(0, 234, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      }
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_XDECREF_SET(__pyx_v_b_julian_out, ((PyObject*)__pyx_t_13));
-      __pyx_t_13 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":237
- * 
- *                             '''Find out if that file has a leap year, subtract appropriately'''
- *                             if pd.to_datetime(file[-14:-4]).year % 4 == 0:             # <<<<<<<<<<<<<<
- *                                 subtract = 366
- *                                 b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pd); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_to_datetime); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(__pyx_v_file == Py_None)) {
-        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 237, __pyx_L1_error)
-      }
-      __pyx_t_1 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_12);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_12, function);
-        }
-      }
-      __pyx_t_13 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_5, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_1);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_year); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_PyInt_RemainderObjC(__pyx_t_12, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyInt_EqObjC(__pyx_t_13, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 237, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (__pyx_t_10) {
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":238
- *                             '''Find out if that file has a leap year, subtract appropriately'''
- *                             if pd.to_datetime(file[-14:-4]).year % 4 == 0:
- *                                 subtract = 366             # <<<<<<<<<<<<<<
- *                                 b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]
- *                             else:
- */
-        __pyx_v_subtract = 0x16E;
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":239
- *                             if pd.to_datetime(file[-14:-4]).year % 4 == 0:
- *                                 subtract = 366
- *                                 b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]             # <<<<<<<<<<<<<<
- *                             else:
- *                                 subtract = 365
- */
-        __pyx_t_12 = PyList_New(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 239, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_13 = __pyx_v_b_julian_out; __Pyx_INCREF(__pyx_t_13); __pyx_t_23 = 0;
-        for (;;) {
-          if (__pyx_t_23 >= PyList_GET_SIZE(__pyx_t_13)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_13, __pyx_t_23); __Pyx_INCREF(__pyx_t_1); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 239, __pyx_L1_error)
-          #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_13, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          #endif
-          __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
-          __pyx_t_1 = 0;
-          __pyx_t_5 = PyObject_RichCompare(__pyx_v_i, __pyx_int_366, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 239, __pyx_L1_error)
-          __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 239, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-          if (__pyx_t_10) {
-            __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_subtract); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 239, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            __pyx_t_16 = PyNumber_Subtract(__pyx_v_i, __pyx_t_5); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 239, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_16);
-            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-            __pyx_t_1 = __pyx_t_16;
-            __pyx_t_16 = 0;
-          } else {
-            __Pyx_INCREF(__pyx_v_i);
-            __pyx_t_1 = __pyx_v_i;
-          }
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_12, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 239, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        }
-        __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __Pyx_XDECREF_SET(__pyx_v_b_julian_out2, ((PyObject*)__pyx_t_12));
-        __pyx_t_12 = 0;
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":237
- * 
- *                             '''Find out if that file has a leap year, subtract appropriately'''
- *                             if pd.to_datetime(file[-14:-4]).year % 4 == 0:             # <<<<<<<<<<<<<<
- *                                 subtract = 366
- *                                 b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]
- */
-        goto __pyx_L25;
-      }
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":241
- *                                 b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]
- *                             else:
- *                                 subtract = 365             # <<<<<<<<<<<<<<
- *                                 b_julian_out2 = [i-subtract if i>365 else i for i in b_julian_out]
- * 
- */
-      /*else*/ {
-        __pyx_v_subtract = 0x16D;
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":242
- *                             else:
- *                                 subtract = 365
- *                                 b_julian_out2 = [i-subtract if i>365 else i for i in b_julian_out]             # <<<<<<<<<<<<<<
- * 
- * 
- */
-        __pyx_t_12 = PyList_New(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 242, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_13 = __pyx_v_b_julian_out; __Pyx_INCREF(__pyx_t_13); __pyx_t_23 = 0;
-        for (;;) {
-          if (__pyx_t_23 >= PyList_GET_SIZE(__pyx_t_13)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_13, __pyx_t_23); __Pyx_INCREF(__pyx_t_1); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 242, __pyx_L1_error)
-          #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_13, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 242, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          #endif
-          __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
-          __pyx_t_1 = 0;
-          __pyx_t_16 = PyObject_RichCompare(__pyx_v_i, __pyx_int_365, Py_GT); __Pyx_XGOTREF(__pyx_t_16); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 242, __pyx_L1_error)
-          __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_16); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 242, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-          if (__pyx_t_10) {
-            __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_subtract); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 242, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_16);
-            __pyx_t_5 = PyNumber_Subtract(__pyx_v_i, __pyx_t_16); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 242, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_5);
-            __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-            __pyx_t_1 = __pyx_t_5;
-            __pyx_t_5 = 0;
-          } else {
-            __Pyx_INCREF(__pyx_v_i);
-            __pyx_t_1 = __pyx_v_i;
-          }
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_12, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 242, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        }
-        __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        __Pyx_XDECREF_SET(__pyx_v_b_julian_out2, ((PyObject*)__pyx_t_12));
-        __pyx_t_12 = 0;
-      }
-      __pyx_L25:;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":245
- * 
- * 
- *                             Et_ref_open_f = open_f.assign_coords(lead = b_julian_out2)             # <<<<<<<<<<<<<<
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":216
+ *                         if file[-14:-4] != _date:
+ *                             open_f = xr.open_dataset(file)
+ *                             Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)             # <<<<<<<<<<<<<<
  * 
  *                             '''Now we need to append to the dictionary with the same julian date values'''
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_open_f, __pyx_n_s_assign_coords); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 245, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 245, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_lead, __pyx_v_b_julian_out2) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_empty_tuple, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_open_f, __pyx_n_s_assign_coords); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 216, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      if (unlikely(!__pyx_cur_scope->__pyx_v_file_julian_list)) { __Pyx_RaiseClosureNameError("file_julian_list"); __PYX_ERR(0, 216, __pyx_L1_error) }
+      if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_lead, __pyx_cur_scope->__pyx_v_file_julian_list) < 0) __PYX_ERR(0, 216, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_13); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __Pyx_XDECREF_SET(__pyx_v_Et_ref_open_f, __pyx_t_1);
-      __pyx_t_1 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_Et_ref_open_f, __pyx_t_5);
+      __pyx_t_5 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":248
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":219
  * 
  *                             '''Now we need to append to the dictionary with the same julian date values'''
- *                             for idx,val in enumerate(b_julian_out2):             # <<<<<<<<<<<<<<
- *                                 idx_lead = idx+week_lead
+ *                             for idx,val in enumerate(file_julian_list):             # <<<<<<<<<<<<<<
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
+ *                                 if idx % 7 == 0 and idx != 0:
  */
       __pyx_t_2 = 0;
-      __pyx_t_1 = __pyx_v_b_julian_out2; __Pyx_INCREF(__pyx_t_1); __pyx_t_23 = 0;
+      if (unlikely(!__pyx_cur_scope->__pyx_v_file_julian_list)) { __Pyx_RaiseClosureNameError("file_julian_list"); __PYX_ERR(0, 219, __pyx_L1_error) }
+      if (likely(PyList_CheckExact(__pyx_cur_scope->__pyx_v_file_julian_list)) || PyTuple_CheckExact(__pyx_cur_scope->__pyx_v_file_julian_list)) {
+        __pyx_t_5 = __pyx_cur_scope->__pyx_v_file_julian_list; __Pyx_INCREF(__pyx_t_5); __pyx_t_23 = 0;
+        __pyx_t_4 = NULL;
+      } else {
+        __pyx_t_23 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_cur_scope->__pyx_v_file_julian_list); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 219, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_4 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
+      }
       for (;;) {
-        if (__pyx_t_23 >= PyList_GET_SIZE(__pyx_t_1)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_13 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_23); __Pyx_INCREF(__pyx_t_13); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 248, __pyx_L1_error)
-        #else
-        __pyx_t_13 = PySequence_ITEM(__pyx_t_1, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 248, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_13);
-        #endif
+        if (likely(!__pyx_t_4)) {
+          if (likely(PyList_CheckExact(__pyx_t_5))) {
+            if (__pyx_t_23 >= PyList_GET_SIZE(__pyx_t_5)) break;
+            #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+            __pyx_t_13 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_23); __Pyx_INCREF(__pyx_t_13); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
+            #else
+            __pyx_t_13 = PySequence_ITEM(__pyx_t_5, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 219, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_13);
+            #endif
+          } else {
+            if (__pyx_t_23 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
+            #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+            __pyx_t_13 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_23); __Pyx_INCREF(__pyx_t_13); __pyx_t_23++; if (unlikely(0 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
+            #else
+            __pyx_t_13 = PySequence_ITEM(__pyx_t_5, __pyx_t_23); __pyx_t_23++; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 219, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_13);
+            #endif
+          }
+        } else {
+          __pyx_t_13 = __pyx_t_4(__pyx_t_5);
+          if (unlikely(!__pyx_t_13)) {
+            PyObject* exc_type = PyErr_Occurred();
+            if (exc_type) {
+              if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+              else __PYX_ERR(0, 219, __pyx_L1_error)
+            }
+            break;
+          }
+          __Pyx_GOTREF(__pyx_t_13);
+        }
         __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_13);
         __pyx_t_13 = 0;
         __pyx_v_idx = __pyx_t_2;
         __pyx_t_2 = (__pyx_t_2 + 1);
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":249
- *                             '''Now we need to append to the dictionary with the same julian date values'''
- *                             for idx,val in enumerate(b_julian_out2):
- *                                 idx_lead = idx+week_lead             # <<<<<<<<<<<<<<
- *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
- *                                 if idx % 7 == 0 and idx != 0:
- */
-        __pyx_v_idx_lead = (__pyx_v_idx + __pyx_cur_scope->__pyx_v_week_lead);
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":251
- *                                 idx_lead = idx+week_lead
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":221
+ *                             for idx,val in enumerate(file_julian_list):
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
  *                                 if idx % 7 == 0 and idx != 0:             # <<<<<<<<<<<<<<
  *                                     try:
@@ -4507,14 +4059,14 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
         if (__pyx_t_9) {
         } else {
           __pyx_t_10 = __pyx_t_9;
-          goto __pyx_L33_bool_binop_done;
+          goto __pyx_L24_bool_binop_done;
         }
         __pyx_t_9 = ((__pyx_v_idx != 0) != 0);
         __pyx_t_10 = __pyx_t_9;
-        __pyx_L33_bool_binop_done:;
+        __pyx_L24_bool_binop_done:;
         if (__pyx_t_10) {
 
-          /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":252
+          /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":222
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
  *                                 if idx % 7 == 0 and idx != 0:
  *                                     try:             # <<<<<<<<<<<<<<
@@ -4530,71 +4082,71 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
             __Pyx_XGOTREF(__pyx_t_6);
             /*try:*/ {
 
-              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":253
+              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":223
  *                                 if idx % 7 == 0 and idx != 0:
  *                                     try:
  *                                         summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})             # <<<<<<<<<<<<<<
  *                                         summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})
  */
-              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
-              __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod0, __pyx_t_13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 253, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod0, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 223, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
               if (unlikely(__pyx_v_file == Py_None)) {
                 PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-                __PYX_ERR(0, 253, __pyx_L35_error)
+                __PYX_ERR(0, 223, __pyx_L26_error)
               }
-              __pyx_t_5 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
-              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_12 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 223, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_16);
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
-              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
-              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __pyx_t_14 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
-              __pyx_t_18 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
-              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_15);
-              __pyx_t_24 = PySlice_New(__pyx_t_18, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_24 = PySlice_New(__pyx_t_18, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
               __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_lead, __pyx_t_24) < 0) __PYX_ERR(0, 253, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_lead, __pyx_t_24) < 0) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              __pyx_t_24 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_isel); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_isel); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              __pyx_t_24 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
-              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 253, __pyx_L35_error)
-              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_model, __pyx_int_0) < 0) __PYX_ERR(0, 253, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 253, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 253, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 253, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 253, __pyx_L35_error)
-              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_empty_tuple, __pyx_t_24); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 253, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 223, __pyx_L26_error)
+              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_model, __pyx_int_0) < 0) __PYX_ERR(0, 223, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 223, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 223, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 223, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 223, __pyx_L26_error)
+              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_empty_tuple, __pyx_t_24); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 253, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __pyx_t_19 = NULL;
@@ -4607,84 +4159,84 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
                   __Pyx_DECREF_SET(__pyx_t_17, function);
                 }
               }
-              __pyx_t_5 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_17, __pyx_t_19, __pyx_t_24) : __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_24);
+              __pyx_t_12 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_17, __pyx_t_19, __pyx_t_24) : __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_24);
               __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
+              if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 223, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_5) < 0) __PYX_ERR(0, 253, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_12) < 0) __PYX_ERR(0, 223, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_12, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 253, __pyx_L35_error)
               __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 223, __pyx_L26_error)
+              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":254
+              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":224
  *                                     try:
  *                                         summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})             # <<<<<<<<<<<<<<
  *                                         summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
  */
-              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
-              __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod1, __pyx_t_13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 254, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod1, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 224, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
               if (unlikely(__pyx_v_file == Py_None)) {
                 PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-                __PYX_ERR(0, 254, __pyx_L35_error)
+                __PYX_ERR(0, 224, __pyx_L26_error)
               }
-              __pyx_t_5 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 254, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
-              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_12 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_16);
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_np); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_np); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
-              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
-              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              __pyx_t_17 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
-              __pyx_t_14 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
-              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_15);
-              __pyx_t_18 = PySlice_New(__pyx_t_14, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_18 = PySlice_New(__pyx_t_14, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
               __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_lead, __pyx_t_18) < 0) __PYX_ERR(0, 254, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_lead, __pyx_t_18) < 0) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_17); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_17); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_isel); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_isel); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              __pyx_t_18 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
-              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 254, __pyx_L35_error)
-              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_model, __pyx_int_1) < 0) __PYX_ERR(0, 254, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 254, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 254, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 254, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 254, __pyx_L35_error)
-              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_17, __pyx_empty_tuple, __pyx_t_18); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 254, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 224, __pyx_L26_error)
+              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_model, __pyx_int_1) < 0) __PYX_ERR(0, 224, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 224, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 224, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 224, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 224, __pyx_L26_error)
+              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_17, __pyx_empty_tuple, __pyx_t_18); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 254, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __pyx_t_19 = NULL;
@@ -4697,84 +4249,84 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
                   __Pyx_DECREF_SET(__pyx_t_24, function);
                 }
               }
-              __pyx_t_5 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_24, __pyx_t_19, __pyx_t_18) : __Pyx_PyObject_CallOneArg(__pyx_t_24, __pyx_t_18);
+              __pyx_t_12 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_24, __pyx_t_19, __pyx_t_18) : __Pyx_PyObject_CallOneArg(__pyx_t_24, __pyx_t_18);
               __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 254, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
+              if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 224, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_5) < 0) __PYX_ERR(0, 254, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_12) < 0) __PYX_ERR(0, 224, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_12, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 254, __pyx_L35_error)
               __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 224, __pyx_L26_error)
+              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":255
+              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":225
  *                                         summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})             # <<<<<<<<<<<<<<
  *                                         summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
  * 
  */
-              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
-              __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod2, __pyx_t_13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 255, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod2, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
               if (unlikely(__pyx_v_file == Py_None)) {
                 PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-                __PYX_ERR(0, 255, __pyx_L35_error)
+                __PYX_ERR(0, 225, __pyx_L26_error)
               }
-              __pyx_t_5 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
-              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_12 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 225, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_16);
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __Pyx_GetModuleGlobalName(__pyx_t_24, __pyx_n_s_np); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __Pyx_GetModuleGlobalName(__pyx_t_24, __pyx_n_s_np); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
-              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
-              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_24, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              __pyx_t_24 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
-              __pyx_t_17 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
-              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_15);
-              __pyx_t_14 = PySlice_New(__pyx_t_17, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_14 = PySlice_New(__pyx_t_17, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
               __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_lead, __pyx_t_14) < 0) __PYX_ERR(0, 255, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_24, __pyx_n_s_lead, __pyx_t_14) < 0) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_24); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_24); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
-              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_isel); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_isel); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __pyx_t_14 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
-              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 255, __pyx_L35_error)
-              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_model, __pyx_int_2) < 0) __PYX_ERR(0, 255, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 255, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 255, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 255, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 255, __pyx_L35_error)
-              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_24, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 255, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 225, __pyx_L26_error)
+              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_model, __pyx_int_2) < 0) __PYX_ERR(0, 225, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 225, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 225, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 225, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 225, __pyx_L26_error)
+              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_24, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 255, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __pyx_t_19 = NULL;
@@ -4787,84 +4339,84 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
                   __Pyx_DECREF_SET(__pyx_t_18, function);
                 }
               }
-              __pyx_t_5 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_18, __pyx_t_19, __pyx_t_14) : __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_t_14);
+              __pyx_t_12 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_18, __pyx_t_19, __pyx_t_14) : __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_t_14);
               __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
+              if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 225, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_5) < 0) __PYX_ERR(0, 255, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_12) < 0) __PYX_ERR(0, 225, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_12, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 255, __pyx_L35_error)
               __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 225, __pyx_L26_error)
+              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":256
+              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":226
  *                                         summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})
  *                                         summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})             # <<<<<<<<<<<<<<
  * 
  *                                     #Some shouldn't/can't be appended to dictionary because they are useless
  */
-              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyObject_FormatSimple(__pyx_v_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
-              __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod3, __pyx_t_13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 256, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_summation_ETo_mod3, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_13);
               if (unlikely(__pyx_v_file == Py_None)) {
                 PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-                __PYX_ERR(0, 256, __pyx_L35_error)
+                __PYX_ERR(0, 226, __pyx_L26_error)
               }
-              __pyx_t_5 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 256, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
-              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_12 = PySequence_GetSlice(__pyx_v_file, -14L, -4L); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 226, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
+              __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_16);
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __Pyx_GetModuleGlobalName(__pyx_t_18, __pyx_n_s_np); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __Pyx_GetModuleGlobalName(__pyx_t_18, __pyx_n_s_np); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
-              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_nanmean); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_14);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_v_Et_ref_open_f, __pyx_n_s_SM_SubX_m3_m3_value); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
-              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_isel); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              __pyx_t_18 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
-              __pyx_t_24 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_24 = __Pyx_PyInt_From_long((__pyx_v_idx - 7)); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_24);
-              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_15);
-              __pyx_t_17 = PySlice_New(__pyx_t_24, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_17 = PySlice_New(__pyx_t_24, __pyx_t_15, Py_None); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
               __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_lead, __pyx_t_17) < 0) __PYX_ERR(0, 256, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_18, __pyx_n_s_lead, __pyx_t_17) < 0) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_18); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_18); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_isel); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_isel); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_18);
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              __pyx_t_17 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
-              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 256, __pyx_L35_error)
-              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_model, __pyx_int_3) < 0) __PYX_ERR(0, 256, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 256, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 256, __pyx_L35_error)
-              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 256, __pyx_L35_error) }
-              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 256, __pyx_L35_error)
-              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_18, __pyx_empty_tuple, __pyx_t_17); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 256, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_S, __pyx_int_0) < 0) __PYX_ERR(0, 226, __pyx_L26_error)
+              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_model, __pyx_int_3) < 0) __PYX_ERR(0, 226, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 226, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_X, __pyx_cur_scope->__pyx_v_i_X) < 0) __PYX_ERR(0, 226, __pyx_L26_error)
+              if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 226, __pyx_L26_error) }
+              if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_Y, __pyx_cur_scope->__pyx_v_i_Y) < 0) __PYX_ERR(0, 226, __pyx_L26_error)
+              __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_18, __pyx_empty_tuple, __pyx_t_17); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_19);
               __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 256, __pyx_L35_error)
+              __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_19, __pyx_n_s_values); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_GOTREF(__pyx_t_17);
               __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
               __pyx_t_19 = NULL;
@@ -4877,20 +4429,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
                   __Pyx_DECREF_SET(__pyx_t_14, function);
                 }
               }
-              __pyx_t_5 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_19, __pyx_t_17) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_17);
+              __pyx_t_12 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_19, __pyx_t_17) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_17);
               __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
               __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-              if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 256, __pyx_L35_error)
-              __Pyx_GOTREF(__pyx_t_5);
+              if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 226, __pyx_L26_error)
+              __Pyx_GOTREF(__pyx_t_12);
               __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_5) < 0) __PYX_ERR(0, 256, __pyx_L35_error)
+              if (PyDict_SetItem(__pyx_t_13, __pyx_t_16, __pyx_t_12) < 0) __PYX_ERR(0, 226, __pyx_L26_error)
               __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-              __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_12, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 256, __pyx_L35_error)
               __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+              __pyx_t_20 = __Pyx_PyObject_Append(__pyx_t_1, __pyx_t_13); if (unlikely(__pyx_t_20 == ((int)-1))) __PYX_ERR(0, 226, __pyx_L26_error)
+              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":252
+              /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":222
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
  *                                 if idx % 7 == 0 and idx != 0:
  *                                     try:             # <<<<<<<<<<<<<<
@@ -4901,8 +4453,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
             __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
             __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
             __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-            goto __pyx_L42_try_end;
-            __pyx_L35_error:;
+            goto __pyx_L33_try_end;
+            __pyx_L26_error:;
+            __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
             __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
             __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
             __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
@@ -4912,9 +4465,8 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
             __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
             __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
             __Pyx_XDECREF(__pyx_t_24); __pyx_t_24 = 0;
-            __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-            /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":259
+            /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":229
  * 
  *                                     #Some shouldn't/can't be appended to dictionary because they are useless
  *                                     except KeyError:             # <<<<<<<<<<<<<<
@@ -4924,10 +4476,10 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
             __pyx_t_21 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
             if (__pyx_t_21) {
               __Pyx_ErrRestore(0,0,0);
-              goto __pyx_L36_exception_handled;
+              goto __pyx_L27_exception_handled;
             }
 
-            /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":261
+            /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":231
  *                                     except KeyError:
  *                                         pass
  *                                     except IndexError:             # <<<<<<<<<<<<<<
@@ -4937,12 +4489,12 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
             __pyx_t_21 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
             if (__pyx_t_21) {
               __Pyx_ErrRestore(0,0,0);
-              goto __pyx_L36_exception_handled;
+              goto __pyx_L27_exception_handled;
             }
-            goto __pyx_L37_except_error;
-            __pyx_L37_except_error:;
+            goto __pyx_L28_except_error;
+            __pyx_L28_except_error:;
 
-            /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":252
+            /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":222
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
  *                                 if idx % 7 == 0 and idx != 0:
  *                                     try:             # <<<<<<<<<<<<<<
@@ -4954,16 +4506,16 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
             __Pyx_XGIVEREF(__pyx_t_6);
             __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_7, __pyx_t_6);
             goto __pyx_L1_error;
-            __pyx_L36_exception_handled:;
+            __pyx_L27_exception_handled:;
             __Pyx_XGIVEREF(__pyx_t_8);
             __Pyx_XGIVEREF(__pyx_t_7);
             __Pyx_XGIVEREF(__pyx_t_6);
             __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_7, __pyx_t_6);
-            __pyx_L42_try_end:;
+            __pyx_L33_try_end:;
           }
 
-          /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":251
- *                                 idx_lead = idx+week_lead
+          /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":221
+ *                             for idx,val in enumerate(file_julian_list):
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
  *                                 if idx % 7 == 0 and idx != 0:             # <<<<<<<<<<<<<<
  *                                     try:
@@ -4971,22 +4523,22 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
  */
         }
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":248
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":219
  * 
  *                             '''Now we need to append to the dictionary with the same julian date values'''
- *                             for idx,val in enumerate(b_julian_out2):             # <<<<<<<<<<<<<<
- *                                 idx_lead = idx+week_lead
+ *                             for idx,val in enumerate(file_julian_list):             # <<<<<<<<<<<<<<
  *                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
+ *                                 if idx % 7 == 0 and idx != 0:
  */
       }
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
       /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":214
  *                     for file in dates_to_keep:
  *                         #Dont' re-open the same file
  *                         if file[-14:-4] != _date:             # <<<<<<<<<<<<<<
- * 
  *                             open_f = xr.open_dataset(file)
+ *                             Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
  */
     }
 
@@ -5000,7 +4552,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
   }
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":264
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":234
  *                                         pass
  * 
  *                     return(summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3)             # <<<<<<<<<<<<<<
@@ -5008,7 +4560,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
  *                 #Contains the julian day value of the current file ETo_{_date} and the 7-day summation
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_11 = PyTuple_New(4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_11 = PyTuple_New(4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_INCREF(__pyx_v_summation_ETo_mod0);
   __Pyx_GIVEREF(__pyx_v_summation_ETo_mod0);
@@ -5055,16 +4607,10 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
   __Pyx_XDECREF(__pyx_v_summation_ETo_mod1);
   __Pyx_XDECREF(__pyx_v_summation_ETo_mod2);
   __Pyx_XDECREF(__pyx_v_summation_ETo_mod3);
-  __Pyx_XDECREF(__pyx_v_date_out);
-  __Pyx_XDECREF(__pyx_v_b_julian_out);
-  __Pyx_XDECREF(__pyx_v_b_julian_out2);
   __Pyx_XDECREF(__pyx_v_dates_to_keep);
   __Pyx_XDECREF(__pyx_v_file);
   __Pyx_XDECREF(__pyx_v_julian_d);
   __Pyx_XDECREF(__pyx_v_open_f);
-  __Pyx_XDECREF(__pyx_v_date_in);
-  __Pyx_XDECREF(__pyx_v_start_date);
-  __Pyx_XDECREF(__pyx_v_i);
   __Pyx_XDECREF(__pyx_v_Et_ref_open_f);
   __Pyx_XDECREF(__pyx_v_val);
   __Pyx_XGIVEREF(__pyx_r);
@@ -5072,7 +4618,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1
   return __pyx_r;
 }
 
-/* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":287
+/* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":255
  *                 '''Initially I thought I also needed to keep the mean for later reference,
  *                 but I do not'''
  *                 def compute_anomaly(dict SM_7_day_average_modN):             # <<<<<<<<<<<<<<
@@ -5090,7 +4636,7 @@ static PyObject *__pyx_pw_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_5compu
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compute_anomaly (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_SM_7_day_average_modN), (&PyDict_Type), 1, "SM_7_day_average_modN", 1))) __PYX_ERR(0, 287, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_SM_7_day_average_modN), (&PyDict_Type), 1, "SM_7_day_average_modN", 1))) __PYX_ERR(0, 255, __pyx_L1_error)
   __pyx_r = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_self, ((PyObject*)__pyx_v_SM_7_day_average_modN));
 
   /* function exit code */
@@ -5134,31 +4680,31 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_anomaly", 0);
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":294
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":262
  *                     cdef int idx, date_init
  * 
  *                     out_eddi_dictionary = {}             # <<<<<<<<<<<<<<
  *                     out_mean_dictionary = {}
  *                     #Key value in dictionary is julian_date
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out_eddi_dictionary = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":295
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":263
  * 
  *                     out_eddi_dictionary = {}
  *                     out_mean_dictionary = {}             # <<<<<<<<<<<<<<
  *                     #Key value in dictionary is julian_date
  *                     for idx,julian_date in enumerate(SM_7_day_average_modN):
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_out_mean_dictionary = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":297
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":265
  *                     out_mean_dictionary = {}
  *                     #Key value in dictionary is julian_date
  *                     for idx,julian_date in enumerate(SM_7_day_average_modN):             # <<<<<<<<<<<<<<
@@ -5169,9 +4715,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
   __pyx_t_3 = 0;
   if (unlikely(__pyx_v_SM_7_day_average_modN == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 297, __pyx_L1_error)
+    __PYX_ERR(0, 265, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_SM_7_day_average_modN, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_SM_7_day_average_modN, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 265, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_1);
   __pyx_t_1 = __pyx_t_6;
@@ -5179,45 +4725,45 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
   while (1) {
     __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_4, &__pyx_t_3, &__pyx_t_6, NULL, NULL, __pyx_t_5);
     if (unlikely(__pyx_t_7 == 0)) break;
-    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 297, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 265, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) __PYX_ERR(0, 297, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) __PYX_ERR(0, 265, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_julian_date, ((PyObject*)__pyx_t_6));
     __pyx_t_6 = 0;
     __pyx_v_idx = __pyx_t_2;
     __pyx_t_2 = (__pyx_t_2 + 1);
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":299
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":267
  *                     for idx,julian_date in enumerate(SM_7_day_average_modN):
  * 
  *                         out_eddi_dictionary[f'{julian_date}']=[]             # <<<<<<<<<<<<<<
  *                         out_mean_dictionary[f'{julian_date}']=[]
  * 
  */
-    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    if (unlikely(PyDict_SetItem(__pyx_v_out_eddi_dictionary, __pyx_t_8, __pyx_t_6) < 0)) __PYX_ERR(0, 299, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_out_eddi_dictionary, __pyx_t_8, __pyx_t_6) < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":300
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":268
  * 
  *                         out_eddi_dictionary[f'{julian_date}']=[]
  *                         out_mean_dictionary[f'{julian_date}']=[]             # <<<<<<<<<<<<<<
  * 
  *                         subset_by_date = SM_7_day_average_modN[f'{julian_date}']
  */
-    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 300, __pyx_L1_error)
+    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 268, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 300, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 268, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    if (unlikely(PyDict_SetItem(__pyx_v_out_mean_dictionary, __pyx_t_8, __pyx_t_6) < 0)) __PYX_ERR(0, 300, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_out_mean_dictionary, __pyx_t_8, __pyx_t_6) < 0)) __PYX_ERR(0, 268, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":302
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":270
  *                         out_mean_dictionary[f'{julian_date}']=[]
  * 
  *                         subset_by_date = SM_7_day_average_modN[f'{julian_date}']             # <<<<<<<<<<<<<<
@@ -5226,50 +4772,50 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
  */
     if (unlikely(__pyx_v_SM_7_day_average_modN == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 302, __pyx_L1_error)
+      __PYX_ERR(0, 270, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 302, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 270, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_SM_7_day_average_modN, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 302, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_SM_7_day_average_modN, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 270, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_XDECREF_SET(__pyx_v_subset_by_date, __pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":304
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":272
  *                         subset_by_date = SM_7_day_average_modN[f'{julian_date}']
  * 
  *                         mean_value = []             # <<<<<<<<<<<<<<
  *                         for date_init in range(len(subset_by_date)):
  *                             mean_value.append(list(subset_by_date[date_init].values())[0])
  */
-    __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 304, __pyx_L1_error)
+    __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 272, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_XDECREF_SET(__pyx_v_mean_value, ((PyObject*)__pyx_t_8));
     __pyx_t_8 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":305
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":273
  * 
  *                         mean_value = []
  *                         for date_init in range(len(subset_by_date)):             # <<<<<<<<<<<<<<
  *                             mean_value.append(list(subset_by_date[date_init].values())[0])
  * 
  */
-    __pyx_t_9 = PyObject_Length(__pyx_v_subset_by_date); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 305, __pyx_L1_error)
+    __pyx_t_9 = PyObject_Length(__pyx_v_subset_by_date); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 273, __pyx_L1_error)
     __pyx_t_10 = __pyx_t_9;
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_10; __pyx_t_7+=1) {
       __pyx_v_date_init = __pyx_t_7;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":306
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":274
  *                         mean_value = []
  *                         for date_init in range(len(subset_by_date)):
  *                             mean_value.append(list(subset_by_date[date_init].values())[0])             # <<<<<<<<<<<<<<
  * 
  *                         mean_calc = np.mean(np.array(mean_value))
  */
-      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_subset_by_date, __pyx_v_date_init, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 306, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_subset_by_date, __pyx_v_date_init, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 274, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 306, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 274, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_t_6 = NULL;
@@ -5284,34 +4830,34 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
       }
       __pyx_t_8 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 306, __pyx_L1_error)
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 274, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PySequence_List(__pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 306, __pyx_L1_error)
+      __pyx_t_11 = PySequence_List(__pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 274, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 306, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 274, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_mean_value, __pyx_t_8); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 306, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_mean_value, __pyx_t_8); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 274, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":308
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":276
  *                             mean_value.append(list(subset_by_date[date_init].values())[0])
  * 
  *                         mean_calc = np.mean(np.array(mean_value))             # <<<<<<<<<<<<<<
  *                         #calculate anomaly
  *                         anomaly_val = []
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 308, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_mean); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 308, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_mean); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 308, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_array); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 308, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_array); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __pyx_t_13 = NULL;
@@ -5326,7 +4872,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
     }
     __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_13, __pyx_v_mean_value) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_v_mean_value);
     __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-    if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 308, __pyx_L1_error)
+    if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     __pyx_t_14 = NULL;
@@ -5342,47 +4888,47 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
     __pyx_t_8 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_14, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_11);
     __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 308, __pyx_L1_error)
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_8); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 308, __pyx_L1_error)
+    __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_8); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 276, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_v_mean_calc = __pyx_t_15;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":310
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":278
  *                         mean_calc = np.mean(np.array(mean_value))
  *                         #calculate anomaly
  *                         anomaly_val = []             # <<<<<<<<<<<<<<
  *                         for date_init in range(len(subset_by_date)):
  *                             anomaly_val.append((list(subset_by_date[date_init].values())[0]-mean_calc))
  */
-    __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 310, __pyx_L1_error)
+    __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_XDECREF_SET(__pyx_v_anomaly_val, ((PyObject*)__pyx_t_8));
     __pyx_t_8 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":311
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":279
  *                         #calculate anomaly
  *                         anomaly_val = []
  *                         for date_init in range(len(subset_by_date)):             # <<<<<<<<<<<<<<
  *                             anomaly_val.append((list(subset_by_date[date_init].values())[0]-mean_calc))
  * 
  */
-    __pyx_t_9 = PyObject_Length(__pyx_v_subset_by_date); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 311, __pyx_L1_error)
+    __pyx_t_9 = PyObject_Length(__pyx_v_subset_by_date); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 279, __pyx_L1_error)
     __pyx_t_10 = __pyx_t_9;
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_10; __pyx_t_7+=1) {
       __pyx_v_date_init = __pyx_t_7;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":312
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":280
  *                         anomaly_val = []
  *                         for date_init in range(len(subset_by_date)):
  *                             anomaly_val.append((list(subset_by_date[date_init].values())[0]-mean_calc))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_subset_by_date, __pyx_v_date_init, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_subset_by_date, __pyx_v_date_init, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_t_6 = NULL;
@@ -5397,61 +4943,61 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
       }
       __pyx_t_8 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 312, __pyx_L1_error)
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PySequence_List(__pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_11 = PySequence_List(__pyx_t_8); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PyFloat_FromDouble(__pyx_v_mean_calc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_11 = PyFloat_FromDouble(__pyx_v_mean_calc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_6 = PyNumber_Subtract(__pyx_t_8, __pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_6 = PyNumber_Subtract(__pyx_t_8, __pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_anomaly_val, __pyx_t_6); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 312, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_anomaly_val, __pyx_t_6); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 280, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":315
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":283
  * 
  * 
  *                         out_eddi_dictionary[f'{julian_date}'].append(anomaly_val)             # <<<<<<<<<<<<<<
  *                         out_mean_dictionary[f'{julian_date}'].append(mean_calc)
  * 
  */
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 315, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_11 = __Pyx_PyDict_GetItem(__pyx_v_out_eddi_dictionary, __pyx_t_6); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 315, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyDict_GetItem(__pyx_v_out_eddi_dictionary, __pyx_t_6); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_12 = __Pyx_PyObject_Append(__pyx_t_11, __pyx_v_anomaly_val); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 315, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_PyObject_Append(__pyx_t_11, __pyx_v_anomaly_val); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":316
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":284
  * 
  *                         out_eddi_dictionary[f'{julian_date}'].append(anomaly_val)
  *                         out_mean_dictionary[f'{julian_date}'].append(mean_calc)             # <<<<<<<<<<<<<<
  * 
  *                     return(out_eddi_dictionary,out_mean_dictionary)
  */
-    __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 316, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_date, __pyx_empty_unicode); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_out_mean_dictionary, __pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 316, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_out_mean_dictionary, __pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = PyFloat_FromDouble(__pyx_v_mean_calc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 316, __pyx_L1_error)
+    __pyx_t_11 = PyFloat_FromDouble(__pyx_v_mean_calc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = __Pyx_PyObject_Append(__pyx_t_6, __pyx_t_11); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 316, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_PyObject_Append(__pyx_t_6, __pyx_t_11); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":318
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":286
  *                         out_mean_dictionary[f'{julian_date}'].append(mean_calc)
  * 
  *                     return(out_eddi_dictionary,out_mean_dictionary)             # <<<<<<<<<<<<<<
@@ -5459,7 +5005,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
  *                 RZSM_dict_mod0, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod0)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 286, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_out_eddi_dictionary);
   __Pyx_GIVEREF(__pyx_v_out_eddi_dictionary);
@@ -5471,7 +5017,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":287
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":255
  *                 '''Initially I thought I also needed to keep the mean for later reference,
  *                 but I do not'''
  *                 def compute_anomaly(dict SM_7_day_average_modN):             # <<<<<<<<<<<<<<
@@ -5501,7 +5047,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compu
   return __pyx_r;
 }
 
-/* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":331
+/* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":299
  *                 has the initialized dates for each EDDI julian day summation'''
  * 
  *                 def improve_RZSM_dictionary(dict SM_7_day_average_modN,dict RZSM_dict_modN):             # <<<<<<<<<<<<<<
@@ -5544,11 +5090,11 @@ static PyObject *__pyx_pw_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_7impro
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_RZSM_dict_modN)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("improve_RZSM_dictionary", 1, 2, 2, 1); __PYX_ERR(0, 331, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("improve_RZSM_dictionary", 1, 2, 2, 1); __PYX_ERR(0, 299, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "improve_RZSM_dictionary") < 0)) __PYX_ERR(0, 331, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "improve_RZSM_dictionary") < 0)) __PYX_ERR(0, 299, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5561,14 +5107,14 @@ static PyObject *__pyx_pw_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_7impro
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("improve_RZSM_dictionary", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 331, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("improve_RZSM_dictionary", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 299, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("TMP_1e_anomaly_RZSM_step0_GMAO.RZSM_anomaly.improve_RZSM_dictionary", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_SM_7_day_average_modN), (&PyDict_Type), 1, "SM_7_day_average_modN", 1))) __PYX_ERR(0, 331, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_dict_modN), (&PyDict_Type), 1, "RZSM_dict_modN", 1))) __PYX_ERR(0, 331, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_SM_7_day_average_modN), (&PyDict_Type), 1, "SM_7_day_average_modN", 1))) __PYX_ERR(0, 299, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_dict_modN), (&PyDict_Type), 1, "RZSM_dict_modN", 1))) __PYX_ERR(0, 299, __pyx_L1_error)
   __pyx_r = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_self, __pyx_v_SM_7_day_average_modN, __pyx_v_RZSM_dict_modN);
 
   /* function exit code */
@@ -5609,19 +5155,19 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("improve_RZSM_dictionary", 0);
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":337
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":305
  *                     cdef str julian_dattt
  * 
  *                     final_out_dictionary_all_eddi = {}             # <<<<<<<<<<<<<<
  * 
  *                     for idx,julian_dattt in enumerate(SM_7_day_average_modN):
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 337, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 305, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_final_out_dictionary_all_eddi = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":339
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":307
  *                     final_out_dictionary_all_eddi = {}
  * 
  *                     for idx,julian_dattt in enumerate(SM_7_day_average_modN):             # <<<<<<<<<<<<<<
@@ -5632,9 +5178,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
   __pyx_t_3 = 0;
   if (unlikely(__pyx_v_SM_7_day_average_modN == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 339, __pyx_L1_error)
+    __PYX_ERR(0, 307, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_SM_7_day_average_modN, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 339, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_SM_7_day_average_modN, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_1);
   __pyx_t_1 = __pyx_t_6;
@@ -5642,30 +5188,30 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
   while (1) {
     __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_4, &__pyx_t_3, &__pyx_t_6, NULL, NULL, __pyx_t_5);
     if (unlikely(__pyx_t_7 == 0)) break;
-    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 339, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 307, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) __PYX_ERR(0, 339, __pyx_L1_error)
+    if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) __PYX_ERR(0, 307, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_julian_dattt, ((PyObject*)__pyx_t_6));
     __pyx_t_6 = 0;
     __pyx_v_idx = __pyx_t_2;
     __pyx_t_2 = (__pyx_t_2 + 1);
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":340
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":308
  * 
  *                     for idx,julian_dattt in enumerate(SM_7_day_average_modN):
  *                         final_out_dictionary_all_eddi[f'{julian_dattt}'] = [] #create an empty list to append to             # <<<<<<<<<<<<<<
  *                         sub_list = SM_7_day_average_modN[f'{julian_dattt}'] #choose only the summation ETo with correct julian date
  *                         sub_keys = [] #initialize a list to keep up with the correct julian date and the actual init dates (because each init date varies with number of samples)
  */
-    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 340, __pyx_L1_error)
+    __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 308, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 340, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 308, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    if (unlikely(PyDict_SetItem(__pyx_v_final_out_dictionary_all_eddi, __pyx_t_8, __pyx_t_6) < 0)) __PYX_ERR(0, 340, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_final_out_dictionary_all_eddi, __pyx_t_8, __pyx_t_6) < 0)) __PYX_ERR(0, 308, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":341
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":309
  *                     for idx,julian_dattt in enumerate(SM_7_day_average_modN):
  *                         final_out_dictionary_all_eddi[f'{julian_dattt}'] = [] #create an empty list to append to
  *                         sub_list = SM_7_day_average_modN[f'{julian_dattt}'] #choose only the summation ETo with correct julian date             # <<<<<<<<<<<<<<
@@ -5674,29 +5220,29 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
  */
     if (unlikely(__pyx_v_SM_7_day_average_modN == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 341, __pyx_L1_error)
+      __PYX_ERR(0, 309, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 341, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 309, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_SM_7_day_average_modN, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 341, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_SM_7_day_average_modN, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 309, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_XDECREF_SET(__pyx_v_sub_list, __pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":342
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":310
  *                         final_out_dictionary_all_eddi[f'{julian_dattt}'] = [] #create an empty list to append to
  *                         sub_list = SM_7_day_average_modN[f'{julian_dattt}'] #choose only the summation ETo with correct julian date
  *                         sub_keys = [] #initialize a list to keep up with the correct julian date and the actual init dates (because each init date varies with number of samples)             # <<<<<<<<<<<<<<
  * 
  *                         #sub list contains a dictionary for each julian date in current loop and the values of ETo
  */
-    __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 342, __pyx_L1_error)
+    __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 310, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_XDECREF_SET(__pyx_v_sub_keys, ((PyObject*)__pyx_t_8));
     __pyx_t_8 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":346
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":314
  *                         #sub list contains a dictionary for each julian date in current loop and the values of ETo
  *                         #Save the init date values for each julian date
  *                         for idxxx, init_date in enumerate(sub_list):             # <<<<<<<<<<<<<<
@@ -5708,26 +5254,26 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
       __pyx_t_8 = __pyx_v_sub_list; __Pyx_INCREF(__pyx_t_8); __pyx_t_9 = 0;
       __pyx_t_10 = NULL;
     } else {
-      __pyx_t_9 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_v_sub_list); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 346, __pyx_L1_error)
+      __pyx_t_9 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_v_sub_list); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 314, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_10 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 346, __pyx_L1_error)
+      __pyx_t_10 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 314, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_10)) {
         if (likely(PyList_CheckExact(__pyx_t_8))) {
           if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_8)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_6); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 346, __pyx_L1_error)
+          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_6); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 314, __pyx_L1_error)
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 346, __pyx_L1_error)
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 314, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           #endif
         } else {
           if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_8)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_6); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 346, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_6); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 314, __pyx_L1_error)
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 346, __pyx_L1_error)
+          __pyx_t_6 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 314, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           #endif
         }
@@ -5737,7 +5283,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 346, __pyx_L1_error)
+            else __PYX_ERR(0, 314, __pyx_L1_error)
           }
           break;
         }
@@ -5748,16 +5294,16 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
       __pyx_v_idxxx = __pyx_t_7;
       __pyx_t_7 = (__pyx_t_7 + 1);
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":348
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":316
  *                         for idxxx, init_date in enumerate(sub_list):
  * 
  *                             sub_keys.append({list(init_date.keys())[0] :RZSM_dict_modN[f'{julian_dattt}'][0][idxxx]})             # <<<<<<<<<<<<<<
  * 
  *                         final_out_dictionary_all_eddi[f'{julian_dattt}'].append(sub_keys)
  */
-      __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_init_date, __pyx_n_s_keys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_init_date, __pyx_n_s_keys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_13 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
@@ -5771,37 +5317,37 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
       }
       __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_13) : __Pyx_PyObject_CallNoArg(__pyx_t_12);
       __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 348, __pyx_L1_error)
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_12 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       if (unlikely(__pyx_v_RZSM_dict_modN == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 348, __pyx_L1_error)
+        __PYX_ERR(0, 316, __pyx_L1_error)
       }
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_13 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_dict_modN, __pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_dict_modN, __pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_GetItemInt(__pyx_t_13, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_GetItemInt(__pyx_t_13, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt(__pyx_t_12, __pyx_v_idxxx, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_GetItemInt(__pyx_t_12, __pyx_v_idxxx, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (PyDict_SetItem(__pyx_t_6, __pyx_t_11, __pyx_t_13) < 0) __PYX_ERR(0, 348, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_6, __pyx_t_11, __pyx_t_13) < 0) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_sub_keys, __pyx_t_6); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 348, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_sub_keys, __pyx_t_6); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 316, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":346
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":314
  *                         #sub list contains a dictionary for each julian date in current loop and the values of ETo
  *                         #Save the init date values for each julian date
  *                         for idxxx, init_date in enumerate(sub_list):             # <<<<<<<<<<<<<<
@@ -5811,24 +5357,24 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
     }
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":350
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":318
  *                             sub_keys.append({list(init_date.keys())[0] :RZSM_dict_modN[f'{julian_dattt}'][0][idxxx]})
  * 
  *                         final_out_dictionary_all_eddi[f'{julian_dattt}'].append(sub_keys)             # <<<<<<<<<<<<<<
  * 
  *                     return(final_out_dictionary_all_eddi)
  */
-    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_v_julian_dattt, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 318, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_final_out_dictionary_all_eddi, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_final_out_dictionary_all_eddi, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 318, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Append(__pyx_t_6, __pyx_v_sub_keys); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Append(__pyx_t_6, __pyx_v_sub_keys); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 318, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":352
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":320
  *                         final_out_dictionary_all_eddi[f'{julian_dattt}'].append(sub_keys)
  * 
  *                     return(final_out_dictionary_all_eddi)             # <<<<<<<<<<<<<<
@@ -5840,7 +5386,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
   __pyx_r = __pyx_v_final_out_dictionary_all_eddi;
   goto __pyx_L0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":331
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":299
  *                 has the initialized dates for each EDDI julian day summation'''
  * 
  *                 def improve_RZSM_dictionary(dict SM_7_day_average_modN,dict RZSM_dict_modN):             # <<<<<<<<<<<<<<
@@ -5869,7 +5415,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6impro
   return __pyx_r;
 }
 
-/* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":366
+/* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":334
  *                 '''Now that we have created new files, we can append each file with the data that was found'''
  * 
  *                 def add_to_nc_file(dict RZSM_next_dict_mod0,dict RZSM_next_dict_mod1,dict RZSM_next_dict_mod2,dict RZSM_next_dict_mod3):             # <<<<<<<<<<<<<<
@@ -5918,23 +5464,23 @@ static PyObject *__pyx_pw_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_9add_t
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_RZSM_next_dict_mod1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, 1); __PYX_ERR(0, 366, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, 1); __PYX_ERR(0, 334, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_RZSM_next_dict_mod2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, 2); __PYX_ERR(0, 366, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, 2); __PYX_ERR(0, 334, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_RZSM_next_dict_mod3)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, 3); __PYX_ERR(0, 366, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, 3); __PYX_ERR(0, 334, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_to_nc_file") < 0)) __PYX_ERR(0, 366, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_to_nc_file") < 0)) __PYX_ERR(0, 334, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -5951,16 +5497,16 @@ static PyObject *__pyx_pw_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_9add_t
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 366, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add_to_nc_file", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 334, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("TMP_1e_anomaly_RZSM_step0_GMAO.RZSM_anomaly.add_to_nc_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod0), (&PyDict_Type), 1, "RZSM_next_dict_mod0", 1))) __PYX_ERR(0, 366, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod1), (&PyDict_Type), 1, "RZSM_next_dict_mod1", 1))) __PYX_ERR(0, 366, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod2), (&PyDict_Type), 1, "RZSM_next_dict_mod2", 1))) __PYX_ERR(0, 366, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod3), (&PyDict_Type), 1, "RZSM_next_dict_mod3", 1))) __PYX_ERR(0, 366, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod0), (&PyDict_Type), 1, "RZSM_next_dict_mod0", 1))) __PYX_ERR(0, 334, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod1), (&PyDict_Type), 1, "RZSM_next_dict_mod1", 1))) __PYX_ERR(0, 334, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod2), (&PyDict_Type), 1, "RZSM_next_dict_mod2", 1))) __PYX_ERR(0, 334, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_RZSM_next_dict_mod3), (&PyDict_Type), 1, "RZSM_next_dict_mod3", 1))) __PYX_ERR(0, 334, __pyx_L1_error)
   __pyx_r = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_to_nc_file(__pyx_self, __pyx_v_RZSM_next_dict_mod0, __pyx_v_RZSM_next_dict_mod1, __pyx_v_RZSM_next_dict_mod2, __pyx_v_RZSM_next_dict_mod3);
 
   /* function exit code */
@@ -6007,6 +5553,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
   Py_ssize_t __pyx_t_14;
   Py_UCS4 __pyx_t_15;
   PyObject *__pyx_t_16 = NULL;
+  int __pyx_t_17;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -6014,7 +5561,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
   __pyx_outer_scope = (struct __pyx_obj_30TMP_1e_anomaly_RZSM_step0_GMAO___pyx_scope_struct__RZSM_anomaly *) __Pyx_CyFunction_GetClosure(__pyx_self);
   __pyx_cur_scope = __pyx_outer_scope;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":368
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":336
  *                 def add_to_nc_file(dict RZSM_next_dict_mod0,dict RZSM_next_dict_mod1,dict RZSM_next_dict_mod2,dict RZSM_next_dict_mod3):
  * 
  *                     for idx_,i_val in enumerate(RZSM_next_dict_mod0):             # <<<<<<<<<<<<<<
@@ -6025,9 +5572,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
   __pyx_t_3 = 0;
   if (unlikely(__pyx_v_RZSM_next_dict_mod0 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 368, __pyx_L1_error)
+    __PYX_ERR(0, 336, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_RZSM_next_dict_mod0, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 368, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_RZSM_next_dict_mod0, 1, ((PyObject *)NULL), (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 336, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_2);
   __pyx_t_2 = __pyx_t_6;
@@ -6035,14 +5582,14 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
   while (1) {
     __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_2, __pyx_t_4, &__pyx_t_3, &__pyx_t_6, NULL, NULL, __pyx_t_5);
     if (unlikely(__pyx_t_7 == 0)) break;
-    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 368, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 336, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_XDECREF_SET(__pyx_v_i_val, __pyx_t_6);
     __pyx_t_6 = 0;
     __pyx_v_idx_ = __pyx_t_1;
     __pyx_t_1 = (__pyx_t_1 + 1);
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":371
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":339
  * 
  *                     #for some reason it's a list in a list, this fixes that, loop through julian day
  *                         EDDI_final_dict0 = RZSM_next_dict_mod0[f'{i_val}'][0]             # <<<<<<<<<<<<<<
@@ -6051,20 +5598,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
  */
     if (unlikely(__pyx_v_RZSM_next_dict_mod0 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 371, __pyx_L1_error)
+      __PYX_ERR(0, 339, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 371, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod0, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 371, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod0, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 371, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 339, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_XDECREF_SET(__pyx_v_EDDI_final_dict0, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":372
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":340
  *                     #for some reason it's a list in a list, this fixes that, loop through julian day
  *                         EDDI_final_dict0 = RZSM_next_dict_mod0[f'{i_val}'][0]
  *                         EDDI_final_dict1 = RZSM_next_dict_mod1[f'{i_val}'][0]             # <<<<<<<<<<<<<<
@@ -6073,20 +5620,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
  */
     if (unlikely(__pyx_v_RZSM_next_dict_mod1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 372, __pyx_L1_error)
+      __PYX_ERR(0, 340, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 372, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 340, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod1, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 372, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod1, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 340, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 372, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 340, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_XDECREF_SET(__pyx_v_EDDI_final_dict1, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":373
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":341
  *                         EDDI_final_dict0 = RZSM_next_dict_mod0[f'{i_val}'][0]
  *                         EDDI_final_dict1 = RZSM_next_dict_mod1[f'{i_val}'][0]
  *                         EDDI_final_dict2 = RZSM_next_dict_mod2[f'{i_val}'][0]             # <<<<<<<<<<<<<<
@@ -6095,20 +5642,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
  */
     if (unlikely(__pyx_v_RZSM_next_dict_mod2 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 373, __pyx_L1_error)
+      __PYX_ERR(0, 341, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 373, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod2, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 373, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod2, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 373, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 341, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_XDECREF_SET(__pyx_v_EDDI_final_dict2, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":374
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":342
  *                         EDDI_final_dict1 = RZSM_next_dict_mod1[f'{i_val}'][0]
  *                         EDDI_final_dict2 = RZSM_next_dict_mod2[f'{i_val}'][0]
  *                         EDDI_final_dict3 = RZSM_next_dict_mod3[f'{i_val}'][0]             # <<<<<<<<<<<<<<
@@ -6117,20 +5664,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
  */
     if (unlikely(__pyx_v_RZSM_next_dict_mod3 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 374, __pyx_L1_error)
+      __PYX_ERR(0, 342, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_v_i_val, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 342, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod3, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 374, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_RZSM_next_dict_mod3, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 342, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 374, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 342, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_XDECREF_SET(__pyx_v_EDDI_final_dict3, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":376
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":344
  *                         EDDI_final_dict3 = RZSM_next_dict_mod3[f'{i_val}'][0]
  * 
  *                         for idx,dic_init_and_eddi_val in enumerate(EDDI_final_dict0):             # <<<<<<<<<<<<<<
@@ -6143,26 +5690,26 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __pyx_t_8 = __pyx_v_EDDI_final_dict0; __Pyx_INCREF(__pyx_t_8); __pyx_t_9 = 0;
       __pyx_t_10 = NULL;
     } else {
-      __pyx_t_9 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_v_EDDI_final_dict0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 376, __pyx_L1_error)
+      __pyx_t_9 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_v_EDDI_final_dict0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 344, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      __pyx_t_10 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 376, __pyx_L1_error)
+      __pyx_t_10 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 344, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_10)) {
         if (likely(PyList_CheckExact(__pyx_t_8))) {
           if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_8)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_11 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 376, __pyx_L1_error)
+          __pyx_t_11 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 344, __pyx_L1_error)
           #else
-          __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 376, __pyx_L1_error)
+          __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 344, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_11);
           #endif
         } else {
           if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_8)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_11 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 376, __pyx_L1_error)
+          __pyx_t_11 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_11); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 344, __pyx_L1_error)
           #else
-          __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 376, __pyx_L1_error)
+          __pyx_t_11 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 344, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_11);
           #endif
         }
@@ -6172,7 +5719,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 376, __pyx_L1_error)
+            else __PYX_ERR(0, 344, __pyx_L1_error)
           }
           break;
         }
@@ -6182,20 +5729,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __pyx_t_11 = 0;
       __Pyx_INCREF(__pyx_t_6);
       __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_6);
-      __pyx_t_11 = __Pyx_PyInt_AddObjC(__pyx_t_6, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 376, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyInt_AddObjC(__pyx_t_6, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 344, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_6);
       __pyx_t_6 = __pyx_t_11;
       __pyx_t_11 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":380
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":348
  *                             # print(dic_init_and_eddi_val)
  *                             #Open up the file and insert the value
  *                             init_day = list(dic_init_and_eddi_val.keys())[0]             # <<<<<<<<<<<<<<
  * 
- *                             '''When appending using several scripts, sometimes the file will
+ *                             var2 = 'RZSM'
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_dic_init_and_eddi_val, __pyx_n_s_keys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 380, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_dic_init_and_eddi_val, __pyx_n_s_keys); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 348, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_13 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
@@ -6209,20 +5756,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       }
       __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_13) : __Pyx_PyObject_CallNoArg(__pyx_t_12);
       __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 380, __pyx_L1_error)
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 348, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 380, __pyx_L1_error)
+      __pyx_t_12 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 348, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 380, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 348, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_XDECREF_SET(__pyx_v_init_day, __pyx_t_11);
       __pyx_t_11 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":387
- * 
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":350
+ *                             init_day = list(dic_init_and_eddi_val.keys())[0]
  * 
  *                             var2 = 'RZSM'             # <<<<<<<<<<<<<<
  *                             lead_values = np.load(f'{home_dir}/julian_lead_{init_day}.npy',allow_pickle=True)
@@ -6231,25 +5778,25 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __Pyx_INCREF(__pyx_n_s_RZSM);
       __Pyx_XDECREF_SET(__pyx_v_var2, __pyx_n_s_RZSM);
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":388
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":351
  * 
  *                             var2 = 'RZSM'
  *                             lead_values = np.load(f'{home_dir}/julian_lead_{init_day}.npy',allow_pickle=True)             # <<<<<<<<<<<<<<
  * 
  *                             #add values by julian day
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_load); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_load); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PyTuple_New(4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_11 = PyTuple_New(4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __pyx_t_14 = 0;
       __pyx_t_15 = 127;
-      __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_home_dir); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_home_dir); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_13, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_t_13, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __pyx_t_15 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_16) > __pyx_t_15) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_16) : __pyx_t_15;
@@ -6261,7 +5808,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __pyx_t_14 += 13;
       __Pyx_GIVEREF(__pyx_kp_u_julian_lead);
       PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_kp_u_julian_lead);
-      __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_v_init_day, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_FormatSimple(__pyx_v_init_day, __pyx_empty_unicode); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __pyx_t_15 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_16) > __pyx_t_15) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_16) : __pyx_t_15;
       __pyx_t_14 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_16);
@@ -6272,18 +5819,18 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __pyx_t_14 += 4;
       __Pyx_GIVEREF(__pyx_kp_u_npy);
       PyTuple_SET_ITEM(__pyx_t_11, 3, __pyx_kp_u_npy);
-      __pyx_t_16 = __Pyx_PyUnicode_Join(__pyx_t_11, 4, __pyx_t_14, __pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyUnicode_Join(__pyx_t_11, 4, __pyx_t_14, __pyx_t_15); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_GIVEREF(__pyx_t_16);
       PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_16);
       __pyx_t_16 = 0;
-      __pyx_t_16 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 388, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
-      if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_allow_pickle, Py_True) < 0) __PYX_ERR(0, 388, __pyx_L1_error)
-      __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_11, __pyx_t_16); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 388, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_allow_pickle, Py_True) < 0) __PYX_ERR(0, 351, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_11, __pyx_t_16); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 351, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -6291,14 +5838,14 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __Pyx_XDECREF_SET(__pyx_v_lead_values, __pyx_t_13);
       __pyx_t_13 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":392
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":354
+ * 
  *                             #add values by julian day
- *                             # fileOut = f'{var}_anomaly_{init_day}.npy'
- *                             fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))             # <<<<<<<<<<<<<<
+ *                             fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))             # <<<<<<<<<<<<<<
  * 
  *                             file_open = xr.open_dataset(fileOut)
  */
-      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_anomaly__nc4, __pyx_n_s_format); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 392, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_anomaly__nc, __pyx_n_s_format); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 354, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __pyx_t_11 = NULL;
       __pyx_t_7 = 0;
@@ -6315,7 +5862,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_16)) {
         PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_v_var2, __pyx_v_init_day};
-        __pyx_t_13 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 392, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 354, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_13);
       } else
@@ -6323,13 +5870,13 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_16)) {
         PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_v_var2, __pyx_v_init_day};
-        __pyx_t_13 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 392, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyCFunction_FastCall(__pyx_t_16, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 354, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_13);
       } else
       #endif
       {
-        __pyx_t_12 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 392, __pyx_L1_error)
+        __pyx_t_12 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 354, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         if (__pyx_t_11) {
           __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11); __pyx_t_11 = NULL;
@@ -6340,7 +5887,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
         __Pyx_INCREF(__pyx_v_init_day);
         __Pyx_GIVEREF(__pyx_v_init_day);
         PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_7, __pyx_v_init_day);
-        __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_12, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 392, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_16, __pyx_t_12, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 354, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
@@ -6348,16 +5895,16 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __Pyx_XDECREF_SET(__pyx_v_fileOut, __pyx_t_13);
       __pyx_t_13 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":394
- *                             fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":356
+ *                             fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
  * 
  *                             file_open = xr.open_dataset(fileOut)             # <<<<<<<<<<<<<<
  *                             file_open.close()
  * 
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_xr); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 394, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_xr); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 356, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_open_dataset); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 394, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_open_dataset); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 356, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       __pyx_t_16 = NULL;
@@ -6372,20 +5919,20 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       }
       __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_16, __pyx_v_fileOut) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_v_fileOut);
       __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 394, __pyx_L1_error)
+      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 356, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_XDECREF_SET(__pyx_v_file_open, __pyx_t_13);
       __pyx_t_13 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":395
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":357
  * 
  *                             file_open = xr.open_dataset(fileOut)
  *                             file_open.close()             # <<<<<<<<<<<<<<
  * 
  *                             index_val=np.where(lead_values == int(i_val))[0][0]
  */
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_close); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 395, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_close); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 357, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __pyx_t_16 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
@@ -6399,26 +5946,26 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       }
       __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_12);
       __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 395, __pyx_L1_error)
+      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 357, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":397
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":359
  *                             file_open.close()
  * 
  *                             index_val=np.where(lead_values == int(i_val))[0][0]             # <<<<<<<<<<<<<<
  * 
- *                             #Add data to netcdf file
+ *                             '''Because of indexing, there was an issue where leap years were being
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_where); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_where); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyNumber_Int(__pyx_v_i_val); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyNumber_Int(__pyx_v_i_val); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = PyObject_RichCompare(__pyx_v_lead_values, __pyx_t_12, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_11 = PyObject_RichCompare(__pyx_v_lead_values, __pyx_t_12, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_12 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_16))) {
@@ -6433,283 +5980,105 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       __pyx_t_13 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_16, __pyx_t_12, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_11);
       __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 397, __pyx_L1_error)
+      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_16 = __Pyx_GetItemInt(__pyx_t_13, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_GetItemInt(__pyx_t_13, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 397, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_GetItemInt(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 359, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       __Pyx_XDECREF_SET(__pyx_v_index_val, __pyx_t_13);
       __pyx_t_13 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":400
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":366
+ *                             '''
+ * 
+ *                             if pd.to_datetime(init_day).year % 4 ==0:             # <<<<<<<<<<<<<<
+ *                                 index_val = index_val +1
+ *                             else:
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_pd); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_to_datetime); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
+        __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_11);
+        if (likely(__pyx_t_16)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+          __Pyx_INCREF(__pyx_t_16);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_11, function);
+        }
+      }
+      __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_16, __pyx_v_init_day) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_v_init_day);
+      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
+      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_year); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_13 = __Pyx_PyInt_RemainderObjC(__pyx_t_11, __pyx_int_4, 4, 0, 0); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_11 = __Pyx_PyInt_EqObjC(__pyx_t_13, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_17 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_17 < 0)) __PYX_ERR(0, 366, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      if (__pyx_t_17) {
+
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":367
+ * 
+ *                             if pd.to_datetime(init_day).year % 4 ==0:
+ *                                 index_val = index_val +1             # <<<<<<<<<<<<<<
+ *                             else:
+ *                                 index_val=index_val
+ */
+        __pyx_t_11 = __Pyx_PyInt_AddObjC(__pyx_v_index_val, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 367, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_11);
+        __Pyx_DECREF_SET(__pyx_v_index_val, __pyx_t_11);
+        __pyx_t_11 = 0;
+
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":366
+ *                             '''
+ * 
+ *                             if pd.to_datetime(init_day).year % 4 ==0:             # <<<<<<<<<<<<<<
+ *                                 index_val = index_val +1
+ *                             else:
+ */
+        goto __pyx_L7;
+      }
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":369
+ *                                 index_val = index_val +1
+ *                             else:
+ *                                 index_val=index_val             # <<<<<<<<<<<<<<
+ * 
+ *                             #Add data to netcdf file
+ */
+      /*else*/ {
+        __Pyx_INCREF(__pyx_v_index_val);
+        __Pyx_DECREF_SET(__pyx_v_index_val, __pyx_v_index_val);
+      }
+      __pyx_L7:;
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":372
  * 
  *                             #Add data to netcdf file
  *                             file_open.RZSM_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]             # <<<<<<<<<<<<<<
  *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
  *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
  */
-      __pyx_t_16 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict0, __pyx_v_idx); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 400, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 400, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_16 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-        __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_11);
-        if (likely(__pyx_t_16)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_16);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_11, function);
-        }
-      }
-      __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
-      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 400, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict0, __pyx_v_idx); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PySequence_List(__pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 400, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 400, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 400, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 400, __pyx_L1_error) }
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 400, __pyx_L1_error) }
-      __pyx_t_16 = PyTuple_New(5); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 400, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_values); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_int_0);
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyTuple_SET_ITEM(__pyx_t_16, 1, __pyx_int_0);
-      __Pyx_INCREF(__pyx_v_index_val);
-      __Pyx_GIVEREF(__pyx_v_index_val);
-      PyTuple_SET_ITEM(__pyx_t_16, 2, __pyx_v_index_val);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
-      PyTuple_SET_ITEM(__pyx_t_16, 3, __pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
-      PyTuple_SET_ITEM(__pyx_t_16, 4, __pyx_cur_scope->__pyx_v_i_X);
-      if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_t_16, __pyx_t_13) < 0)) __PYX_ERR(0, 400, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":401
- *                             #Add data to netcdf file
- *                             file_open.RZSM_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
- *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]             # <<<<<<<<<<<<<<
- *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
- *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
- */
-      __pyx_t_16 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict1, __pyx_v_idx); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_16 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-        __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_11);
-        if (likely(__pyx_t_16)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_16);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_11, function);
-        }
-      }
-      __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
-      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PySequence_List(__pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 401, __pyx_L1_error) }
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 401, __pyx_L1_error) }
-      __pyx_t_16 = PyTuple_New(5); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_int_0);
-      __Pyx_INCREF(__pyx_int_1);
-      __Pyx_GIVEREF(__pyx_int_1);
-      PyTuple_SET_ITEM(__pyx_t_16, 1, __pyx_int_1);
-      __Pyx_INCREF(__pyx_v_index_val);
-      __Pyx_GIVEREF(__pyx_v_index_val);
-      PyTuple_SET_ITEM(__pyx_t_16, 2, __pyx_v_index_val);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
-      PyTuple_SET_ITEM(__pyx_t_16, 3, __pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
-      PyTuple_SET_ITEM(__pyx_t_16, 4, __pyx_cur_scope->__pyx_v_i_X);
-      if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_t_16, __pyx_t_13) < 0)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":402
- *                             file_open.RZSM_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
- *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
- *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]             # <<<<<<<<<<<<<<
- *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
- * 
- */
-      __pyx_t_16 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict2, __pyx_v_idx); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_16 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-        __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_11);
-        if (likely(__pyx_t_16)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_16);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_11, function);
-        }
-      }
-      __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
-      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PySequence_List(__pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 402, __pyx_L1_error) }
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 402, __pyx_L1_error) }
-      __pyx_t_16 = PyTuple_New(5); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_int_0);
-      __Pyx_INCREF(__pyx_int_2);
-      __Pyx_GIVEREF(__pyx_int_2);
-      PyTuple_SET_ITEM(__pyx_t_16, 1, __pyx_int_2);
-      __Pyx_INCREF(__pyx_v_index_val);
-      __Pyx_GIVEREF(__pyx_v_index_val);
-      PyTuple_SET_ITEM(__pyx_t_16, 2, __pyx_v_index_val);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
-      PyTuple_SET_ITEM(__pyx_t_16, 3, __pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
-      PyTuple_SET_ITEM(__pyx_t_16, 4, __pyx_cur_scope->__pyx_v_i_X);
-      if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_t_16, __pyx_t_13) < 0)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":403
- *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
- *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
- *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]             # <<<<<<<<<<<<<<
- * 
- *                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
- */
-      __pyx_t_16 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict3, __pyx_v_idx); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_values); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_16 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-        __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_11);
-        if (likely(__pyx_t_16)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_16);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_11, function);
-        }
-      }
-      __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
-      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-      if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PySequence_List(__pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __pyx_t_13 = __Pyx_GetItemInt_List(__pyx_t_11, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 403, __pyx_L1_error) }
-      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 403, __pyx_L1_error) }
-      __pyx_t_16 = PyTuple_New(5); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_int_0);
-      __Pyx_INCREF(__pyx_int_3);
-      __Pyx_GIVEREF(__pyx_int_3);
-      PyTuple_SET_ITEM(__pyx_t_16, 1, __pyx_int_3);
-      __Pyx_INCREF(__pyx_v_index_val);
-      __Pyx_GIVEREF(__pyx_v_index_val);
-      PyTuple_SET_ITEM(__pyx_t_16, 2, __pyx_v_index_val);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
-      PyTuple_SET_ITEM(__pyx_t_16, 3, __pyx_cur_scope->__pyx_v_i_Y);
-      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
-      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
-      PyTuple_SET_ITEM(__pyx_t_16, 4, __pyx_cur_scope->__pyx_v_i_X);
-      if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_t_16, __pyx_t_13) < 0)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":405
- *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
- * 
- *                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')             # <<<<<<<<<<<<<<
- *                             file_open.close()
- * 
- */
-      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_to_netcdf); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 405, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_16 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 405, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
-      if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_path, __pyx_v_fileOut) < 0) __PYX_ERR(0, 405, __pyx_L1_error)
-      if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_mode, __pyx_n_s_w) < 0) __PYX_ERR(0, 405, __pyx_L1_error)
-      if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_engine, __pyx_n_s_scipy) < 0) __PYX_ERR(0, 405, __pyx_L1_error)
-      __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_empty_tuple, __pyx_t_16); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 405, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":406
- * 
- *                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
- *                             file_open.close()             # <<<<<<<<<<<<<<
- * 
- * 
- */
-      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_close); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 406, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_16);
       __pyx_t_13 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_16))) {
         __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_16);
@@ -6722,12 +6091,265 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
       }
       __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_13) : __Pyx_PyObject_CallNoArg(__pyx_t_16);
       __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
-      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 406, __pyx_L1_error)
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 372, __pyx_L1_error) }
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 372, __pyx_L1_error) }
+      __pyx_t_13 = PyTuple_New(5); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_int_0);
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_int_0);
+      __Pyx_INCREF(__pyx_v_index_val);
+      __Pyx_GIVEREF(__pyx_v_index_val);
+      PyTuple_SET_ITEM(__pyx_t_13, 2, __pyx_v_index_val);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
+      PyTuple_SET_ITEM(__pyx_t_13, 3, __pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
+      PyTuple_SET_ITEM(__pyx_t_13, 4, __pyx_cur_scope->__pyx_v_i_X);
+      if (unlikely(PyObject_SetItem(__pyx_t_16, __pyx_t_13, __pyx_t_11) < 0)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":376
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":373
+ *                             #Add data to netcdf file
+ *                             file_open.RZSM_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
+ *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]             # <<<<<<<<<<<<<<
+ *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
+ *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
+ */
+      __pyx_t_13 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict1, __pyx_v_idx); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_values); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_13 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_16))) {
+        __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_16);
+        if (likely(__pyx_t_13)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_16);
+          __Pyx_INCREF(__pyx_t_13);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_16, function);
+        }
+      }
+      __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_13) : __Pyx_PyObject_CallNoArg(__pyx_t_16);
+      __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 373, __pyx_L1_error) }
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 373, __pyx_L1_error) }
+      __pyx_t_13 = PyTuple_New(5); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_int_0);
+      __Pyx_INCREF(__pyx_int_1);
+      __Pyx_GIVEREF(__pyx_int_1);
+      PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_int_1);
+      __Pyx_INCREF(__pyx_v_index_val);
+      __Pyx_GIVEREF(__pyx_v_index_val);
+      PyTuple_SET_ITEM(__pyx_t_13, 2, __pyx_v_index_val);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
+      PyTuple_SET_ITEM(__pyx_t_13, 3, __pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
+      PyTuple_SET_ITEM(__pyx_t_13, 4, __pyx_cur_scope->__pyx_v_i_X);
+      if (unlikely(PyObject_SetItem(__pyx_t_16, __pyx_t_13, __pyx_t_11) < 0)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":374
+ *                             file_open.RZSM_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
+ *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
+ *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]             # <<<<<<<<<<<<<<
+ *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
+ * 
+ */
+      __pyx_t_13 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict2, __pyx_v_idx); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_values); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_13 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_16))) {
+        __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_16);
+        if (likely(__pyx_t_13)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_16);
+          __Pyx_INCREF(__pyx_t_13);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_16, function);
+        }
+      }
+      __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_13) : __Pyx_PyObject_CallNoArg(__pyx_t_16);
+      __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 374, __pyx_L1_error) }
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 374, __pyx_L1_error) }
+      __pyx_t_13 = PyTuple_New(5); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_int_0);
+      __Pyx_INCREF(__pyx_int_2);
+      __Pyx_GIVEREF(__pyx_int_2);
+      PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_int_2);
+      __Pyx_INCREF(__pyx_v_index_val);
+      __Pyx_GIVEREF(__pyx_v_index_val);
+      PyTuple_SET_ITEM(__pyx_t_13, 2, __pyx_v_index_val);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
+      PyTuple_SET_ITEM(__pyx_t_13, 3, __pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
+      PyTuple_SET_ITEM(__pyx_t_13, 4, __pyx_cur_scope->__pyx_v_i_X);
+      if (unlikely(PyObject_SetItem(__pyx_t_16, __pyx_t_13, __pyx_t_11) < 0)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":375
+ *                             file_open.RZSM_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
+ *                             file_open.RZSM_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
+ *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]             # <<<<<<<<<<<<<<
+ * 
+ *                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
+ */
+      __pyx_t_13 = __Pyx_PyObject_GetItem(__pyx_v_EDDI_final_dict3, __pyx_v_idx); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_values); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_t_13 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_16))) {
+        __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_16);
+        if (likely(__pyx_t_13)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_16);
+          __Pyx_INCREF(__pyx_t_13);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_16, function);
+        }
+      }
+      __pyx_t_11 = (__pyx_t_13) ? __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_13) : __Pyx_PyObject_CallNoArg(__pyx_t_16);
+      __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+      if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = PySequence_List(__pyx_t_11); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_11 = __Pyx_GetItemInt_List(__pyx_t_16, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_RZSM_anom); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_Y)) { __Pyx_RaiseClosureNameError("i_Y"); __PYX_ERR(0, 375, __pyx_L1_error) }
+      if (unlikely(!__pyx_cur_scope->__pyx_v_i_X)) { __Pyx_RaiseClosureNameError("i_X"); __PYX_ERR(0, 375, __pyx_L1_error) }
+      __pyx_t_13 = PyTuple_New(5); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_INCREF(__pyx_int_0);
+      __Pyx_GIVEREF(__pyx_int_0);
+      PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_int_0);
+      __Pyx_INCREF(__pyx_int_3);
+      __Pyx_GIVEREF(__pyx_int_3);
+      PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_int_3);
+      __Pyx_INCREF(__pyx_v_index_val);
+      __Pyx_GIVEREF(__pyx_v_index_val);
+      PyTuple_SET_ITEM(__pyx_t_13, 2, __pyx_v_index_val);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_Y);
+      PyTuple_SET_ITEM(__pyx_t_13, 3, __pyx_cur_scope->__pyx_v_i_Y);
+      __Pyx_INCREF(__pyx_cur_scope->__pyx_v_i_X);
+      __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_i_X);
+      PyTuple_SET_ITEM(__pyx_t_13, 4, __pyx_cur_scope->__pyx_v_i_X);
+      if (unlikely(PyObject_SetItem(__pyx_t_16, __pyx_t_13, __pyx_t_11) < 0)) __PYX_ERR(0, 375, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":377
+ *                             file_open.RZSM_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
+ * 
+ *                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')             # <<<<<<<<<<<<<<
+ *                             file_open.close()
+ * 
+ */
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_to_netcdf); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 377, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __pyx_t_13 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 377, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_path, __pyx_v_fileOut) < 0) __PYX_ERR(0, 377, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_mode, __pyx_n_s_w) < 0) __PYX_ERR(0, 377, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_engine, __pyx_n_s_scipy) < 0) __PYX_ERR(0, 377, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_empty_tuple, __pyx_t_13); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 377, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":378
+ * 
+ *                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
+ *                             file_open.close()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+      __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_file_open, __pyx_n_s_close); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 378, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __pyx_t_11 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
+        __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_13);
+        if (likely(__pyx_t_11)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
+          __Pyx_INCREF(__pyx_t_11);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_13, function);
+        }
+      }
+      __pyx_t_16 = (__pyx_t_11) ? __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_11) : __Pyx_PyObject_CallNoArg(__pyx_t_13);
+      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 378, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_16);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":344
  *                         EDDI_final_dict3 = RZSM_next_dict_mod3[f'{i_val}'][0]
  * 
  *                         for idx,dic_init_and_eddi_val in enumerate(EDDI_final_dict0):             # <<<<<<<<<<<<<<
@@ -6740,7 +6362,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":366
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":334
  *                 '''Now that we have created new files, we can append each file with the data that was found'''
  * 
  *                 def add_to_nc_file(dict RZSM_next_dict_mod0,dict RZSM_next_dict_mod1,dict RZSM_next_dict_mod2,dict RZSM_next_dict_mod3):             # <<<<<<<<<<<<<<
@@ -6790,6 +6412,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_t
 
 static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED int __pyx_v_start_, CYTHON_UNUSED int __pyx_v_end_, CYTHON_UNUSED PyObject *__pyx_v_init_date_list, PyObject *__pyx_v__date, CYTHON_UNUSED PyObject *__pyx_v_var) {
   struct __pyx_obj_30TMP_1e_anomaly_RZSM_step0_GMAO___pyx_scope_struct__RZSM_anomaly *__pyx_cur_scope;
+  CYTHON_UNUSED int __pyx_v_week_lead;
   PyObject *__pyx_v_smerge_file = NULL;
   PyObject *__pyx_v_smerge_file_julian = NULL;
   PyObject *__pyx_v_date_file_info = 0;
@@ -6905,7 +6528,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
  * 
  *     #Used for eliminating iterating over grid cells that don't matter
  */
-  __pyx_cur_scope->__pyx_v_week_lead = 7;
+  __pyx_v_week_lead = 7;
 
   /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":109
  * 
@@ -7520,14 +7143,14 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         __Pyx_XDECREF_SET(__pyx_v_dict1_subx2, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":267
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":237
  * 
  *                 #Contains the julian day value of the current file ETo_{_date} and the 7-day summation
  *                 SM_7_day_average_mod0,SM_7_day_average_mod1,SM_7_day_average_mod2,SM_7_day_average_mod3= dict1_subx2()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1_subx2(__pyx_v_dict1_subx2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_2dict1_subx2(__pyx_v_dict1_subx2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
           PyObject* sequence = __pyx_t_1;
@@ -7535,7 +7158,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           if (unlikely(size != 4)) {
             if (size > 4) __Pyx_RaiseTooManyValuesError(4);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 267, __pyx_L1_error)
+            __PYX_ERR(0, 237, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -7558,7 +7181,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
             Py_ssize_t i;
             PyObject** temps[4] = {&__pyx_t_8,&__pyx_t_6,&__pyx_t_9,&__pyx_t_17};
             for (i=0; i < 4; i++) {
-              PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(0, 267, __pyx_L1_error)
+              PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(0, 237, __pyx_L1_error)
               __Pyx_GOTREF(item);
               *(temps[i]) = item;
             }
@@ -7568,7 +7191,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         } else {
           Py_ssize_t index = -1;
           PyObject** temps[4] = {&__pyx_t_8,&__pyx_t_6,&__pyx_t_9,&__pyx_t_17};
-          __pyx_t_18 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 267, __pyx_L1_error)
+          __pyx_t_18 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 237, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_18);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_10 = Py_TYPE(__pyx_t_18)->tp_iternext;
@@ -7577,7 +7200,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
             __Pyx_GOTREF(item);
             *(temps[index]) = item;
           }
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_18), 4) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_18), 4) < 0) __PYX_ERR(0, 237, __pyx_L1_error)
           __pyx_t_10 = NULL;
           __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
           goto __pyx_L14_unpacking_done;
@@ -7585,7 +7208,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
           __pyx_t_10 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 267, __pyx_L1_error)
+          __PYX_ERR(0, 237, __pyx_L1_error)
           __pyx_L14_unpacking_done:;
         }
         __Pyx_XDECREF_SET(__pyx_v_SM_7_day_average_mod0, __pyx_t_8);
@@ -7597,27 +7220,27 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         __Pyx_XDECREF_SET(__pyx_v_SM_7_day_average_mod3, __pyx_t_17);
         __pyx_t_17 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":287
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":255
  *                 '''Initially I thought I also needed to keep the mean for later reference,
  *                 but I do not'''
  *                 def compute_anomaly(dict SM_7_day_average_modN):             # <<<<<<<<<<<<<<
  *                     cdef dict out_eddi_dictionary, out_mean_dictionary
  *                     cdef list mean_value, anomaly_val
  */
-        __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_5compute_anomaly, 0, __pyx_n_s_RZSM_anomaly_locals_compute_anom, NULL, __pyx_n_s_TMP_1e_anomaly_RZSM_step0_GMAO, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_5compute_anomaly, 0, __pyx_n_s_RZSM_anomaly_locals_compute_anom, NULL, __pyx_n_s_TMP_1e_anomaly_RZSM_step0_GMAO, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_compute_anomaly, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":320
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":288
  *                     return(out_eddi_dictionary,out_mean_dictionary)
  * 
  *                 RZSM_dict_mod0, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod0)             # <<<<<<<<<<<<<<
  *                 RZSM_dict_mod1, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod1)
  *                 RZSM_dict_mod2, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod2)
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod0))||((__pyx_v_SM_7_day_average_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod0)->tp_name), 0))) __PYX_ERR(0, 320, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod0))||((__pyx_v_SM_7_day_average_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod0)->tp_name), 0))) __PYX_ERR(0, 288, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
           PyObject* sequence = __pyx_t_1;
@@ -7625,7 +7248,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 320, __pyx_L1_error)
+            __PYX_ERR(0, 288, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -7638,15 +7261,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_INCREF(__pyx_t_17);
           __Pyx_INCREF(__pyx_t_9);
           #else
-          __pyx_t_17 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 320, __pyx_L1_error)
+          __pyx_t_17 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 288, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_17);
-          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 320, __pyx_L1_error)
+          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 288, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           #endif
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 320, __pyx_L1_error)
+          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 288, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_10 = Py_TYPE(__pyx_t_6)->tp_iternext;
@@ -7654,7 +7277,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_GOTREF(__pyx_t_17);
           index = 1; __pyx_t_9 = __pyx_t_10(__pyx_t_6); if (unlikely(!__pyx_t_9)) goto __pyx_L15_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_9);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 320, __pyx_L1_error)
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 288, __pyx_L1_error)
           __pyx_t_10 = NULL;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           goto __pyx_L16_unpacking_done;
@@ -7662,7 +7285,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_10 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 320, __pyx_L1_error)
+          __PYX_ERR(0, 288, __pyx_L1_error)
           __pyx_L16_unpacking_done:;
         }
         __Pyx_XDECREF_SET(__pyx_v_RZSM_dict_mod0, __pyx_t_17);
@@ -7670,15 +7293,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         __Pyx_XDECREF_SET(__pyx_v_RZSM_mean_by_julian_day, __pyx_t_9);
         __pyx_t_9 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":321
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":289
  * 
  *                 RZSM_dict_mod0, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod0)
  *                 RZSM_dict_mod1, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod1)             # <<<<<<<<<<<<<<
  *                 RZSM_dict_mod2, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod2)
  *                 RZSM_dict_mod3, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod3)
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod1))||((__pyx_v_SM_7_day_average_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod1)->tp_name), 0))) __PYX_ERR(0, 321, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod1))||((__pyx_v_SM_7_day_average_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod1)->tp_name), 0))) __PYX_ERR(0, 289, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
           PyObject* sequence = __pyx_t_1;
@@ -7686,7 +7309,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 321, __pyx_L1_error)
+            __PYX_ERR(0, 289, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -7699,15 +7322,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_INCREF(__pyx_t_9);
           __Pyx_INCREF(__pyx_t_17);
           #else
-          __pyx_t_9 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 321, __pyx_L1_error)
+          __pyx_t_9 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 289, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_17 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 321, __pyx_L1_error)
+          __pyx_t_17 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 289, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_17);
           #endif
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 321, __pyx_L1_error)
+          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 289, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_10 = Py_TYPE(__pyx_t_6)->tp_iternext;
@@ -7715,7 +7338,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_GOTREF(__pyx_t_9);
           index = 1; __pyx_t_17 = __pyx_t_10(__pyx_t_6); if (unlikely(!__pyx_t_17)) goto __pyx_L17_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_17);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 321, __pyx_L1_error)
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 289, __pyx_L1_error)
           __pyx_t_10 = NULL;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           goto __pyx_L18_unpacking_done;
@@ -7723,7 +7346,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_10 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 321, __pyx_L1_error)
+          __PYX_ERR(0, 289, __pyx_L1_error)
           __pyx_L18_unpacking_done:;
         }
         __Pyx_XDECREF_SET(__pyx_v_RZSM_dict_mod1, __pyx_t_9);
@@ -7731,15 +7354,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         __Pyx_DECREF_SET(__pyx_v_RZSM_mean_by_julian_day, __pyx_t_17);
         __pyx_t_17 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":322
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":290
  *                 RZSM_dict_mod0, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod0)
  *                 RZSM_dict_mod1, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod1)
  *                 RZSM_dict_mod2, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod2)             # <<<<<<<<<<<<<<
  *                 RZSM_dict_mod3, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod3)
  * 
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod2))||((__pyx_v_SM_7_day_average_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod2)->tp_name), 0))) __PYX_ERR(0, 322, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod2))||((__pyx_v_SM_7_day_average_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod2)->tp_name), 0))) __PYX_ERR(0, 290, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 290, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
           PyObject* sequence = __pyx_t_1;
@@ -7747,7 +7370,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 322, __pyx_L1_error)
+            __PYX_ERR(0, 290, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -7760,15 +7383,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_INCREF(__pyx_t_17);
           __Pyx_INCREF(__pyx_t_9);
           #else
-          __pyx_t_17 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 322, __pyx_L1_error)
+          __pyx_t_17 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 290, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_17);
-          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 322, __pyx_L1_error)
+          __pyx_t_9 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 290, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           #endif
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 322, __pyx_L1_error)
+          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 290, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_10 = Py_TYPE(__pyx_t_6)->tp_iternext;
@@ -7776,7 +7399,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_GOTREF(__pyx_t_17);
           index = 1; __pyx_t_9 = __pyx_t_10(__pyx_t_6); if (unlikely(!__pyx_t_9)) goto __pyx_L19_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_9);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 322, __pyx_L1_error)
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 290, __pyx_L1_error)
           __pyx_t_10 = NULL;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           goto __pyx_L20_unpacking_done;
@@ -7784,7 +7407,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_10 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 322, __pyx_L1_error)
+          __PYX_ERR(0, 290, __pyx_L1_error)
           __pyx_L20_unpacking_done:;
         }
         __Pyx_XDECREF_SET(__pyx_v_RZSM_dict_mod2, __pyx_t_17);
@@ -7792,15 +7415,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         __Pyx_DECREF_SET(__pyx_v_RZSM_mean_by_julian_day, __pyx_t_9);
         __pyx_t_9 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":323
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":291
  *                 RZSM_dict_mod1, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod1)
  *                 RZSM_dict_mod2, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod2)
  *                 RZSM_dict_mod3, RZSM_mean_by_julian_day = compute_anomaly(SM_7_day_average_mod3)             # <<<<<<<<<<<<<<
  * 
  *                 '''Instead of re-looping through all of the files (very slow), we can start appending to
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod3))||((__pyx_v_SM_7_day_average_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod3)->tp_name), 0))) __PYX_ERR(0, 323, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod3))||((__pyx_v_SM_7_day_average_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod3)->tp_name), 0))) __PYX_ERR(0, 291, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_4compute_anomaly(__pyx_v_compute_anomaly, ((PyObject*)__pyx_v_SM_7_day_average_mod3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 291, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
           PyObject* sequence = __pyx_t_1;
@@ -7808,7 +7431,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 323, __pyx_L1_error)
+            __PYX_ERR(0, 291, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -7821,15 +7444,15 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_INCREF(__pyx_t_9);
           __Pyx_INCREF(__pyx_t_17);
           #else
-          __pyx_t_9 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 323, __pyx_L1_error)
+          __pyx_t_9 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 291, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_17 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 323, __pyx_L1_error)
+          __pyx_t_17 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 291, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_17);
           #endif
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 323, __pyx_L1_error)
+          __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 291, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_10 = Py_TYPE(__pyx_t_6)->tp_iternext;
@@ -7837,7 +7460,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_GOTREF(__pyx_t_9);
           index = 1; __pyx_t_17 = __pyx_t_10(__pyx_t_6); if (unlikely(!__pyx_t_17)) goto __pyx_L21_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_17);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_6), 2) < 0) __PYX_ERR(0, 291, __pyx_L1_error)
           __pyx_t_10 = NULL;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           goto __pyx_L22_unpacking_done;
@@ -7845,7 +7468,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_10 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 323, __pyx_L1_error)
+          __PYX_ERR(0, 291, __pyx_L1_error)
           __pyx_L22_unpacking_done:;
         }
         __Pyx_XDECREF_SET(__pyx_v_RZSM_dict_mod3, __pyx_t_9);
@@ -7853,98 +7476,98 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
         __Pyx_DECREF_SET(__pyx_v_RZSM_mean_by_julian_day, __pyx_t_17);
         __pyx_t_17 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":331
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":299
  *                 has the initialized dates for each EDDI julian day summation'''
  * 
  *                 def improve_RZSM_dictionary(dict SM_7_day_average_modN,dict RZSM_dict_modN):             # <<<<<<<<<<<<<<
  *                     cdef dict final_out_dictionary_all_eddi
  *                     cdef list sub_keys
  */
-        __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_7improve_RZSM_dictionary, 0, __pyx_n_s_RZSM_anomaly_locals_improve_RZSM, NULL, __pyx_n_s_TMP_1e_anomaly_RZSM_step0_GMAO, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 331, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_7improve_RZSM_dictionary, 0, __pyx_n_s_RZSM_anomaly_locals_improve_RZSM, NULL, __pyx_n_s_TMP_1e_anomaly_RZSM_step0_GMAO, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_improve_RZSM_dictionary, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":354
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":322
  *                     return(final_out_dictionary_all_eddi)
  * 
  *                 RZSM_next_dict_mod0 = improve_RZSM_dictionary(SM_7_day_average_mod0, RZSM_dict_mod0)             # <<<<<<<<<<<<<<
  *                 RZSM_next_dict_mod1 = improve_RZSM_dictionary(SM_7_day_average_mod1, RZSM_dict_mod1)
  *                 RZSM_next_dict_mod2 = improve_RZSM_dictionary(SM_7_day_average_mod2, RZSM_dict_mod2)
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod0))||((__pyx_v_SM_7_day_average_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod0)->tp_name), 0))) __PYX_ERR(0, 354, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod0))||((__pyx_v_RZSM_dict_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod0)->tp_name), 0))) __PYX_ERR(0, 354, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod0), ((PyObject*)__pyx_v_RZSM_dict_mod0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod0))||((__pyx_v_SM_7_day_average_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod0)->tp_name), 0))) __PYX_ERR(0, 322, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod0))||((__pyx_v_RZSM_dict_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod0)->tp_name), 0))) __PYX_ERR(0, 322, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod0), ((PyObject*)__pyx_v_RZSM_dict_mod0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_RZSM_next_dict_mod0, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":355
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":323
  * 
  *                 RZSM_next_dict_mod0 = improve_RZSM_dictionary(SM_7_day_average_mod0, RZSM_dict_mod0)
  *                 RZSM_next_dict_mod1 = improve_RZSM_dictionary(SM_7_day_average_mod1, RZSM_dict_mod1)             # <<<<<<<<<<<<<<
  *                 RZSM_next_dict_mod2 = improve_RZSM_dictionary(SM_7_day_average_mod2, RZSM_dict_mod2)
  *                 RZSM_next_dict_mod3 = improve_RZSM_dictionary(SM_7_day_average_mod3, RZSM_dict_mod3)
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod1))||((__pyx_v_SM_7_day_average_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod1)->tp_name), 0))) __PYX_ERR(0, 355, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod1))||((__pyx_v_RZSM_dict_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod1)->tp_name), 0))) __PYX_ERR(0, 355, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod1), ((PyObject*)__pyx_v_RZSM_dict_mod1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod1))||((__pyx_v_SM_7_day_average_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod1)->tp_name), 0))) __PYX_ERR(0, 323, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod1))||((__pyx_v_RZSM_dict_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod1)->tp_name), 0))) __PYX_ERR(0, 323, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod1), ((PyObject*)__pyx_v_RZSM_dict_mod1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_RZSM_next_dict_mod1, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":356
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":324
  *                 RZSM_next_dict_mod0 = improve_RZSM_dictionary(SM_7_day_average_mod0, RZSM_dict_mod0)
  *                 RZSM_next_dict_mod1 = improve_RZSM_dictionary(SM_7_day_average_mod1, RZSM_dict_mod1)
  *                 RZSM_next_dict_mod2 = improve_RZSM_dictionary(SM_7_day_average_mod2, RZSM_dict_mod2)             # <<<<<<<<<<<<<<
  *                 RZSM_next_dict_mod3 = improve_RZSM_dictionary(SM_7_day_average_mod3, RZSM_dict_mod3)
  * 
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod2))||((__pyx_v_SM_7_day_average_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod2)->tp_name), 0))) __PYX_ERR(0, 356, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod2))||((__pyx_v_RZSM_dict_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod2)->tp_name), 0))) __PYX_ERR(0, 356, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod2), ((PyObject*)__pyx_v_RZSM_dict_mod2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod2))||((__pyx_v_SM_7_day_average_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod2)->tp_name), 0))) __PYX_ERR(0, 324, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod2))||((__pyx_v_RZSM_dict_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod2)->tp_name), 0))) __PYX_ERR(0, 324, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod2), ((PyObject*)__pyx_v_RZSM_dict_mod2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_RZSM_next_dict_mod2, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":357
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":325
  *                 RZSM_next_dict_mod1 = improve_RZSM_dictionary(SM_7_day_average_mod1, RZSM_dict_mod1)
  *                 RZSM_next_dict_mod2 = improve_RZSM_dictionary(SM_7_day_average_mod2, RZSM_dict_mod2)
  *                 RZSM_next_dict_mod3 = improve_RZSM_dictionary(SM_7_day_average_mod3, RZSM_dict_mod3)             # <<<<<<<<<<<<<<
  * 
  *                 '''Now that we have final_out_dictionary_all_eddi which contains the specific values for each init date for the currenly looped X,Y grid cell,
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod3))||((__pyx_v_SM_7_day_average_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod3)->tp_name), 0))) __PYX_ERR(0, 357, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod3))||((__pyx_v_RZSM_dict_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod3)->tp_name), 0))) __PYX_ERR(0, 357, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod3), ((PyObject*)__pyx_v_RZSM_dict_mod3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_SM_7_day_average_mod3))||((__pyx_v_SM_7_day_average_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_SM_7_day_average_mod3)->tp_name), 0))) __PYX_ERR(0, 325, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_dict_mod3))||((__pyx_v_RZSM_dict_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_dict_mod3)->tp_name), 0))) __PYX_ERR(0, 325, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_6improve_RZSM_dictionary(__pyx_v_improve_RZSM_dictionary, ((PyObject*)__pyx_v_SM_7_day_average_mod3), ((PyObject*)__pyx_v_RZSM_dict_mod3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 325, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_RZSM_next_dict_mod3, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":366
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":334
  *                 '''Now that we have created new files, we can append each file with the data that was found'''
  * 
  *                 def add_to_nc_file(dict RZSM_next_dict_mod0,dict RZSM_next_dict_mod1,dict RZSM_next_dict_mod2,dict RZSM_next_dict_mod3):             # <<<<<<<<<<<<<<
  * 
  *                     for idx_,i_val in enumerate(RZSM_next_dict_mod0):
  */
-        __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_9add_to_nc_file, 0, __pyx_n_s_RZSM_anomaly_locals_add_to_nc_fi, ((PyObject*)__pyx_cur_scope), __pyx_n_s_TMP_1e_anomaly_RZSM_step0_GMAO, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 366, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_9add_to_nc_file, 0, __pyx_n_s_RZSM_anomaly_locals_add_to_nc_fi, ((PyObject*)__pyx_cur_scope), __pyx_n_s_TMP_1e_anomaly_RZSM_step0_GMAO, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_add_to_nc_file, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":409
+        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":381
  * 
  * 
  *                 add_to_nc_file(RZSM_next_dict_mod0,RZSM_next_dict_mod1,RZSM_next_dict_mod2,RZSM_next_dict_mod3)             # <<<<<<<<<<<<<<
  * 
  *     print(f'Completed date {_date} and saved into {home_dir}.')
  */
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod0))||((__pyx_v_RZSM_next_dict_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod0)->tp_name), 0))) __PYX_ERR(0, 409, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod1))||((__pyx_v_RZSM_next_dict_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod1)->tp_name), 0))) __PYX_ERR(0, 409, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod2))||((__pyx_v_RZSM_next_dict_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod2)->tp_name), 0))) __PYX_ERR(0, 409, __pyx_L1_error)
-        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod3))||((__pyx_v_RZSM_next_dict_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod3)->tp_name), 0))) __PYX_ERR(0, 409, __pyx_L1_error)
-        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_to_nc_file(__pyx_v_add_to_nc_file, ((PyObject*)__pyx_v_RZSM_next_dict_mod0), ((PyObject*)__pyx_v_RZSM_next_dict_mod1), ((PyObject*)__pyx_v_RZSM_next_dict_mod2), ((PyObject*)__pyx_v_RZSM_next_dict_mod3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 409, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod0))||((__pyx_v_RZSM_next_dict_mod0) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod0)->tp_name), 0))) __PYX_ERR(0, 381, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod1))||((__pyx_v_RZSM_next_dict_mod1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod1)->tp_name), 0))) __PYX_ERR(0, 381, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod2))||((__pyx_v_RZSM_next_dict_mod2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod2)->tp_name), 0))) __PYX_ERR(0, 381, __pyx_L1_error)
+        if (!(likely(PyDict_CheckExact(__pyx_v_RZSM_next_dict_mod3))||((__pyx_v_RZSM_next_dict_mod3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_RZSM_next_dict_mod3)->tp_name), 0))) __PYX_ERR(0, 381, __pyx_L1_error)
+        __pyx_t_1 = __pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_12RZSM_anomaly_8add_to_nc_file(__pyx_v_add_to_nc_file, ((PyObject*)__pyx_v_RZSM_next_dict_mod0), ((PyObject*)__pyx_v_RZSM_next_dict_mod1), ((PyObject*)__pyx_v_RZSM_next_dict_mod2), ((PyObject*)__pyx_v_RZSM_next_dict_mod3)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 381, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -7977,14 +7600,14 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":411
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":383
  *                 add_to_nc_file(RZSM_next_dict_mod0,RZSM_next_dict_mod1,RZSM_next_dict_mod2,RZSM_next_dict_mod3)
  * 
  *     print(f'Completed date {_date} and saved into {home_dir}.')             # <<<<<<<<<<<<<<
  * 
  *     #save the dates that were completed to not re-run
  */
-  __pyx_t_7 = PyTuple_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
@@ -7992,7 +7615,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 15;
   __Pyx_GIVEREF(__pyx_kp_u_Completed_date);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_kp_u_Completed_date);
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
@@ -8003,9 +7626,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 16;
   __Pyx_GIVEREF(__pyx_kp_u_and_saved_into);
   PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_kp_u_and_saved_into);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_home_dir); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_home_dir); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_3;
@@ -8017,25 +7640,25 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__7);
   PyTuple_SET_ITEM(__pyx_t_7, 4, __pyx_kp_u__7);
-  __pyx_t_1 = __Pyx_PyUnicode_Join(__pyx_t_7, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyUnicode_Join(__pyx_t_7, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 411, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 383, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":414
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":386
  * 
  *     #save the dates that were completed to not re-run
  *     os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt')             # <<<<<<<<<<<<<<
  * 
  *     return()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_os); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_os); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_system); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_system); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyTuple_New(7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
@@ -8043,7 +7666,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 15;
   __Pyx_GIVEREF(__pyx_kp_u_echo_Completed);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_kp_u_echo_Completed);
-  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_cur_scope->__pyx_v__date, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_17);
@@ -8054,9 +7677,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 4;
   __Pyx_GIVEREF(__pyx_kp_u__18);
   PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_kp_u__18);
-  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_script_dir); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_script_dir); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
-  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_17, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_17, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_3;
@@ -8068,9 +7691,9 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 27;
   __Pyx_GIVEREF(__pyx_kp_u_RZSM_completed_anomaly_nc);
   PyTuple_SET_ITEM(__pyx_t_7, 4, __pyx_kp_u_RZSM_completed_anomaly_nc);
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_FormatSimple(__pyx_t_9, __pyx_empty_unicode); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_17) : __pyx_t_3;
@@ -8082,7 +7705,7 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_2 += 4;
   __Pyx_GIVEREF(__pyx_kp_u_txt);
   PyTuple_SET_ITEM(__pyx_t_7, 6, __pyx_kp_u_txt);
-  __pyx_t_17 = __Pyx_PyUnicode_Join(__pyx_t_7, 7, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyUnicode_Join(__pyx_t_7, 7, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -8098,12 +7721,12 @@ static PyObject *__pyx_pf_30TMP_1e_anomaly_RZSM_step0_GMAO_2RZSM_anomaly(CYTHON_
   __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_17) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_17);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":416
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":388
  *     os.system(f'echo Completed {_date} >> {script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt')
  * 
  *     return()             # <<<<<<<<<<<<<<
@@ -8373,7 +7996,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Data_SubX, __pyx_k_Data_SubX, sizeof(__pyx_k_Data_SubX), 0, 1, 0, 0},
   {&__pyx_kp_u_Data_elevation, __pyx_k_Data_elevation, sizeof(__pyx_k_Data_elevation), 0, 1, 0, 0},
   {&__pyx_kp_u_Data_gridMET, __pyx_k_Data_gridMET, sizeof(__pyx_k_Data_gridMET), 0, 1, 0, 0},
-  {&__pyx_n_s_Done, __pyx_k_Done, sizeof(__pyx_k_Done), 0, 0, 1, 1},
   {&__pyx_n_s_EDDI_final_dict0, __pyx_k_EDDI_final_dict0, sizeof(__pyx_k_EDDI_final_dict0), 0, 0, 1, 1},
   {&__pyx_n_s_EDDI_final_dict1, __pyx_k_EDDI_final_dict1, sizeof(__pyx_k_EDDI_final_dict1), 0, 0, 1, 1},
   {&__pyx_n_s_EDDI_final_dict2, __pyx_k_EDDI_final_dict2, sizeof(__pyx_k_EDDI_final_dict2), 0, 0, 1, 1},
@@ -8434,7 +8056,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_and_lon, __pyx_k_and_lon, sizeof(__pyx_k_and_lon), 0, 1, 0, 0},
   {&__pyx_kp_u_and_saved_into, __pyx_k_and_saved_into, sizeof(__pyx_k_and_saved_into), 0, 1, 0, 0},
   {&__pyx_kp_u_and_saving_as_nc4_in, __pyx_k_and_saving_as_nc4_in, sizeof(__pyx_k_and_saving_as_nc4_in), 0, 1, 0, 0},
-  {&__pyx_kp_s_anomaly__nc4, __pyx_k_anomaly__nc4, sizeof(__pyx_k_anomaly__nc4), 0, 0, 1, 0},
+  {&__pyx_kp_s_anomaly__nc, __pyx_k_anomaly__nc, sizeof(__pyx_k_anomaly__nc), 0, 0, 1, 0},
   {&__pyx_n_s_anomaly_val, __pyx_k_anomaly_val, sizeof(__pyx_k_anomaly_val), 0, 0, 1, 1},
   {&__pyx_n_s_append, __pyx_k_append, sizeof(__pyx_k_append), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
@@ -8447,11 +8069,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_completed_dates, __pyx_k_completed_dates, sizeof(__pyx_k_completed_dates), 0, 0, 1, 1},
   {&__pyx_n_s_compute_anomaly, __pyx_k_compute_anomaly, sizeof(__pyx_k_compute_anomaly), 0, 0, 1, 1},
   {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
-  {&__pyx_n_s_count, __pyx_k_count, sizeof(__pyx_k_count), 0, 0, 1, 1},
   {&__pyx_n_s_count_nonzero, __pyx_k_count_nonzero, sizeof(__pyx_k_count_nonzero), 0, 0, 1, 1},
   {&__pyx_n_s_date, __pyx_k_date, sizeof(__pyx_k_date), 0, 0, 1, 1},
   {&__pyx_n_s_date_file_info, __pyx_k_date_file_info, sizeof(__pyx_k_date_file_info), 0, 0, 1, 1},
-  {&__pyx_n_s_date_in, __pyx_k_date_in, sizeof(__pyx_k_date_in), 0, 0, 1, 1},
   {&__pyx_n_s_date_init, __pyx_k_date_init, sizeof(__pyx_k_date_init), 0, 0, 1, 1},
   {&__pyx_n_s_date_list, __pyx_k_date_list, sizeof(__pyx_k_date_list), 0, 0, 1, 1},
   {&__pyx_n_s_date_out, __pyx_k_date_out, sizeof(__pyx_k_date_out), 0, 0, 1, 1},
@@ -8548,7 +8168,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_smerge_julian, __pyx_k_smerge_julian, sizeof(__pyx_k_smerge_julian), 0, 0, 1, 1},
   {&__pyx_kp_u_smerge_sm_merged_remap_nc4, __pyx_k_smerge_sm_merged_remap_nc4, sizeof(__pyx_k_smerge_sm_merged_remap_nc4), 0, 1, 0, 0},
   {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
-  {&__pyx_n_s_start_date, __pyx_k_start_date, sizeof(__pyx_k_start_date), 0, 0, 1, 1},
   {&__pyx_n_s_start_julian, __pyx_k_start_julian, sizeof(__pyx_k_start_julian), 0, 0, 1, 1},
   {&__pyx_n_s_str, __pyx_k_str, sizeof(__pyx_k_str), 0, 0, 1, 1},
   {&__pyx_n_s_sub_keys, __pyx_k_sub_keys, sizeof(__pyx_k_sub_keys), 0, 0, 1, 1},
@@ -8588,10 +8207,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 427, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 399, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 158, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 181, __pyx_L1_error)
-  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 229, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -8648,46 +8267,46 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *                     cdef dict summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3
  *                     cdef int idx, end_julian, subtract, idx_lead
  */
-  __pyx_tuple__10 = PyTuple_Pack(20, __pyx_n_s_summation_ETo_mod0, __pyx_n_s_summation_ETo_mod1, __pyx_n_s_summation_ETo_mod2, __pyx_n_s_summation_ETo_mod3, __pyx_n_s_idx, __pyx_n_s_end_julian, __pyx_n_s_subtract, __pyx_n_s_idx_lead, __pyx_n_s_date_out, __pyx_n_s_b_julian_out, __pyx_n_s_b_julian_out2, __pyx_n_s_dates_to_keep, __pyx_n_s_file, __pyx_n_s_julian_d, __pyx_n_s_open_f, __pyx_n_s_date_in, __pyx_n_s_start_date, __pyx_n_s_i, __pyx_n_s_Et_ref_open_f, __pyx_n_s_val); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(17, __pyx_n_s_summation_ETo_mod0, __pyx_n_s_summation_ETo_mod1, __pyx_n_s_summation_ETo_mod2, __pyx_n_s_summation_ETo_mod3, __pyx_n_s_idx, __pyx_n_s_end_julian, __pyx_n_s_subtract, __pyx_n_s_idx_lead, __pyx_n_s_date_out, __pyx_n_s_b_julian_out, __pyx_n_s_b_julian_out2, __pyx_n_s_dates_to_keep, __pyx_n_s_file, __pyx_n_s_julian_d, __pyx_n_s_open_f, __pyx_n_s_Et_ref_open_f, __pyx_n_s_val); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(0, 0, 20, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_dict1_subx2, 168, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(0, 0, 17, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_dict1_subx2, 168, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 168, __pyx_L1_error)
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":287
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":255
  *                 '''Initially I thought I also needed to keep the mean for later reference,
  *                 but I do not'''
  *                 def compute_anomaly(dict SM_7_day_average_modN):             # <<<<<<<<<<<<<<
  *                     cdef dict out_eddi_dictionary, out_mean_dictionary
  *                     cdef list mean_value, anomaly_val
  */
-  __pyx_tuple__12 = PyTuple_Pack(10, __pyx_n_s_SM_7_day_average_modN, __pyx_n_s_out_eddi_dictionary, __pyx_n_s_out_mean_dictionary, __pyx_n_s_mean_value, __pyx_n_s_anomaly_val, __pyx_n_s_mean_calc, __pyx_n_s_julian_date, __pyx_n_s_idx, __pyx_n_s_date_init, __pyx_n_s_subset_by_date); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(10, __pyx_n_s_SM_7_day_average_modN, __pyx_n_s_out_eddi_dictionary, __pyx_n_s_out_mean_dictionary, __pyx_n_s_mean_value, __pyx_n_s_anomaly_val, __pyx_n_s_mean_calc, __pyx_n_s_julian_date, __pyx_n_s_idx, __pyx_n_s_date_init, __pyx_n_s_subset_by_date); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_compute_anomaly, 287, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_compute_anomaly, 255, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 255, __pyx_L1_error)
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":331
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":299
  *                 has the initialized dates for each EDDI julian day summation'''
  * 
  *                 def improve_RZSM_dictionary(dict SM_7_day_average_modN,dict RZSM_dict_modN):             # <<<<<<<<<<<<<<
  *                     cdef dict final_out_dictionary_all_eddi
  *                     cdef list sub_keys
  */
-  __pyx_tuple__14 = PyTuple_Pack(9, __pyx_n_s_SM_7_day_average_modN, __pyx_n_s_RZSM_dict_modN, __pyx_n_s_final_out_dictionary_all_eddi, __pyx_n_s_sub_keys, __pyx_n_s_idx, __pyx_n_s_idxxx, __pyx_n_s_julian_dattt, __pyx_n_s_sub_list, __pyx_n_s_init_date); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 331, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(9, __pyx_n_s_SM_7_day_average_modN, __pyx_n_s_RZSM_dict_modN, __pyx_n_s_final_out_dictionary_all_eddi, __pyx_n_s_sub_keys, __pyx_n_s_idx, __pyx_n_s_idxxx, __pyx_n_s_julian_dattt, __pyx_n_s_sub_list, __pyx_n_s_init_date); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(2, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_improve_RZSM_dictionary, 331, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 331, __pyx_L1_error)
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(2, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_improve_RZSM_dictionary, 299, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 299, __pyx_L1_error)
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":366
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":334
  *                 '''Now that we have created new files, we can append each file with the data that was found'''
  * 
  *                 def add_to_nc_file(dict RZSM_next_dict_mod0,dict RZSM_next_dict_mod1,dict RZSM_next_dict_mod2,dict RZSM_next_dict_mod3):             # <<<<<<<<<<<<<<
  * 
  *                     for idx_,i_val in enumerate(RZSM_next_dict_mod0):
  */
-  __pyx_tuple__16 = PyTuple_Pack(18, __pyx_n_s_RZSM_next_dict_mod0, __pyx_n_s_RZSM_next_dict_mod1, __pyx_n_s_RZSM_next_dict_mod2, __pyx_n_s_RZSM_next_dict_mod3, __pyx_n_s_idx_2, __pyx_n_s_i_val, __pyx_n_s_EDDI_final_dict0, __pyx_n_s_EDDI_final_dict1, __pyx_n_s_EDDI_final_dict2, __pyx_n_s_EDDI_final_dict3, __pyx_n_s_idx, __pyx_n_s_dic_init_and_eddi_val, __pyx_n_s_init_day, __pyx_n_s_var2, __pyx_n_s_lead_values, __pyx_n_s_fileOut, __pyx_n_s_file_open, __pyx_n_s_index_val); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 366, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(18, __pyx_n_s_RZSM_next_dict_mod0, __pyx_n_s_RZSM_next_dict_mod1, __pyx_n_s_RZSM_next_dict_mod2, __pyx_n_s_RZSM_next_dict_mod3, __pyx_n_s_idx_2, __pyx_n_s_i_val, __pyx_n_s_EDDI_final_dict0, __pyx_n_s_EDDI_final_dict1, __pyx_n_s_EDDI_final_dict2, __pyx_n_s_EDDI_final_dict3, __pyx_n_s_idx, __pyx_n_s_dic_init_and_eddi_val, __pyx_n_s_init_day, __pyx_n_s_var2, __pyx_n_s_lead_values, __pyx_n_s_fileOut, __pyx_n_s_file_open, __pyx_n_s_index_val); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
-  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(4, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_add_to_nc_file, 366, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 366, __pyx_L1_error)
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(4, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_add_to_nc_file, 334, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 334, __pyx_L1_error)
 
   /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":74
  * var='SM'
@@ -8713,28 +8332,28 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__21);
   __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(5, 0, 42, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_TMP_1e_anomaly_RZSM_step0_GMAO_p, __pyx_n_s_RZSM_anomaly, 99, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 99, __pyx_L1_error)
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":426
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":398
  * try:
  *     #first line contains a header, nothing with dates
  *     completed_dates = completed_dates[:,1]             # <<<<<<<<<<<<<<
  * except IndexError:
  *     completed_dates = ''
  */
-  __pyx_slice__23 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__23)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_slice__23 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__23)) __PYX_ERR(0, 398, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__23);
   __Pyx_GIVEREF(__pyx_slice__23);
-  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_slice__23, __pyx_int_1); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_slice__23, __pyx_int_1); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 398, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":432
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":404
  * 
  * #only work on dates that aren't completed
  * subset_completed_dates = [i[5:] for i in completed_dates]             # <<<<<<<<<<<<<<
  * 
- * count=0
+ * for _date in init_date_list[start_:end_]:
  */
-  __pyx_slice__26 = PySlice_New(__pyx_int_5, Py_None, Py_None); if (unlikely(!__pyx_slice__26)) __PYX_ERR(0, 432, __pyx_L1_error)
+  __pyx_slice__26 = PySlice_New(__pyx_int_5, Py_None, Py_None); if (unlikely(!__pyx_slice__26)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__26);
   __Pyx_GIVEREF(__pyx_slice__26);
   __Pyx_RefNannyFinishContext();
@@ -8755,7 +8374,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   __pyx_int_7 = PyInt_FromLong(7); if (unlikely(!__pyx_int_7)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_8 = PyInt_FromLong(8); if (unlikely(!__pyx_int_8)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_10 = PyInt_FromLong(10); if (unlikely(!__pyx_int_10)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_25 = PyInt_FromLong(25); if (unlikely(!__pyx_int_25)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_365 = PyInt_FromLong(365); if (unlikely(!__pyx_int_365)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_366 = PyInt_FromLong(366); if (unlikely(!__pyx_int_366)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_neg_4 = PyInt_FromLong(-4); if (unlikely(!__pyx_int_neg_4)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -9464,25 +9082,25 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_RZSM_anomaly, __pyx_t_2) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":423
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":395
  * # _date=init_date_list[0]
  * '''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
  * completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')             # <<<<<<<<<<<<<<
  * try:
  *     #first line contains a header, nothing with dates
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_loadtxt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_loadtxt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = 0;
   __pyx_t_5 = 127;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_script_dir); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_script_dir); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_5;
@@ -9494,9 +9112,9 @@ if (!__Pyx_RefNanny) {
   __pyx_t_4 += 27;
   __Pyx_GIVEREF(__pyx_kp_u_RZSM_completed_anomaly_nc);
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_kp_u_RZSM_completed_anomaly_nc);
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_model_NAM1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_5;
@@ -9508,26 +9126,26 @@ if (!__Pyx_RefNanny) {
   __pyx_t_4 += 4;
   __Pyx_GIVEREF(__pyx_kp_u_txt);
   PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_kp_u_txt);
-  __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_2, 4, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_2, 4, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_n_s_str) < 0) __PYX_ERR(0, 423, __pyx_L1_error)
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 423, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_n_s_str) < 0) __PYX_ERR(0, 395, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_t_6) < 0) __PYX_ERR(0, 423, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_t_6) < 0) __PYX_ERR(0, 395, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":424
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":396
  * '''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
  * completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
  * try:             # <<<<<<<<<<<<<<
@@ -9543,22 +9161,22 @@ if (!__Pyx_RefNanny) {
     __Pyx_XGOTREF(__pyx_t_9);
     /*try:*/ {
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":426
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":398
  * try:
  *     #first line contains a header, nothing with dates
  *     completed_dates = completed_dates[:,1]             # <<<<<<<<<<<<<<
  * except IndexError:
  *     completed_dates = ''
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_completed_dates); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 426, __pyx_L2_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_completed_dates); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 398, __pyx_L2_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_6, __pyx_tuple__24); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 426, __pyx_L2_error)
+      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_6, __pyx_tuple__24); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 398, __pyx_L2_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_t_3) < 0) __PYX_ERR(0, 426, __pyx_L2_error)
+      if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_t_3) < 0) __PYX_ERR(0, 398, __pyx_L2_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":424
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":396
  * '''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
  * completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
  * try:             # <<<<<<<<<<<<<<
@@ -9576,7 +9194,7 @@ if (!__Pyx_RefNanny) {
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":427
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":399
  *     #first line contains a header, nothing with dates
  *     completed_dates = completed_dates[:,1]
  * except IndexError:             # <<<<<<<<<<<<<<
@@ -9586,19 +9204,19 @@ if (!__Pyx_RefNanny) {
     __pyx_t_10 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
     if (__pyx_t_10) {
       __Pyx_AddTraceback("TMP_1e_anomaly_RZSM_step0_GMAO", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_6, &__pyx_t_2) < 0) __PYX_ERR(0, 427, __pyx_L4_except_error)
+      if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_6, &__pyx_t_2) < 0) __PYX_ERR(0, 399, __pyx_L4_except_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_2);
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":428
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":400
  *     completed_dates = completed_dates[:,1]
  * except IndexError:
  *     completed_dates = ''             # <<<<<<<<<<<<<<
  * # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
  * 
  */
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_kp_s__25) < 0) __PYX_ERR(0, 428, __pyx_L4_except_error)
+      if (PyDict_SetItem(__pyx_d, __pyx_n_s_completed_dates, __pyx_kp_s__25) < 0) __PYX_ERR(0, 400, __pyx_L4_except_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -9607,7 +9225,7 @@ if (!__Pyx_RefNanny) {
     goto __pyx_L4_except_error;
     __pyx_L4_except_error:;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":424
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":396
  * '''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
  * completed_dates = np.loadtxt(f'{script_dir}/RZSM_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
  * try:             # <<<<<<<<<<<<<<
@@ -9627,24 +9245,24 @@ if (!__Pyx_RefNanny) {
     __pyx_L7_try_end:;
   }
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":432
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":404
  * 
  * #only work on dates that aren't completed
  * subset_completed_dates = [i[5:] for i in completed_dates]             # <<<<<<<<<<<<<<
  * 
- * count=0
+ * for _date in init_date_list[start_:end_]:
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 432, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_completed_dates); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 432, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_completed_dates); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (likely(PyList_CheckExact(__pyx_t_6)) || PyTuple_CheckExact(__pyx_t_6)) {
     __pyx_t_3 = __pyx_t_6; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
     __pyx_t_11 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 432, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 404, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_11 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 432, __pyx_L1_error)
+    __pyx_t_11 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 404, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   for (;;) {
@@ -9652,17 +9270,17 @@ if (!__Pyx_RefNanny) {
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 432, __pyx_L1_error)
+        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 404, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 432, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 404, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 432, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 404, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 432, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 404, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       }
@@ -9672,49 +9290,40 @@ if (!__Pyx_RefNanny) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 432, __pyx_L1_error)
+          else __PYX_ERR(0, 404, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_6);
     }
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_i, __pyx_t_6) < 0) __PYX_ERR(0, 432, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_i, __pyx_t_6) < 0) __PYX_ERR(0, 404, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_i); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 432, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_i); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 404, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_6, 5, 0, NULL, NULL, &__pyx_slice__26, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 432, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_6, 5, 0, NULL, NULL, &__pyx_slice__26, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 432, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_1))) __PYX_ERR(0, 404, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_subset_completed_dates, __pyx_t_2) < 0) __PYX_ERR(0, 432, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_subset_completed_dates, __pyx_t_2) < 0) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":434
+  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":406
  * subset_completed_dates = [i[5:] for i in completed_dates]
  * 
- * count=0             # <<<<<<<<<<<<<<
- * for _date in init_date_list[start_:end_]:
- *     if _date[5:] not in subset_completed_dates:
- */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_count, __pyx_int_0) < 0) __PYX_ERR(0, 434, __pyx_L1_error)
-
-  /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":435
- * 
- * count=0
  * for _date in init_date_list[start_:end_]:             # <<<<<<<<<<<<<<
  *     if _date[5:] not in subset_completed_dates:
- *         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/[inserted by cython to avoid comment start]*.npy {new_directory}/')
+ *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 435, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 435, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_start); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 435, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_end); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_2, 0, 0, &__pyx_t_3, &__pyx_t_1, NULL, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 435, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_2, 0, 0, &__pyx_t_3, &__pyx_t_1, NULL, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -9723,9 +9332,9 @@ if (!__Pyx_RefNanny) {
     __pyx_t_1 = __pyx_t_6; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
     __pyx_t_11 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 435, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 406, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_11 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 435, __pyx_L1_error)
+    __pyx_t_11 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 406, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   for (;;) {
@@ -9733,17 +9342,17 @@ if (!__Pyx_RefNanny) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 435, __pyx_L1_error)
+        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 406, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 435, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 406, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 435, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 406, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 435, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 406, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       }
@@ -9753,53 +9362,53 @@ if (!__Pyx_RefNanny) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 435, __pyx_L1_error)
+          else __PYX_ERR(0, 406, __pyx_L1_error)
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_6);
     }
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_date, __pyx_t_6) < 0) __PYX_ERR(0, 435, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_date, __pyx_t_6) < 0) __PYX_ERR(0, 406, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":436
- * count=0
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":407
+ * 
  * for _date in init_date_list[start_:end_]:
  *     if _date[5:] not in subset_completed_dates:             # <<<<<<<<<<<<<<
- *         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/[inserted by cython to avoid comment start]*.npy {new_directory}/')
  *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
+ * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_date); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_date); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_6, 5, 0, NULL, NULL, &__pyx_slice__26, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_6, 5, 0, NULL, NULL, &__pyx_slice__26, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_subset_completed_dates); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_subset_completed_dates); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_6, Py_NE)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_6, Py_NE)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_13 = (__pyx_t_12 != 0);
     if (__pyx_t_13) {
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":438
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":408
+ * for _date in init_date_list[start_:end_]:
  *     if _date[5:] not in subset_completed_dates:
- *         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/[inserted by cython to avoid comment start]*.npy {new_directory}/')
  *         RZSM_anomaly(start_,end_,init_date_list, _date,var)             # <<<<<<<<<<<<<<
- *         count+=1
- *         if count == 25:
+ * 
+ * 
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_RZSM_anomaly); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_RZSM_anomaly); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 408, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_start); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 408, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_end); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_end); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 408, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
-      __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_init_date_list); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 408, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
-      __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_date); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_date); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 408, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_var); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_var); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 408, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_17);
       __pyx_t_18 = NULL;
       __pyx_t_10 = 0;
@@ -9816,7 +9425,7 @@ if (!__Pyx_RefNanny) {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[6] = {__pyx_t_18, __pyx_t_2, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17};
-        __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_10, 5+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 438, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_10, 5+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 408, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -9829,7 +9438,7 @@ if (!__Pyx_RefNanny) {
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[6] = {__pyx_t_18, __pyx_t_2, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17};
-        __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_10, 5+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 438, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_10, 5+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 408, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -9840,7 +9449,7 @@ if (!__Pyx_RefNanny) {
       } else
       #endif
       {
-        __pyx_t_19 = PyTuple_New(5+__pyx_t_10); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 438, __pyx_L1_error)
+        __pyx_t_19 = PyTuple_New(5+__pyx_t_10); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 408, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_19);
         if (__pyx_t_18) {
           __Pyx_GIVEREF(__pyx_t_18); PyTuple_SET_ITEM(__pyx_t_19, 0, __pyx_t_18); __pyx_t_18 = NULL;
@@ -9860,89 +9469,30 @@ if (!__Pyx_RefNanny) {
         __pyx_t_15 = 0;
         __pyx_t_16 = 0;
         __pyx_t_17 = 0;
-        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_19, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 438, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_19, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 408, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":439
- *         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/[inserted by cython to avoid comment start]*.npy {new_directory}/')
- *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
- *         count+=1             # <<<<<<<<<<<<<<
- *         if count == 25:
- *             print('Done')
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_count); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 439, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_t_6, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 439, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_count, __pyx_t_3) < 0) __PYX_ERR(0, 439, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":440
- *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
- *         count+=1
- *         if count == 25:             # <<<<<<<<<<<<<<
- *             print('Done')
- *             break
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_count); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 440, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_25, 25, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 440, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_13 < 0)) __PYX_ERR(0, 440, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (__pyx_t_13) {
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":441
- *         count+=1
- *         if count == 25:
- *             print('Done')             # <<<<<<<<<<<<<<
- *             break
+      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":407
  * 
- */
-        if (__Pyx_PrintOne(0, __pyx_n_s_Done) < 0) __PYX_ERR(0, 441, __pyx_L1_error)
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":442
- *         if count == 25:
- *             print('Done')
- *             break             # <<<<<<<<<<<<<<
- * 
- * 
- */
-        goto __pyx_L13_break;
-
-        /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":440
- *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
- *         count+=1
- *         if count == 25:             # <<<<<<<<<<<<<<
- *             print('Done')
- *             break
- */
-      }
-
-      /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":436
- * count=0
  * for _date in init_date_list[start_:end_]:
  *     if _date[5:] not in subset_completed_dates:             # <<<<<<<<<<<<<<
- *         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/[inserted by cython to avoid comment start]*.npy {new_directory}/')
  *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
+ * 
  */
     }
 
-    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":435
+    /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":406
+ * subset_completed_dates = [i[5:] for i in completed_dates]
  * 
- * count=0
  * for _date in init_date_list[start_:end_]:             # <<<<<<<<<<<<<<
  *     if _date[5:] not in subset_completed_dates:
- *         # os.system(f'cp {home_dir}/RZSM_anomaly_mod{model_NUM}/[inserted by cython to avoid comment start]*.npy {new_directory}/')
+ *         RZSM_anomaly(start_,end_,init_date_list, _date,var)
  */
   }
-  __pyx_L13_break:;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "TMP_1e_anomaly_RZSM_step0_GMAO.pyx":1

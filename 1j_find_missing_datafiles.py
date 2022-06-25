@@ -94,7 +94,8 @@ missing_original_RZSM = [] #mrso missing data files
 missing_originial_RZSM_m3_m3 = [] #missing converted mrso m3/m3 files
 missing_SMERGE_to_SubX_files = [] #when we convert smerge format to subx format for ACC comparison
 
-
+# home_dir_test = f'{home_dir}/completed_anomaly'
+# os.chdir(home_dir_test)
 
 for file in sorted(glob(file_list)):
     open_f = xr.open_dataset(file)

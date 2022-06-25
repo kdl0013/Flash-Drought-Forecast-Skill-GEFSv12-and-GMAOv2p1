@@ -28,7 +28,6 @@ num_processors = int('procs')
 mod = 'model_name'
 var = 'variable'
 
-
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # num_processors = 10
 # mod = 'GMAO'
@@ -312,13 +311,13 @@ def make_empty_nc_files(init_date_list,T_FILE):
                     
             elif var == 'RZSM':
                 filename = f'{var}_anomaly'
-                desc = 'RZSM anomaly. Calculated from 7-day average mean by julian day and lead week.'
+                desc = f'RZSM anomaly SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
                 for model in [0,1,2,3]:
                     model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
                 
             elif var == 'ETo':
                 filename = f'{var}_anomaly'
-                desc = 'ETo anomaly. Calculated from 7-day average mean by julian day and lead week.'
+                desc = f'ETo anomaly SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
                 for model in [0,1,2,3]:
                     model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
             
@@ -334,28 +333,12 @@ def make_empty_nc_files(init_date_list,T_FILE):
                 
             except FileNotFoundError:
                 #Make empty files to insert 
-                empty = (np.zeros_like(T_FILE.to_array()).squeeze())
-                # #Only do 1 model at a time
-                # empty = empty[:,0,:,:,:]
-                # empty[:,:,:,:] = np.nan
-                # np.save(f'{home_dir}/EDDI_{_date}.npy',empty)
-                # np.save(f'{home_dir}/ETo_anomaly_{_date}.npy',empty)
-                # np.save(f'{home_dir}/RZSM_anomaly_{_date}.npy',empty)
-                
-                #save lead values as julian day for later processing
-
-                         
+                empty = (np.zeros_like(T_FILE.to_array()).squeeze())         
                 template = xr.open_dataset(f'ETo_{_date}.nc4')
         
                 #initialize empty file
                 var_OUT = xr.zeros_like(template)
-                
-                # #Add data from each model into the empty file
-                # for model in model_dirs.items():
-                #     var_OUT.ETo[:,int(model[0][-1]),:,:,:] = np.load(f'{filename}_{_date}.npy',allow_pickle=True)
-                #     #print(mod)
-                  
-                
+
                 if var == 'RZSM':
                     #save file as EDDI as netcdf
                     var_final = xr.Dataset(
@@ -375,6 +358,7 @@ def make_empty_nc_files(init_date_list,T_FILE):
                     var_final.RZSM_anom[1,:,:,:,:] = np.nan
                     #Drop S dimension to save storage space
                     var_final = var_final.dropna(dim='S',how='all')
+                    var_final.RZSM_anom[0,:,:,:,:] = np.nan
                     
                     
                 elif var == 'EDDI':
@@ -416,12 +400,13 @@ def make_empty_nc_files(init_date_list,T_FILE):
                     var_final.ETo_anom[1,:,:,:,:] = np.nan
                     #Drop S dimension to save storage space
                     var_final = var_final.dropna(dim='S',how='all')
+                    var_final.ETo_anom[0,:,:,:,:] = np.nan
 
-                var_final.to_netcdf(path = f'{home_dir}/{filename}_{_date}.nc4', mode ='w',engine='scipy')
+                var_final.to_netcdf(path = f'{home_dir}/{filename}_{_date}.nc', mode ='w',engine='scipy')
                 #compress so that when I re-write the file, it is quicker
-                '''But this doesn't work after the file is re-read and re-saved'''
-                os.system(f'ncks -4 -L 1 {home_dir}/{filename}_{_date}.nc4 {home_dir}/{filename}_{_date}_test.nc4')
-                os.system(f'mv {home_dir}/{filename}_{_date}_test.nc4 {home_dir}/{filename}_{_date}.nc4')
+                # '''But this doesn't work after the file is re-read and re-saved'''
+                # os.system(f'ncks -4 -L 1 {home_dir}/{filename}_{_date}.nc4 {home_dir}/{filename}_{_date}_test.nc4')
+                # os.system(f'mv {home_dir}/{filename}_{_date}_test.nc4 {home_dir}/{filename}_{_date}.nc4')
                 
                 var_final.close()
 

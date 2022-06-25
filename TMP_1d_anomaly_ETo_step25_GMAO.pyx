@@ -28,7 +28,7 @@ model_NAM1 = 'GMAO'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # start_ = int('0')
-# end_ = start_ + int('40')
+# end_ = start_ + int('25')
 # model_NUM = int('0')
 # model_NAM1 = 'GMAO'
 
@@ -72,26 +72,7 @@ This code is re-factored from 1b_EDDI.py
 # def multiProcess_EDDI_SubX_TEST(_date):
 def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
     #_date=init_date_list[0]  
-    
-    # #Make sure that the models aren't overwriting each other 
-    # if model_num == 1:
-    #     os.system('sleep 2')
-    # if model_num == 2:
-    #     os.system('sleep 4')
-    # if model_num == 3:
-    #     os.system('sleep 6')
-        
-    #For each date, open each file and compute ETref with et
-    #All files have the same initialized days (part of the pre-processing that is 
-    #completed)
-    def return_date_list():
-        date_list = []
-        for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
-            date_list.append(file[-14:-4])
-        return(date_list)
-            
-    init_date_list = return_date_list()    
-
+  
     print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc4 in {home_dir}') 
     #Because of indexing, week lead actually needs to be 6 for slicing
     cdef int week_lead
@@ -152,7 +133,6 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
             if _date == '1999-01-10':
                 print(f'Working on lat {i_Y} and lon {i_X}')
 
-            #
             #only work on grid cells with values like SMERGE
             if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7)):
 
@@ -202,46 +182,18 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                         #Dont' re-open the same file
                         if file[-14:-4] != _date:
                             #Open up ETo file
-                            open_f = xr.open_dataset(file)
+                            open_f = xr.open_dataset(file)                        
+                            Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
                             
-                            '''Convert lead dates to a vector, then add it back into a netcdf
-                            because I cannot convert np.datetime to a pd.datetime, I will need
-                            to iterate over each of the dates in a list from Et_ref'''
-                            
-                            #get the dates into a list
-                            date_in= open_f[f'{var_name}'].lead.values
-                            #get the start date
-                            start_date = pd.to_datetime(open_f.S.values[0])
-                            #Add the dates based on index value in date_in
-                            date_out = []
-                            for i in range(len(date_in)):
-                                date_out.append(start_date + dt.timedelta(days = i))
-                            
-                            #Convert to julian date
-                            end_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
-                            
-                            b_julian_out = [end_julian + i for i in range(len(date_out))]
-                            
-                            '''Find out if that file has a leap year, subtract appropriately'''
-                            if pd.to_datetime(file[-14:-4]).year % 4 == 0:
-                                subtract = 366
-                                b_julian_out2 = [i-subtract if i>366 else i for i in b_julian_out]
-                            else:
-                                subtract = 365
-                                b_julian_out2 = [i-subtract if i>365 else i for i in b_julian_out]
-                            
-                        
-                            Et_ref_open_f = open_f.assign_coords(lead = b_julian_out2)
-                            
-                            for idx,val in enumerate(b_julian_out2):
-                                idx_lead = idx+week_lead
-                               #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
+                            for idx,julian_d in enumerate(file_julian_list):
+                                
                                 if idx % 7 == 0 and idx != 0:
                                     try:
-                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod0[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod1[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod2[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod3[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        
                                    #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
                                         pass
@@ -363,21 +315,27 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                             # print(dic_init_and_eddi_val)
                             #Open up the file and insert the value
                             init_day = list(dic_init_and_eddi_val.keys())[0]
-                            
-                            '''When appending using several scripts, sometimes the file will
-                            load before another file has finished filling in the file and causing
-                            a ValueError: cannot reshape array of size 15328 into shape (2,4,45,27,59)'''
+
                             var2 = 'ETo'
                             lead_values = np.load(f'{home_dir}/julian_lead_{init_day}.npy',allow_pickle=True)
                             
                             #add values by julian day
-                            # fileOut = f'{var}_anomaly_{init_day}.npy'
-                            fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
+                            fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
                             
                             file_open = xr.open_dataset(fileOut)
                             file_open.close()
                             
                             index_val=np.where(lead_values == int(i_val))[0][0]
+                            
+                            '''Because of indexing, there was an issue where leap years were being
+                            added to the 6th index in the file instead of the 7th index which is the 
+                            weekly lead. To fix this, just add 1 to index_val and see if that works.
+                            '''
+                            
+                            if pd.to_datetime(init_day).year % 4 ==0:
+                                index_val = index_val +1
+                            else:
+                                index_val=index_val
                             
                             #Add data to netcdf file
                             file_open.ETo_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]

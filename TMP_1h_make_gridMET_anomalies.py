@@ -16,7 +16,7 @@ from glob import glob
 import refet
 
 dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
-# dir1 = 'main_dir'
+# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 gridMET_dir = f'{dir1}/Data/gridMET'
 fileOUT_gridMET = f'{gridMET_dir}/ETo_anomaly_gridMET_merged.nc'
 

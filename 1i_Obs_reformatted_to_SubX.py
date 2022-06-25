@@ -45,7 +45,7 @@ date_list = sorted(glob('mrso*_*-*.nc'))
 date_list = [i[-13:-3] for i in date_list]
 
 # _date = date_list[0]
-
+# _date='1999-12-06'
 #%% ETo gridMET
 def ETo_gridMET_SubX_creation(_date) -> float:    
     try:
@@ -153,7 +153,7 @@ def SM_SMERGE_SubX_creation(_date):
                         
                         smerge_out[0,model, i_lead, i_Y, i_X] = \
                             SMERGE_file.CCI_ano.sel(time = date_val).isel(X = i_X, Y = i_Y).values
-        
+        smerge_out[0,0, 28, :, :]
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
