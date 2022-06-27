@@ -41,6 +41,8 @@ model_NAM1 = 'model_name'
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # model_NAM1 = 'GMAO'
 
+os.chdir(f'{dir1}/Data/SubX/{model_NAM1}')
+
 var='ETo'
 #Get file list
 def return_date_list():
@@ -64,8 +66,18 @@ a.close()
 b = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/ETo_anomaly_2012-02-19.nc')
 b.close()
 
-
+rzsm = xr.open_mfdataset('vas*.nc', concat_dim=['S'], combine='nested')
+np.corrcoef(a.ETo_anom[0,0,7,10,10].values,a.ETo_anom[0,0,7,10,10].values)
 # proj = ccrs.PlateCarree()
+
+only_2_dim = rzsm.vas[::2,0,7,10,10].values
+dim_2 = rzsm.vas[::2,0,7,11,11].values
+len(only_2_dim)
+np.corrcoef(only_2_dim,dim_2)
+np.corrcoef(only_2_dim,dim_2)[0,1]
+
+
+
 
 
 ax = plt.axes(projection=ccrs.PlateCarree())
@@ -88,9 +100,19 @@ gl.yformatter = LATITUDE_FORMATTER
 # gl.xlabel_style = {'color': 'red', 'weight': 'bold'}
 # ax.coastlines()
 
+#example np.corrcoeff
+x_simple = np.array([-2, -1, 0, 1, 2])
+y_simple = np.array([4, 1, 3, 2, 0])
+my_rho = np.corrcoef(x_simple, y_simple)
+
+
+
+
 np.corrcoef(a.ETo_anom.isel(S=0,model=1,lead=7,Y=10,X=10).values,a.ETo_anom.isel(S=0,model=1,lead=7,Y=10,X=10).values)
 
-
+ddd=np.array([1,1,1,1,2])
+ccc = np.array([2,2,2,2,3])
+np.corrcoef(ddd,ccc)
 
 dataset = a
 # dataset = netcdf_dataset(fname)
