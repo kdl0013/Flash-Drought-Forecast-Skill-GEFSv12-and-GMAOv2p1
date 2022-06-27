@@ -55,7 +55,7 @@ def ETo_gridMET_SubX_creation(_date) -> float:
         
     
         #Open gridMET and subset to the correct dates as SubX for full time series
-        gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_anomaly_gridMET_merged.nc').astype('float64')
+        gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_anomaly_gridMET_merged_fix_january.nc').astype('float64')
         gridMET_file = gridMET_file.sel(day=slice("1999-01-10","2016-02-09"))
 
         print(f'Working on initialized day {_date} to find gridMET values from SubX models, leads, & coordinates and saving data into {output_ETo_dir}.')
@@ -138,7 +138,7 @@ def SM_SMERGE_SubX_creation(_date):
         #Remove dimension S[1] because it has not data (it's a GMAO GEOS specific issue)
         sub_file_arr = sub_file.mrso[:,:,:,:,:].values
         
-        SMERGE_file = xr.open_dataset(f'{smerge_in_dir}/RZSM_anomaly_SMERGE_merged.nc')
+        SMERGE_file = xr.open_dataset(f'{smerge_in_dir}/RZSM_anomaly_SMERGE_merged_fix_january.nc')
         
         '''Same format as SubX. Find the correct dates, leads, models and just fill in'''
         smerge_out = (np.zeros_like(sub_file_arr)).astype('float64')
@@ -153,7 +153,7 @@ def SM_SMERGE_SubX_creation(_date):
                         
                         smerge_out[0,model, i_lead, i_Y, i_X] = \
                             SMERGE_file.CCI_ano.sel(time = date_val).isel(X = i_X, Y = i_Y).values
-        smerge_out[0,0, 28, :, :]
+
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(

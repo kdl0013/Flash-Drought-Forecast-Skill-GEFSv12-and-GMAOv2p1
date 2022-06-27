@@ -14,11 +14,9 @@ import datetime as dt
 import pandas as pd
 from glob import glob
 
-import warnings
-warnings.filterwarnings("ignore")
 
-dir1 = 'main_dir'
-model_NAM1 = 'model_name'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+model_NAM1 = 'GMAO'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # model_NAM1 = 'GMAO'
@@ -33,8 +31,7 @@ smerge_dir = f'{dir1}/Data/SMERGE_SM/Raw_data'
 
 #Mask for CONUS
 HP_conus_path = f'{dir1}/Data/CONUS_mask/High_Plains_mask.nc'
-HP_conus_mask = xr.open_dataset(HP_conus_path) #open mask files
-  
+HP_conus_mask = xr.open_dataset(HP_conus_path) #open mask file
 
 ###Files
 file_list = os.listdir()
@@ -61,11 +58,9 @@ init_date_list = return_date_list()
 This code is re-factored from 1b_EDDI.py
     
 '''
-
 #%%
 '''Now we want to open up each ETo- and RZSM anomaly file (also EDDI), to see
 which ones have missing data'''
-global var
 var = 'RZSM'
 file_list = f'{var}_anomaly_*.nc'
 missing_anomaly_RZSM= [] #subx missing anomaly data files
@@ -95,28 +90,19 @@ for file in sorted(glob(file_list)):
         missing_original_RZSM_m3_m3.append(file)
         
 missing_anomaly_RZSM[0][-13:-3]
-global missing_dates
 missing_dates = [i[-13:-3] for i in missing_anomaly_RZSM]
 
 print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now if needed.')
 print(f'Missing RZSM SubX data in {len(missing_original_RZSM_m3_m3)} files.')
-
-print('Copying all files into new directory to process seperately for certain leap years because of julian day issues')
-new_dir = 'RZSM_anomaly_leap_year'
-
-os.system(f'mkdir {new_dir}')
-for file in sorted(glob(file_list)):
-    os.system(f"cp {file.split('/')[-1]} {new_dir}/")
-
-#Move into new directory to process files
-os.chdir(f'{home_dir}/{new_dir}')
 #%%    
 '''process SubX files and create EDDI values'''
 # def multiProcess_EDDI_SubX_TEST(_date):
-def anomaly_fix(_date, var, HP_conus_mask):
+def anomaly_fix(_date, var,HP_conus_mask):
     #_date=init_date_list[0]  
+  
     print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc in {home_dir}') 
 
+  
     #get julian day, timestamps, and the datetime
     def date_file_info( _date, variable):
         
@@ -199,11 +185,16 @@ def anomaly_fix(_date, var, HP_conus_mask):
                     
                     dates_to_keep = []
                     '''if within 3 months, keep files'''
-                    for file in sorted(glob(f'{rzsm_dir}/SM*{_date[-5:]}.nc4')):
+                    len_text=23
+                    #ETo_anomaly is also in this directory, we don't want those
+                    for file in sorted(glob(f'{home_dir}/RZSM*{_date[-5:]}.nc')):
+                        if len(file.split('/')[-1]) == len_text:
                             dates_to_keep.append(file)
                                         
-                    for file in dates_to_keep:
-
+                    # for idx,file in dates_to_keep:
+                    #     if dates_to_keep[-1][-13:-3] == _date:
+                    #         pass
+                        #Dont' re-open the same file
                         if file[-14:-4] != _date:
                             #Open up ETo file
                             open_f = xr.open_dataset(file)
@@ -214,10 +205,10 @@ def anomaly_fix(_date, var, HP_conus_mask):
                                 
                                 if idx % 7 == 0 and idx != 0:
                                     try:
-                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.SM_SubX_m3_m3_value.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod0[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.RZSM_anom.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod1[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.RZSM_anom.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod2[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.RZSM_anom.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod3[f'{val}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.RZSM_anom.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
                                         
                                    #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
@@ -311,7 +302,7 @@ def anomaly_fix(_date, var, HP_conus_mask):
                   
                         for idx,dic_init_and_eddi_val in enumerate(EDDI_final_dict0):
                             #Only work on dates that are missing
-                            if list(dic_init_and_eddi_val.items())[0][0] in missing_dates:
+                            if list(dic_init_and_eddi_val.items())[0][0]  in missing_dates:
 
                                 # print(dic_init_and_eddi_val)
                                 #Open up the file and insert the value
@@ -358,42 +349,5 @@ def anomaly_fix(_date, var, HP_conus_mask):
 if len(missing_dates) == 0:
     print('There are no missing datafiles for {var}_anomaly from SubX')
 else:
-    completed_dates = []  
-    for _date in missing_dates:
-        if _date[-5:] not in completed_dates:
-            anomaly_fix(_date,var, HP_conus_mask)
-            completed_dates.append(_date) #don't re-iterate over completed files
-  
-#Now move the missing date files back to home_dir
-for _date in missing_dates:
-    os.system(f"cp RZSM_anomaly_{_date}.nc {home_dir}/")
-    
-    
-#%% Check again and see if now we have no files that are empty
-os.chdir(home_dir)
-
-var = 'RZSM'
-file_list = f'{var}_anomaly_*.nc'
-missing_anomaly_RZSM= [] #subx missing anomaly data files
-
-for file in sorted(glob(file_list)):
-    open_f = xr.open_dataset(file)
-    # open_f = xr.open_dataset(test_file)
-
-    open_f.close()
-    '''after further inspection, if a file has all nan values then it has a total
-    of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
-    therefore, this is a missing data file.
-    '''
-    #anomaly. I inspected a file that was filled correctly and it had 528 missing value
-    #If file is completely empty, the file will have all zeros and a unique value of only 1
-    if len(np.unique(open_f.RZSM_anom[:,:,7,:,:])) <= 1 or \
-        len(np.unique(open_f.RZSM_anom[:,:,14,:,:])) <= 1 or \
-            len(np.unique(open_f.RZSM_anom[:,:,21,:,:])) <= 1 or \
-                len(np.unique(open_f.RZSM_anom[:,:,28,:,:])) <= 1 or \
-                    len(np.unique(open_f.RZSM_anom[:,:,35,:,:])) <= 1 or \
-                        len(np.unique(open_f.RZSM_anom[:,:,42,:,:])) <= 1:
-        missing_anomaly_RZSM.append(file)   
-
-
-print(f'Missing data in {len(missing_dates)}. There should be no issues now.')
+  for _date in missing_dates:
+    anomaly_fix(_date,var, HP_conus_mask)

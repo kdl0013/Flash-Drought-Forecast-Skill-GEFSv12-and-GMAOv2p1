@@ -1,0 +1,11 @@
+--2022-06-27 07:49:34--  https://i.scdn.co/image/ab67616d0000b2737523ce02568ff2f6b3964ddf
+Resolving i.scdn.co (i.scdn.co)... 2a04:4e42:5e::760, 151.101.206.248
+Connecting to i.scdn.co (i.scdn.co)|2a04:4e42:5e::760|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 103764 (101K) [image/jpeg]
+Saving to: ‘/home/kdl/.config/conky/last_album_pic.png’
+
+             /home/kdl/.c   0%[                                   ]       0  --.-KB/s               /home/kdl/.config/conky/l 100%[==================================>] 101.33K  --.-KB/s    in 0.06s   
+
+2022-06-27 07:49:34 (1.76 MB/s) - ‘/home/kdl/.config/conky/last_album_pic.png’ saved [103764/103764]
+

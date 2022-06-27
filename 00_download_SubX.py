@@ -13,8 +13,8 @@ import datetime as dt
 import numpy as np
 
 
-username_IRIDL = "klesinger"
-password_IRIDL = "old-big-donkey-balls"
+username_IRIDL = ""
+password_IRIDL = ""
 
 
 home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX'

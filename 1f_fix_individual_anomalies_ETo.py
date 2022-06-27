@@ -14,10 +14,14 @@ import datetime as dt
 import pandas as pd
 from glob import glob
 
+import warnings
+warnings.filterwarnings("ignore")
+
 dir1 = 'main_dir'
 model_NAM1 = 'model_name'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+# model_NAM1 = 'GMAO'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
 script_dir = f'{dir1}/Scripts'
 
@@ -62,8 +66,13 @@ file_list = f'{var}_anomaly_*.nc'
 missing_anomaly= [] #subx missing anomaly data files
 missing_original_ETo = []
 
+# test_file = f'{home_dir}/test/ETo_anomaly_2000-09-17.nc'
+
+
 for file in sorted(glob(file_list)):
     open_f = xr.open_dataset(file)
+    # open_f = xr.open_dataset(test_file)
+
     open_f.close()
     '''after further inspection, if a file has all nan values then it has a total
     of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
@@ -71,12 +80,17 @@ for file in sorted(glob(file_list)):
     '''
     #anomaly. I inspected a file that was filled correctly and it had 528 missing value
     #If file is completely empty, the file will have all zeros and a unique value of only 1
-    if len(np.unique(open_f.ETo_anom[:,:,::7,:,:])) <= 1:
+    if len(np.unique(open_f.ETo_anom[:,:,7,:,:])) <= 1 or \
+        len(np.unique(open_f.ETo_anom[:,:,14,:,:])) <= 1 or \
+            len(np.unique(open_f.ETo_anom[:,:,21,:,:])) <= 1 or \
+                len(np.unique(open_f.ETo_anom[:,:,28,:,:])) <= 1 or \
+                    len(np.unique(open_f.ETo_anom[:,:,35,:,:])) <= 1 or \
+                        len(np.unique(open_f.ETo_anom[:,:,42,:,:])) <= 1:
         missing_anomaly.append(file)    
 
     '''I manually calculated ETo from SubX variables, look if I am missing any
     data from those files'''
-    open_ETo = xr.open_dataset(f'{var}_{file[-14:-4]}.nc4') 
+    open_ETo = xr.open_dataset(f'{var}_{file[-13:-3]}.nc4') 
     if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
         missing_original_ETo.append(file)
 
@@ -84,11 +98,24 @@ for file in sorted(glob(file_list)):
 missing_anomaly[0][-13:-3]
 missing_dates = [i[-13:-3] for i in missing_anomaly]
 
-print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now.')
+print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now if needed.')
 print(f'Missing ETo SubX data in {len(missing_original_ETo)} files.')
+
+print('Copying all files into new directory to process seperately for certain leap years because of julian day issues')
+new_dir = 'ETo_anomaly_leap_year'
+
+
+os.system('mkdir {new_dir}')
+for file in sorted(glob(file_list)):
+    os.system(f"cp {file.split('/')[-1]} {new_dir}/")
+
+#Move into new directory to process files
+os.chdir(f'{home_dir}/{new_dir}')
 #%%    
-'''process SubX files and create EDDI values'''
+'''process SubX files that were messed up. I think I have finally figured out all
+of the issues that I was having with some of the files'''
 # def multiProcess_EDDI_SubX_TEST(_date):
+# _date=missing_dates[0]
 def anomaly_fix(_date, var, HP_conus_mask):
     #_date=init_date_list[0]  
   
@@ -140,7 +167,7 @@ def anomaly_fix(_date, var, HP_conus_mask):
          for i_X in range(subx2[f'{var_name}'].shape[4]):
 
             #only work on grid cells within CONUS
-            if HP_conus_mask.High_Plains[0,i_Y,i_X] in np.arange(1,7):
+            if HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7):
 
                 def dict1_subx2():
                     
@@ -188,7 +215,6 @@ def anomaly_fix(_date, var, HP_conus_mask):
                         if file[-14:-4] != _date:
                             #Open up ETo file
                             open_f = xr.open_dataset(file)
-                            
                             Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
                             
                             for idx,val in enumerate(file_julian_list):
@@ -306,10 +332,8 @@ def anomaly_fix(_date, var, HP_conus_mask):
                                 
                                 #add values by julian day
                                 # fileOut = f'{var}_anomaly_{init_day}.npy'
-                                try:
-                                    fileOut = ("{}_anomaly_{}.nc4".format(var2,init_day))
-                                except FileNotFoundError:
-                                    fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
+
+                                fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
     
                                 
                                 file_open = xr.open_dataset(fileOut)
@@ -329,25 +353,64 @@ def anomaly_fix(_date, var, HP_conus_mask):
                               
                     
                 add_to_nc_file(ETo_next_dict_mod0,ETo_next_dict_mod1,ETo_next_dict_mod2,ETo_next_dict_mod3)
-                
-                
-    #save the dates that were completed to not re-run
-    # os.system(f'echo Completed {_date} >> {script_dir}/ETo_completed_anomaly_nc_{model_NAM1}.txt')
-    print(f'Completed date {_date} and saved into {home_dir}.')
-           
-    # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
+             
     return()
 #END FUNCTION
 #%%
 #Call function
 
 
-#Run single dates
-_date = '1999-03-01'
-var
+#Run single date test
+# _date = '1999-03-01'
+# var
 if len(missing_dates) == 0:
     print('There are no missing datafiles for {var}_anomaly from SubX')
+else:
+    '''Because we only need to process 1 year's worth of data, keep up with a list
+        so that it doesn not re-run extra computation when it does not need to'''
+    completed_dates = []  
+    for _date in missing_dates:
+        if _date[-5:] not in completed_dates:
+            anomaly_fix(_date,var, HP_conus_mask)
+            completed_dates.append(_date) #don't re-iterate over completed files, it loops over all years
+  
+        
+#Now move the missing date files back to home_dir
 for _date in missing_dates:
-    anomaly_fix(_date,var, HP_conus_mask)
-
+    os.system(f"cp ETo_anomaly_{_date}.nc {home_dir}/")
     
+    
+#%% Check again and see if now we have no files that are empty
+os.chdir(home_dir)
+
+var = 'ETo'
+file_list = f'{var}_anomaly_*.nc'
+missing_anomaly= [] #subx missing anomaly data files
+
+# test_file = f'{home_dir}/test/ETo_anomaly_2000-09-17.nc'
+
+
+for file in sorted(glob(file_list)):
+    open_f = xr.open_dataset(file)
+    # open_f = xr.open_dataset(test_file)
+
+    open_f.close()
+    '''after further inspection, if a file has all nan values then it has a total
+    of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
+    therefore, this is a missing data file.
+    '''
+    #anomaly. I inspected a file that was filled correctly and it had 528 missing value
+    #If file is completely empty, the file will have all zeros and a unique value of only 1
+    if len(np.unique(open_f.ETo_anom[:,:,7,:,:])) <= 1 or \
+        len(np.unique(open_f.ETo_anom[:,:,14,:,:])) <= 1 or \
+            len(np.unique(open_f.ETo_anom[:,:,21,:,:])) <= 1 or \
+                len(np.unique(open_f.ETo_anom[:,:,28,:,:])) <= 1 or \
+                    len(np.unique(open_f.ETo_anom[:,:,35,:,:])) <= 1 or \
+                        len(np.unique(open_f.ETo_anom[:,:,42,:,:])) <= 1:
+        missing_anomaly.append(file)    
+
+
+missing_anomaly[0][-13:-3]
+missing_dates = [i[-13:-3] for i in missing_anomaly]
+
+print(f'Missing data in {len(missing_dates)}. There should be no issues now.')

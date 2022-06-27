@@ -85,7 +85,7 @@ mv *.c cython_scripts/
 }
 
 #Compile code using cython
-compile_cython 'ETo' 
+compile_cython 'ETo' &
 #compile_cython 'EDDI'
 compile_cython 'RZSM'
 
@@ -116,15 +116,16 @@ run_anomaly_RZSM_ETo_EDDI "ETo"
 wait
 run_anomaly_RZSM_ETo_EDDI "RZSM"
 wait
-run_anomaly_RZSM_ETo_EDDI "EDDI"
-wait
+#run_anomaly_RZSM_ETo_EDDI "EDDI"
+#wait
+
 
 
 #Fix any broken SubX anomaly files
 fix_broken_subX_anomalies () {
 cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|model_name|'${model}'|g' > TMP_"$model"_$1
 
-#python3 TMP_$1
+python3 TMP_"$model"_$1
 }
 
 fix_broken_subX_anomalies "1f_fix_individual_anomalies_ETo.py"
@@ -135,10 +136,15 @@ fix_broken_subX_anomalies "1g_fix_individual_anomalies_RZSM.py"
 make_obs_anomalies() {
 cat 1h_make_gridMET_anomalies.py | sed 's|main_dir|'${main_directory}'|g' > TMP_1h_make_gridMET_anomalies.py
 
+cat 1h2_make_gridMET_anomalies_fix_january.py | sed 's|main_dir|'${main_directory}'|g' > TMP_1h2_make_gridMET_anomalies_fix_january.py
+
 python3 TMP_1h_make_gridMET_anomalies.py
+python3 TMP_1h2_make_gridMET_anomalies_fix_january.py
 }
 
 make_obs_anomalies
+
+
 
 
 #Create new dataset to compare the skill between models

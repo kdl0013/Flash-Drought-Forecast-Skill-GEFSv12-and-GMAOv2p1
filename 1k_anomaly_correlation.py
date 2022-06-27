@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Apr  8 19:15:03 2022
+TODO: Find the pearson_r correlation initially for:
+    1.) The entire CONUS
+        a.) for each model seperately
+        b.) for each weekly lead time
+        c.) plot
 
+    2.) For each region individually
+        a.) model, weekly lead time, season
 @author: kdl
 """
 
@@ -24,40 +30,111 @@ import dask
 from climpred import HindcastEnsemble
 import climpred
 import cartopy.crs as ccrs
+import cartopy as cart
+from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
-'''Tutorial for climpred didn't work'''
-# warnings.filterwarnings("ignore")
+import warnings
+warnings.filterwarnings("ignore")
 
-# def decode_cf(ds, time_var):
-#     if ds[time_var].attrs['calendar'] == '360':
-#         ds[time_var].attrs['calendar'] = '360_day'
-#         ds = xr.decode_cf(ds, decode_times=True)
-#     return ds
+dir1 = 'main_dir'
+model_NAM1 = 'model_name'
+# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+# model_NAM1 = 'GMAO'
 
+var='ETo'
+#Get file list
+def return_date_list():
+    date_list = []
+    for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
+        date_list.append(file[-14:-4])
+    return(date_list)
+        
+init_date_list = return_date_list()  
+init_date_list
+ 
+#TODO: Read all files in at once with xr.open_mfdataset, then calculate the skill
+#based only on weekly lead time.
 
-# obsds = climpred.tutorial.load_dataset('RMM-INTERANN-OBS')['rmm1'].to_dataset()
-# obsds = obsds.dropna('time') 
-# obsds.assign_coords({'time':pd.to_datetime(obsds['time'])})
-# # obsds=obsds.rename({'time':'init'})
-
-# fcstds = climpred.tutorial.load_dataset('GMAO-GEOS-RMM1', decode_times=False)
-# print(fcstds)
-
-# fcstds=fcstds.rename({'S': 'init','L': 'lead','M': 'member', 'RMM1' : 'rmm1'})
-# fcstds['lead']=(fcstds['lead']-0.5).astype('int')
-# fcstds = decode_cf(fcstds, 'init')
-# fcstds['lead'].attrs={'units': 'days'}
-# fcstds = fcstds.assign_coords({'init': pd.to_datetime(fcstds['init'])})
-
-# hindcast = HindcastEnsemble(fcstds)
-# hindcast = hindcast.add_observations(obsds)
-# skill = hindcast.verify(metric='acc', dim='member', comparison='m2o', alignment = 'same_inits')
+xr.where(a.ETo_anom == np.nan, a.ETo_anom, a.ETo_anom) = 0
 
 '''Test with xskillscore'''
-a = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SMERGE_SM/SM_SubX_values/SM_SubX_1999-01-10.nc')
-b = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/RZSM_anomaly_1999-01-10.nc4')
+# a = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SMERGE_SM/SM_SubX_values/SM_SubX_1999-01-10.nc')
+a = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/ETo_anomaly_2012-02-19.nc')
+a.close()
+b = xr.open_dataset('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/ETo_anomaly_2012-02-19.nc')
+b.close()
 
-c = xs.pearson_r(a, b, dim='lead')
+
+# proj = ccrs.PlateCarree()
+
+
+ax = plt.axes(projection=ccrs.PlateCarree())
+ax.outline_patch.set_edgecolor('black') #changes the border of the whole plot to black
+ax.add_feature(cart.feature.OCEAN, zorder=100, edgecolor='k') #colors ocean blue
+
+ETo = a.ETo_anom.isel(lead=7, model=1,S=0)
+ETo.plot(transform=proj, subplot_kws={'projection':proj})
+
+gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True,
+                  linewidth=2, color='gray', alpha=0.5, linestyle='--')
+gl.xlabels_top = False
+gl.ylabels_left = False
+gl.xlines = True #this will remove the longitude lines
+# gl.xlocator = mticker.FixedLocator([-180, -45, 0, 45, 180])
+gl.xformatter = LONGITUDE_FORMATTER
+gl.yformatter = LATITUDE_FORMATTER
+
+# gl.xlabel_style = {'size': 15, 'color': 'gray'}
+# gl.xlabel_style = {'color': 'red', 'weight': 'bold'}
+# ax.coastlines()
+
+np.corrcoef(a.ETo_anom.isel(S=0,model=1,lead=7,Y=10,X=10).values,a.ETo_anom.isel(S=0,model=1,lead=7,Y=10,X=10).values)
+
+
+
+dataset = a
+# dataset = netcdf_dataset(fname)
+sst = dataset.variables['ETo_anom'][0, 0, 7,:,:]
+lats = dataset.variables['Y'][:]
+lons = dataset.variables['X'][:]
+
+ax = plt.axes(projection=ccrs.PlateCarree())
+
+plt.contourf(lons, lats, sst, 60,
+             transform=ccrs.PlateCarree())
+
+proj = ccrs.PlateCarree()
+
+
+dataset.plot(transform=proj, col='Time', col_wrap=3, robust=True, subplot_kws={'projection':proj})
+
+
+
+
+import cartopy.crs as ccrs
+import xarray as xr
+
+
+
+
+dd = xs.pearson_r(a, a, dim='S')
+np.corrcoef(a.to_array(),a.to_array())
+
+a = xr.DataArray(np.random.rand(5, 3, 3),
+
+                 dims=['time', 'x', 'y'])
+
+b = xr.DataArray(np.random.rand(5, 3, 3),
+
+                 dims=['time', 'x', 'y'])
+
+xs.pearson_r(a, b, dim='time')
+
+xs.pearson_r(a,b)
+
+air1d = c.isel(Y=20, X=10)
+np.nanmean(air1d.to_array())
+air1d.ETo_anom.plot()
 
 plt.plot(skill['rmm1'])
 plt.title('GMAO-GEOS_V2p1 RMM1 Skill')
