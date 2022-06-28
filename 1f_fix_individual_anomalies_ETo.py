@@ -99,13 +99,12 @@ missing_anomaly[0][-13:-3]
 missing_dates = [i[-13:-3] for i in missing_anomaly]
 
 print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now if needed.')
-print(f'Missing ETo SubX data in {len(missing_original_ETo)} files.')
+print(f'Missing ETo SubX data (no anomaly) in {len(missing_original_ETo)} files.')
 
 print('Copying all files into new directory to process seperately for certain leap years because of julian day issues')
 new_dir = 'ETo_anomaly_leap_year'
 
-
-os.system('mkdir {new_dir}')
+os.system(f'mkdir {new_dir}')
 for file in sorted(glob(file_list)):
     os.system(f"cp {file.split('/')[-1]} {new_dir}/")
 
@@ -250,7 +249,7 @@ def anomaly_fix(_date, var, HP_conus_mask):
                 EDDI calculation source :
                     M. Hobbins, A. Wood, D. McEvoy, J. Huntington, C. Morton, M. Anderson, and C. Hain (June 2016): The Evaporative Demand Drought Index: Part I – Linking Drought Evolution to Variations in Evaporative Demand. J. Hydrometeor., 17(6),1745-1761, doi:10.1175/JHM-D-15-0121.1.
                 '''
-                def compute_anomaly( ETo_7_day_average_modN):
+                def compute_anomaly(ETo_7_day_average_modN):
                     out_eddi_dictionary = {}
                     #Key value in dictionary is julian_date
                     for idx,julian_date in enumerate(ETo_7_day_average_modN):
@@ -279,7 +278,7 @@ def anomaly_fix(_date, var, HP_conus_mask):
                 ETo_dict_mod2 = compute_anomaly(ETo_7_day_average_mod2)
                 ETo_dict_mod3 = compute_anomaly(ETo_7_day_average_mod3)
 
-                def improve_RZSM_dictionary( ETo_7_day_average_modN,  ETo_dict_modN):
+                def improve_RZSM_dictionary(ETo_7_day_average_modN,  ETo_dict_modN):
 
                     
                     final_out_dictionary_all_eddi = {}
@@ -314,8 +313,6 @@ def anomaly_fix(_date, var, HP_conus_mask):
                         EDDI_final_dict2 = ETo_next_dict_mod2[f'{i_val}'][0]
                         EDDI_final_dict3 = ETo_next_dict_mod3[f'{i_val}'][0]
 
-                        
-                  
                         for idx,dic_init_and_eddi_val in enumerate(EDDI_final_dict0):
                             #Only work on dates that are missing
                             if list(dic_init_and_eddi_val.items())[0][0] in missing_dates:
@@ -334,8 +331,6 @@ def anomaly_fix(_date, var, HP_conus_mask):
                                 # fileOut = f'{var}_anomaly_{init_day}.npy'
 
                                 fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
-    
-                                
                                 file_open = xr.open_dataset(fileOut)
                                 file_open.close()
                                 
@@ -372,12 +367,12 @@ else:
     for _date in missing_dates:
         if _date[-5:] not in completed_dates:
             anomaly_fix(_date,var, HP_conus_mask)
-            completed_dates.append(_date) #don't re-iterate over completed files, it loops over all years
+            completed_dates.append(_date[-5:]) #don't re-iterate over completed files, it loops over all years
   
         
 #Now move the missing date files back to home_dir
 for _date in missing_dates:
-    os.system(f"cp ETo_anomaly_{_date}.nc {home_dir}/")
+    os.system(f"cp {new_dir}/ETo_anomaly_{_date}.nc {home_dir}/")
     
     
 #%% Check again and see if now we have no files that are empty
@@ -413,4 +408,4 @@ for file in sorted(glob(file_list)):
 missing_anomaly[0][-13:-3]
 missing_dates = [i[-13:-3] for i in missing_anomaly]
 
-print(f'Missing data in {len(missing_dates)}. There should be no issues now.')
+print(f'Missing data in {len(missing_anomaly)}. There should be no issues now.')

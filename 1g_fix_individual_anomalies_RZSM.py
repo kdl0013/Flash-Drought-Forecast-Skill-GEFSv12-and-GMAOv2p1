@@ -39,16 +39,16 @@ HP_conus_mask = xr.open_dataset(HP_conus_path) #open mask files
 ###Files
 file_list = os.listdir()
 
-global var
+# global var
 var='SM'
 
-def return_date_list():
+def return_date_list(var):
     date_list = []
     for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
         date_list.append(file[-14:-4])
     return(date_list)
         
-init_date_list = return_date_list()   
+init_date_list = return_date_list(var)   
 '''Steps for anomaly calculation. 
 1.) For each date:
     2.) Go thorugh all files and find the 1 week average for the same dates:
@@ -65,7 +65,7 @@ This code is re-factored from 1b_EDDI.py
 #%%
 '''Now we want to open up each ETo- and RZSM anomaly file (also EDDI), to see
 which ones have missing data'''
-global var
+# global var
 var = 'RZSM'
 file_list = f'{var}_anomaly_*.nc'
 missing_anomaly_RZSM= [] #subx missing anomaly data files
@@ -95,12 +95,51 @@ for file in sorted(glob(file_list)):
         missing_original_RZSM_m3_m3.append(file)
         
 missing_anomaly_RZSM[0][-13:-3]
-global missing_dates
+# global missing_dates
 missing_dates = [i[-13:-3] for i in missing_anomaly_RZSM]
 
 print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now if needed.')
-print(f'Missing RZSM SubX data in {len(missing_original_RZSM_m3_m3)} files.')
+print(f'Missing RZSM SubX data (no anomaly) in {len(missing_original_RZSM_m3_m3)} files.')
 
+
+print('There was an issue with just the index being off by one because of a leap year. \
+It is not a big deal because we already took a weekly average. So just move certain index values back by \
+one day')
+
+for file in (missing_anomaly_RZSM):
+    for lead in np.arange(7,49,7):
+        open_f = xr.open_dataset(file)
+        open_f.close()
+        open_f.RZSM_anom[:,:,lead,:,:] = open_f.RZSM_anom[:,:,lead+1,:,:].values
+        open_f.to_netcdf(path = file, mode ='w', engine='scipy')
+
+missing_anomaly_RZSM= [] #subx missing anomaly data files
+
+print('Going back through files to see if there are any without data.')
+for file in sorted(glob(file_list)):
+    open_f = xr.open_dataset(file)
+    # open_f = xr.open_dataset(test_file)
+
+    open_f.close()
+    '''after further inspection, if a file has all nan values then it has a total
+    of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
+    therefore, this is a missing data file.
+    '''
+    #anomaly. I inspected a file that was filled correctly and it had 528 missing value
+    #If file is completely empty, the file will have all zeros and a unique value of only 1
+    if len(np.unique(open_f.RZSM_anom[:,:,7,:,:])) <= 1 or \
+        len(np.unique(open_f.RZSM_anom[:,:,14,:,:])) <= 1 or \
+            len(np.unique(open_f.RZSM_anom[:,:,21,:,:])) <= 1 or \
+                len(np.unique(open_f.RZSM_anom[:,:,28,:,:])) <= 1 or \
+                    len(np.unique(open_f.RZSM_anom[:,:,35,:,:])) <= 1 or \
+                        len(np.unique(open_f.RZSM_anom[:,:,42,:,:])) <= 1:
+        missing_anomaly_RZSM.append(file)  
+        
+missing_anomaly_RZSM[0][-13:-3]
+# global missing_dates
+missing_dates = [i[-13:-3] for i in missing_anomaly_RZSM]
+
+print(f'Missing data in {len(missing_dates)}. Issue is still leap year index. Fixing now by re-calculating the affected files.')
 print('Copying all files into new directory to process seperately for certain leap years because of julian day issues')
 new_dir = 'RZSM_anomaly_leap_year'
 
@@ -307,8 +346,6 @@ def anomaly_fix(_date, var, HP_conus_mask):
                         EDDI_final_dict2 = ETo_next_dict_mod2[f'{i_val}'][0]
                         EDDI_final_dict3 = ETo_next_dict_mod3[f'{i_val}'][0]
 
-                        
-                  
                         for idx,dic_init_and_eddi_val in enumerate(EDDI_final_dict0):
                             #Only work on dates that are missing
                             if list(dic_init_and_eddi_val.items())[0][0] in missing_dates:
@@ -327,8 +364,6 @@ def anomaly_fix(_date, var, HP_conus_mask):
                                 # fileOut = f'{var}_anomaly_{init_day}.npy'
 
                                 fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
-    
-                                
                                 file_open = xr.open_dataset(fileOut)
                                 file_open.close()
                                 
@@ -362,11 +397,11 @@ else:
     for _date in missing_dates:
         if _date[-5:] not in completed_dates:
             anomaly_fix(_date,var, HP_conus_mask)
-            completed_dates.append(_date) #don't re-iterate over completed files
+            completed_dates.append(_date[-5:]) #don't re-iterate over completed files
   
 #Now move the missing date files back to home_dir
 for _date in missing_dates:
-    os.system(f"cp RZSM_anomaly_{_date}.nc {home_dir}/")
+    os.system(f"cp {new_dir}/RZSM_anomaly_{_date}.nc {home_dir}/")
     
     
 #%% Check again and see if now we have no files that are empty
@@ -396,4 +431,4 @@ for file in sorted(glob(file_list)):
         missing_anomaly_RZSM.append(file)   
 
 
-print(f'Missing data in {len(missing_dates)}. There should be no issues now.')
+print(f'Missing data in {len(missing_anomaly_RZSM)}. There should be no issues now.')

@@ -83,53 +83,50 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
     smerge_file = xr.open_dataset(f'{smerge_dir}/smerge_sm_merged_remap.nc4')
     smerge_file_julian = smerge_file.copy()
     
+    variable='ETo'
+    subx = xr.open_dataset(f'{home_dir}/{variable}_{_date}.nc4')
   
-    #get julian day, timestamps, and the datetime
-    def date_file_info(str _date,str variable):
-        cdef int  start_julian, subtract, a_i
-        cdef list a_date_out, a_julian_out,a_julian_out2
+    # #get julian day, timestamps, and the datetime
+    # def date_file_info(str _date,str variable):
+    #     cdef int  start_julian, subtract, a_i
+    #     cdef list a_date_out, a_julian_out,a_julian_out2
         
-        open_f = xr.open_dataset(f'{home_dir}/{variable}_{_date}.nc4')
-        a_date_in= open_f[f'{variable}'].lead.values
-        #get the start date
-        a_start_date = pd.to_datetime(open_f.S.values[0])
-        #Add the dates based on index value in date_in
-        a_date_out = []
+    #     open_f = xr.open_dataset(f'{home_dir}/{variable}_{_date}.nc4')
+    #     a_date_in= open_f[f'{variable}'].lead.values
+    #     #get the start date
+    #     a_start_date = pd.to_datetime(open_f.S.values[0])
+    #     #Add the dates based on index value in date_in
+    #     a_date_out = []
 
-        for a_i in range(len(a_date_in)):
-            a_date_out.append(a_start_date + dt.timedelta(days = a_i))
+    #     for a_i in range(len(a_date_in)):
+    #         a_date_out.append(a_start_date + dt.timedelta(days = a_i))
         
-        start_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
-        #Julian day into a list                            
-        a_julian_out = [start_julian + i for i in range(len(a_date_out))]
+    #     start_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
+    #     #Julian day into a list                            
+    #     a_julian_out = [start_julian + i for i in range(len(a_date_out))]
         
-        if pd.to_datetime(_date).year % 4 == 0:
-            subtract = 366
-            a_julian_out2 = [i-subtract if i>366 else i for i in a_julian_out]
-        else:
-            subtract = 365
-            a_julian_out2 = [i-subtract if i>365 else i for i in a_julian_out]
+    #     if pd.to_datetime(_date).year % 4 == 0:
+    #         subtract = 366
+    #         a_julian_out2 = [i-subtract if i>366 else i for i in a_julian_out]
+    #     else:
+    #         subtract = 365
+    #         a_julian_out2 = [i-subtract if i>365 else i for i in a_julian_out]
         
-        #month of file
-        INdate_for_month = dt.datetime(int(_date[0:4]),int(_date[5:7]),int(_date[8:10]))
+    #     #month of file
+    #     INdate_for_month = dt.datetime(int(_date[0:4]),int(_date[5:7]),int(_date[8:10]))
         
-        return(open_f,a_date_out,a_julian_out2,INdate_for_month,variable)
+    #     return(open_f,a_date_out,a_julian_out2,INdate_for_month,variable)
     
-    subx,file_timestamp_list,file_julian_list,file_datetime,var_name = date_file_info(_date=_date,variable='ETo')
+    # subx,file_timestamp_list,file_julian_list,file_datetime,var_name = date_file_info(_date=_date,variable='ETo')
      
     #Now convert to julian date and append coordinates
-    subx2 = subx.assign_coords(lead = file_julian_list)
-    
-    # def moving_average(a, n=7) :
-    #     ret = np.cumsum(a, dtype=float)
-    #     ret[n:] = ret[n:] - ret[:-n]
-    #     return ret[n - 1:] / n
+    subx2 = subx.assign_coords(lead = np.arange(0,45))
     
     #Test on small subset
     #for i_Y in range(1):
-    for i_Y in range(subx2[f'{var_name}'].shape[3]):
+    for i_Y in range(subx2[f'{variable}'].shape[3]):
         #for i_X in range(1):
-         for i_X in range(subx2[f'{var_name}'].shape[4]):
+         for i_X in range(subx2[f'{variable}'].shape[4]):
             if _date == '1999-01-10':
                 print(f'Working on lat {i_Y} and lon {i_X}')
 
@@ -138,8 +135,7 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
 
                 def dict1_subx2():
                     cdef dict summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3
-                    cdef int idx, end_julian, subtract, len_text, idx_lead
-                    cdef list date_out, b_julian_out, b_julian_out2
+                    cdef int idx, len_text
                     
                     #append 7-day average from all files to a new dictionary
                     summation_ETo_mod0 = {}
@@ -148,21 +144,21 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                     summation_ETo_mod3 = {}
 
                     
-                    for idx,julian_d in enumerate(file_julian_list):
+                    for idx in range(subx2.lead.shape[0]):
 
                         if idx % 7 == 0 and idx !=0:
                             try:
-                                summation_ETo_mod0[f'{julian_d}']=[]
-                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod0[f'{idx}']=[]
+                                summation_ETo_mod0[f'{idx}'].append({f'{_date}':np.nanmean(subx2[f'{variable}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
                                 
-                                summation_ETo_mod1[f'{julian_d}']=[]
-                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod1[f'{idx}']=[]
+                                summation_ETo_mod1[f'{idx}'].append({f'{_date}':np.nanmean(subx2[f'{variable}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
                                 
-                                summation_ETo_mod2[f'{julian_d}']=[]
-                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod2[f'{idx}']=[]
+                                summation_ETo_mod2[f'{idx}'].append({f'{_date}':np.nanmean(subx2[f'{variable}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
                                 
-                                summation_ETo_mod3[f'{julian_d}']=[]
-                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':np.nanmean(subx2[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
+                                summation_ETo_mod3[f'{idx}']=[]
+                                summation_ETo_mod3[f'{idx}'].append({f'{_date}':np.nanmean(subx2[f'{variable}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
                             except IndexError:
                                 pass
 
@@ -183,16 +179,16 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                         if file[-14:-4] != _date:
                             #Open up ETo file
                             open_f = xr.open_dataset(file)                        
-                            Et_ref_open_f = open_f.assign_coords(lead = file_julian_list)
+                            Et_ref_open_f = open_f.assign_coords(lead = np.arange(0,45))
                             
-                            for idx,julian_d in enumerate(file_julian_list):
+                            for idx in range(subx2.lead.shape[0]):
                                 
                                 if idx % 7 == 0 and idx != 0:
                                     try:
-                                        summation_ETo_mod0[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{julian_d}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod0[f'{idx}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod1[f'{idx}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod2[f'{idx}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod3[f'{idx}'].append({f'{file[-14:-4]}':np.nanmean(Et_ref_open_f.ETo.isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
                                         
                                    #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
@@ -227,11 +223,11 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                     
                     out_eddi_dictionary = {}
                     #Key value in dictionary is julian_date
-                    for idx,julian_date in enumerate(ETo_7_day_average_modN):
+                    for idx,lead in enumerate(ETo_7_day_average_modN):
                         
-                        out_eddi_dictionary[f'{julian_date}']=[]
+                        out_eddi_dictionary[f'{lead}']=[]
                         
-                        subset_by_date = ETo_7_day_average_modN[f'{julian_date}']
+                        subset_by_date = ETo_7_day_average_modN[f'{lead}']
                         
                         mean_value = []
                         for date_init in range(len(subset_by_date)):
@@ -244,7 +240,7 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                             anomaly_val.append((list(subset_by_date[date_init].values())[0]-mean_calc))
                             
  
-                        out_eddi_dictionary[f'{julian_date}'].append(anomaly_val)
+                        out_eddi_dictionary[f'{lead}'].append(anomaly_val)
                         
                     return(out_eddi_dictionary)
                     
@@ -268,18 +264,18 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                     
                     final_out_dictionary_all_eddi = {}
 
-                    for idx,julian_dattt in enumerate(ETo_7_day_average_modN):
-                        final_out_dictionary_all_eddi[f'{julian_dattt}'] = [] #create an empty list to append to
-                        sub_list = ETo_7_day_average_modN[f'{julian_dattt}'] #choose only the summation ETo with correct julian date
+                    for idx,lead in enumerate(ETo_7_day_average_modN):
+                        final_out_dictionary_all_eddi[f'{lead}'] = [] #create an empty list to append to
+                        sub_list = ETo_7_day_average_modN[f'{lead}'] #choose only the summation ETo with correct julian date
                         sub_keys = [] #initialize a list to keep up with the correct julian date and the actual init dates (because each init date varies with number of samples)
 
                         #sub list contains a dictionary for each julian date in current loop and the values of ETo
                         #Save the init date values for each julian date
                         for idxxx, init_date in enumerate(sub_list):
                             
-                            sub_keys.append({list(init_date.keys())[0] :ETo_dict_modN[f'{julian_dattt}'][0][idxxx]})
+                            sub_keys.append({list(init_date.keys())[0] :ETo_dict_modN[f'{lead}'][0][idxxx]})
                         
-                        final_out_dictionary_all_eddi[f'{julian_dattt}'].append(sub_keys) 
+                        final_out_dictionary_all_eddi[f'{lead}'].append(sub_keys) 
                         
                     return(final_out_dictionary_all_eddi)
                 
@@ -302,13 +298,14 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                     cdef dict dic_init_and_eddi_val
                     cdef str init_day, i_val, fileOut
                     
-                    for idx_,i_val in enumerate(ETo_next_dict_mod0):
+                    for idx_,lead in enumerate(ETo_next_dict_mod0):
+                        lead = int(lead)
                       
                     #for some reason it's a list in a list, this fixes that, loop through julian day
-                        EDDI_final_dict0 = ETo_next_dict_mod0[f'{i_val}'][0]
-                        EDDI_final_dict1 = ETo_next_dict_mod1[f'{i_val}'][0]
-                        EDDI_final_dict2 = ETo_next_dict_mod2[f'{i_val}'][0]
-                        EDDI_final_dict3 = ETo_next_dict_mod3[f'{i_val}'][0]
+                        EDDI_final_dict0 = ETo_next_dict_mod0[f'{lead}'][0]
+                        EDDI_final_dict1 = ETo_next_dict_mod1[f'{lead}'][0]
+                        EDDI_final_dict2 = ETo_next_dict_mod2[f'{lead}'][0]
+                        EDDI_final_dict3 = ETo_next_dict_mod3[f'{lead}'][0]
 
                         
                         for idx,dic_init_and_eddi_val in enumerate(EDDI_final_dict0):
@@ -316,32 +313,16 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
                             #Open up the file and insert the value
                             init_day = list(dic_init_and_eddi_val.keys())[0]
 
-                            var2 = 'ETo'
-                            lead_values = np.load(f'{home_dir}/julian_lead_{init_day}.npy',allow_pickle=True)
-                            
                             #add values by julian day
-                            fileOut = ("{}_anomaly_{}.nc".format(var2,init_day))
-                            
+                            fileOut = ("{}_anomaly_{}.nc".format(variable,init_day))
                             file_open = xr.open_dataset(fileOut)
                             file_open.close()
-                            
-                            index_val=np.where(lead_values == int(i_val))[0][0]
-                            
-                            '''Because of indexing, there was an issue where leap years were being
-                            added to the 6th index in the file instead of the 7th index which is the 
-                            weekly lead. To fix this, just add 1 to index_val and see if that works.
-                            '''
-                            
-                            if pd.to_datetime(init_day).year % 4 ==0:
-                                index_val = index_val +1
-                            else:
-                                index_val=index_val
-                            
+    
                             #Add data to netcdf file
-                            file_open.ETo_anom[0,0,index_val,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
-                            file_open.ETo_anom[0,1,index_val,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
-                            file_open.ETo_anom[0,2,index_val,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
-                            file_open.ETo_anom[0,3,index_val,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
+                            file_open.ETo_anom[0,0,lead,i_Y,i_X] = list(EDDI_final_dict0[idx].values())[0]
+                            file_open.ETo_anom[0,1,lead,i_Y,i_X] = list(EDDI_final_dict1[idx].values())[0]
+                            file_open.ETo_anom[0,2,lead,i_Y,i_X] = list(EDDI_final_dict2[idx].values())[0]
+                            file_open.ETo_anom[0,3,lead,i_Y,i_X] = list(EDDI_final_dict3[idx].values())[0]
    
                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                             file_open.close()
@@ -364,8 +345,6 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
 '''Read ETo_completed_npy.txt file to not have to re-run extra code'''
 completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
 
-
-
 try:
     #first line contains a header, nothing with dates
     completed_dates = completed_dates[:,1]
@@ -382,51 +361,3 @@ for _date in init_date_list[start_:end_]:
         ETo_anomaly(start_, end_, init_date_list, _date,var)
 
     
-
-#Old way (this will help if I had to do every grid cell/lead anomalies)
-
-# def run_loop(int count_total,int start_,int end_,int model_NUM,list init_date_list,str var):
-#     '''Read ETo_completed_anomaly_npy.txt file to not have to re-run extra code'''
-#     cdef int count
-    
-#     completed_dates = np.loadtxt(f'{script_dir}/ETo_completed_anomaly_npy_{model_NAM1}.txt',dtype='str')
-#     try:
-#         #first line contains a header, nothing with dates
-#         completed_dates = completed_dates[:,1]
-#     except IndexError:
-#         completed_dates = ''
-#     # completed_dates = pd.to_datetime(completed_dates[:],format='%Y-%m-%d')
-#     #only work on dates that aren't completed
-    
-#     subset_completed_dates = [i[5:] for i in completed_dates]
-    
-#     #Save into a new directory after each date
-#     #Make several new copies because it seems to break one of the files
-#     new_directory = f'{home_dir}/{var}_anomaly_mod{model_NUM}/already_completed'
-
-#     count=0
-#     for _date in init_date_list[start_:end_]:    
-#         if _date[5:] not in subset_completed_dates:
-#             out_ = ETo_anomaly(start_, end_, model_NUM, init_date_list, _date,var)
-#             #save
-#             # os.system('sleep 30') #sometimes saving seems to not fully capture 1 file
-#             # #Save multiple times because a file keeps getting broken
-#             # for directory in [new_directory,new_directory2,new_directory3]:
-#             #     os.system(f'cp {home_dir}/{var}_anomaly_mod{model_NUM}/*.nc4 {directory}/')
-#             #     os.system('sleep 10')
-                
-#             break
-#     return(count_total + 1)
-
-# #Run in a seperate loop to possibly avoid memory issue, run_loop will add 1 to count_total
-# #I tested count_total < 40 to keep the loop going, but it still eats up memory
-# count_total = 0
-# for i in range(2):
-#     count_total = run_loop(count_total,start_,end_,model_NUM,init_date_list,var)
-#     if i ==1:
-#         #Break from script to see if memory leak is removed
-#         gc.collect()
-#         exit()
-
-# # if __name__ == '__main__':
-# #     call_function(start_, end_, model_NUM, init_date_list, _date)
