@@ -27,17 +27,25 @@ mkdir $data_s/cython_scripts
 mk_TMP_script () {
 name=${1::-3}
 cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
-    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variable|'${2}'|g' > $data_s/TMP_${name}_${model}.py
 python3 $data_s/TMP_${name}_${model}.py 
 }
 
-mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py"
+mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py" "ETo"
+mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py" "RZSM"
+mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py" "EDDI"
 
 
 #convert soil moisture to m3/m3
 cat 1b2_convert_RZSM_to_m3_m3.py | sed 's|main_dir|'${main_directory}'|g' > $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
 
 python3 $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
+
+#Remove uneeded S dimension
+cat 1b3_remove_S_dimsension.py | sed 's|model_name|'${model}'|g' | sed 's|main_dir|'${main_directory}'|g'> $data_s/TMP_1b3_remove_S_dimsension.py 
+
+python3 TMP_1b3_remove_S_dimsension.py
+
 
 ######## Reference ETo, EDDI, gridMET data creation. Historical and SubX #######
 #Create multiple scripts for multiprocessing of EDDI, RZSM, and ETo anomalies
@@ -86,7 +94,7 @@ mv *.c cython_scripts/
 
 #Compile code using cython
 compile_cython 'ETo' &
-#compile_cython 'EDDI'
+#compile_cython 'EDDI' &
 compile_cython 'RZSM'
 
 #Create a new python script that imports the newly created .c extension
@@ -113,11 +121,9 @@ cd $data_s
 
 
 run_anomaly_RZSM_ETo_EDDI "ETo" 
-wait
 run_anomaly_RZSM_ETo_EDDI "RZSM"
-wait
 #run_anomaly_RZSM_ETo_EDDI "EDDI"
-#wait
+
 
 
 

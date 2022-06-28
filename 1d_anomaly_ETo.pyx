@@ -134,8 +134,8 @@ def ETo_anomaly(int start_,int end_,list init_date_list,str _date,str var):
             if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7)):
 
                 def dict1_subx2():
-                    cdef dict summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3
-                    cdef int idx, len_text
+                    # cdef dict summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3
+                    # cdef int idx, len_text
                     
                     #append 7-day average from all files to a new dictionary
                     summation_ETo_mod0 = {}

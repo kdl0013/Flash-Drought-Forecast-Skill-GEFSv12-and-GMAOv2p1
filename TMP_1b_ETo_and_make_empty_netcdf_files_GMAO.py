@@ -26,7 +26,7 @@ from multiprocessing import Pool
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 num_processors = int('10')
 mod = 'GMAO'
-var = 'variable'
+var = 'EDDI'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # num_processors = 10
@@ -45,7 +45,7 @@ smerge_dir = f'{dir1}/Data/SMERGE_SM/Raw_data'
 ###Files
 file_list = os.listdir()
 
-#variables = ['dswrf','tasmax', 'tasmin', 'uas', 'vas']
+#EDDIs = ['dswrf','tasmax', 'tasmin', 'uas', 'vas']
 
 #For each date, open each file and compute ETref with et
 #All files have the same initialized days (part of the pre-processing that is 
@@ -69,7 +69,7 @@ def multiProcess_Refet_SubX(_date):
     try:
         xr.open_dataset(f'ETo_{_date}.nc4')
 
-        print(f'{_date} already completed for ETo. Saved in {home_dir}.')
+        # print(f'{_date} already completed for ETo. Saved in {home_dir}.')
     except FileNotFoundError:
             
         print(f'Working on date {_date} to calculate SubX ETo and save into {home_dir}.')
@@ -109,7 +109,7 @@ def multiProcess_Refet_SubX(_date):
         def compute_windSpeed(windU, windV) -> float:
             ''' Returns average daily wind at 10-m height m/s'''
             #Square u and v and take the square root to get windspeed
-            windSpeed = xr.ufuncs.sqrt((np.square(windU.uas) + np.square(windV.vas)))
+            windSpeed = np.sqrt((np.square(windU.uas) + np.square(windV.vas)))
             return (windSpeed)
     
         windSpeed = compute_windSpeed(windU = windU, windV = windV)
@@ -141,8 +141,22 @@ def multiProcess_Refet_SubX(_date):
                                             doy = day_doy, method = 'asce',
                                             input_units={'tmin': 'C', 'tmax': 'C', \
                                                          'rs': 'Langleys', 'uz': 'm/s', \
-                                                             'lat': 'deg'}).etr())[0]                            
-    
+                                                             'lat': 'deg'}).etr())[0]   
+                            # print((refet.Daily(tmin = tasmin.tasmin[0,i_mod, i_lead, i_Y, i_X].values, \
+                            #             tmax = tasmax.tasmax[0,i_mod, i_lead, i_Y, i_X].values, \
+                            #             ea = ea.tdps[0,i_mod, i_lead, i_Y, i_X].values, \
+                            #             rs = dswrf.dswrf[0,i_mod, i_lead, i_Y, i_X].values, \
+                            #             uz = windSpeed[0,i_mod, i_lead, i_Y, i_X].values, \
+                            #             zw = 10, elev = elevation.data[0,i_Y, i_X].values,
+                            #             lat = tasmax.Y[i_Y].values,
+                            #             doy = day_doy, method = 'asce',
+                            #             input_units={'tmin': 'C', 'tmax': 'C', \
+                            #                          'rs': 'Langleys', 'uz': 'm/s', \
+                            #                              'lat': 'deg'}).etr())[0]   )
+        
+        #Sometime infinity values mess up the saving of the file
+        output_f = output_f.where(output_f.apply(np.isfinite)).fillna(0.0)
+        
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
@@ -161,7 +175,7 @@ def multiProcess_Refet_SubX(_date):
         
         #Save as a netcdf for later processing
         var_OUT.to_netcdf(path = f'{home_dir}/ETo_{_date}.nc4', mode ='w')
-        print(f'Saved file into {home_dir}.')
+        print(f'Saved {_date} into {home_dir}.')
 #%%    
 if __name__ == '__main__':
     p = Pool(num_processors)
@@ -178,10 +192,10 @@ def Refet_gridMET():
     
     try:
         xr.open_dataset(f'{gridMET_dir}/ETo_gridMET_merged.nc')
-        print('Already completed gridMET Reference ET.')
+        # print('Already completed gridMET Reference ET.')
     except FileNotFoundError:
         
-        print(f'Working on computing ET ref from gridMET variables and saving into {gridMET_dir}.')
+        print(f'Working on computing ET ref from gridMET EDDIs and saving into {gridMET_dir}.')
         slice1 = "1999-01-10"
         slice2 = "2016-02-09"
         # gridMET_file = gridMET_file.sel(day=slice(f"{slice1}",f"{slice2}"))
@@ -285,134 +299,133 @@ print('')
 #I brought this function out of loop, no need to repeat it more than once
 T_FILE = xr.open_dataset(glob('ETo_1999-01-10.nc4')[0])
 
-def make_empty_nc_files(init_date_list,T_FILE):
-    print('Making empty .npy and .nc4 files for EDDI, RZSM, and ETo.')
+def make_empty_nc_files(init_date_list,T_FILE, var):
+    print(f'Making empty .nc4 files for {var}.')
     # count=0
     
-    for var in ['EDDI','RZSM','ETo']:
-        for _date in init_date_list:
-     
-            st_day =  pd.to_datetime(_date)
-            st_day_2 = st_day + dt.timedelta(days=1)
-             # day_doyey = st_day.timetuple().tm_yday #julian day
+    # for var in ['EDDI','RZSM','ETo']:
+    for _date in init_date_list:
+ 
+        st_day =  pd.to_datetime(_date)
+        st_day_2 = st_day + dt.timedelta(days=1)
+         # day_doyey = st_day.timetuple().tm_yday #julian day
+    
+         #add more julian dates
+        day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
         
-             #add more julian dates
-            day_julian_a = [pd.to_datetime(st_day_2) + dt.timedelta(days=i) for i in range(45)]
-            day_julian_b = [i.timetuple().tm_yday for i in day_julian_a]                            
-            
-            model_dirs = {}
-            
-            # S_values = [pd.to_datetime(zz)+ dt.timedelta(days=1),pd.to_datetime(zz)]
-            if var == 'EDDI':
-                filename = 'EDDI'
-                desc = 'Evaporative Demand Drought Index'
-                for model in [0,1,2,3]:
-                    model_dirs[f'Model {model}'] = f'{home_dir}/EDDI_mod{model}'
-                    
-            elif var == 'RZSM':
-                filename = f'{var}_anomaly'
-                desc = f'RZSM anomaly SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
-                for model in [0,1,2,3]:
-                    model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
-                
-            elif var == 'ETo':
-                filename = f'{var}_anomaly'
-                desc = f'ETo anomaly SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
-                for model in [0,1,2,3]:
-                    model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
-            
-            try:
-                np.load(f'{home_dir}/julian_lead_{_date}.npy')
-            except FileNotFoundError:
-                np.save(f'{home_dir}/julian_lead_{_date}.npy',day_julian_b) 
-                
-                
-            #don't remake empty files
-            try:
-                xr.open_dataset(f'{home_dir}/{filename}_{_date}.nc4')
-                
-            except FileNotFoundError:
-                #Make empty files to insert 
-                empty = (np.zeros_like(T_FILE.to_array()).squeeze())         
-                template = xr.open_dataset(f'ETo_{_date}.nc4')
+        model_dirs = {}
         
-                #initialize empty file
-                var_OUT = xr.zeros_like(template)
-
-                if var == 'RZSM':
-                    #save file as EDDI as netcdf
-                    var_final = xr.Dataset(
-                        data_vars = dict(
-                            RZSM_anom = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
-                        ),
-                        coords = dict(
-                            X = var_OUT.X.values,
-                            Y = var_OUT.Y.values,
-                            lead = var_OUT.lead.values,
-                            S = template.S.values
-                        ),
-                        attrs = dict(
-                            Description = f'{desc}'),
-                    )                    
-                    
-                    var_final.RZSM_anom[1,:,:,:,:] = np.nan
-                    #Drop S dimension to save storage space
-                    var_final = var_final.dropna(dim='S',how='all')
-                    var_final.RZSM_anom[0,:,:,:,:] = np.nan
-                    
-                    
-                elif var == 'EDDI':
-                    #save file as EDDI as netcdf
-                    var_final = xr.Dataset(
-                        data_vars = dict(
-                            EDDI = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
-                        ),
-                        coords = dict(
-                            X = var_OUT.X.values,
-                            Y = var_OUT.Y.values,
-                            lead = var_OUT.lead.values,
-                            S = template.S.values
-                        ),
-                        attrs = dict(
-                            Description = f'{desc}'),
-                    )                
-                    
-                    var_final.EDDI[1,:,:,:,:] = np.nan
-                    #Drop S dimension to save storage space
-                    var_final = var_final.dropna(dim='S',how='all')
-                    
-                if var == 'ETo':
-                    #save file as EDDI as netcdf
-                    var_final = xr.Dataset(
-                        data_vars = dict(
-                            ETo_anom = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
-                        ),
-                        coords = dict(
-                            X = var_OUT.X.values,
-                            Y = var_OUT.Y.values,
-                            lead = var_OUT.lead.values,
-                            S = template.S.values
-                        ),
-                        attrs = dict(
-                            Description = f'{desc}'),
-                    )                    
-                    
-                    var_final.ETo_anom[1,:,:,:,:] = np.nan
-                    #Drop S dimension to save storage space
-                    var_final = var_final.dropna(dim='S',how='all')
-                    var_final.ETo_anom[0,:,:,:,:] = np.nan
-
-                var_final.to_netcdf(path = f'{home_dir}/{filename}_{_date}.nc', mode ='w',engine='scipy')
-                #compress so that when I re-write the file, it is quicker
-                # '''But this doesn't work after the file is re-read and re-saved'''
-                # os.system(f'ncks -4 -L 1 {home_dir}/{filename}_{_date}.nc4 {home_dir}/{filename}_{_date}_test.nc4')
-                # os.system(f'mv {home_dir}/{filename}_{_date}_test.nc4 {home_dir}/{filename}_{_date}.nc4')
+        # S_values = [pd.to_datetime(zz)+ dt.timedelta(days=1),pd.to_datetime(zz)]
+        if var == 'EDDI':
+            filename = 'EDDI'
+            desc = 'Evaporative Demand Drought Index'
+            for model in [0,1,2,3]:
+                model_dirs[f'Model {model}'] = f'{home_dir}/EDDI_mod{model}'
                 
-                var_final.close()
+        elif var == 'RZSM':
+            filename = f'{var}_anomaly'
+            desc = f'RZSM anomaly SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
+            for model in [0,1,2,3]:
+                model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
+            
+        elif var == 'ETo':
+            filename = f'{var}_anomaly'
+            desc = f'ETo anomaly SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
+            for model in [0,1,2,3]:
+                model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
+        
+        # try:
+        #     np.load(f'{home_dir}/julian_lead_{_date}.npy')
+        # except FileNotFoundError:
+        #     np.save(f'{home_dir}/julian_lead_{_date}.npy',day_julian_b) 
+            
+            
+        #don't remake empty files
+        try:
+            xr.open_dataset(f'{home_dir}/{filename}_{_date}.nc4')
+            
+        except FileNotFoundError:
+            #Make empty files to insert 
+            empty = (np.zeros_like(T_FILE.to_array()).squeeze())         
+            template = xr.open_dataset(f'ETo_{_date}.nc4')
+    
+            #initialize empty file
+            var_OUT = xr.zeros_like(template)
+
+            if var == 'RZSM':
+                #save file as EDDI as netcdf
+                var_final = xr.Dataset(
+                    data_vars = dict(
+                        RZSM_anom = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                        X = var_OUT.X.values,
+                        Y = var_OUT.Y.values,
+                        lead = var_OUT.lead.values,
+                        S = template.S.values
+                    ),
+                    attrs = dict(
+                        Description = f'{desc}'),
+                )                    
+                
+                var_final.RZSM_anom[1,:,:,:,:] = np.nan
+                #Drop S dimension to save storage space
+                var_final = var_final.dropna(dim='S',how='all')
+                var_final.RZSM_anom[0,:,:,:,:] = np.nan
+                
+                
+            elif var == 'EDDI':
+                #save file as EDDI as netcdf
+                var_final = xr.Dataset(
+                    data_vars = dict(
+                        EDDI = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                        X = var_OUT.X.values,
+                        Y = var_OUT.Y.values,
+                        lead = var_OUT.lead.values,
+                        S = template.S.values
+                    ),
+                    attrs = dict(
+                        Description = f'{desc}'),
+                )                
+                
+                var_final.EDDI[1,:,:,:,:] = np.nan
+                #Drop S dimension to save storage space
+                var_final = var_final.dropna(dim='S',how='all')
+                
+            if var == 'ETo':
+                #save file as EDDI as netcdf
+                var_final = xr.Dataset(
+                    data_vars = dict(
+                        ETo_anom = (['S','model','lead','Y','X'], empty[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                        X = var_OUT.X.values,
+                        Y = var_OUT.Y.values,
+                        lead = var_OUT.lead.values,
+                        S = template.S.values
+                    ),
+                    attrs = dict(
+                        Description = f'{desc}'),
+                )                    
+                
+                var_final.ETo_anom[1,:,:,:,:] = np.nan
+                #Drop S dimension to save storage space
+                var_final = var_final.dropna(dim='S',how='all')
+                var_final.ETo_anom[0,:,:,:,:] = np.nan
+
+            var_final.to_netcdf(path = f'{home_dir}/{filename}_{_date}.nc')
+            #compress so that when I re-write the file, it is quicker
+            # '''But this doesn't work after the file is re-read and re-saved'''
+            # os.system(f'ncks -4 -L 1 {home_dir}/{filename}_{_date}.nc4 {home_dir}/{filename}_{_date}_test.nc4')
+            # os.system(f'mv {home_dir}/{filename}_{_date}_test.nc4 {home_dir}/{filename}_{_date}.nc4')
+            
+            var_final.close()
 
    
 #Create EDDI files           
-make_empty_nc_files(init_date_list = init_date_list,T_FILE = T_FILE)
+make_empty_nc_files(init_date_list = init_date_list,T_FILE = T_FILE, var=var)
 #%%'''Make empty files to keep track of anomaly calculations'''
 
 #Make a completed list file for EDDI, add new names to next code block

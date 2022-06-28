@@ -16,7 +16,7 @@ from multiprocessing import Pool
 
 #open a single file for SubX reference ET and a single file from gridMET 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors = int('7')
+num_processors = int('4')
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 

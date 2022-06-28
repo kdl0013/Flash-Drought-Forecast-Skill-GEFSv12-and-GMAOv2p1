@@ -152,6 +152,6 @@ def convert_SubX_to_m3_m3(_date):
         )                    
         
         #Save as a netcdf for later processing
-        var_OUT.to_netcdf(path = f'{subX_SM_out_dir}/SM_SubX_m3_m3_{_date}.nc4', mode ='w')
+        var_OUT.to_netcdf(path = f'{subX_SM_out_dir}/SM_SubX_m3_m3_{_date}.nc', mode ='w')
         print(f'Completed SM_m3_m3_{_date}.')
     

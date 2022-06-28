@@ -159,7 +159,6 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
     #Now convert to julian date and append coordinates
     subx2 = subx.assign_coords(lead = np.arange(0,45))
     
-    
     for i_Y in range(subx2[f'{var_name}'].shape[3]):
         for i_X in range(subx2[f'{var_name}'].shape[4]):
             if _date == '1999-01-10':
@@ -340,6 +339,7 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
                                         
                     for idx_,lead in enumerate(RZSM_next_dict_mod0):
                         lead = int(lead)
+                        
                     #for some reason it's a list in a list, this fixes that, loop through julian day
                         EDDI_final_dict0 = RZSM_next_dict_mod0[f'{lead}'][0]
                         EDDI_final_dict1 = RZSM_next_dict_mod1[f'{lead}'][0]

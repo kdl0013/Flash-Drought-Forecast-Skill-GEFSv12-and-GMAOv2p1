@@ -56,8 +56,8 @@ os.chdir(f'{dir1}/Data/SubX/{model_NAM1}')
 dir1 = 'main_dir'
 model_NAM1 = 'model_name'
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/' #where subX model data lies 
-HP_conus_path = f'{dir1}/Data/CONUS_mask/High_Plains_mask.nc'
-West_conus_path = f'{dir1}/Data/CONUS_mask/West_mask.nc'
+
+mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 
 #observations
 obs_eto_path = f'{dir1}/Data/gridMET/ETo_SubX_values/'
@@ -70,9 +70,8 @@ output_season_dir = f'{dir1}/Outputs/pearson_correlation/seasonal_skill/'
 '''Weekly pearson R skill score
 Read all files in at once with xr.open_mfdataset, then calculate the skill
 based only on weekly lead time. '''
-
-var = 'RZSM'
-# sub_name='vas'
+#%%Interannual skill for all grid cells and leads and models 
+# var = 'RZSM'
 def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path):
     
     try:
@@ -99,19 +98,20 @@ def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path):
         #Because we don't need to slice anything, we can convert it to a numpy array
         #and use Numba for faster processing
         
-        obs_converted = obs_files.to_array().to_numpy().squeeze() #drop unneed dimension
-        subx_converted = subx_files.to_array().to_numpy().squeeze() #drop unneed dimension
+        obs_converted = obs_files.to_array().to_numpy().squeeze() #drop unneeded dimension
+        subx_converted = subx_files.to_array().to_numpy().squeeze() #drop unneeded dimension
     
         
         @njit
         def skill_assessment(var_OUT, subx_converted, obs_converted):
         #Now find pearson correlation by model, lead, and lat/lon
-            for model in range(var_OUT.shape[0]):
+            for model in prange(var_OUT.shape[0]):
                 print(f'Working on model {model+1} for pearson r correlation')
                 for Y in range(var_OUT.shape[2]):
                     # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
                     for X in range(var_OUT.shape[3]):
                         for lead in np.arange(7,45,7):
+                            #find nan locations
                             var_OUT[model, lead,Y,X] = \
                                 np.corrcoef(subx_converted[:,model, lead, Y, X],obs_converted[:,model, lead, Y, X])[0,1]
             return(var_OUT)
@@ -155,6 +155,7 @@ var_yearly
 
 
 def plot_interannual_pearsonR(lead_week, mod):
+    proj = ccrs.PlateCarree()
     ax = plt.axes(projection=ccrs.PlateCarree())
     ax.background_patch.set_facecolor('black') #changes np.nan value colors
     ax.outline_patch.set_edgecolor('black') #changes the border of the whole plot to black
@@ -184,7 +185,7 @@ for mod in [1,2,3,4]:
     for lead_week in np.arange(7,49,7):
         plot_interannual_pearsonR(lead_week,mod)
 
-
+#%%
 '''NOW ADD MASKS TO LOOK AT REGIONS/SEASONS/AND LEADS
 
 USDM-West_mask:
@@ -224,41 +225,152 @@ For more references and information, please visit:
  -- https://www.drought.gov/
  -- https://droughtmonitor.unl.edu/
 
-
+TODO: Use only the West mask for the West region. Use HP_conus_mask for all other regions.
 '''
-
+#variables for function
 var='RZSM'
-if var == 'ETo':
-    obs_name = 'ETo_SubX_*.nc'
-    sub_name = 'ETo_anom'
-    obs_path = obs_eto_path
-elif var == 'RZSM':
-    obs_name = 'SM_SubX_*.nc'
-    sub_name = 'RZSM_anom'
-    obs_path= obs_rzsm_path
+cluster_num = 1
 
-subx_files = xr.open_mfdataset(f'{var}_anomaly*.nc', concat_dim=['S'], combine='nested')
-obs_files = xr.open_mfdataset(f'{obs_path}/{obs_name}', concat_dim = ['S'], combine = 'nested')
+def all_season_mod_skill(var,cluster_num, mask_path):
+    conus_mask = xr.open_dataset(f'{mask_path}')  
+    HP_conus_mask = conus_mask['USDM-HP_mask']
+    West_conus_mask = conus_mask['USDM-West_mask']
+            
+    if var == 'ETo':
+        obs_name = 'ETo_SubX_*.nc'
+        sub_name = 'ETo_anom'
+        obs_path = obs_eto_path
+    elif var == 'RZSM':
+        obs_name = 'SM_SubX_*.nc'
+        sub_name = 'RZSM_anom'
+        obs_path= obs_rzsm_path
+    
+    subx_files = xr.open_mfdataset(f'{var}_anomaly*.nc', concat_dim=['S'], combine='nested')
+    obs_files = xr.open_mfdataset(f'{obs_path}/{obs_name}', concat_dim = ['S'], combine = 'nested')
+    
+    subx_files=obs_files
+    '''PICK SEASON and REGION'''
+    if cluster_num == 1:
+        summer_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='JJA')).where(West_conus_mask == cluster_num)
+        fall_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='SON')).where(West_conus_mask == cluster_num)
+        winter_subx= subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='DJF')).where(West_conus_mask == cluster_num)
+        spring_subx= subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='MAM')).where(West_conus_mask == cluster_num)
+        
+        summer_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='JJA')).where(West_conus_mask == cluster_num)
+        fall_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='SON')).where(West_conus_mask == cluster_num)
+        winter_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='DJF')).where(West_conus_mask == cluster_num)
+        spring_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='MAM')).where(West_conus_mask == cluster_num)
+        
+    elif cluster_num >=2 and cluster_num <=6:
+        summer_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='JJA')).where(HP_conus_mask == cluster_num)
+        fall_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='SON')).where(HP_conus_mask == cluster_num)
+        winter_subx= subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='DJF')).where(HP_conus_mask == cluster_num)
+        spring_subx= subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='MAM')).where(HP_conus_mask == cluster_num)
+        
+        summer_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='JJA')).where(HP_conus_mask == cluster_num)
+        fall_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='SON')).where(HP_conus_mask == cluster_num)
+        winter_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='DJF')).where(HP_conus_mask == cluster_num)
+        spring_obs = obs_files[f'{sub_name}'].sel(S=(obs_files['S.season']=='MAM')).where(HP_conus_mask == cluster_num)
+    
+    #make lists to iterate through them
+    skill_subx = [summer_subx, fall_subx, winter_subx, spring_subx]
+    skill_obs = [summer_obs, fall_obs, winter_obs, spring_obs]
+    season_name = ['Summer', 'Fall', 'Winter', 'Spring']
+    
+    output_dictionary = {}
+    for season in range(len(skill_subx)):
+        
+        #Make an empty file to store the final outcomes
+        var_OUT = skill_subx[season][0,:,:,:,:].to_dataset().to_array().to_numpy().squeeze()
+    
+    # var_OUT = subx_files[f'{sub_name}'][0,:,:,:,:].to_dataset().copy() #original, but can't s
+    #Because we don't need to slice anything, we can convert it to a numpy array
+    #and use Numba for faster processing
+    
+        obs_converted = skill_subx[season].to_numpy().squeeze() #drop unneed dimension
+        subx_converted = skill_obs[season].to_numpy().squeeze() #drop unneed dimension
+    
+           
+        @njit
+        def season_skill_assessment(var_OUT, subx_converted, obs_converted):
+        #Now find pearson correlation by model, lead, and lat/lon
+            for model in range(var_OUT.shape[0]):
+                print(f'Working on model {model+1} for pearson r correlation')
+                for Y in range(var_OUT.shape[2]):
+                    # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
+                    for X in range(var_OUT.shape[3]):
+                        for lead in np.arange(7,45,7):
+                            var_OUT[model, lead,Y,X] = \
+                                np.corrcoef(subx_converted[:,model, lead, Y, X],obs_converted[:,model, lead, Y, X])[0,1]
+            return(var_OUT)
+        
+        seasonal_skill = season_skill_assessment(var_OUT, subx_converted, obs_converted)
+        
+        #Now add back to a dictionary
+        for mod in range(skill_subx[season].model.shape[0]):
+            for lead_week in np.arange(7,49,7):
+                seasonal_mod_skill = np.nanmean(seasonal_skill[mod,lead_week,:,:])
+                output_dictionary[f'Model{mod}_Lead{lead_week}_Season{season_name[season]}']= seasonal_mod_skill
+                
+    return(output_dictionary)
 
-# #choose season individually 
-# def summer(month):
-#     return(month >=6) & (month <=8)
-# def fall(month):
-#     return(month >=9) & (month <=11)
-# def winter(month):
-#     return(month ==12) & (month ==1) & (month ==2)
-# def spring(month):
-#     return(month >=3) & (month <=5)
+r1_rzsm = all_season_mod_skill(var='RZSM',cluster_num=1, mask_path=mask_path)
+r1_eto = all_season_mod_skill(var='ETo',cluster_num=1, mask_path=mask_path)
 
-summer_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='JJA'))
-fall_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='SON'))
-winter_subx= subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='DJF'))
-spring_subx= subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='MAM'))
+r2_rzsm = all_season_mod_skill(var='RZSM',cluster_num=2, mask_path=mask_path)
+r2_eto = all_season_mod_skill(var='ETo',cluster_num=2, mask_path=mask_path)
 
-summer_obs = obs_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='JJA'))
-fall_obs = obs_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='SON'))
-winter_obs = obs_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='DJF'))
-spring_obs = obs_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='MAM'))
+r3_rzsm = all_season_mod_skill(var='RZSM',cluster_num=3, mask_path=mask_path)
+r3_eto = all_season_mod_skill(var='ETo',cluster_num=3, mask_path=mask_path)
+
+r4_rzsm = all_season_mod_skill(var='RZSM',cluster_num=4, mask_path=mask_path)
+r4_eto = all_season_mod_skill(var='ETo',cluster_num=4, mask_path=mask_path)
+
+r5_rzsm = all_season_mod_skill(var='RZSM',cluster_num=5, mask_path=mask_path)
+r5_eto = all_season_mod_skill(var='ETo',cluster_num=5, mask_path=mask_path)
+
+r6_rzsm = all_season_mod_skill(var='RZSM',cluster_num=6, mask_path=mask_path)
+r6_eto = all_season_mod_skill(var='ETo',cluster_num=6, mask_path=mask_path)
+#%% Plot 
+
+# subx_files.masked_where(West_conus_mask.West != cluster_num)
+
+# #Check if files are equivalent (to see if mask worked correclty)
+# np.count_nonzero(np.isnan(subx_files==subx_cluster).to_array())
+
+
+# var_yearly=subx_cluster.to_dataset()
+
+var_yearly = subx_cluster.RZSM_anom[0,0,7,:,:]
+var_yearly=subx_files.RZSM_anom[0,0,7,:,:]
+
+proj = ccrs.PlateCarree()
+
+ax = plt.axes(projection=ccrs.PlateCarree())
+ax.background_patch.set_facecolor('white') #changes np.nan value colors
+ax.outline_patch.set_edgecolor('black') #changes the border of the whole plot to black
+# ax.add_feature(cart.feature.OCEAN, zorder=100, edgecolor='k') #colors ocean blue
+
+
+# ETo = var_yearly.Pearson_r_coefficient.isel(lead=lead_week).sel(model=mod)
+var_yearly.plot(
+    transform=proj, subplot_kws={'projection':proj}, cmap='YlOrRd'
+    )
+
+gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True,
+                  linewidth=2, color='gray', alpha=0.5, linestyle='--')
+gl.xlabels_top = False
+gl.ylabels_left = False
+gl.xlines = True #this will remove the longitude lines
+# gl.xlocator = mticker.FixedLocator([-180, -45, 0, 45, 180])
+gl.xformatter = LONGITUDE_FORMATTER
+gl.yformatter = LATITUDE_FORMATTER
+
+plt.savefig(f'{output_image_dir}/week_lead_{lead_week//7+1}_model{mod}.tif', dpi=300)
+plt.cla()
+plt.clf()
+
+
 
 skill_subx = [summer_subx, fall_subx, winter_subx, spring_subx]
 skill_obs = [summer_obs, fall_obs, winter_obs, spring_obs]
@@ -311,6 +423,11 @@ for season in range(len(skill_subx)):
     var_yearly.to_netcdf(f'{output_nc_dir}/{season_name[season]}_pearson_skill.nc')
     
     return(var_yearly)
+
+
+#%%
+
+
 xr.where(a.ETo_anom == np.nan, a.ETo_anom, a.ETo_anom) = 0
 
 '''Test with xskillscore'''
@@ -365,8 +482,6 @@ ax = plt.axes(projection=ccrs.PlateCarree())
 
 plt.contourf(lons, lats, sst, 60,
              transform=ccrs.PlateCarree())
-
-proj = ccrs.PlateCarree()
 
 
 dataset.plot(transform=proj, col='Time', col_wrap=3, robust=True, subplot_kws={'projection':proj})

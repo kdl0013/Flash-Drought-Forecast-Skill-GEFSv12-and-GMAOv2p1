@@ -37,10 +37,10 @@ import gc
 
 
 
-dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-start_ = int('25')
-end_ = start_ + int('25')
-model_NAM1 = 'GMAO'
+dir1 = 'main_dir'
+start_ = int('start_init')
+end_ = start_ + int('init_step')
+model_NAM1 = 'model_name'
 
 # # Test for 1 step size and model
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
@@ -68,7 +68,6 @@ file_list = os.listdir()
 #All files have the same initialized days (part of the pre-processing that is 
 #completed)
     
-global var
 var='SM'
 
 def return_date_list():
@@ -92,18 +91,13 @@ This code is re-factored from 1b_EDDI.py
     
 '''
 
-
+var='RZSM'
 #%%    
 '''process SubX files and create EDDI values'''
 # def multiProcess_EDDI_SubX_TEST(_date):
-def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
+def RZSM_anomaly(str _date,str var):
     # _date=init_date_list[0]
-
     print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
-    # os.chdir(f'{home_dir}/RZSM_anomaly_mod{model_NUM}')
-    cdef int week_lead
-    #Because of indexing, week lead actually needs to be 6 for slicing
-    week_lead = 7
 
     #Used for eliminating iterating over grid cells that don't matter
     smerge_file = xr.open_dataset(f'{smerge_dir}/smerge_sm_merged_remap.nc4')
@@ -112,52 +106,45 @@ def RZSM_anomaly(int start_, int end_,list init_date_list,str _date,str var):
     variable='SM_SubX_m3_m3'
     var_name = f'{variable}_value'
     
+    #read in all ETo_files
+    
+    
     subx = xr.open_dataset(f'{rzsm_dir}/{variable}_{_date}.nc4')
     
-    # #get julian day, timestamps, and the datetime
-    # def date_file_info( _date, variable):
-    #     # cdef int start_julian, subtract
-    #     # cdef list a_date_out, a_julian_out,a_julian_out2
+    #get julian day, timestamps, and the datetime
+    '''Just treat all time as the first day that is opened'''
+    def date_file_info(str _date,str variable):
+        cdef int start_julian, subtract
+        cdef list a_date_out, a_julian_out,a_julian_out2
         
-    #     open_f = xr.open_dataset(f'{rzsm_dir}/{variable}_{_date}.nc4')
+        open_f = xr.open_dataset(f'{rzsm_dir}/{variable}_{_date}.nc4')
+        a_date_in= open_f[f'{var_name}'].lead.values
+        #get the start date
+        a_start_date = pd.to_datetime(open_f.S.values[0])
+        #Add the dates based on index value in date_in
+        a_date_out=[]
+        for a_i in range(len(a_date_in)):
+            a_date_out.append(a_start_date + dt.timedelta(days = a_i))
         
-        
-    #     a_date_in= open_f[f'{var_name}'].lead.values
-    #     #get the start date
-    #     a_start_date = pd.to_datetime(open_f.S.values[0])
-    #     #Add the dates based on index value in date_in
-    #     a_date_out = []
+        start_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
+        #Julian day into a list                            
+        a_julian_out = [start_julian + i for i in range(len(a_date_out))]
 
-    #     for a_i in range(len(a_date_in)):
-    #         a_date_out.append(a_start_date + dt.timedelta(days = a_i))
+        #month of file
+        INdate_for_month = dt.datetime(int(_date[0:4]),int(_date[5:7]),int(_date[8:10]))
         
-    #     start_julian = pd.to_datetime(open_f.S[0].values).timetuple().tm_yday #julian day
-    #     #Julian day into a list                            
-    #     a_julian_out = [start_julian + i for i in range(len(a_date_out))]
-        
-    #     if pd.to_datetime(_date).year % 4 == 0:
-    #         subtract = 366
-    #         a_julian_out2 = [i-subtract if i>366 else i for i in a_julian_out]
-    #     else:
-    #         subtract = 365
-    #         a_julian_out2 = [i-subtract if i>365 else i for i in a_julian_out]
-        
-    #     #month of file
-    #     INdate_for_month = dt.datetime(int(_date[0:4]),int(_date[5:7]),int(_date[8:10]))
-        
-    #     return(open_f,a_date_out,a_julian_out2,INdate_for_month,var_name)
+        return(open_f,a_date_out,a_julian_out,INdate_for_month,var_name)
     
-    # subx,file_timestamp_list,file_julian_list,file_datetime,var_name = date_file_info(_date=_date,variable='SM_SubX_m3_m3')
+    subx,file_timestamp_list,file_julian_list,file_datetime,var_name = date_file_info(_date=_date,variable='SM_SubX_m3_m3')
     
-    # #Convert to julian day for processing
-    # smerge_day = pd.to_datetime(smerge_file.CCI_ano.time.values)
-    # smerge_julian = [i.timetuple().tm_yday for i in smerge_day]
+    #Convert to julian day for processing
+    smerge_day = pd.to_datetime(smerge_file.CCI_ano.time.values)
+    smerge_julian = [i.timetuple().tm_yday for i in smerge_day]
     
-    # smerge_file_julian= smerge_file_julian.assign_coords({'time': smerge_julian})
-    
+    smerge_file_julian= smerge_file_julian.assign_coords({'time': smerge_julian})
     
     #Now convert to julian date and append coordinates
-    subx2 = subx.assign_coords(lead = np.arange(0,45))
+    subx2 = subx.assign_coords(lead = file_julian_list)
     
     for i_Y in range(subx2[f'{var_name}'].shape[3]):
         for i_X in range(subx2[f'{var_name}'].shape[4]):
