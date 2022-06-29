@@ -10,6 +10,9 @@ import xarray as xr
 import numpy as np
 import os
 from glob import glob
+import pandas as pd
+import datetime as dt
+from datetime import timedelta
 
 
 dir1 = 'main_dir'
@@ -46,4 +49,36 @@ for var in variables:
             open_f.to_netcdf(f'{file}4')
             open_f.close()
             os.system(f'rm {file}')
+
+variables = ['dswrf','tasmax', 'tasmin', 'uas', 'vas', 'mrso','cape','pr','tdps','SM_SubX']
+var = variables[0]
+
+#Add a new dataset for RZSM and save into home_dir
+sub1_dir = f'{subX_dir}/SM_converted_m3_m3'
+os.chdir(sub1_dir)
+
+for file in glob('*.nc4'):
+    try:
+        xr.open_dataset(f'{subX_dir}/RZ{file}')
+    except FileNotFoundError:
         
+        SubX_file=xr.open_dataset(file)
+        
+        def date_file_info(SubX_file):
+    
+            a_date_in= SubX_file.lead.values
+            #get the start date
+            a_start_date = pd.to_datetime(SubX_file.S.values[0])
+            a_date_out=[]
+            for a_i in range(len(a_date_in)):
+                a_date_out.append((a_start_date + timedelta(days=a_i)).timetuple().tm_yday)
+    
+            return(a_date_out)
+    
+        julian_list = date_file_info(SubX_file)
+        
+        #re-assign coords
+        SubX_file=SubX_file.assign_coords(lead=julian_list)
+        
+        #save to home directory
+        SubX_file.to_netcdf(f'{subX_dir}/RZ{file}')

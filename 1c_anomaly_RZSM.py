@@ -95,11 +95,10 @@ var='RZSM'
 #%%    
 '''process SubX files and create EDDI values'''
 # def multiProcess_EDDI_SubX_TEST(_date):
-def RZSM_anomaly(str _date,str var):
+def RZSM_anomaly(_date, var):
     # _date=init_date_list[0]
     print(f'Calculating RZSM anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
-    
-    cdef int i_Y, i_X
+
     
     #Used for eliminating iterating over grid cells that don't matter
     smerge_file = xr.open_dataset(f'{smerge_dir}/smerge_sm_merged_remap.nc4')
@@ -130,10 +129,7 @@ def RZSM_anomaly(str _date,str var):
             if (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1):
                 
                 def dict1_subx2():
-                    cdef dict summation_ETo_mod0,summation_ETo_mod1,summation_ETo_mod2,summation_ETo_mod3
-                    cdef int idx, end_julian, subtract, idx_lead
-                    cdef list date_out, b_julian_out, b_julian_out2, dates_to_keep
-                    cdef str file
+                 
                     
                     #append 7-day summation from all files to a new dictionary
                     #Technically, this is RZSM, but its easier to keep as ETo for EDDI, RZSM, and ETo
@@ -170,7 +166,7 @@ def RZSM_anomaly(str _date,str var):
                     the same julian day from all files'''
 
                     dates_to_keep = []
-                    '''if within 3 months, keep files'''
+                    '''grab yearly week lead files since we already have the distribution'''
                     for file in sorted(glob(f'{home_dir}/{var}_SubX*{_date[-5:]}.nc4')):
                             dates_to_keep.append(file)
                             
@@ -242,43 +238,34 @@ def RZSM_anomaly(str _date,str var):
                     anom_mod2 = find_anomaly(summation_ETo_mod2)
                     anom_mod3 = find_anomaly(summation_ETo_mod3)
                     
+                    anom_mod0['init_dates'] = [i[-14:-1] for i in dates_to_keep]
+                    anom_mod1['init_dates'] = [i[-14:-1] for i in dates_to_keep]
+                    anom_mod2['init_dates'] = [i[-14:-1] for i in dates_to_keep]
+                    anom_mod3['init_dates'] = [i[-14:-1] for i in dates_to_keep]
+
                     return(anom_mod0,anom_mod1,anom_mod2,anom_mod3,dates_to_keep)
                 
                 #Contains the julian day value of the current file ETo_{_date} and the 7-day summation
                 anom_mod0,anom_mod1,anom_mod2,anom_mod3,file_dates_to_keep= dict1_subx2()
                 
-                                    
-                '''Now we have created a dictionary that contains the:
-                    1.) index value is the julian day
-                    2.) list of dictionaries containing:
-                    -init date file: summed 7-day value
-                    [{'1999-01-10': 20.289343},  {'1999-01-15': 25.726818}, ....}]
-
-                Instead of re-looping through all of the files (very slow), we can start appending to 
-                files one by one with the data that we have already collected.'''
-                
-                def improve_anomaly_dictionary(dict anom_modN, list file_dates_to_keep):
-                    cdef dict final_out_dictionary
-                    cdef list anom_keys
-                    cdef int idx, idxxx
-                    cdef str julian_d
-                    
-                    final_out_dictionary = {}
-
-                    for idx,julian_d in enumerate(anom_modN):
-                        final_out_dictionary[f'{julian_d}'] = [] #create an empty list to append to
-                        anom_list = anom_modN[f'{julian_d}'] #choose only the summation ETo with correct julian date
-                        anom_keys = [] #initialize a list to keep up with the correct julian date and the actual init dates (because each init date varies with number of samples)
-
-                        #sub list contains a dictionary for each julian date in current loop and the values of ETo
-                        #Save the init date values for each julian date
-                        for idxxx, init_date in enumerate(file_dates_to_keep):
-                            init_date[-14:-4]
-                            anom_keys.append({ init_date[-14:-4]:anom_modN[f'{julian_d}']})
+                #Create weekly leads all in one file
+                def improve_anomaly_dictionary( anom_modN,  file_dates_to_keep):
+                    count=0
+                    #first add a dictinary with the start date as the key
+                    mod_out = {}
+                    for idx in range(len(file_dates_to_keep)):
+                        mod_out[anom_modN['init_dates'][idx]] = []
                         
-                        final_out_dictionary[f'{julian_d}'].append(anom_keys) 
-                        
-                    return(final_out_dictionary)
+                        all_values = []
+                        for init_day,values in anom_modN.items():
+
+                            if init_day=='init_dates':
+                                break
+                            else:
+                                all_values.append(anom_modN[init_day][idx])
+                        mod_out[anom_modN['init_dates'][idx]] = all_values    
+
+                    return(mod_out)
                 
                 out_mod0 = improve_anomaly_dictionary(anom_mod0, file_dates_to_keep)
                 out_mod1 = improve_anomaly_dictionary(anom_mod1, file_dates_to_keep)
@@ -292,7 +279,7 @@ def RZSM_anomaly(str _date,str var):
             
                 '''Now that we have created new files, we can append each file with the data that was found'''
                 
-                def add_to_nc_file(dict out_mod0,dict out_mod1, dict out_mod2, dict out_mod3):
+                def add_to_nc_file( out_mod0, out_mod1,  out_mod2,  out_mod3):
                     
                     for idx_,julian_d in enumerate(out_mod0):
                         julian_d = int(julian_d)
@@ -315,10 +302,10 @@ def RZSM_anomaly(str _date,str var):
                             file_open.close()
 
                             #Add data to netcdf file
-                            file_open.RZSM_anom[0,0,julian_d,i_Y,i_X] = list(final_dict0[idx].values())[0]
-                            file_open.RZSM_anom[0,1,julian_d,i_Y,i_X] = list(final_dict1[idx].values())[0]
-                            file_open.RZSM_anom[0,2,julian_d,i_Y,i_X] = list(final_dict2[idx].values())[0]
-                            file_open.RZSM_anom[0,3,julian_d,i_Y,i_X] = list(final_dict3[idx].values())[0]
+                            file_open.RZSM_anom[0,0,idx_*7,i_Y,i_X] = list(final_dict0[idx].values())[0]
+                            file_open.RZSM_anom[0,1,idx_*7,i_Y,i_X] = list(final_dict1[idx].values())[0]
+                            file_open.RZSM_anom[0,2,idx_*7,i_Y,i_X] = list(final_dict2[idx].values())[0]
+                            file_open.RZSM_anom[0,3,idx_*7,i_Y,i_X] = list(final_dict3[idx].values())[0]
    
                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                             file_open.close()

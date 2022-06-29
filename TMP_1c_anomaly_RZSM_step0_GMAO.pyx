@@ -37,10 +37,10 @@ import gc
 
 
 
-dir1 = 'main_dir'
-start_ = int('start_init')
-end_ = start_ + int('init_step')
-model_NAM1 = 'model_name'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+start_ = int('0')
+end_ = start_ + int('25')
+model_NAM1 = 'GMAO'
 
 # # Test for 1 step size and model
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'

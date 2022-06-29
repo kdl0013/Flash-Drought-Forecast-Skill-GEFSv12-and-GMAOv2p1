@@ -24,28 +24,49 @@ mkdir $data_s/cython_scripts
 
 
 # --- Functions
-mk_TMP_script () {
+make_reference_ET () {
 name=${1::-3}
 cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
-    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variable|'${2}'|g' > $data_s/TMP_${name}_${model}.py
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    
 python3 $data_s/TMP_${name}_${model}.py 
 }
 
-mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py" "ETo"
-mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py" "RZSM"
-mk_TMP_script "1b_ETo_and_make_empty_netcdf_files.py" "EDDI"
+make_reference_ET "1b1_make_reference_ET.py"
+
 
 
 #convert soil moisture to m3/m3
+convert_RZSM () {
 cat 1b2_convert_RZSM_to_m3_m3.py | sed 's|main_dir|'${main_directory}'|g' > $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
 
 python3 $data_s/TMP_1b2_convert_RZSM_to_m3_m3.py
+}
+
+convert_RZSM
 
 #Remove uneeded S dimension
+remove_S_dimension () {
 cat 1b3_remove_S_dimsension.py | sed 's|model_name|'${model}'|g' | sed 's|main_dir|'${main_directory}'|g'> $data_s/TMP_1b3_remove_S_dimsension.py 
 
 python3 TMP_1b3_remove_S_dimsension.py
+}
 
+remove_S_dimension
+
+make_empty_anomaly_files () {
+name=${1::-3}
+var=$2
+
+cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variables|'${var}'|g' > $data_s/TMP_${name}_${model}.py
+    
+python3 $data_s/TMP_${name}_${model}.py 
+}
+
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "ETo"
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "RZSM"
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "EDDI"
 
 ######## Reference ETo, EDDI, gridMET data creation. Historical and SubX #######
 #Create multiple scripts for multiprocessing of EDDI, RZSM, and ETo anomalies
