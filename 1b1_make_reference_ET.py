@@ -22,6 +22,7 @@ import pandas as pd
 from glob import glob
 import refet
 from multiprocessing import Pool
+from datetime import timedelta
 
 dir1 = 'main_dir'
 num_processors = int('procs')
@@ -30,7 +31,7 @@ mod = 'model_name'
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # num_processors = 10
 # mod = 'GMAO'
-# var = 'EDDI'
+# var = 'ETo'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'
 script_dir = f'{dir1}/Scripts'
@@ -113,6 +114,21 @@ def multiProcess_Refet_SubX(_date):
     
         windSpeed = compute_windSpeed(windU = windU, windV = windV)
         
+        
+        #convert to lead to julian day for later processing anomalies
+        def date_file_info(SubX_file):
+
+            a_date_in= SubX_file.L.values
+            #get the start date
+            a_start_date = pd.to_datetime(SubX_file.S.values[0])
+            a_date_out=[]
+            for a_i in range(len(a_date_in)):
+                a_date_out.append((a_start_date + timedelta(days=a_i)).timetuple().tm_yday)
+
+            return(a_date_out)
+        
+        julian_list = date_file_info(tasmax)
+        
         output_f = xr.zeros_like(tasmax)
         
         for i_mod in range(tasmax.tasmax.shape[1]):
@@ -167,7 +183,7 @@ def multiProcess_Refet_SubX(_date):
             coords = dict(
                 X = output_f.X.values,
                 Y = output_f.Y.values,
-                lead = output_f.L.values,
+                lead = julian_list,
                 model = output_f.M.values,
                 S = output_f.S.values
             ),
@@ -296,4 +312,30 @@ print('')
 Refet_gridMET()
 print('')
 print('')
-#%% Create empty EDDI.npy files for next script
+
+
+# os.getcwd()
+# #convert to lead to julian day for later processing anomalies
+# def date_file_info(SubX_file):
+
+#     a_date_in= SubX_file.lead.values
+#     #get the start date
+#     a_start_date = pd.to_datetime(SubX_file.S.values[0])
+#     a_date_out=[]
+#     for a_i in range(len(a_date_in)):
+#         a_date_out.append((a_start_date + timedelta(days=a_i)).timetuple().tm_yday)
+
+#     return(a_date_out)
+  
+
+# for file in sorted(glob('ETo*.nc4')):
+#     open_f = xr.open_dataset(file)
+#     open_f.close()
+#     julian_list = date_file_info(open_f)
+#     open_f = open_f.assign_coords(lead=julian_list)
+#     open_f.to_netcdf(f'{file}5')
+
+    
+    
+    
+    

@@ -80,25 +80,72 @@ make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "EDDI"
 mk_anomaly_script_RZSM_ETo_EDDI () {
 date_arr=(0 25 50)
 step=25
-name=${1::-4}
+name=${1::-3}
 
 for val in "${date_arr[@]}";do
     for mod in {0..3};do
-cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' > TMP_${name}_step"$val"_${model}.pyx;
+cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variable_|'$2'|g' > TMP_${name}_step"$val"_${model}.py;
     done;
 done
 }
 
 #Create tmp scripts to run later
 #mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
-mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.pyx"
-mk_anomaly_script_RZSM_ETo_EDDI "1e_anomaly_RZSM.pyx"
+mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.py" "ETo"
+mk_anomaly_script_RZSM_ETo_EDDI "1c_anomaly_RZSM.py" "RZSM"
 
 
-chmod +x *.pyx
+run_anomaly_RZSM_ETo_EDDI () {
+cd $data_s
+for file in TMP_*anomaly_$1*.py;do
+python3 $file &
+done
+}
+
+run_anomaly_RZSM_ETo_EDDI "RZSM"
+
+
+
+
+
+
+
+
+make_mean_for_acc () {
+date_arr=(0 25 50)
+step=25
+name=${1::-3}
+
+for val in "${date_arr[@]}";do
+    for mod in {0..3};do
+cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' > TMP_${name}_step"$val"_${model}.py;
+    done;
+done
+
+}
+
+make_mean_for_acc "1c2_anomaly_RZSM_mean_for_ACC.py"
+
+#chmod +x *.pyx
 chmod +x *.py
 
+run_anomaly_RZSM_ETo_EDDI () {
+cd $data_s
+for file in TMP_*anomaly_$1*.py;do
+python3 $file &
+done
+}
 
+run_anomaly_RZSM_ETo_EDDI "RZSM"
+
+run_mean_RZSM_ETo_EDDI () {
+cd $data_s
+for file in TMP_*anomaly_$1*mean*.py;do
+python3 $file &
+done
+}
+
+run_mean_RZSM_ETo_EDDI "RZSM"
 #Call cython_setup.py, insert file name, and compile 
 #Insert only name of variable
 compile_cython () {

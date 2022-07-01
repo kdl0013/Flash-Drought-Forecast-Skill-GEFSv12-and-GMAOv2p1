@@ -29,11 +29,11 @@ import os
 import pandas as pd
 from glob import glob
 
-dir1 = 'main_dir'
-start_ = int('start_init')
-end_ = start_ + int('init_step')
-model_NAM1 = 'model_name'
-var = 'variable_'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+start_ = int('25')
+end_ = start_ + int('25')
+model_NAM1 = 'GMAO'
+var = 'RZSM'
 
 # # Test for 1 step size and model
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
