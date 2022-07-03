@@ -165,7 +165,7 @@ def make_empty_mean_nc_files(init_date_list,T_FILE, var):
     
     # for var in ['EDDI','RZSM','ETo']:
     
-    for _date in init_date_list[0:74]:
+    for _date in init_date_list[0:73]:
        
         model_dirs = {}
         # S_values = [pd.to_datetime(zz)+ dt.timedelta(days=1),pd.to_datetime(zz)]
@@ -182,7 +182,7 @@ def make_empty_mean_nc_files(init_date_list,T_FILE, var):
                 model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'
             
         elif var == 'ETo':
-            filename = f'{var}_anomaly'
+            filename = f'{var}_mean'
             desc = f'ETo mean SubX {mod} model. Calculated by lead week (1-7) over all 15 years of dataset.'
             for model in [0,1,2,3]:
                 model_dirs[f'Model {model}'] = f'{home_dir}/{var}_anomaly_mod{model}'

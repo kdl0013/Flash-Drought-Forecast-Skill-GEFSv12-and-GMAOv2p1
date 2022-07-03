@@ -84,26 +84,27 @@ name=${1::-3}
 
 for val in "${date_arr[@]}";do
     for mod in {0..3};do
-cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variable_|'$2'|g' > TMP_${name}_step"$val"_${model}.py;
+cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variable_|'$2'|g' > TMP_${name}_"$2"_step"$val"_${model}.py;
     done;
 done
 }
 
 #Create tmp scripts to run later
 #mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
-mk_anomaly_script_RZSM_ETo_EDDI "1d_anomaly_ETo.py" "ETo"
-mk_anomaly_script_RZSM_ETo_EDDI "1c_anomaly_RZSM.py" "RZSM"
+mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly.py" "RZSM"
+mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly.py" "ETo"
 
 
+#Run all three steps at a single time. Takes 30GB of RAM to run 3 at a time.
 run_anomaly_RZSM_ETo_EDDI () {
 cd $data_s
-for file in TMP_*anomaly_$1*.py;do
+for file in TMP_1c_make_anomaly_$1*.py;do
 python3 $file &
 done
 }
 
 run_anomaly_RZSM_ETo_EDDI "RZSM"
-
+run_anomaly_RZSM_ETo_EDDI "ETo"
 
 
 
