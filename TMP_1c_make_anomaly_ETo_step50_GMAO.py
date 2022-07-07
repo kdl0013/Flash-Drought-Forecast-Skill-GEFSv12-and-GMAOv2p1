@@ -28,6 +28,7 @@ import numpy as np
 import os
 import pandas as pd
 from glob import glob
+import bottleneck as bn
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 start_ = int('50')
@@ -159,16 +160,16 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                         try:
                             if idx % 7 == 0 and idx !=0:
                                 summation_ETo_mod0[f'{julian_d}']=[]
-                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':np.nansum(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
                                 
                                 summation_ETo_mod1[f'{julian_d}']=[]
-                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':np.nansum(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
                                 
                                 summation_ETo_mod2[f'{julian_d}']=[]
-                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':np.nansum(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
                                 
                                 summation_ETo_mod3[f'{julian_d}']=[]
-                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':np.nansum(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
+                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
                             
                         except IndexError:
                             pass                    
@@ -205,10 +206,10 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
                                 if idx % 7 == 0 and idx != 0:
                                     try:
-                                        summation_ETo_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nansum(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nansum(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nansum(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nansum(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        summation_ETo_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
 
                                     #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
@@ -238,7 +239,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                             else:
                                 sub_out = subx_all[f'{var_name}'][:,mod_number,:,i_Y,i_X].sel(lead=slice(julian_d-anomaly_spread,julian_d+anomaly_spread)) 
  
-                            mean_value = np.nanmean(sub_out)
+                            mean_value = bn.nanmean(sub_out)
                             out_mean[f'{julian_d}'] = mean_value
                             #subtract mean
                             anomaly_list = []

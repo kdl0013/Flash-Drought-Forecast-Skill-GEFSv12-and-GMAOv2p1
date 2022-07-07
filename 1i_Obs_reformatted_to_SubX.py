@@ -41,25 +41,25 @@ os.system(f'mkdir {output_ETo_dir}')
 
 os.chdir(subX_dir) #Set directory for SubX
 #Get date list for initialized files
-date_list = sorted(glob('mrso*_*-*.nc'))
-date_list = [i[-13:-3] for i in date_list]
+date_list = sorted(glob('mrso*_*-*.nc4'))
+date_list = [i[-14:-4] for i in date_list]
 
 # _date = date_list[0]
 # _date='1999-12-06'
 #%% ETo gridMET
 def ETo_gridMET_SubX_creation(_date) -> float:    
     try:
-        xr.open_dataset(f'{output_ETo_dir}/ETo_SubX_{_date}.nc')
+        xr.open_dataset(f'{output_ETo_dir}/ETo_SubX_{_date}.nc4')
         print(f'Already completed date {_date}. Saved in {output_ETo_dir}')
     except FileNotFoundError:
         
     
         #Open gridMET and subset to the correct dates as SubX for full time series
-        gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_anomaly_gridMET_merged_fix_january.nc').astype('float64')
+        gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_anomaly_gridMET_merged.nc').astype('float64')
         gridMET_file = gridMET_file.sel(day=slice("1999-01-10","2016-02-09"))
 
         print(f'Working on initialized day {_date} to find gridMET values from SubX models, leads, & coordinates and saving data into {output_ETo_dir}.')
-        sub_file = xr.open_dataset(f'ETo_{_date}.nc4')
+        sub_file = xr.open_dataset(f'ETo_{_date}.nc')
         
         #Remove dimension S[1] because it has not data (it's a GMAO GEOS specific issue)
         sub_file_arr = sub_file.ETo[:,:,:,:,:].values
@@ -88,9 +88,20 @@ def ETo_gridMET_SubX_creation(_date) -> float:
                 for i_Y in range(sub_file.ETo.shape[3]):
                     for i_X in range(sub_file.ETo.shape[4]):
                         
-                        gridMET_out[0,model, i_lead, i_Y, i_X] = \
-                            gridMET_file.ETo_gridmet.sel(day = date_val).isel(lon = i_X, lat = i_Y).values  
-        
+                        #1 day appears to have not been calculated because of julian days and 
+                        #anomaly code for +/-42 day (specically December 31, 2000)
+                        #Just take the average of the other two days before and after
+                        if np.count_nonzero( gridMET_file.ETo_gridmet.sel(day = date_val).values == 0) == 1593:
+                            date_val1 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead-1)
+                            date_val2 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
+                            
+                            gridMET_out[0,model, i_lead, i_Y, i_X] = \
+                            np.nanmean( gridMET_file.ETo_gridmet.sel(day = date_val1).isel(lon = i_X, lat = i_Y).values + \
+                                 gridMET_file.ETo_gridmet.sel(day = date_val2).isel(lon = i_X, lat = i_Y).values)
+                        else:
+                            gridMET_out[0,model, i_lead, i_Y, i_X] = \
+                                gridMET_file.ETo_gridmet.sel(day = date_val).isel(lon = i_X, lat = i_Y).values
+                              
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
@@ -109,16 +120,12 @@ def ETo_gridMET_SubX_creation(_date) -> float:
                 cell as SubX data'),
         )                    
         
-        var_OUT.ETo_anom[1,:,:,:,:] = np.nan
-        var_OUT = var_OUT.dropna(dim='S', how='all')
-        
         #Save as a netcdf for later processing
-        var_OUT.to_netcdf(path = f'{output_ETo_dir}/ETo_SubX_{_date}.nc', mode ='w')
-        
+        var_OUT.to_netcdf(path = f'{output_ETo_dir}/ETo_SubX_{_date}.nc4', mode ='w')
         
         '''Compress to save space since I do not have to write again to file'''
-        os.system(f'ncks -4 -L 1 {output_ETo_dir}/ETo_SubX_{_date}.nc {output_ETo_dir}/eto_test.nc')
-        os.system(f'mv {output_ETo_dir}/eto_test.nc {output_ETo_dir}/ETo_SubX_{_date}.nc')
+        os.system(f'ncks -4 -L 1 {output_ETo_dir}/ETo_SubX_{_date}.nc4 {output_ETo_dir}/eto_test.nc4')
+        os.system(f'mv {output_ETo_dir}/eto_test.nc4 {output_ETo_dir}/ETo_SubX_{_date}.nc4')
 
         print(f'Completed ETo_SubX_{_date}')
 
@@ -127,18 +134,19 @@ def ETo_gridMET_SubX_creation(_date) -> float:
     
 def SM_SMERGE_SubX_creation(_date):    
     try:
-        xr.open_dataset(f'{SM_SubX_out_dir}/SM_SubX_{_date}.nc')
+        xr.open_dataset(f'{SM_SubX_out_dir}/SM_SubX_{_date}.nc4')
         print(f'Already completed date {_date}. Saved in {SM_SubX_out_dir}.')
         
     except FileNotFoundError:
             
+        # _date = ''
         print(f'Working on initialized day {_date} to find SMERGE values from SubX models, leads, & coordinates and saving data into {SM_SubX_out_dir}.')
-        sub_file = xr.open_dataset(f'mrso_GMAO_{_date}.nc')
+        sub_file = xr.open_dataset(f'mrso_GMAO_{_date}.nc4')
         
         #Remove dimension S[1] because it has not data (it's a GMAO GEOS specific issue)
         sub_file_arr = sub_file.mrso[:,:,:,:,:].values
         
-        SMERGE_file = xr.open_dataset(f'{smerge_in_dir}/RZSM_anomaly_SMERGE_merged_fix_january.nc')
+        SMERGE_file = xr.open_dataset(f'{smerge_in_dir}/RZSM_anomaly_SMERGE_merged.nc')
         
         '''Same format as SubX. Find the correct dates, leads, models and just fill in'''
         smerge_out = (np.zeros_like(sub_file_arr)).astype('float64')
@@ -151,8 +159,19 @@ def SM_SMERGE_SubX_creation(_date):
                 for i_Y in range(sub_file.mrso.shape[3]):
                     for i_X in range(sub_file.mrso.shape[4]):
                         
-                        smerge_out[0,model, i_lead, i_Y, i_X] = \
-                            SMERGE_file.CCI_ano.sel(time = date_val).isel(X = i_X, Y = i_Y).values
+                        #1 day appears to have not been calculated because of julian days and 
+                        #anomaly code for +/-42 day (specically December 31, 2000)
+                        #Just take the average of the other two days before and after
+                        if np.count_nonzero(SMERGE_file.CCI_ano.sel(time = date_val).values == 0) == 1593:
+                            date_val1 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead-1)
+                            date_val2 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
+                            
+                            smerge_out[0,model, i_lead, i_Y, i_X] = \
+                            np.nanmean(SMERGE_file.CCI_ano.sel(time = date_val1).isel(X = i_X, Y = i_Y).values + \
+                                SMERGE_file.CCI_ano.sel(time = date_val2).isel(X = i_X, Y = i_Y).values)
+                        else:
+                            smerge_out[0,model, i_lead, i_Y, i_X] = \
+                                SMERGE_file.CCI_ano.sel(time = date_val).isel(X = i_X, Y = i_Y).values
 
         #Convert to an xarray object
         var_OUT = xr.Dataset(
@@ -171,17 +190,13 @@ def SM_SMERGE_SubX_creation(_date):
                 Description = 'SMERGE RZSM anomaly values (m3/m3) on the exact same date and grid \
                 cell as SubX data'),
         ) 
-                
-                
-        #Remove S dimension
-        var_OUT.RZSM_anom[1,:,:,:,:] = np.nan
-        var_OUT = var_OUT.dropna(dim='S', how='all')
+
         #Save as a netcdf for later processing
-        var_OUT.to_netcdf(path = f'{SM_SubX_out_dir}/SM_SubX_{_date}.nc', mode ='w')
+        var_OUT.to_netcdf(path = f'{SM_SubX_out_dir}/SM_SubX_{_date}.nc4', mode ='w')
         
         '''Compress to save space since I do not have to write again to file'''
-        os.system(f'ncks -4 -L 1 {SM_SubX_out_dir}/SM_SubX_{_date}.nc {SM_SubX_out_dir}/f_test.nc')
-        os.system(f'mv {SM_SubX_out_dir}/f_test.nc {SM_SubX_out_dir}/SM_SubX_{_date}.nc')
+        os.system(f'ncks -4 -L 1 {SM_SubX_out_dir}/SM_SubX_{_date}.nc4 {SM_SubX_out_dir}/f_test.nc4')
+        os.system(f'mv {SM_SubX_out_dir}/f_test.nc4 {SM_SubX_out_dir}/SM_SubX_{_date}.nc4')
 
         #To find the correct date
         print(f'Completed SM_SubX_{_date}')        
@@ -261,9 +276,9 @@ def SM_SMERGE_SubX_creation(_date):
 #%%Run all four functions
 if __name__ == '__main__':
     p = Pool(num_processors)
-    print('Working on SMERGE cci anomalies.')
+    print('Working on SMERGE anomalies from SMERGE files (+/- 42 days within the same day of year.)')
     p.map(SM_SMERGE_SubX_creation, date_list)
-    print('Working on gridMET ETo')
+    print('Working on gridMET ETo anomalies from gridMET files (+/- 42 days within the same day of year.)')
     p.map(ETo_gridMET_SubX_creation, date_list)
     # print('Working on EDDI.')
     # p.map(EDDI_SubX_creation, date_list)

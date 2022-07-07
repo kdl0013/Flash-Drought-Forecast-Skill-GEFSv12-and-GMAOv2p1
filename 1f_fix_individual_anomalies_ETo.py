@@ -46,28 +46,16 @@ def return_date_list():
     return(date_list)
         
 init_date_list = return_date_list()   
-'''Steps for anomaly calculation. 
-1.) For each date:
-    2.) Go thorugh all files and find the 1 week average for the same dates:
-        2a.) Find the mean
-        3.) Calculate anomaly
-        4.) Append all subsequent year's files since we have the first day 
-    (only need to process the first year)
-    
 
-This code is re-factored from 1b_EDDI.py
-    
-'''
 
 '''Now we want to open up each ETo- and RZSM anomaly file (also EDDI), to see
 which ones have missing data'''
-var = 'ETo'
-file_list = f'{var}_anomaly_*.nc'
-missing_anomaly= [] #subx missing anomaly data files
-missing_original_ETo = []
+var = 'RZSM'
+file_list = f'{var}_anomaly_*.nc4'
+missing_anomaly_var = [] #subx missing anomaly data files
+missing_original_var = []
 
 # test_file = f'{home_dir}/test/ETo_anomaly_2000-09-17.nc'
-
 
 for file in sorted(glob(file_list)):
     open_f = xr.open_dataset(file)
@@ -78,15 +66,16 @@ for file in sorted(glob(file_list)):
     of 286740 after function np.count_nonzero(np.isnan(open_f.RZSM_anom[0,:,:,:,:].values));
     therefore, this is a missing data file.
     '''
+    
     #anomaly. I inspected a file that was filled correctly and it had 528 missing value
     #If file is completely empty, the file will have all zeros and a unique value of only 1
-    if len(np.unique(open_f.ETo_anom[:,:,7,:,:])) <= 1 or \
-        len(np.unique(open_f.ETo_anom[:,:,14,:,:])) <= 1 or \
-            len(np.unique(open_f.ETo_anom[:,:,21,:,:])) <= 1 or \
-                len(np.unique(open_f.ETo_anom[:,:,28,:,:])) <= 1 or \
-                    len(np.unique(open_f.ETo_anom[:,:,35,:,:])) <= 1 or \
-                        len(np.unique(open_f.ETo_anom[:,:,42,:,:])) <= 1:
-        missing_anomaly.append(file)    
+    if len(np.unique(open_f[f'{var}_anom'][:,:,0,:,:])) <= 1 or \
+        len(np.unique(open_f[f'{var}_anom'][:,:,14,:,:])) <= 1 or \
+            len(np.unique(open_f[f'{var}_anom'][:,:,21,:,:])) <= 1 or \
+                len(np.unique(open_f[f'{var}_anom'][:,:,28,:,:])) <= 1 or \
+                    len(np.unique(open_f[f'{var}_anom'][:,:,35,:,:])) <= 1 or \
+                        len(np.unique(open_f[f'{var}_anom'][:,:,42,:,:])) <= 1:
+        missing_anomaly_var.append(file)    
 
     '''I manually calculated ETo from SubX variables, look if I am missing any
     data from those files'''

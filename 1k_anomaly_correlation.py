@@ -20,6 +20,7 @@ import xarray as xr
 import numpy as np
 from numba import njit, prange
 import numpy.ma as ma
+import bottleneck as bn
 import os
 import datetime as dt
 import pandas as pd
@@ -57,22 +58,28 @@ dir1 = 'main_dir'
 model_NAM1 = 'model_name'
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/' #where subX model data lies 
 
+subdir_for_mean = f'{subX_dir}/mean_for_ACC'
 mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 
 #observations
 obs_eto_path = f'{dir1}/Data/gridMET/ETo_SubX_values/'
 obs_rzsm_path = f'{dir1}/Data/SMERGE_SM/SM_SubX_values/'
 
+obs_eto_mean = xr.open_dataset(f'{dir1}/Data/gridMET/ETo_anomaly_gridMET_mean.nc')
+obs_rzsm_mean = xr.open_dataset(f'{dir1}/Data/SMERGE_SM/Raw_data/RZSM_anomaly_SMERGE_mean.nc')
+
 output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc files
-output_image_dir = f'{dir1}/Outputs/pearson_correlation/'
-output_season_dir = f'{dir1}/Outputs/pearson_correlation/seasonal_skill/'
+output_image_dir = f'{dir1}/Outputs/anomaly_correlation/'
+output_season_dir = f'{dir1}/Outputs/anomaly_correlation/seasonal_skill/'
+
+os.system(f'mkdir -p {output_season_dir}')
 
 '''Weekly pearson R skill score
 Read all files in at once with xr.open_mfdataset, then calculate the skill
 based only on weekly lead time. '''
 #%%Interannual skill for all grid cells and leads and models 
 # var = 'RZSM'
-def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path):
+def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path,obs_eto_mean,obs_rzsm_mean):
     
     try:
         var_yearly = xr.open_dataset(f'{output_nc_dir}/interannual_pearson_skill.nc')
@@ -81,16 +88,26 @@ def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path):
     except FileNotFoundError:
             
         if var == 'ETo':
-            obs_name = 'ETo_SubX_*.nc'
+            obs_name = 'ETo_SubX_*.nc4'
             sub_name = 'ETo_anom'
-            obs_path = obs_eto_path
+            obs_mean = obs_eto_mean
         elif var == 'RZSM':
-            obs_name = 'SM_SubX_*.nc'
+            obs_name = 'SM_SubX_*.nc4'
             sub_name = 'RZSM_anom'
-            obs_path= obs_rzsm_path
+            obs_mean = obs_rzsm_mean #only use variable .CCI from obs_mean for smerge
         
-        subx_files = xr.open_mfdataset(f'{var}_anomaly*.nc', concat_dim=['S'], combine='nested')
+        #Don't have to load into memory because I'm immediately converting them into a np.array
+        subx_files = xr.open_mfdataset(f'{var}_anomaly*.nc4', concat_dim=['S'], combine='nested')
         obs_files = xr.open_mfdataset(f'{obs_path}/{obs_name}', concat_dim = ['S'], combine = 'nested')
+        
+        #for testing
+        # subx_files = obs_files
+        
+        #Get the mean value of all files
+        subx_mean = xr.open_mfdataset(f'{subdir_for_mean}/{var}_mean*.nc4', concat_dim=['S'], combine='nested') 
+        
+        #testing
+        # subx_mean=obs_mean
         
         #Make an empty file to store the final outcomes
         var_OUT = subx_files[f'{sub_name}'][0,:,:,:,:].to_dataset().to_array().to_numpy().squeeze()
@@ -100,23 +117,33 @@ def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path):
         
         obs_converted = obs_files.to_array().to_numpy().squeeze() #drop unneeded dimension
         subx_converted = subx_files.to_array().to_numpy().squeeze() #drop unneeded dimension
-    
         
         @njit
-        def skill_assessment(var_OUT, subx_converted, obs_converted):
+        def anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted):
+            #Source ACC:
+            #https://metclim.ucd.ie/wp-content/uploads/2017/07/DeterministicSkillScore.pdf
+
+            def ACC(FC_anom,OBS_anom):
+                top = np.nanmean(FC_anom*OBS_anom) #all forecast anomalies * all observation anomalies
+                bottom = np.sqrt(np.nanmean(FC_anom**2)*np.nanmean(OBS_anom**2)) #variance of forecast anomalies * variance of observation anomalies
+                ACC = top/bottom
+                return ACC
+            
         #Now find pearson correlation by model, lead, and lat/lon
             for model in prange(var_OUT.shape[0]):
                 print(f'Working on model {model+1} for pearson r correlation')
                 for Y in range(var_OUT.shape[2]):
                     # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
                     for X in range(var_OUT.shape[3]):
+                        #anomalies are only present in weekly leads of 7
                         for lead in np.arange(7,45,7):
-                            #find nan locations
+                            
+                            #Find the pearson_r correlation
+                           
                             var_OUT[model, lead,Y,X] = \
-                                np.corrcoef(subx_converted[:,model, lead, Y, X],obs_converted[:,model, lead, Y, X])[0,1]
+                                ACC(subx_converted[:,model, lead, Y, X],obs_converted[:,model, lead, Y, X])
             return(var_OUT)
-        
-            
+
         #Very slow loop (I switched to numba instead)
          # #Now find pearson correlation by model, lead, and lat/lon
          # for model in range(var_OUT[f'{sub_name}'].shape[0]):
@@ -129,7 +156,7 @@ def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path):
          #                     np.corrcoef(subx_files[f'{sub_name}'][:,model, lead, Y, X],obs_files[f'{sub_name}'][:,model, lead, Y, X])[0,1]
                          
         
-        yearly_skill = skill_assessment(var_OUT, subx_converted, obs_converted)
+        yearly_skill = anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted)
         
         #Convert to an xarray object
         var_yearly = xr.Dataset(
@@ -237,19 +264,20 @@ def all_season_mod_skill(var,cluster_num, mask_path):
     West_conus_mask = conus_mask['USDM-West_mask']
             
     if var == 'ETo':
-        obs_name = 'ETo_SubX_*.nc'
+        obs_name = 'ETo_SubX_*.nc4'
         sub_name = 'ETo_anom'
         obs_path = obs_eto_path
     elif var == 'RZSM':
-        obs_name = 'SM_SubX_*.nc'
+        obs_name = 'SM_SubX_*.nc4'
         sub_name = 'RZSM_anom'
         obs_path= obs_rzsm_path
     
-    subx_files = xr.open_mfdataset(f'{var}_anomaly*.nc', concat_dim=['S'], combine='nested')
+    subx_files = xr.open_mfdataset(f'{var}_anomaly*.nc4', concat_dim=['S'], combine='nested')
     obs_files = xr.open_mfdataset(f'{obs_path}/{obs_name}', concat_dim = ['S'], combine = 'nested')
     
-    subx_files=obs_files
+    # subx_files=obs_files
     '''PICK SEASON and REGION'''
+    #only choose West conus mask file for west cluster
     if cluster_num == 1:
         summer_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='JJA')).where(West_conus_mask == cluster_num)
         fall_subx = subx_files[f'{sub_name}'].sel(S=(subx_files['S.season']=='SON')).where(West_conus_mask == cluster_num)
@@ -292,25 +320,33 @@ def all_season_mod_skill(var,cluster_num, mask_path):
     
            
         @njit
-        def season_skill_assessment(var_OUT, subx_converted, obs_converted):
-        #Now find pearson correlation by model, lead, and lat/lon
-            for model in range(var_OUT.shape[0]):
-                print(f'Working on model {model+1} for pearson r correlation')
+        def season_skill_assessment(var_OUT, subx_converted, obs_converted,season_name,season):
+            
+            def ACC(FC_anom,OBS_anom):
+                top = np.nanmean(FC_anom*OBS_anom) #all forecast anomalies * all observation anomalies
+                bottom = np.sqrt(np.nanmean(FC_anom**2)*np.nanmean(OBS_anom**2)) #variance of forecast anomalies * variance of observation anomalies
+                ACC = top/bottom
+                return ACC
+            
+            for model in prange(var_OUT.shape[0]):
+                print(f'Working on model {model+1} for anomaly correlation. Season: {season_name[season]}')
                 for Y in range(var_OUT.shape[2]):
                     # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
                     for X in range(var_OUT.shape[3]):
                         for lead in np.arange(7,45,7):
+                            
                             var_OUT[model, lead,Y,X] = \
-                                np.corrcoef(subx_converted[:,model, lead, Y, X],obs_converted[:,model, lead, Y, X])[0,1]
+                                ACC(subx_converted[:,model, lead, Y, X],obs_converted[:,model, lead, Y, X])
+
             return(var_OUT)
         
-        seasonal_skill = season_skill_assessment(var_OUT, subx_converted, obs_converted)
+        seasonal_skill = season_skill_assessment(var_OUT, subx_converted, obs_converted,season_name,season)
         
         #Now add back to a dictionary
         for mod in range(skill_subx[season].model.shape[0]):
             for lead_week in np.arange(7,49,7):
                 seasonal_mod_skill = np.nanmean(seasonal_skill[mod,lead_week,:,:])
-                output_dictionary[f'Model{mod}_Lead{lead_week}_Season{season_name[season]}']= seasonal_mod_skill
+                output_dictionary[f'Model{mod}_Lead{lead_week:02}_{season_name[season]}']= seasonal_mod_skill
                 
     return(output_dictionary)
 
@@ -331,7 +367,88 @@ r5_eto = all_season_mod_skill(var='ETo',cluster_num=5, mask_path=mask_path)
 
 r6_rzsm = all_season_mod_skill(var='RZSM',cluster_num=6, mask_path=mask_path)
 r6_eto = all_season_mod_skill(var='ETo',cluster_num=6, mask_path=mask_path)
-#%% Plot 
+#%% Plot anomaly values in pcolormesh
+
+#test
+# var_cluster=output_dictionary
+# r1_rzsm=output_dictionary
+
+def setup_plot(var_cluster):
+    #The goal of this function is to take our outputs from anomaly correlation 
+    #coefficient, convert them to a dataframe by model, lead, season,
+    #and then plot
+    col_names = ['Model','Lead','Season','ACC']
+    
+    df_OUT = pd.DataFrame(columns=col_names)
+    
+    for idx,k in enumerate(var_cluster.keys()):
+        #split to get model, lead, and season
+        split_ = k.split('_')
+        
+        df_OUT=df_OUT.append({'Model':int(split_[0][-1]),'Lead':int(split_[1][-2:]), \
+                             'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
+
+    
+    return(df_OUT)
+
+r1_r = setup_plot(r1_rzsm)
+r1_r = r1_r.to_xarray()
+
+
+#PLOT
+models = {1: 'Model 1', 2: 'Model 2', 3: 'Model 3', 4: 'Model 4'}
+
+parameters = {'axes.labelsize': 16,
+          'axes.titlesize': 20,
+          'xtick.labelsize' : 15,
+          'figure.titlesize': 24}
+
+plt.rcParams.update(parameters)
+
+
+# fig, (ax1,ax2) = plt.subplots(3,2)
+# fig=plt.figure()
+p_edfd = r1_r.plot(
+   x='Season', y='Lead', col = 'models',
+   cmap='bwr',
+   cbar_kwargs={'label': ''},
+   figsize=(12,5)
+   )
+
+ 
+for i,es in enumerate(enso_states):
+    # ax = fig.add_subplots(2,3,i+1)
+    ax = p_edfd.axes.flat[i]
+    ax.set_title(enso_states.get(i-1, ''))
+    if i ==0:
+        ax.text(-10.08, 4.00,text_,size=30)
+    if i ==1:
+        ax.set_xlabel('')
+        ax.set_title(f'{clus_name}\n\n' +enso_states.get(i-1, ''))
+        
+    else:
+        ax.set_xlabel('')
+        ax.set_title(enso_states.get(i-1, ''))
+    ax.set_xticks([])
+    ax.set_yticks([])
+p_edfd.axes[0,0].set_ylabel('SON           JJA            MAM')
+text(0.535, -0.035,f'    <{min_index}%       {min_index}-{max_index}%     >{max_index}%', ha='center', va='center', transform=ax.transAxes,size=13)
+text(-0.51, -0.035,f'    <{min_index}%       {min_index}-{max_index}%     >{max_index}%', ha='center', va='center', transform=ax.transAxes,size=13)
+text(-1.58, -0.035,f'    <{min_index}%       {min_index}-{max_index}%     >{max_index}%', ha='center', va='center', transform=ax.transAxes,size=13)
+
+#Now plot with pcolor mesh
+
+np.random.seed(19680801)
+
+x = np.arange(-0.5, 10,5)  # len = 11
+x_len = len(x)
+y = np.arange(4.5, 11, 5)  # len = 7
+y_len = len(y)
+
+Z = np.random.rand(y_len-1, x_len-1)
+
+fig, ax = plt.subplots()
+ax.pcolormesh(x, y, Z)
 
 # subx_files.masked_where(West_conus_mask.West != cluster_num)
 

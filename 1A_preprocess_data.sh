@@ -106,6 +106,15 @@ done
 run_anomaly_RZSM_ETo_EDDI "RZSM"
 run_anomaly_RZSM_ETo_EDDI "ETo"
 
+#Check for missing anomaly data in files
+check_missing_anomaly_data () {
+cat 1e_check_for_missing_data.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|model_name|'${model}'|g' > TMP_1e_check_for_missing_data.py
+
+python3 TMP_1e_check_for_missing_data.py
+}
+check_missing_anomaly_data
+
+
 
 
 
