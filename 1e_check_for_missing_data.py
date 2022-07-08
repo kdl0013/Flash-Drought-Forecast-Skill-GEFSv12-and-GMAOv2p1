@@ -15,11 +15,12 @@ from glob import glob
 import warnings
 warnings.filterwarnings("ignore")
 
-dir1 = 'main_dir'
-model_NAM1 = 'model_name'
+# dir1 = 'main_dir'
+# model_NAM1 = 'model_name'
 
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# model_NAM1 = 'GMAO'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+model_NAM1 = 'GMAO'
+
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
 script_dir = f'{dir1}/Scripts'
 
@@ -53,12 +54,21 @@ which ones have missing data'''
 for var in ['RZSM','ETo']:
     print(f'Checking variable {var} for missing anomaly data in files.')
     file_list = f'{var}_anomaly_*.nc4'
+    
+    file_list_out = []
+    for file in sorted(glob(file_list)):
+        # print()
+        if "LEAD" not in file:
+            file_list_out.append(file)
+
+        
+            
     missing_anomaly_var = [] #subx missing anomaly data files
     missing_original_var = []
     
     # test_file = f'{home_dir}/test/ETo_anomaly_2000-09-17.nc'
     
-    for file in sorted(glob(file_list)):
+    for file in file_list_out:
         open_f = xr.open_dataset(file)
         # open_f = xr.open_dataset(test_file)
     
@@ -82,7 +92,7 @@ for var in ['RZSM','ETo']:
         data from those files'''
     
         if var == 'ETo':
-            open_ETo = xr.open_dataset(f'{var}_{file[-13:-3]}.nc4') 
+            open_ETo = xr.open_dataset(f'{var}_{file[-14:-4]}.nc') 
             if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
                 missing_original_var.append(file)
         elif var == 'RZSM':

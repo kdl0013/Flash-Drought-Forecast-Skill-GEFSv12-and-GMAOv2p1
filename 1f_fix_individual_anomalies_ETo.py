@@ -69,7 +69,7 @@ for file in sorted(glob(file_list)):
     
     #anomaly. I inspected a file that was filled correctly and it had 528 missing value
     #If file is completely empty, the file will have all zeros and a unique value of only 1
-    if len(np.unique(open_f[f'{var}_anom'][:,:,0,:,:])) <= 1 or \
+    if len(np.unique(open_f[f'{var}_anom'][:,:,7,:,:])) <= 1 or \
         len(np.unique(open_f[f'{var}_anom'][:,:,14,:,:])) <= 1 or \
             len(np.unique(open_f[f'{var}_anom'][:,:,21,:,:])) <= 1 or \
                 len(np.unique(open_f[f'{var}_anom'][:,:,28,:,:])) <= 1 or \
@@ -79,16 +79,22 @@ for file in sorted(glob(file_list)):
 
     '''I manually calculated ETo from SubX variables, look if I am missing any
     data from those files'''
-    open_ETo = xr.open_dataset(f'{var}_{file[-13:-3]}.nc4') 
-    if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
-        missing_original_ETo.append(file)
+
+    if var == 'ETo':
+        open_ETo = xr.open_dataset(f'{var}_{file[-13:-3]}.nc4') 
+        if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
+            missing_original_var.append(file)
+    elif var == 'RZSM':
+        open_m3_m3 = xr.open_dataset(f'SM_converted_m3_m3/SM_SubX_m3_m3_{file[-14:-4]}.nc4') 
+        if np.count_nonzero(np.isnan(open_m3_m3.SM_SubX_m3_m3_value[0,:,:,:,:].values)) == 286740:
+            missing_original_var.append(file)
 
 
-missing_anomaly[0][-13:-3]
-missing_dates = [i[-13:-3] for i in missing_anomaly]
+missing_anomaly_var[0][-14:-4]
+missing_dates = [i[-14:-4] for i in missing_anomaly_var]
 
 print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now if needed.')
-print(f'Missing ETo SubX data (no anomaly) in {len(missing_original_ETo)} files.')
+print(f'Missing {var} SubX data (no anomaly) in {len(missing_original_var)} files.')
 
 print('Copying all files into new directory to process seperately for certain leap years because of julian day issues')
 new_dir = 'ETo_anomaly_leap_year'

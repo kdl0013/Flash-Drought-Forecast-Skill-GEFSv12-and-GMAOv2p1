@@ -111,7 +111,7 @@ def ETo_gridMET_SubX_creation(_date) -> float:
                 S = sub_file.S.values,
                 X = sub_file.X.values,
                 Y = sub_file.Y.values,
-                lead = sub_file.lead.values,
+                lead = np.arange(0,45),
                 model = sub_file.model.values,
         
             ),
@@ -182,7 +182,7 @@ def SM_SMERGE_SubX_creation(_date):
                 S = sub_file.S.values,
                 X = sub_file.X.values,
                 Y = sub_file.Y.values,
-                lead = sub_file.L.values,
+                lead = np.arange(0,45),
                 model = sub_file.M.values,
         
             ),
