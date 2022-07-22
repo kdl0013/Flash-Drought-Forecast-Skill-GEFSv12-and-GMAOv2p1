@@ -20,7 +20,8 @@ data_d=$main_directory/Data
 data_s=$main_directory/Scripts
 
 subx=$data_d/SubX/${model}
-mkdir $data_s/cython_scripts
+mkdir $subx/anomaly
+#mkdir $data_s/cython_scripts
 
 
 # --- Functions
@@ -106,6 +107,9 @@ done
 run_anomaly_RZSM_ETo_EDDI "RZSM"
 run_anomaly_RZSM_ETo_EDDI "ETo"
 
+
+#Insert EDDI here
+
 #Check for missing anomaly data in files
 check_missing_anomaly_data () {
 cat 1e_check_for_missing_data.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|model_name|'${model}'|g' > TMP_1e_check_for_missing_data.py
@@ -113,6 +117,41 @@ cat 1e_check_for_missing_data.py | sed 's|main_dir|'${main_directory}'|g' | sed 
 python3 TMP_1e_check_for_missing_data.py
 }
 check_missing_anomaly_data
+
+#Make gridMET and ETo anomalies using same methodology as subx
+make_obs_anomaly () {
+cat 1f_make_observation_anomalies.py | sed 's|main_dir|'${main_directory}'|g' > TMP_1f_make_observation_anomalies.py
+
+python3 TMP_1f_make_observation_anomalies.py
+}
+make_obs_anomaly
+
+
+
+#Create new dataset to compare the skill between models
+reformat_observations_to_SubX_format() {
+cat 1i_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX.py
+
+python3 TMP_1i_Obs_reformatted_to_SubX.py
+}
+
+reformat_observations_to_SubX_format #call function
+
+#convert percentiles to SMPD binary occurence of flash drought
+make_SMPD_FD_classification () {
+name=${1::-3}
+cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    
+python3 $data_s/TMP_${name}_${model}.py 
+}
+
+make_SMPD_FD_classification "1n_RZSM_FD_classification_SubX.py"
+
+
+
+
+
 
 
 
@@ -230,15 +269,6 @@ make_obs_anomalies
 
 
 
-
-#Create new dataset to compare the skill between models
-reformat_observations_to_SubX_format() {
-cat 1i_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX.py
-
-python3 TMP_1i_Obs_reformatted_to_SubX.py
-}
-
-reformat_observations_to_SubX_format #call function
 
 
 

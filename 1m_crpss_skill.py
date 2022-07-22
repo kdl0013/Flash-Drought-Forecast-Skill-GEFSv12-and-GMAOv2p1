@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-TODO: Find the pearson_r correlation initially for:
+TODO: Find the continuous ranked probability skill score initially for:
     1.) The entire CONUS
         a.) for each model seperately
         b.) for each weekly lead time
@@ -9,6 +9,9 @@ TODO: Find the pearson_r correlation initially for:
 
     2.) For each region individually
         a.) model, weekly lead time, season
+    
+Source for function continous ranked probability score:
+   https://github.com/blei-lab/edward/pull/922/commits/69c6bed8ba1afcd516fbf736333dde7acb2f595d
 @author: kdl
 """
 
@@ -21,8 +24,21 @@ import os
 import pandas as pd
 from glob import glob
 import sys
+import properscoring as ps
+from scipy.stats import norm
+from xskillscore import crps_ensemble as crps
+from math import *
+
+#To construct CDF for 
+def phi(x):
+    #'Cumulative distribution function for the standard normal distribution'
+    return (1.0 + erf(x / sqrt(2.0))) / 2.0
 
 
+a=np.array([1,2,3,4,5,6,7])
+
+phi(a)
+phi(-2)flash dro
 print(f"PYTHON: {sys.version}")  # PYTHON: 3.8.1 | packaged by conda-forge | (default, Jan 29 2020, 15:06:10) [Clang 9.0.1 ]
 print(f" xarray {xr.__version__}")  # xarray 0.14.1
 print(f" numpy {np.__version__}")  # numpy 1.17.3
@@ -53,9 +69,6 @@ output_season_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}/seasonal_s
 
 os.system(f'mkdir -p {output_season_dir}')
 
-'''Weekly pearson R skill score
-Read all files in at once with xr.open_mfdataset, then calculate the skill
-based only on weekly lead time. '''
 
 
 def return_cluster_name(cluster_num):
@@ -73,29 +86,6 @@ def return_cluster_name(cluster_num):
         out_name= 'Northeast'  
     return(out_name)
 
-
-def make_anomaly_nc4_with_lead_dim_fixed(var):
-    #create a new file with the lead dates (which were day of year) - but are
-    #now being changed back to lead day (0-44 lead)
-    file_list = sorted(glob(f'{var}_anomaly*.nc4'))
-    for file in file_list:
-        try:
-            xr.open_dataset(f'{var}_anomaly_LEAD_{file[-14:]}')
-        except FileNotFoundError:
-            open_f = xr.open_dataset(file)
-            open_f.close()
-            
-            '''Change the lead date back to integer 0-44 instead of day of year'''
-            open_f = open_f.assign_coords(lead=np.arange(0,45))
-            #save
-            new_name1 = f'{var}_anomaly_LEAD_{file[-14:]}'
-            
-            open_f.to_netcdf(path=new_name1)
-    return()
-
-make_anomaly_nc4_with_lead_dim_fixed('RZSM')
-make_anomaly_nc4_with_lead_dim_fixed('ETo')
-    
 #%%
 # #%%Interannual skill for all grid cells and leads and models 
 # # var = 'RZSM'
@@ -352,56 +342,49 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
         var_OUT = np.empty_like(subx_converted)
         var_OUT[:,:,:,:,:] = np.nan
         #Only want to save dim (model x lead x Y x X)
-        var_OUT = var_OUT[0,:,:,:,:]
+        var_OUT = var_OUT[0,0,:,:,:]
 
-        def season_anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted):
+        def season_CRPS_skill(var_OUT, subx_converted, obs_converted):
 
             '''I put this function into the loop 
-            Source ACC:
-            https://metclim.ucd.ie/wp-content/uploads/2017/07/DeterministicSkillScore.pdf
-            def ACC(FC_anom,OBS_anom):
-                top = np.nanmean(FC_anom*OBS_anom) #all forecast anomalies * all observation anomalies                    
-                bottom = np.sqrt(np.nanmean(FC_anom**2)*np.nanmean(OBS_anom**2)) #variance of forecast anomalies * variance of observation anomalies
-                ACC = top/bottom
-                return (ACC)
+            Source CRPSS:
+            https://pypi.org/project/properscoring/
+      
             '''
             
             # test_out=[]
-            #Now find pearson correlation by model, lead, and lat/lon
-            for model in range(var_OUT.shape[0]):
-            # for model in range(3,4): for testing
-                # print(f'Working on model {model+1} for pearson r correlation')
-                for Y in range(var_OUT.shape[2]):
-                    # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
-                    for X in range(var_OUT.shape[3]):
-                        #anomalies are only present in weekly leads of 7
-                        for lead in np.arange(7,45,7):
+            #Now find Continous Ranked Probability skill score
+            for Y in range(var_OUT.shape[2]):
+                # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
+                for X in range(var_OUT.shape[3]):
+                    #anomalies are only present in weekly leads of 7
+                    for lead in np.arange(7,45,7):
+                        
+                        '''There is a Zero division error that occurs, to fix this (because numba doesn't like it)
+                        just check and see if the two files have all 0s or np.nans'''
+                        #Find the pearson_r correlation
+                        if len(np.unique(subx_converted[:,model, lead, Y, X])) <=2 or len(np.unique(obs_converted[:,model, lead, Y, X])) <=2:
+                            pass
+                        else:
+                            #CRPS from function
+                            truth = obs_converted[:,0, lead, Y, X]
+                            #Use all ensembles to make prediction
+                            ensemble = subx_converted[:,:, lead, Y, X]
                             
-                            '''There is a Zero division error that occurs, to fix this (because numba doesn't like it)
-                            just check and see if the two files have all 0s or np.nans'''
-                            #Find the pearson_r correlation
-                            if len(np.unique(subx_converted[:,model, lead, Y, X])) <=2 or len(np.unique(obs_converted[:,model, lead, Y, X])) <=2:
-                                pass
-                            else:
-                                #ACC from function
-                                obs = obs_converted[:,model, lead, Y, X]
-                                subx = subx_converted[:,model, lead, Y, X]
-                               
-                                top = np.nanmean(subx*obs) #all forecast anomalies * all observation anomalies                    
-                                bottom = np.sqrt(np.nanmean(subx**2)*np.nanmean(obs**2))
-                                ACC = top/bottom
-                                
-                                var_OUT[model, lead,Y,X] = ACC
+                            array_crps = np.asarray([ps.crps_ensemble(truth[t], ensemble[t, :]) for t in range(len(truth))])
+                            crps = array_crps.mean()
+                            
+                            var_OUT[lead,Y,X] = crps
 
             return(var_OUT)
         
-        seasonal_skill = season_anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted)
+        seasonal_skill = season_CRPS_skill(var_OUT, subx_converted, obs_converted)
         # seasonal_skill=var_OUT
         
         #Now add back to a dictionary for each model/lead week/weason
         for mod in range(skill_subx[season].model.shape[0]):
             for lead_week in np.arange(7,49,7):
-                seasonal_mod_skill = np.nanmean(seasonal_skill[mod,lead_week,:,:])
+                seasonal_mod_skill = np.nanmean(seasonal_skill[lead_week,:,:])
                 output_dictionary[f'Model{mod}_Lead{int(lead_week/7)}_{season_name[season]}']= seasonal_mod_skill
                 
     return(output_dictionary)

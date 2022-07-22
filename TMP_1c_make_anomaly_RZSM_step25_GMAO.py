@@ -20,6 +20,12 @@ when the data should be calculated. Since running all files in parallel intially
 it was very very slow because each file was being opened and re-opened many times and it
 was creating a bottleneck.python
 
+
+Save lead files to specific format to only have weekly leads (otherwise the entire file
+                                                              is mainly empty)
+out_lead = np.array([0,1,2,3,4,5,6,3.4,3.5,3.6,4.6])
+
+
 @author: kdl
 """
 
@@ -46,7 +52,9 @@ var = 'RZSM'  #for anomaly function
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
 rzsm_dir = f'{home_dir}/SM_converted_m3_m3'
-new_dir_mean = 'mean_for_ACC' #for saving the mean value output
+
+anom_dir = f'{home_dir}/anomaly'
+new_dir_mean = f'{anom_dir}/mean_for_ACC' #for saving the mean value output
 os.system(f'mkdir {home_dir}/{new_dir_mean}')
 
 
@@ -87,10 +95,7 @@ init_date_list = return_date_list()
         3.) Calculate anomaly
         4.) Append all subsequent year's files since we have the first day 
     (only need to process the first year)
-    
-
-This code is re-factored from 1b_EDDI.py
-    
+        
 '''
 
 #%%    
@@ -99,7 +104,7 @@ reference evapotranspiration anomalies'''
 # def multiProcess_EDDI_SubX_TEST(_date):
 def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
     # _date=init_date_list[0]
-    print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc4 in {home_dir}.') 
+    print(f'Calculating {var} anomaly on SubX for {_date} and saving as .nc4 in {anom_dir}.') 
     #Used for eliminating iterating over grid cells that don't matter
     smerge_file = xr.open_dataset(f'{smerge_dir}/smerge_sm_merged_remap.nc4')
     smerge_file_julian = smerge_file.copy()
@@ -132,6 +137,9 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
             if _date == '1999-01-10':
                 print(f'Working on lat {i_Y} and lon {i_X}')
 
+            '''Initially, I just wanted to use the SMERGE files as a mask, but it
+            does unneccesary computations for a lot of grid cells
+            
             #(np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7))
             #only work on grid cells with values like SMERGE
             
@@ -139,18 +147,17 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                 true_or_false = (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1)
             elif var == 'ETo':
                 true_or_false = (np.count_nonzero(np.isnan(smerge_file.RZSM[0,i_Y,i_X].values)) !=1) or ((i_X == 38 and i_Y == 6) or (i_X ==38 and i_Y ==7))
-            
+            '''
             #This is for the mask of CONUS, don't do extra unneeded calculations
-            if true_or_false:
+            if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
                 
                 def dict1_subx2():
                     
-                    #append 7-day summation from all files to a new dictionary
-                    #Technically, this is RZSM, but its easier to keep as ETo for EDDI, RZSM, and ETo
-                    summation_ETo_mod0 = {}
-                    summation_ETo_mod1 = {}
-                    summation_ETo_mod2 = {}
-                    summation_ETo_mod3 = {}
+                    #append 7-day average from all files to a new dictionary
+                    mean_var_mod0 = {}
+                    mean_var_mod1 = {}
+                    mean_var_mod2 = {}
+                    mean_var_mod3 = {}
                     
                     for idx,julian_d in enumerate(subx_out.lead.values):
                         #You must julian_d + week_lead because with RZSM you need 7-day looking backwards into the past. Must have 7 values.
@@ -158,18 +165,33 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                         # print(idx)
 
                         try:
+                            
+                            if idx == 0:
+                                mean_var_mod0[f'{julian_d}']=[]
+                                mean_var_mod0[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=idx).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                
+                                mean_var_mod1[f'{julian_d}']=[]
+                                mean_var_mod1[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=idx).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                
+                                mean_var_mod2[f'{julian_d}']=[]
+                                mean_var_mod2[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=idx).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                
+                                mean_var_mod3[f'{julian_d}']=[]
+                                mean_var_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=idx).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                            
+                            
                             if idx % 7 == 0 and idx !=0:
-                                summation_ETo_mod0[f'{julian_d}']=[]
-                                summation_ETo_mod0[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                mean_var_mod0[f'{julian_d}']=[]
+                                mean_var_mod0[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
                                 
-                                summation_ETo_mod1[f'{julian_d}']=[]
-                                summation_ETo_mod1[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                mean_var_mod1[f'{julian_d}']=[]
+                                mean_var_mod1[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
                                 
-                                summation_ETo_mod2[f'{julian_d}']=[]
-                                summation_ETo_mod2[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                mean_var_mod2[f'{julian_d}']=[]
+                                mean_var_mod2[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
                                 
-                                summation_ETo_mod3[f'{julian_d}']=[]
-                                summation_ETo_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
+                                mean_var_mod3[f'{julian_d}']=[]
+                                mean_var_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
                             
                         except IndexError:
                             pass                    
@@ -177,7 +199,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                         #Index error exists because there is no data at the end of the file
                         #That meets the current idx restrictions
         
-                    '''7-day mean of RZSM by lead date for the first opened file:
+                    '''7-day mean of RZSM or ETo by lead date for the first opened file:
                     Next we will append to each julian day value in the key in the dictionary with
                     the same julian day from all files'''
                     dates_to_keep = []
@@ -204,12 +226,20 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
 
                             for idx,julian_d in enumerate(subx_out.lead.values):
                                 #Only look at idx up to 39 because we need a full 7 days of data in order to calculate EDDI
-                                if idx % 7 == 0 and idx != 0:
+                                
+                                if idx == 0:
+                                    mean_var_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=idx).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                    mean_var_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=idx).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                    mean_var_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=idx).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                    mean_var_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=idx).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+
+                                
+                                elif idx % 7 == 0:
                                     try:
-                                        summation_ETo_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        summation_ETo_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
 
                                     #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:
@@ -218,11 +248,16 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                                         pass
 
                                     
-                    def find_anomaly(summation_ETo_modN,mod_number,anomaly_spread):
+                    def find_anomaly(mean_var_modN,mod_number,anomaly_spread):
                         out_dict = {}
                         out_mean = {}
-                        '''This will return all the data for each file for averages'''
-                        for k, julian_d in enumerate(summation_ETo_modN):
+                        '''This will return all the data for each file for averages
+                        because of day of year, we have to subset the +/- 42 days in 
+                        a different way'''
+
+                        
+                        for k, julian_d in enumerate(mean_var_modN):
+                            # if out_lead[k] == 1 or out_lead[k] == 2 or out_lead[k] == 3 or out_lead[k] == 4 or k==5 or k==6 or k==7:
                             julian_d = int(julian_d)
                             if int(julian_d) <= anomaly_spread:
                                 subtract_ = int(julian_d)-anomaly_spread
@@ -238,29 +273,113 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                                 sub_out = xr.concat([sub_small1,sub_small2,sub_small3],dim='lead')
                             else:
                                 sub_out = subx_all[f'{var_name}'][:,mod_number,:,i_Y,i_X].sel(lead=slice(julian_d-anomaly_spread,julian_d+anomaly_spread)) 
- 
-                            mean_value = bn.nanmean(sub_out)
-                            out_mean[f'{julian_d}'] = mean_value
+                            
+                            '''for some reason, model 3 with ETo has some inf values
+                            that are messing up anomaly calculation'''
+                            sub_out_vals = sub_out.values
+                            sub_out_vals = sub_out_vals.flatten()
+                            sub_out_vals[sub_out_vals > 1e06]  = np.nan
+
+                            mean_value = np.nanmean(sub_out_vals)
+                            out_mean[f'{k}'] = mean_value
                             #subtract mean
                             anomaly_list = []
                             julian_d = str(julian_d)
-                            for i in range(len(summation_ETo_modN[f'{julian_d}'])):
+                            for i in range(len(mean_var_modN[f'{julian_d}'])):
                                 try:
-                                    value_ = list(summation_ETo_modN[f'{julian_d}'][i].values())[0]
+                                    value_ = list(mean_var_modN[f'{julian_d}'][i].values())[0]
                                     anomaly_list.append(value_ - mean_value)
                                 except AttributeError:
-                                    value_=summation_ETo_modN[f'{julian_d}'][i]
+                                    value_=mean_var_modN[f'{julian_d}'][i]
                                     anomaly_list.append(value_ - mean_value)
 
 
-                            out_dict[f'{julian_d}']=anomaly_list
+                            out_dict[f'{k}']=anomaly_list
+                            #Week 3 & 4 lead
+                        
+                        out_mean_final = out_mean
+                        #Find new means for weekly averages first
+                        out_mean_final['3.4'] = ((out_mean['3']+ out_mean['4'])/2).astype('float32')
+                        out_mean_final['3.5'] = ((out_mean['3']+ out_mean['4'] + out_mean_final['5']) /3).astype('float32')
+                        out_mean_final['3.6'] = ((out_mean['3']+ out_mean['4'] + out_mean['5']+ out_mean['6']) /4).astype('float32')
+                        out_mean_final['4.6'] = ((out_mean['4']+ out_mean['5'] + out_mean['6']) /3).astype('float32')
+                        
+                        #get week lead first from Summation_ETo_modN, then subtract the new mean anomaly
+                        
+                        def create_multi_weekly_anom (out_dict):
+                            anom_list = []
+                            # if week_num == '3&4':
+                            for i in range(len(mean_var_modN[f'{julian_d}'])):
+                                anom_list.append(((list(mean_var_modN[list(mean_var_modN.keys())[3-1]][i].values())[0] + \
+                                    list(mean_var_modN[list(mean_var_modN.keys())[4-1]][i].values())[0])/2) - out_mean_final['3.4'])
+                                    
+                                out_dict['3.4'] = anom_list 
+                                    
+
+                            anom_list = []
+                            # elif week_num == '3&4&5':
+                            for i in range(len(mean_var_modN[f'{julian_d}'])):
+                               anom_list.append(((list(mean_var_modN[list(mean_var_modN.keys())[3-1]][i].values())[0] + \
+                                    list(mean_var_modN[list(mean_var_modN.keys())[4-1]][i].values())[0] + \
+                                                 list(mean_var_modN[list(mean_var_modN.keys())[5-1]][i].values())[0])/3) - out_mean_final['3.5'])
+                               
+                               out_dict['3.5'] = anom_list  
                             
-                        return (out_dict,out_mean)
+                            anom_list = []
+                            # elif week_num == '3&4&56':
+                            for i in range(len(mean_var_modN[f'{julian_d}'])):
+                               anom_list.append(((list(mean_var_modN[list(mean_var_modN.keys())[3-1]][i].values())[0] + \
+                                    list(mean_var_modN[list(mean_var_modN.keys())[4-1]][i].values())[0] + \
+                                                 list(mean_var_modN[list(mean_var_modN.keys())[5-1]][i].values())[0] + \
+                                                     list(mean_var_modN[list(mean_var_modN.keys())[6-1]][i].values())[0])/ 4) - out_mean_final['3.6'])
+                               
+                               out_dict['3.6'] = anom_list  
+                            
+                            anom_list = []
+                            # elif week_num == '4&5&6':
+                            for i in range(len(mean_var_modN[f'{julian_d}'])):
+                               anom_list.append(((list(mean_var_modN[list(mean_var_modN.keys())[4-1]][i].values())[0] + \
+                                    list(mean_var_modN[list(mean_var_modN.keys())[5-1]][i].values())[0] + \
+                                                 list(mean_var_modN[list(mean_var_modN.keys())[6-1]][i].values())[0])/3) - out_mean_final['4.6'])
+                               
+                               out_dict['4.6'] = anom_list 
+                               
+                               
+                               return(out_dict)
+                               
+                                
+                        out_dict = create_multi_weekly_anom (out_dict=out_dict)
+                        '''For some reason, the last weekly average lead doesn't work, just type manually'''
+                        anom_list = []
+                        # elif week_num == '4&5&6':
+                        for i in range(len(mean_var_modN[f'{julian_d}'])):
+                           anom_list.append(((list(mean_var_modN[list(mean_var_modN.keys())[4-1]][i].values())[0] + \
+                                list(mean_var_modN[list(mean_var_modN.keys())[5-1]][i].values())[0] + \
+                                             list(mean_var_modN[list(mean_var_modN.keys())[6-1]][i].values())[0])/3) - out_mean_final['4.6'])
+                           
+                           out_dict['4.6'] = anom_list 
+                           
+                        # #find the weekly averages for multiple leads
+                        # out_dict['3.4'] = [(g + h) / 2 for g, h in zip(out_dict['3'], out_dict['4'])]
+                        # out_dict['3.5'] = [(g + h + x) / 3 for g, h, x in zip(out_dict['3'], out_dict['4'],out_dict['5'])]
+                        # out_dict['3.6'] = [(g + h + x + z) / 4 for g, h, x, z in zip(out_dict['3'], out_dict['4'],out_dict['5'],out_dict['6'])]
+                        # out_dict['4.6'] = [(g + h + x) / 3 for g, h, x in zip(out_dict['4'],out_dict['5'],out_dict['6'])]
+
+                        # #Change the means to only be lead weeks, also add new weekly averages
+                        
+                        # out_mean_final = {}
+                        
+                        # for idx, val in enumerate(out_mean):
+                        #     out_mean_final[f'{idx+1}'] = out_mean[f'{val}']
+                        
+
+                        
+                        return (out_dict,out_mean_final)
                     
-                    anom_mod0,mean_mod0 = find_anomaly(summation_ETo_mod0,mod_number=0,anomaly_spread=anomaly_spread)
-                    anom_mod1,mean_mod1 = find_anomaly(summation_ETo_mod1,mod_number=1,anomaly_spread=anomaly_spread)
-                    anom_mod2,mean_mod2 = find_anomaly(summation_ETo_mod2,mod_number=2,anomaly_spread=anomaly_spread)
-                    anom_mod3,mean_mod3 = find_anomaly(summation_ETo_mod3,mod_number=3,anomaly_spread=anomaly_spread)
+                    anom_mod0,mean_mod0 = find_anomaly(mean_var_mod0,mod_number=0,anomaly_spread=anomaly_spread)
+                    anom_mod1,mean_mod1 = find_anomaly(mean_var_mod1,mod_number=1,anomaly_spread=anomaly_spread)
+                    anom_mod2,mean_mod2 = find_anomaly(mean_var_mod2,mod_number=2,anomaly_spread=anomaly_spread)
+                    anom_mod3,mean_mod3 = find_anomaly(mean_var_mod3,mod_number=3,anomaly_spread=anomaly_spread)
                     
                     add_dates = [i[day_s:] for i in dates_to_keep]
                     anom_mod0['init_dates'] = add_dates
@@ -276,6 +395,17 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                     mean_mod0,mean_mod1,mean_mod2,mean_mod3= dict1_subx2()
                 
                 #Create weekly leads all in one file
+                '''We have created weekly leads for several weeks (see below)
+                out_lead = np.array([0,1,2,3,4,5,6,3.4,3.5,3.6,4.6])
+                
+                Weeks: 1,2,3,4. Then we take averages of multiple weeks including:
+                    weeks 3&4, 3&4&5, 3&4&5&6, 4&5&6.
+                    
+                    Total of 8 different leads
+                '''
+                
+                #Add all date files to it's own dictionary to quickly add to new files
+                #This code will add each lead time to it's correct file (verified by my own eyes)
                 def improve_anomaly_dictionary( anom_modN,  file_dates_to_keep):
                     #first add a dictinary with the start date as the key
                     mod_out = {}
@@ -283,12 +413,14 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                         mod_out[anom_modN['init_dates'][idx]] = []
                         
                         all_values = []
+                        count=0
                         for init_day,values in anom_modN.items():
 
                             if init_day=='init_dates':
                                 break
                             else:
                                 all_values.append(anom_modN[init_day][idx])
+                                count+=1
                         mod_out[anom_modN['init_dates'][idx]] = all_values    
 
                     return(mod_out)
@@ -297,6 +429,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                 out_mod1 = improve_anomaly_dictionary(anom_mod1, file_dates_to_keep)
                 out_mod2 = improve_anomaly_dictionary(anom_mod2, file_dates_to_keep)
                 out_mod3 = improve_anomaly_dictionary(anom_mod3, file_dates_to_keep)
+
 
                 '''Now that we have final_out_dictionary_all_eddi which contains the specific values for each init date for the currenly looped X,Y grid cell, 
                 we can append to aall EDDI files'''
@@ -312,28 +445,26 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                         #We have the file, now open it
                         #add values by julian day
                         if var == 'ETo':
-                            fileOut = ("{}_anomaly_{}4".format(var,init_file_day))
+                            fileOut = ("{}/{}_anomaly_{}4".format(anom_dir,var,init_file_day))
                         elif var == 'RZSM':
-                            fileOut = ("{}_anomaly_{}".format(var,init_file_day))
+                            fileOut = ("{}/{}_anomaly_{}".format(anom_dir,var,init_file_day))
                             
                         var_n = f'{var}_anom'
                         file_open = xr.open_dataset(fileOut)
                         file_open.close()
                         
-                        #Now add to file by lead week
-                        lead_week=1
-                        for anom_vals in range(len(out_mod0[init_file_day])):
+                        #Now add to file by lead week (or average)
+                        for anom_lead in range(len(out_mod0[init_file_day])):
 
                             #Add data to netcdf file
-                            file_open[var_n][0,0,lead_week*7,i_Y,i_X] = out_mod0[init_file_day][anom_vals]
-                            file_open[var_n][0,1,lead_week*7,i_Y,i_X] = out_mod1[init_file_day][anom_vals]
-                            file_open[var_n][0,2,lead_week*7,i_Y,i_X] = out_mod2[init_file_day][anom_vals]
-                            file_open[var_n][0,3,lead_week*7,i_Y,i_X] = out_mod3[init_file_day][anom_vals]
+                            file_open[var_n][0,0,anom_lead,i_Y,i_X] = out_mod0[init_file_day][anom_lead]
+                            file_open[var_n][0,1,anom_lead,i_Y,i_X] = out_mod1[init_file_day][anom_lead]
+                            file_open[var_n][0,2,anom_lead,i_Y,i_X] = out_mod2[init_file_day][anom_lead]
+                            file_open[var_n][0,3,anom_lead,i_Y,i_X] = out_mod3[init_file_day][anom_lead]
                             
                             
                             file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                             file_open.close()
-                            lead_week+=1
 
                 add_anomaly_to_nc_file(out_mod0, out_mod1,out_mod2,out_mod3)
                 
@@ -358,10 +489,10 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
                         var_n = f'{var}_mean'
                         
                         #Add data to netcdf file
-                        file_open[var_n][0,0,idx_*7,i_Y,i_X] = mean_mod0[f'{lead}']
-                        file_open[var_n][0,1,idx_*7,i_Y,i_X] = mean_mod1[f'{lead}']
-                        file_open[var_n][0,2,idx_*7,i_Y,i_X] = mean_mod2[f'{lead}']
-                        file_open[var_n][0,3,idx_*7,i_Y,i_X] = mean_mod3[f'{lead}']
+                        file_open[var_n][0,0,idx_,i_Y,i_X] = mean_mod0[f'{lead}']
+                        file_open[var_n][0,1,idx_,i_Y,i_X] = mean_mod1[f'{lead}']
+                        file_open[var_n][0,2,idx_,i_Y,i_X] = mean_mod2[f'{lead}']
+                        file_open[var_n][0,3,idx_,i_Y,i_X] = mean_mod3[f'{lead}']
                         
                         file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                         file_open.close()
@@ -374,7 +505,6 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
     
     #save the dates that were completed to not re-run
     os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt')
-    os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_mean_nc_{model_NAM1}.txt')
 
     return()
 #%%
@@ -382,7 +512,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread):
 
 
 # _date=init_date_list[0]
-'''Read RZSM_completed_anomaly_nc_.txt file to not have to re-run extra code'''
+'''Read {var}_completed_anomaly_nc_.txt file to not have to re-run extra code'''
 completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_anomaly_nc_{model_NAM1}.txt',dtype='str')
 try:
     #first line contains a header, nothing with dates
