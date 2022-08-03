@@ -36,7 +36,7 @@ SMERGE_anomaly_file = f'{smerge_dir}/RZSM_anomaly_SMERGE_merged.nc'
 rzsm_file = xr.open_dataset(SMERGE_RZSM_file)
 anomaly_file = xr.open_dataset(SMERGE_anomaly_file)
 
-#%% GOOD
+#%% GOOD - Anomaly percentiles
 def create_anomaly_percentiles(anomaly_file,SMERGE_anomaly_file):
     
     try:
@@ -107,7 +107,7 @@ def create_anomaly_percentiles(anomaly_file,SMERGE_anomaly_file):
         
         return()
 
-#%% Good
+#%% Good - RZSM m3/m3 percentiles
 def create_RZSM_m3_m3_percentiles(rzsm_file,SMERGE_RZSM_file):
     
     try:
@@ -182,6 +182,76 @@ def create_RZSM_m3_m3_percentiles(rzsm_file,SMERGE_RZSM_file):
 
 
 #%%
+def smpd_function_anomaly(anom_percentiles,SMERGE_anomaly_file):
+
+    percentile_data = anom_percentiles.Anomaly_percentile.to_numpy()
+    #file description (output)
+    desc = 'SMPD index on SMERGE RZSM anomaly data.'
+    file_name = "SMPD_anomaly_smerge.nc4"
+    test_if_file_created = f'{smerge_dir}/{file_name}'
+    
+    output_data = np.zeros_like(percentile_data) 
+    
+    try:
+        xr.open_dataset(test_if_file_created)
+    except FileNotFoundError:
+        
+        @njit(parallel=True)
+        def binary_occurence_smpd(percentile_data,output_data):
+            for Y in range(output_data.shape[1]):
+                for X in range(output_data.shape[2]):
+                    for day in range(3,output_data.shape[0]-3):
+                    #if rzsm percentile is below the 20th: perform code else week is not in flash drought
+                        if percentile_data[day,Y,X] <= 20:
+                        #if previous week is greater than 40th: week is in flash drought (1)
+                        #1 week code chunk (2 lines below)
+                            if percentile_data[day-1,Y,X] >= 40:
+                                #numpy will wrap around the end of the array,
+                                #this is messing up results
+                                output_data[day,Y,X] = 1
+                        #must drop to below 20th percentile in 3 weeks or less
+                        #This is the 3-week code chunk below (next 5 lines)
+                            elif percentile_data[day-1,Y,X] <= 40 and \
+                                percentile_data[day-2,Y,X] <= 40 and \
+                                percentile_data[day-3,Y,X] >= 40:
+                                    
+                                    output_data[day,Y,X]  = 1 #flash drought
+                        #2 weeks code chunk
+                            elif percentile_data[day-1,Y,X] <= 40 and \
+                                percentile_data[day-2,Y,X] >= 40:
+                                    output_data[day,Y,X]   = 1 #flash drought   
+            return(output_data[:,:,:])
+            
+        # Y=0
+        # X=14
+        # percentile_data[0,model,:,Y,X] 
+        # output_data[0,model,:,Y,X] 
+        # OUTPUT[0,model,:,Y,X]  
+        OUTPUT = binary_occurence_smpd(percentile_data,output_data)
+    
+        np.count_nonzero(OUTPUT == 1)
+        
+        #Create new dataset
+        var_final = xr.Dataset(
+            data_vars = dict(
+                SMPD_RZSM = (['S','model','lead','Y','X'], OUTPUT[:,:,:,:,:]),
+            ),
+            coords = dict(
+                X = open_f.X.values,
+                Y = open_f.Y.values,
+                lead = open_f.lead.values,
+                S = open_f.S.values,
+                model = open_f.model.values
+            ),
+            attrs = dict(
+                Description = f'{desc}.'),
+        )                    
+    
+    
+        var_final.to_netcdf(path = f'{test_if_file_created}')
+        var_final.close()
+        
+        return()
 
 
 #%%

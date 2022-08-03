@@ -21,6 +21,8 @@ data_s=$main_directory/Scripts
 
 subx=$data_d/SubX/${model}
 mkdir $subx/anomaly
+
+mask=$data_s/CONUS_mask
 #mkdir $data_s/cython_scripts
 
 
@@ -94,7 +96,8 @@ done
 #mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
 mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly.py" "RZSM"
 mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly.py" "ETo"
-
+mk_anomaly_script_RZSM_ETo_EDDI "1c2_make_anomaly_MME.py" "RZSM"
+mk_anomaly_script_RZSM_ETo_EDDI "1c2_make_anomaly_MME.py" "ETo"
 
 #Run all three steps at a single time. Takes 30GB of RAM to run 3 at a time.
 run_anomaly_RZSM_ETo_EDDI () {
@@ -107,7 +110,14 @@ done
 run_anomaly_RZSM_ETo_EDDI "RZSM"
 run_anomaly_RZSM_ETo_EDDI "ETo"
 
-
+run_MME_anomaly_RZSM_ETo_EDDI () {
+cd $data_s
+for file in TMP_1c2_make_anomaly_MME_$1*.py;do
+python3 $file &
+done
+}
+run_MME_anomaly_RZSM_ETo_EDDI "RZSM"
+run_MME_anomaly_RZSM_ETo_EDDI "ETo"
 #Insert EDDI here
 
 #Check for missing anomaly data in files
@@ -128,6 +138,7 @@ make_obs_anomaly
 
 
 
+
 #Create new dataset to compare the skill between models
 reformat_observations_to_SubX_format() {
 cat 1i_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX.py
@@ -136,6 +147,16 @@ python3 TMP_1i_Obs_reformatted_to_SubX.py
 }
 
 reformat_observations_to_SubX_format #call function
+
+#Create new dataset to compare the skill between models (eto single variables)
+reformat_observations_to_SubX_format_ETo() {
+cat 1j_eto_variables_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1j_eto_variables_reformatted_to_SubX.py
+
+python3 TMP_1j_eto_variables_reformatted_to_SubX.py
+}
+
+reformat_observations_to_SubX_format_ETo #call function
+
 
 #convert percentiles to SMPD binary occurence of flash drought
 make_SMPD_FD_classification () {
@@ -148,6 +169,19 @@ python3 $data_s/TMP_${name}_${model}.py
 
 make_SMPD_FD_classification "1n_RZSM_FD_classification_SubX.py"
 
+#Create percentiles from observations (SMERGE for Soil Moisture Percentile Drop)
+SMPD_obs_percentiles () {
+name=${1::-3}
+cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    
+python3 $data_s/TMP_${name}_${model}.py 
+}
+
+
+}
+
+#for checking my current test progress (pictures or files)
 
 
 

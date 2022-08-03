@@ -20,46 +20,55 @@ data_d=$main_directory/Data
 data_s=$main_directory/Scripts
 mkdir -p $data_d/SubX/GMAO
 mkdir -p $data_s 
-mkdir -p $data_d/SMERGE_SM/Raw_data
+mkdir -p $data_d/GLEAM_RZSM/raw_data
 mkdir -p $data_d/gridMET/ETo_SubX_values
 mkdir -p $data_d/EDDI/convert_2_nc
-################### SMERGE soil moisture ##########################
-{
-cd $data_s
-cat 0a_download_SMERGE_RZSM.py | sed 's|main_dir|'${main_directory}'|g' | \
-sed 's|procs|'${processors}'|g' > 0a_TMP_download_SMERGE_RZSM.py
 
-echo Starting SMERGE Soil Moisture Download
-#Run file
+mask=$data_s/CONUS_mask
 
-python3 0a_TMP_download_SMERGE_RZSM.py
-rm 0a_TMP_download_SMERGE_RZSM.py
-}  
 #####Remap RZSM files to a 1 x 1 grid and then select only CONUS
-#Permutate dimensions to be the same as SubX
-{
-cd $data_d/SMERGE_SM/Raw_data
-#Remove files that had wildcard expressions that were doubly downloaded
+##### GLEAM Soil Moisture
+rzsm_obs=$data_d/GLEAM_RZSM/raw_data
+mkdir $rzsm_obs
+cd $rzsm_obs
 
-ulimit -n 6500
-cdo mergetime *.nc4 smerge_sm_merged.nc4
-cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/CONUS_mask.grd smerge_sm_merged.nc4 smerge_sm_merged_remap.nc4
-}
+#TODO: Only run this command once. The next time, it will append more data that makes 
+#the file unreadable. If so, just change the lon,a,c to lon,o,c for all variables (and for lat)
+for f in *.nc;do
+ncatted -a standard_name,lon,a,c,"longitude" $f
+ncatted -a long_name,lon,a,c,"longitude" $f
+ncatted -a units,lon,a,c,"degrees_east" $f
+ncatted -a axis,lon,a,c,"lon" $f
+
+ncatted -a standard_name,lat,a,c,"latitude" $f
+ncatted -a long_name,lat,a,c,"latitude" $f
+ncatted -a units,lat,a,c,"degrees_north" $f
+ncatted -a axis,lat,a,c,"lat" $f;
+done
+
+#Shrink files first, merging them makes a very large dataset
+for f in *.nc;do
+cdo -sellonlatbox,235,293,24,50 -remapcon,$mask/CONUS_mask_GLEAM.grd $f a_$f;
+done
+
+
+cdo mergetime a_SMroot* SMroot_merged.nc4
+cdo mergetime a_SMsurf* SMsurf_merged.nc4
+
 ################### gridMET METDATA ##########################
 {
-echo "Starting METDATA download of PET (alfalfa)"
 #Move into the directory where files will be saved
 cd $data_d/gridMET
-mkdir remap_merged
 
 #Download METDATA files
 bash $data_s/0b_download_metdata_wget.sh
+#Download year 2021 seperately from website https://www.northwestknowledge.net/metdata/data/
 
 #Merge together all years of each variable, remap areal conservative, select CONUS
 for var in srad tmmn tmmx vs rmin rmax;
 do
 echo Starting variable $var
- cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/CONUS_mask.grd -mergetime ${var}_*.nc ${var}_remap_final.nc;
+ cdo -sellonlatbox,235,293,24,50 -remapcon,$mask/CONUS_mask.grd -mergetime ${var}_*.nc ${var}_remap_final.nc;
 done
 
 cdo ensavg tmmn_remap_final.nc tmmx_remap_final.nc tavg_remap_final.nc
@@ -70,7 +79,7 @@ echo gridMET files are downloaded and pre-processed
 mkdir $data_d/elevation && cd $data_d/elevation
 data_e=$data_d/elevation
 
-cdo -sellonlatbox,235,293,24.0,50.0 -remapcon,$data_s/CONUS_mask.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
+cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/CONUS_mask.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
 
 ############## Evaporative Demand Drought Index ##########################
 {
@@ -131,6 +140,18 @@ done
 
 
 
+#OLD CODE, SMERGE only goes through year 2019, switching to GLEAM soil moisture instead
+################### SMERGE soil moisture ##########################
+
+#cd $data_s
+#cat 0a_download_SMERGE_RZSM.py | sed 's|main_dir|'${main_directory}'|g' | \
+#sed 's|procs|'${processors}'|g' > TMP_Oa_download_SMERGE_RZSM.py
+
+#echo Starting SMERGE Soil Moisture Download
+#Run file
+
+#python3 TMP_Oa_download_SMERGE_RZSM.py
+  
 
 
 
@@ -140,10 +161,15 @@ done
 
 
 
+#OLD SMERGE RZSM
+{
+cd $data_d/SMERGE_SM/Raw_data
+#Remove files that had wildcard expressions that were doubly downloaded
 
-
-
-
+ulimit -n 9500
+cdo mergetime *.nc4 smerge_sm_merged.nc4
+cdo -sellonlatbox,235,293,24,50 -remapcon,$data_s/CONUS_mask.grd smerge_sm_merged.nc4 smerge_sm_merged_remap.nc4
+}
 
 
 

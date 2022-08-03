@@ -1,0 +1,11 @@
+--2022-08-01 10:58:32--  https://noaa-gefs-retrospective.s3.amazonaws.com/GEFSv12/reforecast/2018/2018080800/p08/Days:10-35/soilw_bgrnd_2018080800_p08.grib2.idx
+Resolving noaa-gefs-retrospective.s3.amazonaws.com... 54.231.172.161
+Connecting to noaa-gefs-retrospective.s3.amazonaws.com|54.231.172.161|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 29356 (29K) [binary/octet-stream]
+Saving to: ‘/scratch/kdl0013/soilw_bgrnd/d35_soilw_bgrnd_2018080800_p08.grib2.idx’
+
+     0K .......... .......... ........                        100% 1.59M=0.02s
+
+2022-08-01 11:03:26 (1.59 MB/s) - ‘/scratch/kdl0013/soilw_bgrnd/d35_soilw_bgrnd_2018080800_p08.grib2.idx’ saved [29356/29356]
+

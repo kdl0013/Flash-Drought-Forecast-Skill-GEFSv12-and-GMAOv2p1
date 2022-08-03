@@ -10,23 +10,29 @@ Inputs -- you can change the model and variables that you want downloaded
 
 Outputs: Shell script which contains download info. Files will download 20 at a time when run.
 
+
+
+!!!FOR GMAO, only every 5 days are initiated beginnning January 10, 1999
 '''
 import os
 import datetime as dt
 import numpy as np
+from glob import glob
 
 
-username_IRIDL = ""
-password_IRIDL = ""
+username_IRIDL = "kdl0013"
+password_IRIDL = "Mi$$ionary098"
 
 
 home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX'
 script_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Scripts'
-
+model = 'GMAO'
 
 #Works for GMAO GEOSo
 models = ['GMAO']
 sources = ['GEOS_V2p1']
+
+model_dir = f'{home_dir}/{model}'
 
 vars = ['huss', 'dswrf','mrso','tas', 'uas', 'vas','tdps','pr','cape','tasmax','tasmin']
 
@@ -78,7 +84,7 @@ for m_i, model in enumerate(models):
             # command = f"wget -nc --user {username_IRIDL} --password {password_IRIDL} 'http://iridl.ldeo.columbia.edu/SOURCES/.Models/.SubX/.{model}/.{sources[m_i]}/.hindcast/.{var}/S/(1200%20{str(date.day)}%20{date.strftime('%b')}%20{str(date.year)})/VALUES/data.nc' -O {home_dir}/{models[0]}/{var}_{model}_{date_str}.nc &"
             
             #RSMAS
-            command = f"wget -nc --user {username_IRIDL} --password {password_IRIDL} 'http://iridl.ldeo.columbia.edu/SOURCES/.Models/.SubX/.{model}/.{sources[m_i]}/.hindcast/.{var}/S/(1200%20{str(date.day)}%20{date.strftime('%b')}%20{str(date.year)})/VALUES/data.nc' -O {home_dir}/{models[0]}/{var}_{model}_{date_str}.nc &"
+            command = f"wget -nc --user {username_IRIDL} --password {password_IRIDL} 'http://iridl.ldeo.columbia.edu/SOURCES/.Models/.SubX/.{model}/.{sources[m_i]}/.hindcast/.{var}/S/(1200%20{str(date.day)}%20{date.strftime('%b')}%20{str(date.year)})/VALUES/data.nc' -O {home_dir}/{models[0]}/{var}_{model}_{date_str}.nc4 &"
 
             if count % 20 == 0:
                 output.append('wait')
@@ -92,5 +98,16 @@ np.savetxt(f'{script_dir}/{name}.txt',output, fmt="%s")
 
 os.system(f'mv {script_dir}/{name}.txt {script_dir}/{name}.sh')
 
+#%%
+#make individual dates 
+#first find missing dates for dswrf (five were missing some data)
+model_dir = f'{home_dir}/{model}'
+os.chdir(model_dir)
+all_dates = [date_[-14:-4] for date_ in sorted(glob('mrso*.nc4'))]
+dswrf_dates = [date_[-14:-4] for date_ in sorted(glob('dsw*.nc4'))]
 
-
+missing_dates=set(all_dates).difference(dswrf_dates)
+    
+def file_list():
+    return([i for i in glob('*.nc4')])
+file_list()

@@ -20,25 +20,19 @@ import numpy as np
 import requests
 from multiprocessing import Pool
 
-home_dir = 'main_dir'
-num_processors = int('procs')
+# home_dir = 'main_dir'
+# num_processors = int('procs')
 #%%
 # #for testing (don't run)
 home_dir='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors=12
+num_processors=2
 
 #GES DISC link list data 
 link_list_name='subset_SMERGE_RZSM0_40CM_2.0_20220120_141903.txt'
 
 #Make directories
 #For all data
-try:
-    os.mkdir(os.path.join(home_dir,'Data'))
-    os.mkdir(os.path.join(home_dir,'Data','SMERGE_SM'))
-    os.mkdir(os.path.join(home_dir,'Data','SMERGE_SM','Raw_data'))
-except FileExistsError:
-    print('Created directory folders')
-
+os.system(f'mkdir -p {home_dir}/Data/SMERGE_SM/Raw_data')
 
 #Read link list file
 smerge_data = np.loadtxt(os.path.join(home_dir,'Data','SMERGE_SM',link_list_name),skiprows=1,dtype='str')
@@ -72,22 +66,27 @@ os.chdir(os.path.join(home_dir,'Data','SMERGE_SM','Raw_data'))
 
 already_downloaded_files = os.listdir()
 
+
 def download_SMERGE(link_list_URL):
     if (link_list_URL[-12:] in already_downloaded_files):
         print(f'{link_list_URL[-12:]} already downloaded.')
     else:
-        if (int(link_list_URL[-12:-8]) < 1999) or (int(link_list_URL[-12:-8]) > 2016):
+        if (int(link_list_URL[-12:-8]) < 1999):
             print(f'{link_list_URL[-12:]} year not needed.')
         else:
-            result = requests.get(link_list_URL)
-            try:
-               result.raise_for_status()
-               f = open(link_list_URL[-12:],'wb')
-               f.write(result.content)
-               f.close()
-               print('contents of URL written to '+link_list_URL[-12:])
-            except:
-               print('requests.get() returned an error code '+str(result.status_code))
+            
+            os.system(f'wget -O {link_list_URL[-12:]} {link_list_URL}')
+            
+            '''This doesn't work anymore'''
+            # result = requests.get(link_list_URL)
+            # try:
+            #    result.raise_for_status()
+            #    f = open(link_list_URL[-12:],'wb')
+            #    f.write(result.content)
+            #    f.close()
+            #    print('contents of URL written to '+link_list_URL[-12:])
+            # except:
+            #    print('requests.get() returned an error code '+str(result.status_code))
     
 
 

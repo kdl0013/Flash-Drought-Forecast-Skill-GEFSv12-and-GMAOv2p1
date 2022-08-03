@@ -21,6 +21,7 @@ import os
 import pandas as pd
 from glob import glob
 import sys
+from numpy import inf
 
 
 print(f"PYTHON: {sys.version}")  # PYTHON: 3.8.1 | packaged by conda-forge | (default, Jan 29 2020, 15:06:10) [Clang 9.0.1 ]
@@ -28,32 +29,37 @@ print(f" xarray {xr.__version__}")  # xarray 0.14.1
 print(f" numpy {np.__version__}")  # numpy 1.17.3
 print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
-#TODO change later
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# model_NAM1 = 'GMAO'
+
 dir1 = 'main_dir'
 model_NAM1 = 'model_name'
-os.chdir(f'{dir1}/Data/SubX/{model_NAM1}')
+#%%
+# TODO change later
+# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+# model_NAM1 = 'GMAO'
 
-subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/' #where subX model data lies 
+subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
+os.chdir(f'{subX_dir}')
+
+ #where subX model data lies 
 
 subdir_for_mean = f'{subX_dir}/mean_for_ACC'
 mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 
 #observations
 obs_eto_path = f'{dir1}/Data/gridMET/ETo_SubX_values/'
-obs_rzsm_path = f'{dir1}/Data/SMERGE_SM/SM_SubX_values/'
+obs_rzsm_path = f'{dir1}/Data/GLEAM_RZSM/SM_SubX_values/'
 
+#mean is needed for anomaly correlation coefficient calculation
 obs_eto_mean = xr.open_dataset(f'{dir1}/Data/gridMET/ETo_anomaly_gridMET_mean.nc')
-obs_rzsm_mean = xr.open_dataset(f'{dir1}/Data/SMERGE_SM/Raw_data/RZSM_anomaly_SMERGE_mean.nc')
+obs_rzsm_mean = xr.open_dataset(f'{dir1}/Data/GLEAM_RZSM/RZSM_anomaly_GLEAM.nc')
 
-output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc files
+output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
 output_image_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}'
 output_season_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}/seasonal_skill/'
 
 os.system(f'mkdir -p {output_season_dir}')
 
-'''Weekly pearson R skill score
+'''Anomaly correlation coefficient skill
 Read all files in at once with xr.open_mfdataset, then calculate the skill
 based only on weekly lead time. '''
 
@@ -74,27 +80,27 @@ def return_cluster_name(cluster_num):
     return(out_name)
 
 
-def make_anomaly_nc4_with_lead_dim_fixed(var):
-    #create a new file with the lead dates (which were day of year) - but are
-    #now being changed back to lead day (0-44 lead)
-    file_list = sorted(glob(f'{var}_anomaly*.nc4'))
-    for file in file_list:
-        try:
-            xr.open_dataset(f'{var}_anomaly_LEAD_{file[-14:]}')
-        except FileNotFoundError:
-            open_f = xr.open_dataset(file)
-            open_f.close()
+# def make_anomaly_nc4_with_lead_dim_fixed(var):
+#     #create a new file with the lead dates (which were day of year) - but are
+#     #now being changed back to lead day (0-44 lead)
+#     file_list = sorted(glob(f'{var}_anomaly*.nc4'))
+#     for file in file_list:
+#         try:
+#             xr.open_dataset(f'{var}_anomaly_LEAD_{file[-14:]}')
+#         except FileNotFoundError:
+#             open_f = xr.open_dataset(file)
+#             open_f.close()
             
-            '''Change the lead date back to integer 0-44 instead of day of year'''
-            open_f = open_f.assign_coords(lead=np.arange(0,45))
-            #save
-            new_name1 = f'{var}_anomaly_LEAD_{file[-14:]}'
+#             '''Change the lead date back to integer 0-44 instead of day of year'''
+#             open_f = open_f.assign_coords(lead=np.arange(0,45))
+#             #save
+#             new_name1 = f'{var}_anomaly_LEAD_{file[-14:]}'
             
-            open_f.to_netcdf(path=new_name1)
-    return()
+#             open_f.to_netcdf(path=new_name1)
+#     return()
 
-make_anomaly_nc4_with_lead_dim_fixed('RZSM')
-make_anomaly_nc4_with_lead_dim_fixed('ETo')
+# make_anomaly_nc4_with_lead_dim_fixed('RZSM')
+# make_anomaly_nc4_with_lead_dim_fixed('ETo')
     
 #%%
 # #%%Interannual skill for all grid cells and leads and models 
@@ -288,27 +294,31 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
     West_conus_mask = conus_mask['USDM-West_mask']
 
     if var == 'ETo':
-        obs_name = 'ETo_SubX_*.nc4'
+        obs_name = 'ETo_SubX_anomaly_*.nc4'
         sub_name = 'ETo_anom'
         obs_mean = obs_eto_mean
         obs_path = obs_eto_path
     elif var == 'RZSM':
-        obs_name = 'SM_SubX_*.nc4'
+        obs_name = 'SM_SubX_anomaly_*.nc4'
         sub_name = 'RZSM_anom'
         obs_mean = obs_rzsm_mean #only use variable .CCI from obs_mean for smerge
         obs_path = obs_rzsm_path
         
 
     #Don't have to load into memory because I'm immediately converting them into a np.array
-    subx_files = xr.open_mfdataset(f'{var}_anomaly_LEAD*.nc4', concat_dim=['S'], combine='nested')
+    subx_files = xr.open_mfdataset(f'{var}_anomaly_*.nc4', concat_dim=['S'], combine='nested')
     obs_files = xr.open_mfdataset(f'{obs_path}/{obs_name}', concat_dim = ['S'], combine = 'nested')
     
-    # #Change observations to have no infinity (particularly for ETo subx)
+    # obs_files = subx_files --only for testing purposes. #TODO: Don't include
+    #Change observations to have no infinity (particularly for ETo subx)
     # if var=='ETo':
     #     subx_files=subx_files.where(subx_files.ETo_anom < -100, np.nan)
     
-    #Reassign coordinates because of a random issue where if you don't fix it
-    #there is one day missing when running the next block of code between subx and obs for each season
+    
+    # subx_files.ETo_anom[0,3,7,10,10].values
+    # obs_files.ETo_anom[0,3,7,10,10].values
+    ''''Reassign coordinates because of a random issue where if you don't fix it
+    there is one day missing when running the next block of code between subx and obs for each season'''
     obs_files=obs_files.assign_coords(S=subx_files.S.values)
 
     '''PICK SEASON and REGION'''
@@ -343,9 +353,23 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
     #save outputs for each model, lead, season
     output_dictionary = {}
     for season in range(len(skill_subx)):
+        if var=='ETo' and season == 2:
+            '''testing to see why I have np.nan for skill, when there are values in all the datasets
+            The reason is becauase there are some infinity values'''
+            
+            # season,X,Y,model=2,10,10,3
+            # skill_subx[season][:,model,7,Y,X].values     #You can see infinity values here  
+            #skill_obs[season][:,model,7,Y,X].values     #No infinity values here  
+            
+            subx_converted = (skill_subx[season].to_numpy().squeeze())
+            subx_converted[subx_converted == inf] = np.nan
+            # subx_converted[:,model,7,Y,X] #converted properly
+            
         #Because we don't need to slice anything, we can convert it to a numpy array
         #and use Numba for faster processing
-        subx_converted = (skill_subx[season].to_numpy().squeeze()) #drop unneed dimension
+        else:
+            subx_converted = (skill_subx[season].to_numpy().squeeze()) #drop unneed dimension
+        
         obs_converted = (skill_obs[season].to_numpy().squeeze())  #drop unneed dimension
          
         #Make an empty file to store the final outcomes
@@ -353,10 +377,12 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
         var_OUT[:,:,:,:,:] = np.nan
         #Only want to save dim (model x lead x Y x X)
         var_OUT = var_OUT[0,:,:,:,:]
-
+        
+        
+        
         def season_anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted):
 
-            '''I put this function into the loop 
+            '''I put this function into the loop (tried numba, didn't work well) 
             Source ACC:
             https://metclim.ucd.ie/wp-content/uploads/2017/07/DeterministicSkillScore.pdf
             def ACC(FC_anom,OBS_anom):
@@ -366,7 +392,6 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
                 return (ACC)
             '''
             
-            # test_out=[]
             #Now find pearson correlation by model, lead, and lat/lon
             for model in range(var_OUT.shape[0]):
             # for model in range(3,4): for testing
@@ -375,34 +400,32 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
                     # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
                     for X in range(var_OUT.shape[3]):
                         #anomalies are only present in weekly leads of 7
-                        for lead in np.arange(7,45,7):
+                        for lead in range(var_OUT.shape[1]):
                             
                             '''There is a Zero division error that occurs, to fix this (because numba doesn't like it)
                             just check and see if the two files have all 0s or np.nans'''
-                            #Find the pearson_r correlation
-                            if len(np.unique(subx_converted[:,model, lead, Y, X])) <=2 or len(np.unique(obs_converted[:,model, lead, Y, X])) <=2:
-                                pass
-                            else:
-                                #ACC from function
-                                obs = obs_converted[:,model, lead, Y, X]
-                                subx = subx_converted[:,model, lead, Y, X]
-                               
-                                top = np.nanmean(subx*obs) #all forecast anomalies * all observation anomalies                    
-                                bottom = np.sqrt(np.nanmean(subx**2)*np.nanmean(obs**2))
-                                ACC = top/bottom
-                                
-                                var_OUT[model, lead,Y,X] = ACC
+
+                            #ACC from function
+                            obs = obs_converted[:,model, lead, Y, X]
+                            subx = subx_converted[:,model, lead, Y, X]
+                            
+                            top = np.nanmean(subx*obs)
+                 
+                            bottom = np.sqrt(np.nanmean(subx**2)*np.nanmean(obs**2))
+                            ACC = top/bottom
+                            
+                            var_OUT[model, lead,Y,X] = ACC
 
             return(var_OUT)
         
         seasonal_skill = season_anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted)
-        # seasonal_skill=var_OUT
+        seasonal_skill=var_OUT
         
         #Now add back to a dictionary for each model/lead week/weason
         for mod in range(skill_subx[season].model.shape[0]):
-            for lead_week in np.arange(7,49,7):
+            for lead_week in range(skill_subx[season].lead.shape[0]):
                 seasonal_mod_skill = np.nanmean(seasonal_skill[mod,lead_week,:,:])
-                output_dictionary[f'Model{mod}_Lead{int(lead_week/7)}_{season_name[season]}']= seasonal_mod_skill
+                output_dictionary[f'Model{mod}_Lead{skill_subx[season].lead.values[lead_week]}_{season_name[season]}']= seasonal_mod_skill
                 
     return(output_dictionary)
 #%%
@@ -419,11 +442,11 @@ for clus_num in np.arange(1,7):
 # r5_rzsm = all_season_mod_skill(var='RZSM',cluster_num=5, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
 # r6_rzsm = all_season_mod_skill(var='RZSM',cluster_num=6, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
 
-
+#%%
 all_cluster_acc_ETo = {}
 for clus_num in np.arange(1,7):
     all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(var='ETo',cluster_num=clus_num, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
-
+    #print(all_cluster_acc_ETo[f'Cluster {clus_num}'])
 
 # r1_eto = all_season_mod_skill(var='ETo',cluster_num=1, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
 # r2_eto = all_season_mod_skill(var='ETo',cluster_num=2, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
@@ -448,10 +471,12 @@ def setup_plot_all_leads(all_cluster_acc,cluster_num):
     var_cluster = all_cluster_acc[f'Cluster {cluster_num}']
     
     for idx,k in enumerate(var_cluster.keys()):
+        # if idx==1:
+        #     break
         #split to get model, lead, and season
         split_ = k.split('_')
         
-        df_OUT=df_OUT.append({'Model':int(split_[0][-1]),'Lead':int(split_[1][-1]), \
+        df_OUT=df_OUT.append({'Model':int(split_[0][-1]),'Lead':float(split_[1][-3:]), \
                              'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
 
     return(df_OUT)
@@ -470,60 +495,16 @@ def setup_plot_mean_of_multi_weeks(all_cluster_acc,cluster_num):
         #split to get model, lead, and season
         split_ = k.split('_')
         
-        df_OUT=df_OUT.append({'Model':int(split_[0][-1]),'Lead':int(split_[1][-1]), \
+        df_OUT=df_OUT.append({'Model':int(split_[0][-1]),'Lead':float(split_[1][-3:]), \
                              'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
-            
-    #Now get the mean of weeks 3 & 4  
-    #Change column names to 3.4, 3.5, 3.6 for later graphing
-    week_3_4_mean = df_OUT[(df_OUT['Lead'] == 3) | (df_OUT['Lead'] == 4)].groupby(['Model','Season']).mean().reset_index()
-    week_3_4_5_mean = df_OUT[(df_OUT['Lead'] == 3) | (df_OUT['Lead'] == 4) | \
-                             (df_OUT['Lead'] == 5)].groupby(['Model','Season']).mean().reset_index()
-    week_3_4_5_6_mean = df_OUT[(df_OUT['Lead'] == 3) | (df_OUT['Lead'] == 4) | \
-                               (df_OUT['Lead'] == 5) | (df_OUT['Lead'] == 6)].groupby(['Model','Season']).mean().reset_index()
-    week_3_4_mean['Lead'] = 3.4
-    week_3_4_5_mean['Lead'] = 3.5
-    week_3_4_5_6_mean['Lead'] = 3.6
-    
-    #Rename columns 
-    new_cols = ['Model', 'Lead', 'Season', 'ACC']
-    week_3_4_mean=week_3_4_mean[new_cols]
-    week_3_4_5_mean=week_3_4_5_mean[new_cols]
-    week_3_4_5_6_mean=week_3_4_5_6_mean[new_cols]
-    
-    #Now re-insert data back into dataframe df_OUT
-    
-    subset_1 = df_OUT[(df_OUT['Lead'] ==1) | (df_OUT['Lead'] ==2 ) | (df_OUT['Lead'] ==3 )]
-    
-    '''Because we took out data and re-shaped it, we need to put it back into the 
-    correct order for graphing'''
-    diff_ = 0
-    out_put = []
-    for idx,row in subset_1.iterrows():
-        
-        diff_ = idx - diff_
-        
-        if diff_ == 0 or diff_ == 1:
-            out_put.append(row)
-        else:
-            #Now we need to append each file from week_3..6 mean files according to the index
-            #they are taken from (since the output is the same shape as the original function)
-        #TODO: start here when return from vacation 
-        subset_1 
-        print(idx)
-    
-    combine_ = pd.concat([subset_1,week_3_4_mean,week_3_4_5_mean,week_3_4_5_6_mean])    
-    test_=
-    combine_.sort_values(by=['Season'])
-        test_.groupby('Season')
+
+    # subset_1 = df_OUT[(df_OUT['Lead'] ==1) | (df_OUT['Lead'] ==2 ) | (df_OUT['Lead'] ==3 )]
+
     return(df_OUT)
+
 all_vals_setup_RZSM = {}
 for clus_num in np.arange(1,7):
     all_vals_setup_RZSM[f'Cluster {clus_num}'] = setup_plot_all_leads(all_cluster_acc=all_cluster_acc_RZSM,cluster_num=clus_num)
-
-
-merge_weeks_setup_RZSM = {}
-
-
 
 all_vals_setup_ETo = {}
 for clus_num in np.arange(1,7):
@@ -561,7 +542,8 @@ def plot_lead_week_season_model(all_vals_setup):
             #convert to np array for pcolor mesh
             #season order: Spring, Summer, Fall, Winter
             
-            var_OUT = np.zeros(shape = (len(var_mod)//6,len(var_mod)//4))
+            var_OUT = np.zeros(shape = (4,11))
+            #Place names in this order for better visual
             var_OUT[0,:] = var_mod[var_mod['Season']=='Spring']['ACC']
             var_OUT[1,:] = var_mod[var_mod['Season']=='Summer']['ACC']
             var_OUT[2,:] = var_mod[var_mod['Season']=='Fall']['ACC']
@@ -574,7 +556,7 @@ def plot_lead_week_season_model(all_vals_setup):
             Z=var_OUT[:,:]
             
             Index = ['Spring', 'Summer', 'Fall', 'Winter']
-            Cols = ['1', '2', '3', '4', '5', '6']
+            Cols = ['0','1', '2', '3', '4', '5', '6','3.4','3.5','3.6','4.6']
             var_OUT = pd.DataFrame(var_OUT,index=Index, columns=Cols)
             
             return(var_OUT,x,y,Z)
@@ -601,9 +583,9 @@ def plot_lead_week_season_model(all_vals_setup):
 #%%
 #West region (cluster 1)  
 RZSM_acc_values_to_plot,max_all_rzsm, min_all_rzsm = plot_lead_week_season_model(all_vals_setup=all_vals_setup_RZSM)
-ETo_acc_values_to_plot,max_all, min_all = plot_lead_week_season_model(all_vals_setup=all_vals_setup_ETo)
+ETo_acc_values_to_plot,max_all_eto, min_all_eto = plot_lead_week_season_model(all_vals_setup=all_vals_setup_ETo)
 #%%
-def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var):
+def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_all):
     sorted(acc_values_to_plot)
     
     parameters = {'axes.labelsize': 16,
@@ -622,6 +604,7 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var):
     
     region_name = ''
     region_index= 0
+    count_index = 0
     for idx,region_model in enumerate(sorted(acc_values_to_plot)):
         # if idx == 5:
         #     break
@@ -629,17 +612,31 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var):
         #don't work on the mean file just yet
         if 'mean' not in region_model:
             model_number = int(region_model[-1])
-            region_current = region_model.split('_')[0]
+            region_current = region_model.split('_')[0] #get region name
             
+            #This will let us know if we have changed regions
             if region_name != region_current:
                 region_name = region_current
                 region_index+=1
             
             
             plot_data = acc_values_to_plot[region_model]
-            if model_number ==0:
-                if idx %4 ==0:
-                    #Change title names on the side
+            if model_number == 0: #only for getting the region names correctly in plot
+                if count_index %4 ==0 and count_index <20:  #need to not plot x label for the top 5 regions
+               
+                    #Change region names on the left side
+                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,
+                                cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
+                                fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
+                                cbar_ax= cbar_ax,xticklabels=False)
+                    
+                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
+                    ax[region_index-1,model_number].set_ylabel(region_name)
+                    # ax[region_index-1,model_number].set_xlabel('')
+                    count_index+=1
+                    
+                elif count_index %4 ==0 and count_index >=20:
+                    #Change region names on the left side
                     sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,
                                 cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
                                 fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
@@ -647,25 +644,41 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var):
                     
                     ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
                     ax[region_index-1,model_number].set_ylabel(region_name)
-                else:
+                    count_index+=1
+
+                else : 
+                    
                     sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,
                                 cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
                                 fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
                                 cbar_ax= cbar_ax)
+                    
                     ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
                     ax[region_index-1,model_number].set_ylabel(region_name)
-            else:
-                sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,cmap=cmap, 
-                            vmin=min_all, vmax=max_all, annot=True, fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False, yticklabels=False,
-                            cbar_ax= cbar_ax)
-                ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
+                    count_index+=1
+            
+            elif model_number != 0:
+                if count_index < 20:
+                    
+                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,cmap=cmap, 
+                                vmin=min_all, vmax=max_all, annot=True, fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False, yticklabels=False,
+                                cbar_ax= cbar_ax,xticklabels=False)
+                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
+                    count_index+=1
+                    
+                elif count_index >=20:
+                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,cmap=cmap, 
+                                vmin=min_all, vmax=max_all, annot=True, fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False, yticklabels=False,
+                                cbar_ax= cbar_ax)
+                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
+                    count_index+=1
 
     plt.savefig(f'{output_season_dir}/all_mod_season_lead_{var}.tif')
     
     return()
-
-make_save_plots_all_models_seasons_leads(acc_values_to_plot=RZSM_acc_values_to_plot,var='RZSM') 
-make_save_plots_all_models_seasons_leads(acc_values_to_plot=ETo_acc_values_to_plot,var='ETo') 
+#%%
+make_save_plots_all_models_seasons_leads(acc_values_to_plot=RZSM_acc_values_to_plot,var='RZSM',min_all=min_all_rzsm,max_all=max_all_rzsm) 
+make_save_plots_all_models_seasons_leads(acc_values_to_plot=ETo_acc_values_to_plot,var='ETo',min_all=min_all_eto,max_all=max_all_eto)
     # fig.tight_layout(rect=[0, 0, .9, 1])
 # #%%   
 #         count_clus+1

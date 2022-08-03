@@ -23,9 +23,10 @@ from glob import glob
 import refet
 from multiprocessing import Pool
 from datetime import timedelta
+from metpy import calc
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors = int('10')
+num_processors = int('7')
 mod = 'GMAO'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
@@ -194,37 +195,28 @@ def multiProcess_Refet_SubX(_date):
         #Save as a netcdf for later processing
         var_OUT.to_netcdf(path = f'{home_dir}/ETo_{_date}.nc', mode ='w')
         print(f'Saved {_date} into {home_dir}.')
-#%%    
-if __name__ == '__main__':
-    p = Pool(num_processors)
-    p.map(multiProcess_Refet_SubX, init_date_list)
 
 
 #%%
 '''Compute Reference ET for gridMET data.
- Because gridMET refET in its orginial state only contains 2 significant figures,
- i.e., 1.3 mm/d, we need to compute refET using gridMET data. But also, all gridmet
- data is 2 sig. fig. length, but this will create a float value.
+
  '''
 def Refet_gridMET():
     
     try:
         xr.open_dataset(f'{gridMET_dir}/ETo_gridMET_merged.nc')
-        print('Already completed gridMET Reference ET.')
     except FileNotFoundError:
         
         print(f'Working on computing ET ref from gridMET variables and saving into {gridMET_dir}.')
-        slice1 = "1999-01-10"
-        slice2 = "2016-02-09"
         # gridMET_file = gridMET_file.sel(day=slice(f"{slice1}",f"{slice2}"))
         #Open up each file
-        tasmax = xr.open_dataset(f'{gridMET_dir}/tmmx_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #Kelvin
-        tasmin = xr.open_dataset(f'{gridMET_dir}/tmmn_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #Kelvin
-        tavg = xr.open_dataset(f'{gridMET_dir}/tavg_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #Kelvin
-        dswrf = xr.open_dataset(f'{gridMET_dir}/srad_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #already in W/m2
-        wind = xr.open_dataset(f'{gridMET_dir}/vs_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #m/s2, 10 ft.
-        RHmin = xr.open_dataset(f'{gridMET_dir}/rmax_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #m/s2, 10 ft.
-        RHmax = xr.open_dataset(f'{gridMET_dir}/rmin_remap_final.nc').sel(day=slice(f"{slice1}",f"{slice2}")) #m/s2, 10 ft.
+        tasmax = xr.open_dataset(f'{gridMET_dir}/tmmx_remap_final.nc')#Kelvin
+        tasmin = xr.open_dataset(f'{gridMET_dir}/tmmn_remap_final.nc')#Kelvin
+        tavg = xr.open_dataset(f'{gridMET_dir}/tavg_remap_final.nc')#Kelvin
+        dswrf = xr.open_dataset(f'{gridMET_dir}/srad_remap_final.nc')#already in W/m2
+        wind = xr.open_dataset(f'{gridMET_dir}/vs_remap_final.nc')#m/s2, 10 ft.
+        RHmin = xr.open_dataset(f'{gridMET_dir}/rmax_remap_final.nc')#m/s2, 10 ft.
+        RHmax = xr.open_dataset(f'{gridMET_dir}/rmin_remap_final.nc')#m/s2, 10 ft.
         # gridMET_file = gridMET_file.sel(day=slice("1999-01-11","2016-02-09"))
             
         elevation = xr.open_dataset(f'{elevation_dir}/elev_regrid.nc', decode_times=False)
@@ -254,11 +246,14 @@ def Refet_gridMET():
         #Calculate saturated vapor pressure:
         esat, delta, esat_test = esat_vapor_pressure(tavg, test_temp)
         #Calculate vapor pressure:
-        min_out, DN, DN = esat_vapor_pressure(tasmin, test_temp)
-        max_out ,DN, DN = esat_vapor_pressure(tasmax, test_temp)
+        esat_min, DN, DN = esat_vapor_pressure(tasmin, test_temp)
+        esat_max ,DN, DN = esat_vapor_pressure(tasmax, test_temp)
         
         ea = xr.zeros_like(tavg)
-        ea = ((min_out.air_temperature * (RHmax.relative_humidity/100)) + (max_out.air_temperature * (RHmin.relative_humidity/100))) / 2
+        #Take the average of the actual vapor pressure
+        #Source https://www.weather.gov/media/epz/wxcalc/vaporPressure.pdf
+        ea = ((esat_min.air_temperature * (RHmax.relative_humidity/100)) + \
+              (esat_max.air_temperature * (RHmin.relative_humidity/100))) / 2
             
 
         def convert_dswrf_RN(shortwave_radiation) -> float:
@@ -306,10 +301,137 @@ def Refet_gridMET():
         var_OUT.to_netcdf(path = f'{gridMET_dir}/ETo_gridMET_merged.nc', mode ='w')
         print(f'Saved file into {gridMET_dir}.')
 #%%    
-print('')
-print('')
-#Run function, saved
-Refet_gridMET()
-print('')
-print('')
-#%% Create empty EDDI.npy files for next script
+
+
+
+# os.getcwd()
+# #convert to lead to julian day for later processing anomalies
+# def date_file_info(SubX_file):
+
+#     a_date_in= SubX_file.lead.values
+#     #get the start date
+#     a_start_date = pd.to_datetime(SubX_file.S.values[0])
+#     a_date_out=[]
+#     for a_i in range(len(a_date_in)):
+#         a_date_out.append((a_start_date + timedelta(days=a_i)).timetuple().tm_yday)
+
+#     return(a_date_out)
+  
+
+# for file in sorted(glob('ETo*.nc4')):
+#     open_f = xr.open_dataset(file)
+#     open_f.close()
+#     julian_list = date_file_info(open_f)
+#     open_f = open_f.assign_coords(lead=julian_list)
+#     open_f.to_netcdf(f'{file}5')
+
+#Save relative humidity into it's own dataset for each variable
+
+def relative_humidity_subx(_date):
+
+    try:
+        xr.open_dataset(f'RelativeHumidity_{_date}.nc4')
+
+        print(f'{_date} already completed for RH. Saved in {home_dir}.')
+    except FileNotFoundError:
+            
+        print(f'Working on date {_date} to calculate SubX ETo and save into {home_dir}.')
+        #Open up each file
+        tasmax = xr.open_dataset(glob(f'tasmax*{_date}.nc4')[0])
+        tasmin = xr.open_dataset(glob(f'tasmin*{_date}.nc4')[0])
+        tdps = xr.open_dataset(glob(f'tdps*{_date}.nc4')[0])
+    
+
+        def convert_temperature(tasmax, tasmin, dewpoint_temp) -> float:
+            '''Convert temperature to Celsius (from Kelvin), calculate vapor pressure (ea)
+            from dewpoint temp'''
+            tasmax = np.subtract(tasmax, 273.15)
+            tasmin = np.subtract(tasmin, 273.15)
+            dewpoint_temp = np.subtract(dewpoint_temp, 273.15)
+            ea = 0.6112 * np.exp((17.27*dewpoint_temp)/(237.3 + dewpoint_temp))
+            
+            return(tasmax, tasmin, dewpoint_temp, ea)
+        
+        tasmax, tasmin, dewpoint_temp, ea = convert_temperature(tasmax = tasmax, tasmin = tasmin,
+                                                         dewpoint_temp = tdps)     
+        
+        tavg = (tasmax.tasmax + tasmin.tasmin)/2
+        
+        #formula https://www.omnicalculator.com/physics/relative-humidity
+        rh = 100 * ((np.exp((17.27*dewpoint_temp)/(237.3 + dewpoint_temp))/ \
+                     ((np.exp((17.27*tavg)/(237.3 + tavg))))))
+            
+        #save to a new file
+        #Convert to an xarray object
+        var_OUT = xr.Dataset(
+            data_vars = dict(
+                RH = (['S', 'model','lead','Y','X'], rh.tdps.values),
+            ),
+            coords = dict(
+                X = tasmax.X.values,
+                Y = tasmax.Y.values,
+                lead = tasmax.L.values,
+                model = tasmax.M.values,
+                S = tasmax.S.values
+            ),
+            attrs = dict(
+                Description = 'Relative humidity computed from temperature and dewpoint.'),
+        )                    
+    
+        var_OUT.to_netcdf(path = f'{home_dir}/RelativeHumidity_{_date}.nc4', mode ='w')
+        print(f'Saved {_date} into {home_dir}.')
+    
+#%%
+'''Now we save relative humidity for gridMET'''
+def relative_humidity_gridMET():
+    
+    try:
+        xr.open_dataset(f'{gridMET_dir}/RelativeHumidity_gridMET_merged.nc')
+    except FileNotFoundError:
+        
+        print(f'Saving relative humidity gridMET variables and saving into {gridMET_dir}.')
+
+        # gridMET_file = gridMET_file.sel(day=slice(f"{slice1}",f"{slice2}"))
+        #Open up each file
+        RHmin = xr.open_dataset(f'{gridMET_dir}/rmax_remap_final.nc')#m/s2, 10 ft.
+        RHmax = xr.open_dataset(f'{gridMET_dir}/rmin_remap_final.nc')#m/s2, 10 ft.
+        # gridMET_file = gridMET_file.sel(day=slice("1999-01-11","2016-02-09"))
+            
+        #take the mean of RHmin and RHmax
+        rh_final = (RHmin.relative_humidity + RHmax.relative_humidity)/2
+
+            
+
+        #Convert to an xarray object
+        var_OUT = xr.Dataset(
+            data_vars = dict(
+                RH = (['day', 'lat','lon'], rh_final.values),
+            ),
+            coords = dict(
+                day = RHmin.day.values,
+                lat = RHmin.Y.values,
+                lon = RHmin.X.values
+            ),
+            attrs = dict(
+                Description = 'Relative Humidity from RHmin and RHmax'),
+        )                    
+        
+        #Save as a netcdf for later processing
+        var_OUT.to_netcdf(path = f'{gridMET_dir}/RelativeHumidity_gridMET_merged.nc', mode ='w')
+        print(f'Saved file into {gridMET_dir}.')
+        
+        
+#%%    
+if __name__ == '__main__':
+    p = Pool(num_processors)
+    p.map(multiProcess_Refet_SubX, init_date_list)
+    print('')
+    print('')
+    #Run function, saved
+    Refet_gridMET()
+    print('')
+    print('')
+    p.map(relative_humidity_subx, init_date_list)
+    print('')
+    print('')
+    relative_humidity_gridMET()

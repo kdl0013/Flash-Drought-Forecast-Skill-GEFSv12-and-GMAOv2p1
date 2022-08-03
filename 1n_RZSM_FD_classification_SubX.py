@@ -22,7 +22,7 @@ from numba import njit, prange
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # model_NAM1 = 'GMAO'
 # var = 'RZSM'
-# num_processors = int(7)
+# num_processors = int(2)
 
 dir1 = 'main_dir'
 model_NAM1 = 'model_name'
@@ -56,20 +56,20 @@ def get_files_and_data_setup(anom_dir,subx_RZSM_dir):
     file_list_RZSM = sorted(glob('SM_SubX_**.nc4'))
     
     print('Loading RZSM m3/m3 files')
+    global all_rzsm
     all_rzsm = xr.open_mfdataset(file_list_RZSM, concat_dim=['S'], combine='nested')
     global all_rzsm_numpy 
     all_rzsm_numpy = all_rzsm.SM_SubX_m3_m3_value.to_numpy()
     
     return(file_list_anomaly,all_anomaly_numpy,file_list_RZSM,all_rzsm_numpy)
 #%%
-'''Important note:
-    Because the anomalies are positive for lower values, we must subract the 
-    output by 100 to be properly organized'''
-def create_anomaly_percentiles(file):
+
+    
+def create_anomaly_percentiles_SubX(file):
     
     try:
         xr.open_dataset(f'{percentile_dir}/anomaly_percentiles_{file[-14:-4]}.nc4')
-    except FileNotFoundError:
+    except FileNotFoundError: 
         print(f'Working on anomaly percentiles {file}')      
         os.chdir(f'{anom_dir}') 
         # file=file_list_anomaly[0]
@@ -79,38 +79,48 @@ def create_anomaly_percentiles(file):
         sm_output = np.zeros_like(open_f.RZSM_anom)
         sm_output = sm_output[:,:,0:7,:,:] #only want first 7 leads
         
+        
+        @njit
         def find_percentile_of_score(sm_input, sm_output):
             for model in range(sm_input.shape[1]):
                 for Y in range(sm_input.shape[3]):
                     for X in range(sm_input.shape[4]):
                         for lead in range(7): #only looking at first 6 weeks for GMAO
-                            all_values =all_anomaly_numpy[:,model,lead,Y,X]
+                            #Grab all the values within the distribution from all leads (about 13629 values)
+                            all_values =all_anomaly_numpy[:,model,:,Y,X].flatten()
                             # all_values = get_full_distribution(model,lead,Y,X)
                             
                             all_values = sorted(all_values)
-                            all_values = [i for i in all_values if i !=0.0]
                             
-                            #get percentile ranking (subtract 100 because higher anomalies are located in the upper percentiles)
-                            sm_output[0,model,lead,Y,X] = 100 -pos(all_values,sm_input[:,model,lead,Y,X])
-                        #if rzsm percentile is below the 20th: perform code else week is not in flash drought
+                            #Remove 0.0. They shouldn't exist
+                            all_values = [i for i in all_values if i !=0.0]
+                                                    
+                            score = sm_input[:,model,lead,Y,X]
+                            
+                            #construct percentiles with each day (percentile of score source code)
+                            
+                            a = np.asarray(all_values)
+                            n = len(a)
+                            if n == 0:
+                                pass
+                            else:
+                                kind = 'rank' #from percentile of score function
+                                if kind == 'rank':
+                                    left = np.count_nonzero(a < score)
+                                    right = np.count_nonzero(a <= score)
+                                    pct = (right + left + (1 if right > left else 0)) * 50.0/n
+    
+                                    sm_output[0,model,lead,Y,X] = pct
+
             return(sm_output)
+
+        sm_output_percentile = find_percentile_of_score(sm_input, sm_output)
         
-        sm_output = find_percentile_of_score(sm_input, sm_output)
-        
-        #Testing
-        # model=3
-        # lead=6
-        # Y=17
-        # X=44
-        sm_input[0,3,:,17,44]
-        sm_output[0,3,:,17,44]
-                
-        sm_input[0,3,:,10,10]
-        sm_output[0,3,:,10,10]
+    
         #Create new dataset
         var_final = xr.Dataset(
             data_vars = dict(
-                Anomaly_percentile = (['S','model','lead','Y','X'], sm_output[:,:,0:7,:,:]),
+                Anomaly_percentile = (['S','model','lead','Y','X'], sm_output_percentile[:,:,0:7,:,:]),
             ),
             coords = dict(
                 X = open_f.X.values,
@@ -131,17 +141,12 @@ def create_anomaly_percentiles(file):
 
     
 #%% Create datasets for RZSM volumetric water (me/m3) content percentiles
-
-
-'''Important note:
-    Because the anomalies are positive for lower values, we must subract the 
-    output by 100 to be properly organized'''
-def create_RZSM_percentiles(file):
-    
+def create_RZSM_percentiles_SubX(file):
     try:
         xr.open_dataset(f'{percentile_dir}/rzsm_percentiles_{file[-14:-4]}.nc4')
     except FileNotFoundError:
         print(f'Working on rzsm percentiles {file}')      
+        # file=file_list_RZSM[0]
         #must change to directory to open file due to structure of list
         os.chdir(f'{subx_RZSM_dir}') 
         # file=file_list_anomaly[0]
@@ -150,33 +155,52 @@ def create_RZSM_percentiles(file):
         sm_input = open_f.SM_SubX_m3_m3_value.to_numpy()
         sm_output = np.zeros_like(open_f.SM_SubX_m3_m3_value)
         sm_output = sm_output[:,:,0:7,:,:] #only want first 7 leads
+        # all_rzsm_numpy = all_rzsm.SM_SubX_m3_m3_value.to_numpy()
         
+        # file_list_anomaly, all_anomaly_numpy, file_list_RZSM, all_rzsm_numpy ==get_files_and_data_setup(anom_dir,subx_RZSM_dir)
+
+        
+        '''Can't use numba for this unfortunately'''
         def find_percentile_of_score(sm_input, sm_output):
             for model in range(sm_input.shape[1]):
                 for Y in range(sm_input.shape[3]):
                     for X in range(sm_input.shape[4]):
+                        #only looking at first 6 weeks for GMAO (only at weekly leads)
+                        
+                        #Find the weekly average
+                        weekly_avg1 = np.nanmean(all_rzsm_numpy[:,model,0:7,Y,X],axis=1)
+                        weekly_avg2 = np.nanmean(all_rzsm_numpy[:,model,7:14,Y,X],axis=1)
+                        weekly_avg3 = np.nanmean(all_rzsm_numpy[:,model,14:21,Y,X],axis=1)
+                        weekly_avg4 = np.nanmean(all_rzsm_numpy[:,model,21:28,Y,X],axis=1)
+                        weekly_avg5 = np.nanmean(all_rzsm_numpy[:,model,28:35,Y,X],axis=1)
+                        weekly_avg6 = np.nanmean(all_rzsm_numpy[:,model,35:42,Y,X],axis=1)
+                        
+                        all_values_index_more_than_0 = np.concatenate([weekly_avg1,weekly_avg2,weekly_avg3,weekly_avg4,weekly_avg5, \
+                                                     weekly_avg6])
+
+                        all_values_index_more_than_0 = sorted(all_values_index_more_than_0)
+                        all_values_index_more_than_0 = [i for i in all_values_index_more_than_0 if i !=0.0]
+                        
                         for idx,lead in enumerate(range(sm_input.shape[2])): 
-                            #only looking at first 6 weeks for GMAO (only at weekly leads)
+
                             if idx == 0: #we can't take the weekly average of lead time 0
                                 
-                                all_values =all_rzsm_numpy[:,model,lead,Y,X]
+                                all_values_index_0 =all_rzsm_numpy[:,model,0,Y,X] #get initial day values
+                                
+                                all_values_index_0 = np.concatenate([all_values_index_0,all_values_index_more_than_0])
                                 # all_values = get_full_distribution(model,lead,Y,X)
                             
-                                all_values = sorted(all_values)
-                                all_values = [i for i in all_values if i !=0.0]
+                                all_values_index_0 = sorted(all_values_index_0)
+                                all_values_index_0 = [i for i in all_values_index_0 if i !=0.0]
                             
-                                #get percentile ranking (subtract 100 because higher anomalies are located in the upper percentiles)
-                                sm_output[0,model,lead,Y,X] = pos(all_values,sm_input[0,model,lead,Y,X])
+                                sm_output[0,model,idx,Y,X] = pos(all_values_index_0,sm_input[0,model,lead,Y,X])
                                 
-                            elif idx%7 == 0:
+                            elif idx%7 == 0: #idx is the same as lead
                                 #Find the weekly average
-                                weekly_avg = np.mean(all_rzsm_numpy[:,model,idx-7:idx,Y,X],axis=1)
+
+                                #Take weekly average as input into pos function
+                                sm_output[0,model,idx//7,Y,X] = pos(all_values_index_more_than_0,sm_input[0,model,idx-7:idx,Y,X].mean())
                                 
-                                all_values = sorted(weekly_avg)
-                                all_values = [i for i in all_values if i !=0.0]
-                                sm_output[0,model,idx//7,Y,X] = pos(all_values,sm_input[0,model,idx-7:idx,Y,X].mean())
-                                
-                        #if rzsm percentile is below the 20th: perform code else week is not in flash drought
             return(sm_output)
         
         sm_output = find_percentile_of_score(sm_input, sm_output)
@@ -372,7 +396,7 @@ def smpd_function_RZSM(file):
                 SMPD_RZSM = (['S','model','lead','Y','X'], OUTPUT[:,:,:,:,:]),
             ),
             coords = dict(
-                X = open_f.X.values,
+                X = open_f.X.values,create_RZSM_percentiles_SubX
                 Y = open_f.Y.values,
                 lead = open_f.lead.values,
                 S = open_f.S.values,
@@ -397,25 +421,26 @@ file_list_rzsm_smpd = sorted(glob('rzsm_percentiles_*.nc4'))
 #Call all functions
 if __name__ == '__main__':
     p = Pool(num_processors)
-    file_list_anomaly, all_rzsm_numpy, file_list_RZSM, all_rzsm_numpy = \
+    global all_rzsm_numpy
+    file_list_anomaly, all_anomaly_numpy, file_list_RZSM, all_rzsm_numpy = \
         get_files_and_data_setup(anom_dir=anom_dir,subx_RZSM_dir=subx_RZSM_dir)
-    # p.map(create_anomaly_percentiles,file_list_anomaly)
-    p.map(create_RZSM_percentiles,file_list_RZSM)
-    p.map(create_anomaly_percentiles,file_list_anomaly)
+    p.map(create_anomaly_percentiles_SubX,file_list_anomaly)
+    p.map(create_RZSM_percentiles_SubX,file_list_RZSM)
+
     p.map(smpd_function_anomaly,file_list_anomaly_smpd)
     p.map(smpd_function_RZSM,file_list_rzsm_smpd)
 
 #%%
-#Testing
-os.chdir('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/anomaly/smpd_index')
+# #Testing
+# os.chdir('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/anomaly/smpd_index')
 
-file_list = os.listdir()
-total = 0
-file_occupied = []
-for file in file_list:
-    a=xr.open_dataset(file)
-    total+=a.SMPD_RZSM.sum()
-    if a.SMPD_RZSM.sum() > 200:
-        file_occupied.append(file)
+# file_list = os.listdir()
+# total = 0
+# file_occupied = []
+# for file in file_list:
+#     a=xr.open_dataset(file)
+#     total+=a.SMPD_RZSM.sum()
+#     if a.SMPD_RZSM.sum() > 200:
+#         file_occupied.append(file)
         
-print(file_occupied)
+# print(file_occupied)

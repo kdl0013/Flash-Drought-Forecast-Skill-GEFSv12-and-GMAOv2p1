@@ -20,8 +20,10 @@ model_NAM1 = 'GMAO'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # model_NAM1 = 'GMAO'
+
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
 script_dir = f'{dir1}/Scripts'
+anom_dir = f'{home_dir}/anomaly'
 
 os.chdir(home_dir)
 
@@ -50,15 +52,24 @@ init_date_list = return_date_list()
 which ones have missing data'''
 # var = 'RZSM'
 
-for var in ['RZSM']:
+for var in ['RZSM','ETo']:
     print(f'Checking variable {var} for missing anomaly data in files.')
-    file_list = f'{var}_anomaly_*.nc4'
+    file_list = f'{anom_dir}/{var}_anomaly_*.nc4'
+    
+    file_list_out = []
+    for file in sorted(glob(file_list)):
+        # print()
+        if "LEAD" not in file:
+            file_list_out.append(file)
+
+        
+            
     missing_anomaly_var = [] #subx missing anomaly data files
     missing_original_var = []
     
     # test_file = f'{home_dir}/test/ETo_anomaly_2000-09-17.nc'
     
-    for file in sorted(glob(file_list)):
+    for file in file_list_out:
         open_f = xr.open_dataset(file)
         # open_f = xr.open_dataset(test_file)
     
@@ -70,19 +81,16 @@ for var in ['RZSM']:
         
         #anomaly. I inspected a file that was filled correctly and it had 528 missing value
         #If file is completely empty, the file will have all zeros and a unique value of only 1
-        if len(np.unique(open_f[f'{var}_anom'][:,:,7,:,:])) <= 1 or \
-            len(np.unique(open_f[f'{var}_anom'][:,:,14,:,:])) <= 1 or \
-                len(np.unique(open_f[f'{var}_anom'][:,:,21,:,:])) <= 1 or \
-                    len(np.unique(open_f[f'{var}_anom'][:,:,28,:,:])) <= 1 or \
-                        len(np.unique(open_f[f'{var}_anom'][:,:,35,:,:])) <= 1 or \
-                            len(np.unique(open_f[f'{var}_anom'][:,:,42,:,:])) <= 1:
-            missing_anomaly_var.append(file)    
+        
+        for lead_values in range(open_f[f'{var}_anom'].shape[2]):
+            if len(np.unique(open_f[f'{var}_anom'][:,:,lead_values,:,:])) <= 1:
+                missing_anomaly_var.append(file)    
     
         '''I manually calculated ETo from SubX variables, look if I am missing any
         data from those files'''
     
         if var == 'ETo':
-            open_ETo = xr.open_dataset(f'{var}_{file[-13:-3]}.nc4') 
+            open_ETo = xr.open_dataset(f'{var}_{file[-14:-4]}.nc') 
             if np.count_nonzero(np.isnan(open_ETo.ETo[0,:,:,:,:].values)) == 286740:
                 missing_original_var.append(file)
         elif var == 'RZSM':
@@ -94,5 +102,5 @@ for var in ['RZSM']:
     # missing_anomaly_var[0][-14:-4]
     missing_dates = [i[-14:-4] for i in missing_anomaly_var]
     
-    print(f'Missing data in {len(missing_dates)}. Issue is likely leap year index issues. Fixing now if needed.')
+    print(f'Missing data in {len(missing_dates)}.')
     print(f'Missing {var} SubX data (no anomaly) in {len(missing_original_var)} files.')

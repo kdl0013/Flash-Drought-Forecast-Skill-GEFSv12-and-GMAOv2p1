@@ -48,5 +48,14 @@ for f in *.asc;do
     rm "${f}"; fi
 done
 
+
+#SMERGE anomalies converted to SubX format
+cd /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SMERGE_SM/SM_SubX_values
+
+for f in *.nc4;do
+    if [[  "${#f}" -gt 31  ]];then
+    rm "${f}"; fi
+done
+
 #return to script directory
 cd /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Scripts
