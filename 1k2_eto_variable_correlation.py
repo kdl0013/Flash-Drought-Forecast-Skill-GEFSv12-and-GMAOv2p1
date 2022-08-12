@@ -454,7 +454,7 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
             ax[idx].set_ylabel(region_model.split('_')[0])
             ax[idx].set(xlabel='Lead Week')
             
-            fig.suptitle(f'gridMET {var} vs. GEOS-5 {var} \nPearson r correlation \n (multi-ensemble mean applied first, then compared with observations)')
+            fig.suptitle(f'gridMET {var} vs. GEOS-5 {var} \nPearson r2 correlation \n (multi-ensemble mean applied first, then compared with observations)')
             
     return(plt.savefig(f'{output_season_dir}/all_mod_season_lead_{var}_for_ETo_analysis.tif'))
 
@@ -465,7 +465,7 @@ make_save_plots_all_models_seasons_leads(acc_values_to_plot=tasmax_acc_values_to
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=RH_acc_values_to_plot,var='RH',min_all=min_all_RH,max_all=max_all_RH) 
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=srad_acc_values_to_plot,var='srad',min_all=min_all_srad,max_all=max_all_srad) 
 
-
+#%%
 
 
 

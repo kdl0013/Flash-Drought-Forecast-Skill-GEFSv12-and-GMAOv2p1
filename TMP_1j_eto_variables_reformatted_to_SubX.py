@@ -24,8 +24,8 @@ subX_dir = f'{dir1}/Data/SubX/GMAO'
 sub_split = subX_dir.split('/')[-1]
 gridMET_dir = f'{dir1}/Data/gridMET' #reference evapotranspiration
 output_ETo_dir = f'{gridMET_dir}/ETo_SubX_values' #Refernce ET output directory
-smerge_in_dir = f'{dir1}/Data/SMERGE_SM/Raw_data' #raw files that have been boxed in CONUS
-SM_SubX_out_dir = f'{dir1}/Data/SMERGE_SM/SM_SubX_values' #Smerge values overlayed on SubX grid
+gleam_in_dir = f'{dir1}/Data/GLEAM_RZSM/' #raw files that have been boxed in CONUS
+SM_SubX_out_dir = f'{dir1}/Data/GLEAM_RZSM/SM_SubX_values' #Smerge values overlayed on SubX grid
 subx_anomaly_dir = f'{subX_dir}/anomaly'
 #Didn't do EDDI because I may not need to do it.
 # eddi_dir = f'{dir1}/Data/EDDI/convert_2_nc'
@@ -85,10 +85,9 @@ def gridMET_SubX_creation_dswrf(_date) -> float:
         gridMET_out = (np.zeros_like(sub_file[f'{sub_name}'])).astype('float64')
 
         for i_lead in range(sub_file[f'{sub_name}'].shape[2]):
-            #Need to add 1 to the final date_val value to be the correct date
-            add_one = 1
-            date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+add_one) 
-     
+            #Because the _date is the day initialized, add 1
+            date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead+1))
+            
             for i_Y in range(sub_file[f'{sub_name}'].shape[3]):
                 for i_X in range(sub_file[f'{sub_name}'].shape[4]):
                     if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
@@ -178,10 +177,9 @@ def gridMET_SubX_creation_tasmax(_date) -> float:
         gridMET_out = (np.zeros_like(sub_file[f'{sub_name}'])).astype('float64')
 
         for i_lead in range(sub_file[f'{sub_name}'].shape[2]):
-            #Need to add 1 to the final date_val value to be the correct date
-            add_one = 1
-            date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+add_one) 
-     
+            #Because the _date is the day initialized, add 1
+            date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead+1))
+            
             for i_Y in range(sub_file[f'{sub_name}'].shape[3]):
                 for i_X in range(sub_file[f'{sub_name}'].shape[4]):
                     if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
@@ -265,10 +263,9 @@ def gridMET_SubX_creation_tasmin(_date) -> float:
         gridMET_out = (np.zeros_like(sub_file[f'{sub_name}'])).astype('float64')
 
         for i_lead in range(sub_file[f'{sub_name}'].shape[2]):
-            #Need to add 1 to the final date_val value to be the correct date
-            add_one = 1
-            date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+add_one) 
-     
+            #Because the _date is the day initialized, add 1
+            date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead+1))
+            
             for i_Y in range(sub_file[f'{sub_name}'].shape[3]):
                 for i_X in range(sub_file[f'{sub_name}'].shape[4]):
                     if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
@@ -354,10 +351,9 @@ def gridMET_SubX_creation_humidity(_date) -> float:
         gridMET_out = (np.zeros_like(sub_file[f'{long_sub_name}'])).astype('float64')
 
         for i_lead in range(sub_file[f'{long_sub_name}'].shape[2]):
-            #Need to add 1 to the final date_val value to be the correct date
-            add_one = 1
-            date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+add_one) 
-        
+            #Because the _date is the day initialized, add 1
+            date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead+1))
+            
             for i_Y in range(sub_file[f'{long_sub_name}'].shape[3]):
                 for i_X in range(sub_file[f'{long_sub_name}'].shape[4]):
                     if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
@@ -400,6 +396,7 @@ def gridMET_SubX_creation_humidity(_date) -> float:
 
         #Save as a netcdf for later processing
         var_OUT.to_netcdf(path = f'{output_ETo_dir}/{file_name}', mode ='w')
+        
 #%%Run all four functions
 if __name__ == '__main__':
     p = Pool(num_processors)

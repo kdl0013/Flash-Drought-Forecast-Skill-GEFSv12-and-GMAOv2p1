@@ -66,10 +66,12 @@ def cluster_compression_for_GEFS_files(var):
                     #Now use cdo operators on the file. Daily mean, remap to CONUS grid, select only CONUS$
                     #remove old nc file (to save on storage space)
 
-                    os.system(f'cdo -sellonlatbox,235,293,24,50 -remapcon,{mask_dir}/CONUS_mask.grd -dayavg {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
+                    os.system(f'cdo -sellonlatbox,235,293,24,50 -remapcon,{mask_dir}/CONUS_mask.grd  {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
                     os.system(f"rm {var_location}/{file_nc_name}")
                     
                 except EOFError:
+                    pass #error caused by realization having no data
+                except ValueError:
                     pass #error caused by realization having no data
             else:
                 try:
@@ -80,11 +82,12 @@ def cluster_compression_for_GEFS_files(var):
                     #Now use cdo operators on the file. Daily mean, remap to CONUS grid, select only CONUS$
                     #remove old nc file (to save on storage space)
 
-                    os.system(f'cdo -sellonlatbox,235,293,24,50 -remapcon,{mask_dir}/CONUS_mask.grd -dayavg {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
+                    os.system(f'cdo -sellonlatbox,235,293,24,50 -remapcon,{mask_dir}/CONUS_mask.grd {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
                     os.system(f"rm {var_location}/{file_nc_name}")
                 except EOFError:
                     pass
-
+                except ValueError:
+                    pass #error caused by realization having no data
 
 # #Compress once more
 # final_outname = f"{file_o.split('/')[-1][:-6]}.nc4"

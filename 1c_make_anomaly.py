@@ -127,7 +127,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
 
     for i_Y in range(subx_out[f'{var_name}'].shape[3]):
         for i_X in range(subx_out[f'{var_name}'].shape[4]):
-            if _date == '1999-01-10':
+            if _date == '2000-01-05':
                 print(f'Working on lat {i_Y} and lon {i_X}')
 
             '''Initially, I just wanted to use the SMERGE files as a mask, but it
@@ -409,7 +409,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                 out_mod2 = improve_anomaly_dictionary(anom_mod2, dates_to_keep)
                 out_mod3 = improve_anomaly_dictionary(anom_mod3, dates_to_keep)
 
-
+                
                 '''Now that we have final_out_dictionary_all_eddi which contains the specific values for each init date for the currenly looped X,Y grid cell, 
                 we can append to all files.
                 
@@ -417,15 +417,32 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                 anomalies. (We already have the mean average of all models saved'''
                 
                 all_model_anomaly_mean = {}
-                for idx,date in enumerate(out_mod0_MME):
-                    all_model_anomaly_mean[date]=list((np.array(out_mod0_MME[date]) + \
-                                                      np.array(out_mod1_MME[date]) + \
-                                                    np.array(out_mod2_MME[date]) + \
-                                                        np.array(out_mod3_MME[date])) /4)
+                for idx,date in enumerate(out_mod0):
+                    all_model_anomaly_mean[date]=list((np.array(out_mod0[date]) + \
+                                                      np.array(out_mod1[date]) + \
+                                                    np.array(out_mod2[date]) + \
+                                                        np.array(out_mod3[date])) /4)
 
+                def improve_MME_mean_dict(mean_avg_ensemble,dates_to_keep):
+                    mod_out = {}
+                    for idx in range(len(dates_to_keep)):
+                        mod_out[mean_avg_ensemble['init_dates'][idx]] = []
+                        
+                        all_values = []
+                        count=0
+                        for init_day,values in mean_avg_ensemble.items():
 
+                            if init_day=='init_dates':
+                                break
+                            else:
+                                all_values.append(mean_avg_ensemble[init_day])
+                                count+=1
+                        mod_out[mean_avg_ensemble['init_dates'][idx]] = all_values   
+                        
+                    return(mod_out)
                 #It would be best to first open 1 file and append all possible values from that one file. Then move onto the next file.
-            
+                
+                add_MME_to_file = improve_MME_mean_dict(mean_avg_ensemble,dates_to_keep)
                 '''Now that we have created new files, we can append each file with the data that was found'''
                 
                 def add_anomaly_to_nc_file(out_mod0,out_mod1,out_mod2,out_mod3):
@@ -443,22 +460,18 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                         file_open = xr.open_dataset(fileOut)
                         file_open.close()
                         
-                        #Now add to file by lead week (or average)
-                        for anom_lead in range(len(out_mod0[init_file_day])):
+                        file_open[var_n][0,0,:,i_Y,i_X] = np.array(out_mod0[init_file_day])
+                        file_open[var_n][0,1,:,i_Y,i_X] = np.array(out_mod1[init_file_day])
+                        file_open[var_n][0,2,:,i_Y,i_X] = np.array(out_mod2[init_file_day])
+                        file_open[var_n][0,3,:,i_Y,i_X] = np.array(out_mod3[init_file_day])
 
-                            #Add data to netcdf file
-                            file_open[var_n][0,0,anom_lead,i_Y,i_X] = out_mod0[init_file_day][anom_lead]
-                            file_open[var_n][0,1,anom_lead,i_Y,i_X] = out_mod1[init_file_day][anom_lead]
-                            file_open[var_n][0,2,anom_lead,i_Y,i_X] = out_mod2[init_file_day][anom_lead]
-                            file_open[var_n][0,3,anom_lead,i_Y,i_X] = out_mod3[init_file_day][anom_lead]
-                            
-                            
-                            file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
-                            file_open.close()
+                        
+                        file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
+                        file_open.close()
 
                 add_anomaly_to_nc_file(out_mod0, out_mod1,out_mod2,out_mod3)
                 
-                def add_mean_to_nc_file(mean_mod0,mean_mod1,mean_mod2,mean_mod3,file_dates_to_keep):
+                def add_mean_to_nc_file(mean_mod0,mean_mod1,mean_mod2,mean_mod3,dates_to_keep):
 
                     for idx_,lead in enumerate(mean_mod0):
                         #We have the mean value for each year/lead time/model
@@ -466,11 +479,11 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                                                 
                         if var == 'RZSM':
                             day_s = -14
-                            fileOut = "{}/{}_mean_{}".format(new_dir_mean,var,file_dates_to_keep[0][day_s:])
+                            fileOut = "{}/{}_mean_{}".format(new_dir_mean,var,dates_to_keep[0][day_s:])
 
                         elif var == 'ETo':
                             day_s = -13
-                            fileOut = "{}/{}_mean_{}4".format(new_dir_mean,var,file_dates_to_keep[0][day_s:])
+                            fileOut = "{}/{}_mean_{}4".format(new_dir_mean,var,dates_to_keep[0][day_s:])
 
                         file_open = xr.open_dataset(fileOut)
                         file_open.close()
@@ -487,12 +500,12 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                         file_open.close()
 
                         
-                add_mean_to_nc_file(mean_mod0,mean_mod1,mean_mod2,mean_mod3,file_dates_to_keep)
+                add_mean_to_nc_file(mean_mod0,mean_mod1,mean_mod2,mean_mod3,dates_to_keep)
                 
                 #ADD MME to files
-                def add_anomaly_to_nc_file_MME(all_model_anomal_mean):
+                def add_anomaly_to_nc_file_MME(all_model_anomaly_mean):
 
-                    for idx_,init_file_day in enumerate(all_model_anomal_mean):
+                    for idx_,init_file_day in enumerate(all_model_anomaly_mean):
                         
                         #We have the file, now open it
                         #add values by julian day
@@ -504,50 +517,42 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                         var_n = f'{var}_MME_anom'
                         file_open = xr.open_dataset(fileOut)
                         file_open.close()
-                        
                         #Now add to file by lead week (or average)
-                        for anom_lead in range(len(out_mod0[init_file_day])):
-
-                            #Add data to netcdf file
-                            file_open[var_n][0,anom_lead,i_Y,i_X] = out_mod0[init_file_day][anom_lead]
-                            
-                            file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
-                            file_open.close()
-
-
-                add_anomaly_to_nc_file_MME(all_model_anomal_mean)
+                        file_open[var_n][0,:,i_Y,i_X] = np.array(all_model_anomaly_mean[init_file_day])
+                        file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
+                        file_open.close()
+                        
+                     
+                add_anomaly_to_nc_file_MME(all_model_anomaly_mean)
                 
                 
                 
-                def add_mean_to_nc_file_MME(mean_modall,file_dates_to_keep):
-
-                    for idx_,lead in enumerate(mean_modall):
+                def add_mean_to_nc_file_MME(add_MME_to_file):
+                    
+                    #Only need to add the first date to the file (since we only need 1 year's worth of data as the mean)
+                    for idx_,init_file_day in enumerate(add_MME_to_file):
                         #We have the mean value for each year/lead time/model
                         #Add to only 1 file because its the mean of all years
                                                 
                         if var == 'RZSM':
-                            day_s = -14
-                            fileOut = "{}/{}_MME_mean_{}".format(save_MME_anomaly_mean,var,file_dates_to_keep[0][day_s:])
+                            fileOut = "{}/{}_MME_mean_{}.nc4".format(save_MME_anomaly_mean,var,_date)
 
                         elif var == 'ETo':
-                            day_s = -13
-                            fileOut = "{}/{}_MME_mean_{}4".format(save_MME_anomaly_mean,var,file_dates_to_keep[0][day_s:])
+                            fileOut = "{}/{}_MME_mean_{}.nc4".format(save_MME_anomaly_mean,var,_date)
 
                         file_open = xr.open_dataset(fileOut)
                         file_open.close()
                         
                         var_n = f'{var}_MME_mean'
                         
-                        #Add data to netcdf file
-                        file_open[var_n][0,idx_,i_Y,i_X] = mean_modall[f'{lead}']
-
+                        lead_values = add_MME_to_file[f'{_date}.nc4']       
+                        file_open[var_n][0,:,i_Y,i_X] = np.array(lead_values)
                         
                         file_open.to_netcdf(path = fileOut, mode ='w', engine='scipy')
                         file_open.close()
-
                         
-                add_mean_to_nc_file_MME(mean_modall,file_dates_to_keep)
-
+                add_mean_to_nc_file_MME(add_MME_to_file)
+#%%
                 
     print(f'Completed date {_date} and saved into {home_dir}.')
     

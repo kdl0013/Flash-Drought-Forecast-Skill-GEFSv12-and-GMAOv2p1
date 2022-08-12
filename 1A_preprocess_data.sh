@@ -12,7 +12,6 @@ module load nco
 
 #You can make main_directory path any path you would like and this will get
 #all other directories in order.
-model=GMAO 
 main_directory='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 processors=7
 
@@ -26,17 +25,17 @@ mask=$data_s/CONUS_mask
 #mkdir $data_s/cython_scripts
 
 
+
 # --- Functions
 make_reference_ET () {
 name=${1::-3}
 cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
-    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'$2'|g' > $data_s/TMP_${name}_${model}.py
     
 python3 $data_s/TMP_${name}_${model}.py 
 }
 
-make_reference_ET "1b1_make_reference_ET.py"
-
+make_reference_ET "1b1_make_reference_ET.py" "GMAO"
 
 
 #convert soil moisture to m3/m3
@@ -50,26 +49,30 @@ convert_RZSM
 
 #Remove uneeded S dimension
 remove_S_dimension () {
-cat 1b3_remove_S_dimsension.py | sed 's|model_name|'${model}'|g' | sed 's|main_dir|'${main_directory}'|g'> $data_s/TMP_1b3_remove_S_dimsension.py 
+cat 1b3_remove_S_dimsension.py | sed 's|model_name|'$2'|g' | sed 's|main_dir|'${main_directory}'|g'> $data_s/TMP_1b3_remove_S_dimsension.py 
 
 python3 TMP_1b3_remove_S_dimsension.py
 }
 
-remove_S_dimension
+remove_S_dimension "GMAO"
 
 make_empty_anomaly_files () {
 name=${1::-3}
 var=$2
 
 cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
-    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variables|'${var}'|g' > $data_s/TMP_${name}_${model}.py
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'$3'|g' | sed 's|variables|'${var}'|g' > $data_s/TMP_${name}_${model}.py
     
 python3 $data_s/TMP_${name}_${model}.py 
 }
 
-make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "ETo"
-make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "RZSM"
-make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "EDDI"
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "ETo" "GMAO"
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "RZSM" "GMAO"
+#make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "EDDI" "GMAO"
+
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "ETo" "GEFSv12"
+make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "RZSM" "GEFSv12"
+#make_empty_anomaly_files "1b4_make_empty_anomaly_files.py" "EDDI" "GMAO"
 
 ######## Reference ETo, EDDI, gridMET data creation. Historical and SubX #######
 #Create multiple scripts for multiprocessing of EDDI, RZSM, and ETo anomalies
@@ -87,46 +90,37 @@ name=${1::-3}
 
 for val in "${date_arr[@]}";do
     for mod in {0..3};do
-cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'${model}'|g' | sed 's|variable_|'$2'|g' > TMP_${name}_"$2"_step"$val"_${model}.py;
+cat $1 | sed 's|main_dir|'${main_directory}'|g' | sed 's|start_init|'${val}'|g' | sed 's|init_step|'${step}'|g' | sed 's|model_name|'$3'|g' | sed 's|variable_|'$2'|g' > TMP_${name}_step"$val"_${model}.py;
     done;
 done
 }
 
 #Create tmp scripts to run later
+#It's easier to divide GEFSv12 and GMAO scripts right here
 #mk_anomaly_script_RZSM_ETo_EDDI '1c_EDDI.pyx'
-mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly.py" "RZSM"
-mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly.py" "ETo"
-mk_anomaly_script_RZSM_ETo_EDDI "1c2_make_anomaly_MME.py" "RZSM"
-mk_anomaly_script_RZSM_ETo_EDDI "1c2_make_anomaly_MME.py" "ETo"
+mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly_GMAO.py" "RZSM" "GMAO"
+mk_anomaly_script_RZSM_ETo_EDDI "1c_make_anomaly_GMAO.py" "ETo" "GMAO"
+
 
 #Run all three steps at a single time. Takes 30GB of RAM to run 3 at a time.
 run_anomaly_RZSM_ETo_EDDI () {
 cd $data_s
-for file in TMP_1c_make_anomaly_$1*.py;do
+for file in TMP_1c_make_anomaly_$1*$2.py;do
 python3 $file &
 done
 }
 
-run_anomaly_RZSM_ETo_EDDI "RZSM"
-run_anomaly_RZSM_ETo_EDDI "ETo"
+run_anomaly_RZSM_ETo_EDDI "RZSM" "GMAO"
+run_anomaly_RZSM_ETo_EDDI "ETo" "GMAO"
 
-run_MME_anomaly_RZSM_ETo_EDDI () {
-cd $data_s
-for file in TMP_1c2_make_anomaly_MME_$1*.py;do
-python3 $file &
-done
-}
-run_MME_anomaly_RZSM_ETo_EDDI "RZSM"
-run_MME_anomaly_RZSM_ETo_EDDI "ETo"
-#Insert EDDI here
 
 #Check for missing anomaly data in files
 check_missing_anomaly_data () {
-cat 1e_check_for_missing_data.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|model_name|'${model}'|g' > TMP_1e_check_for_missing_data.py
+cat 1e_check_for_missing_data.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|model_name|'$2'|g' > TMP_1e_check_for_missing_data.py
 
 python3 TMP_1e_check_for_missing_data.py
 }
-check_missing_anomaly_data
+check_missing_anomaly_data "GMAO"
 
 #Make gridMET and ETo anomalies using same methodology as subx
 make_obs_anomaly () {
@@ -137,43 +131,41 @@ python3 TMP_1f_make_observation_anomalies.py
 make_obs_anomaly
 
 
-
-
 #Create new dataset to compare the skill between models
-reformat_observations_to_SubX_format() {
-cat 1i_Obs_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX.py
+reformat_observations_to_SubX_format_GMAO() {
+cat 1i_Obs_reformatted_to_SubX_GMAO.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1i_Obs_reformatted_to_SubX_GMAO.py
 
-python3 TMP_1i_Obs_reformatted_to_SubX.py
+python3 TMP_1i_Obs_reformatted_to_SubX_GMAO.py
 }
 
-reformat_observations_to_SubX_format #call function
+reformat_observations_to_SubX_format_GMAO #call function
 
 #Create new dataset to compare the skill between models (eto single variables)
-reformat_observations_to_SubX_format_ETo() {
-cat 1j_eto_variables_reformatted_to_SubX.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1j_eto_variables_reformatted_to_SubX.py
+reformat_observations_to_SubX_format_ETo_GMAO() {
+cat 1j_eto_variables_reformatted_to_SubX_GMAO.py | sed 's|main_dir|'${main_directory}'|g' | sed 's|procs|'${processors}'|g' > TMP_1j_eto_variables_reformatted_to_SubX_GMAO.py
 
-python3 TMP_1j_eto_variables_reformatted_to_SubX.py
+python3 TMP_1j_eto_variables_reformatted_to_SubX_GMAO.py
 }
 
-reformat_observations_to_SubX_format_ETo #call function
+reformat_observations_to_SubX_format_ETo_GMAO #call function
 
 
 #convert percentiles to SMPD binary occurence of flash drought
 make_SMPD_FD_classification () {
 name=${1::-3}
 cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
-    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'$2'|g' > $data_s/TMP_${name}_${model}.py
     
 python3 $data_s/TMP_${name}_${model}.py 
 }
 
-make_SMPD_FD_classification "1n_RZSM_FD_classification_SubX.py"
+make_SMPD_FD_classification "1n_RZSM_FD_classification_SubX.py" "GMAO"
 
 #Create percentiles from observations (SMERGE for Soil Moisture Percentile Drop)
 SMPD_obs_percentiles () {
 name=${1::-3}
 cat $data_s/$1 | sed 's|main_dir|'${main_directory}'|g' | 
-    sed 's|procs|'${processors}'|g' | sed 's|model_name|'${model}'|g' > $data_s/TMP_${name}_${model}.py
+    sed 's|procs|'${processors}'|g' | sed 's|model_name|'$2'|g' > $data_s/TMP_${name}_${model}.py
     
 python3 $data_s/TMP_${name}_${model}.py 
 }

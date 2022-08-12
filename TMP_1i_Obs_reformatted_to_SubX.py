@@ -82,7 +82,8 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
         gridMET_out = (np.zeros_like(sub_file.ETo)).astype('float64')
      
         for i_lead in range(sub_file.ETo.shape[2]):
-            date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
+            #Because the S value is actually the first day of the forecast, don't add one
+            date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead+1))
         
             for i_Y in range(sub_file.ETo.shape[3]):
                 for i_X in range(sub_file.ETo.shape[4]):
@@ -185,7 +186,6 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
         print(f'Completed ETo_SubX_{_date}')
 
 
-#%% SMERGE RZSM
 #%%   
 def anomaly_GLEAM_SubX_creation(_date):    
     try:
@@ -193,13 +193,13 @@ def anomaly_GLEAM_SubX_creation(_date):
         print(f'Already completed date {_date}. Saved in {SM_SubX_out_dir}.')
         
     except FileNotFoundError:
-        #Open up anomaly file to get proper formatting
+        #Open up anomaly file to get proper formatting. Initialized day is the file name (_date)
         sub_anomaly = xr.open_dataset(f'{subx_anomaly_dir}/RZSM_anomaly_{_date}.nc4')
         # _date = ''
         print(f'Working on initialized day {_date} to find GLEAM anomaly values from SubX models, leads, & coordinates and saving data into {SM_SubX_out_dir}.')
         sub_file = xr.open_dataset(f'mrso_GMAO_{_date}.nc4')
         
-        SMERGE_file = xr.open_dataset(f'{smerge_in_dir}/RZSM_anomaly_GLEAM.nc')
+        RZSM_file = xr.open_dataset(f'{smerge_in_dir}/RZSM_anomaly_GLEAM.nc')
         
         '''Same format as SubX. Find the correct dates, leads, models and just fill in'''
         smerge_out = (np.zeros_like(sub_file.mrso)).astype('float64')
@@ -210,7 +210,8 @@ def anomaly_GLEAM_SubX_creation(_date):
         
         #add the values from gleam 
         for i_lead in range(sub_file.mrso.shape[2]):
-            date_val = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
+            #Because the _date is the day initialized, add 1
+            date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead+1))
         
             for i_Y in range(sub_file.mrso.shape[3]):
                 for i_X in range(sub_file.mrso.shape[4]):
@@ -220,16 +221,16 @@ def anomaly_GLEAM_SubX_creation(_date):
                         #1 day appears to have not been calculated because of julian days and 
                         #anomaly code for +/-42 day (specically December 31, 2000)
                         #Just take the average of the other two days before and after
-                        if np.count_nonzero(SMERGE_file.RZSM.sel(time = date_val).values == 0) == 1593:
+                        if np.count_nonzero(RZSM_file.SMroot.sel(time = date_val).values == 0) == 1593:
                             date_val1 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead-1)
                             date_val2 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
                             
                             smerge_out[0,:, i_lead, i_Y, i_X] = \
-                            np.nanmean(SMERGE_file.RZSM.sel(time = date_val1).isel(lon = i_X, lat = i_Y).values + \
-                                SMERGE_file.RZSM.sel(time = date_val2).isel(lon = i_X, lat = i_Y).values)
+                            np.nanmean(RZSM_file.SMroot.sel(time = date_val1).isel(lon = i_X, lat = i_Y).values + \
+                                RZSM_file.SMroot.sel(time = date_val2).isel(lon = i_X, lat = i_Y).values)
                         else:
                             smerge_out[0,:, i_lead, i_Y, i_X] = \
-                                SMERGE_file.RZSM.sel(time = date_val).isel(lon = i_X, lat = i_Y).values
+                                RZSM_file.SMroot.sel(time = date_val).isel(lon = i_X, lat = i_Y).values
         
     
         smerge_get_weekly_leads = smerge_out[:,:,::7,:,:]

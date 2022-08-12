@@ -113,12 +113,11 @@ def fix_X_coord_dim(var,x_coords,y_coords,lead_coords):
             new_name1 = f'{var}_MME_X_fixed_{file[-14:]}'
             
             open_f.to_netcdf(path=new_name1)
-    return()
+    return(0)
 
 fix_X_coord_dim('RZSM',x_coords,y_coords,lead_coords)
 fix_X_coord_dim('ETo',x_coords,y_coords,lead_coords)
     
-#%%
 # #%%Interannual skill for all grid cells and leads and models 
 # # var = 'RZSM'
 # def all_skill_by_lead (var, obs_eto_path, obs_rzsm_path,obs_eto_mean,obs_rzsm_mean):
@@ -437,22 +436,23 @@ def all_season_mod_skill(var,cluster_num, mask_path,obs_eto_path, obs_rzsm_path)
         
         #Now add back to a dictionary for each model/lead week/weason
         for idx,lead_week in enumerate(range(skill_subx[season].lead.shape[0])):
-            if idx !=0:
+            if idx !=0 and (idx < 7):
                 seasonal_mod_skill = np.nanmean(seasonal_skill[lead_week,:,:])
                 output_dictionary[f'Lead{skill_subx[season].lead.values[lead_week]}_{season_name[season]}']= seasonal_mod_skill
                 
     return(output_dictionary)
 #%%
 
-all_cluster_acc_RZSM = {}
+all_cluster_acc_RZSM_MME = {}
 for clus_num in np.arange(1,7):
     print(f'Working on cluster {clus_num} out of 6.')
-    all_cluster_acc_RZSM[f'Cluster {clus_num}'] = all_season_mod_skill(var='RZSM',cluster_num=clus_num, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
+    all_cluster_acc_RZSM_MME[f'Cluster {clus_num}'] = all_season_mod_skill(var='RZSM',cluster_num=clus_num, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
 
 #%%
-all_cluster_acc_ETo = {}
+all_cluster_acc_ETo_MME = {}
 for clus_num in np.arange(1,7):
-    all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(var='ETo',cluster_num=clus_num, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
+    print(f'Working on cluster {clus_num} out of 6.')
+    all_cluster_acc_ETo_MME[f'Cluster {clus_num}'] = all_season_mod_skill(var='ETo',cluster_num=clus_num, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
     #print(all_cluster_acc_ETo[f'Cluster {clus_num}'])
 
 #%% Plot anomaly values in pcolormesh
@@ -481,15 +481,15 @@ def setup_plot_all_leads(all_cluster_acc,cluster_num):
                              'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
 
     return(df_OUT)
-
+#%%
 
 all_vals_setup_RZSM_MME = {}
 for clus_num in np.arange(1,7):
-    all_vals_setup_RZSM_MME[f'Cluster {clus_num}'] = setup_plot_all_leads(all_cluster_acc=all_cluster_acc_RZSM,cluster_num=clus_num)
+    all_vals_setup_RZSM_MME[f'Cluster {clus_num}'] = setup_plot_all_leads(all_cluster_acc=all_cluster_acc_RZSM_MME,cluster_num=clus_num)
 
 all_vals_setup_ETo_MME = {}
 for clus_num in np.arange(1,7):
-    all_vals_setup_ETo_MME[f'Cluster {clus_num}'] = setup_plot_all_leads(all_cluster_acc=all_cluster_acc_ETo,cluster_num=clus_num)
+    all_vals_setup_ETo_MME[f'Cluster {clus_num}'] = setup_plot_all_leads(all_cluster_acc=all_cluster_acc_ETo_MME,cluster_num=clus_num)
 
 
 # r1_r = setup_plot(all_vals['Cluster 1'])
@@ -518,12 +518,12 @@ def plot_lead_week_season_model(all_vals_setup):
           
         out_name = return_cluster_name(cluster_num)                
     
-        def return_data_for_plot(subset_by_cluster,model_num):
-            var_mod = subset_by_cluster[subset_by_cluster['Model'] == model_num]
+        def return_data_for_plot(subset_by_cluster):
+            var_mod = subset_by_cluster
             #convert to np array for pcolor mesh
             #season order: Spring, Summer, Fall, Winter
             
-            var_OUT = np.zeros(shape = (4,11))
+            var_OUT = np.zeros(shape = (4,6))
             #Place names in this order for better visual
             var_OUT[0,:] = var_mod[var_mod['Season']=='Spring']['ACC']
             var_OUT[1,:] = var_mod[var_mod['Season']=='Summer']['ACC']
@@ -537,27 +537,17 @@ def plot_lead_week_season_model(all_vals_setup):
             Z=var_OUT[:,:]
             
             Index = ['Spring', 'Summer', 'Fall', 'Winter']
-            Cols = ['0','1', '2', '3', '4', '5', '6','3.4','3.5','3.6','4.6']
+            Cols = ['1', '2', '3', '4', '5', '6']
             var_OUT = pd.DataFrame(var_OUT,index=Index, columns=Cols)
             
             return(var_OUT,x,y,Z)
         
         #p0-p3 contains the necessary data in a dataframe
         #p0x...p0y etc just contain data that was used for old plotting, not needed anymore
-        p0,p0x,p0y,p0z = return_data_for_plot(subset_by_cluster=all_vals_setup[i],model_num=0)
-        p1,p1x,p1y,p1z = return_data_for_plot(subset_by_cluster=all_vals_setup[i],model_num=1)
-        p2,p2x,p2y,p2z = return_data_for_plot(subset_by_cluster=all_vals_setup[i],model_num=2)
-        p3,p3x,p3y,p3z = return_data_for_plot(subset_by_cluster=all_vals_setup[i],model_num=3)
-    
-        multi_mean = (p0+p1+p2+p3)/4
-        
-        out_arrays = [p0,p1,p2,p3]
-        #add all data to a dictionary
-        for mod in range(0,4):
-            out_clusters[f'{out_name}_mod{mod}'] = out_arrays[mod]
-          
+        plot_setup,p0x,p0y,p0z = return_data_for_plot(subset_by_cluster=all_vals_setup[i])
+
         #add multi_mean to dictionary
-        out_clusters[f'{out_name}_mean'] = multi_mean
+        out_clusters[f'{out_name}_MME'] = plot_setup
         
     return(out_clusters,max_all, min_all)
         
@@ -580,83 +570,37 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
     cmap = mpl.colors.ListedColormap(plt.cm.YlOrRd(np.linspace(min_all, max_all, 7)))
     # cmap.set_under((.8, .8, .8, 1.0))
 
-    fig, ax = plt.subplots(6, 4, figsize=(29, 10), dpi=300)
+    fig, ax = plt.subplots(6, 1, figsize=(20, 10), dpi=300)
     cbar_ax = fig.add_axes([.91, .3, .03, .4])
     
-    region_name = ''
     region_index= 0
-    count_index = 0
     for idx,region_model in enumerate(sorted(acc_values_to_plot)):
-        # if idx == 5:
-        #     break
-        # print(idx)
-        #don't work on the mean file just yet
-        if 'mean' not in region_model:
-            model_number = int(region_model[-1])
-            region_current = region_model.split('_')[0] #get region name
-            
-            #This will let us know if we have changed regions
-            if region_name != region_current:
-                region_name = region_current
-                region_index+=1
-            
-            
-            plot_data = acc_values_to_plot[region_model]
-            if model_number == 0: #only for getting the region names correctly in plot
-                if count_index %4 ==0 and count_index <20:  #need to not plot x label for the top 5 regions
-               
-                    #Change region names on the left side
-                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,
-                                cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
-                                fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
-                                cbar_ax= cbar_ax,xticklabels=False)
-                    
-                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
-                    ax[region_index-1,model_number].set_ylabel(region_name)
-                    # ax[region_index-1,model_number].set_xlabel('')
-                    count_index+=1
-                    
-                elif count_index %4 ==0 and count_index >=20:
-                    #Change region names on the left side
-                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,
-                                cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
-                                fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
-                                cbar_ax= cbar_ax)
-                    
-                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
-                    ax[region_index-1,model_number].set_ylabel(region_name)
-                    count_index+=1
+        plot_data = acc_values_to_plot[region_model]
+           
+        if idx != len(acc_values_to_plot)-1: #only for getting the tick labels to not show up
 
-                else : 
-                    
-                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,
-                                cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
-                                fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
-                                cbar_ax= cbar_ax)
-                    
-                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
-                    ax[region_index-1,model_number].set_ylabel(region_name)
-                    count_index+=1
+            #Change region names on the left side
+            sns.heatmap(ax=ax[region_index],data = plot_data,
+                        cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
+                        fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
+                        cbar_ax= cbar_ax,xticklabels=False)
             
-            elif model_number != 0:
-                if count_index < 20:
-                    
-                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,cmap=cmap, 
-                                vmin=min_all, vmax=max_all, annot=True, fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False, yticklabels=False,
-                                cbar_ax= cbar_ax,xticklabels=False)
-                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
-                    count_index+=1
-                    
-                elif count_index >=20:
-                    sns.heatmap(ax=ax[region_index-1,model_number],data = plot_data,cmap=cmap, 
-                                vmin=min_all, vmax=max_all, annot=True, fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False, yticklabels=False,
-                                cbar_ax= cbar_ax)
-                    ax[region_index-1,model_number].tick_params(left=False, bottom=False,top=False)
-                    count_index+=1
-
-    plt.savefig(f'{output_season_dir}/all_mod_season_lead_{var}.tif')
+            ax[idx].set_ylabel(region_model.split('_')[0])
+            
+            region_index+=1
+        else:
+            #Change region names on the left side
+            sns.heatmap(ax=ax[region_index],data = plot_data,
+                        cmap=cmap, vmin=min_all, vmax=max_all, annot=True, 
+                        fmt='.2f', linewidths=2.0, linecolor='black', clip_on=False,
+                        cbar_ax= cbar_ax,xticklabels=True)
+            
+            ax[idx].set_ylabel(region_model.split('_')[0])
+            ax[idx].set(xlabel='Lead Week')
+            
+            fig.suptitle(f'gridMET {var} vs. GEOS-5 {var} \nAnomaly Correlation Coefficient \n (multi-ensemble mean applied first, then compared with observations)')
     
-    return()
+    return(plt.savefig(f'{output_season_dir}/all_mod_season_lead_{var}_MME.tif'))
 #%%
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=RZSM_acc_values_to_plot_MME,var='RZSM',min_all=min_all_rzsm,max_all=max_all_rzsm) 
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=ETo_acc_values_to_plot_MME,var='ETo',min_all=min_all_eto,max_all=max_all_eto)

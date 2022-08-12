@@ -38,12 +38,15 @@ rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/process_GEFS/multi* ~/Insync/O
 rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/wget* ~/Insync/OneDrive/NRT_CPC_Internship/Scripts/EASLEY_HPC/
 }
 
+return_easley_files
+
+
 ensem_dirs=$sub_dir/raw_ensemble_files
 cd $ensem_dirs
 #TODO: Since the files are already day average we need to combine each model into
 #one file (like SubX format)
 
-for var in */;do
+python3 01_combine_models_GEFSv12.py
     
 
 

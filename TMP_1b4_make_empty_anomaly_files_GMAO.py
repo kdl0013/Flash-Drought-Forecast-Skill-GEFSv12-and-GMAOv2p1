@@ -28,7 +28,7 @@ from datetime import timedelta
 
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-mod = 'GMAO'
+mod = 'GEFSv12'
 var = 'ETo'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
@@ -63,7 +63,7 @@ out_lead = np.array([0,1,2,3,4,5,6,3.4,3.5,3.6,4.6])
 #SubX.dat depth file
 
 #I brought this function out of loop, no need to repeat it more than once
-T_FILE = xr.open_dataset(glob('ETo_1999-01-10.nc')[0])
+T_FILE = xr.open_dataset('ETo_2000-01-15.nc')
 
 def make_empty_nc_files(init_date_list,T_FILE, var,out_lead):
     print(f'Making empty .nc files for {var}.')
@@ -290,7 +290,7 @@ def make_empty_multi_member_ensemble_files(init_date_list = init_date_list,T_FIL
 make_empty_multi_member_ensemble_files(init_date_list = init_date_list,T_FILE = T_FILE, var=var,out_lead=out_lead)
 #%% Now make empty mean files for ACC
 #%%
-T_FILE = xr.open_dataset(glob('ETo_1999-01-10.nc')[0])
+T_FILE = xr.open_dataset('ETo_2000-01-15.nc')
 
 def make_empty_mean_nc_files(init_date_list,T_FILE, var,out_lead):
     print(f'Making empty .nc files for {var} and saving into {new_acc_dir} [if applicable].')
@@ -501,18 +501,19 @@ new_eto_anom = f'ETo_completed_anomaly_nc_{mod}.txt'
 new_rzsm = f'RZSM_completed_anomaly_nc_{mod}.txt'
 # new_rzsm_mean = f'RZSM_completed_mean_nc_{mod}.txt'
 
-#Make a completed list file for EDDI, add new names to next code block
-new_eddi1 = f'EDDI_MME_completed_nc_{mod}.txt'
+# #Make a completed list file for EDDI, add new names to next code block
+# new_eddi1 = f'EDDI_MME_completed_nc_{mod}.txt'
 
-new_eto_anom1 = f'ETo_MME_completed_anomaly_nc_{mod}.txt'
-# new_eto_mean= f'ETo_completed_mean_nc_{mod}.txt'
+# new_eto_anom1 = f'ETo_MME_completed_anomaly_nc_{mod}.txt'
+# # new_eto_mean= f'ETo_completed_mean_nc_{mod}.txt'
 
-new_rzsm1 = f'RZSM_MME_completed_anomaly_nc_{mod}.txt'
+# new_rzsm1 = f'RZSM_MME_completed_anomaly_nc_{mod}.txt'
 
 # new_rzsm_mean = f'RZSM_completed_mean_nc_{mod}.txt'
+# [new_eddi,new_eto_anom,new_rzsm,new_eddi1,new_eto_anom1,new_rzsm1]
 #Create a new file for each index to keep track of what has been completed 
 #since this is a pretty slow process
-for name in [new_eddi,new_eto_anom,new_rzsm,new_eddi1,new_eto_anom1,new_rzsm1]:
+for name in [new_eddi,new_eto_anom,new_rzsm]:
     try:
         completed_dates = np.loadtxt(f'{script_dir}/{name}',dtype='str')         
     except OSError:

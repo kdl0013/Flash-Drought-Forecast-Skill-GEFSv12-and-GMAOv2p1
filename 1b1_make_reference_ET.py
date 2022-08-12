@@ -49,7 +49,7 @@ file_list = os.listdir()
 #variables = ['dswrf','tasmax', 'tasmin', 'uas', 'vas']
 
 #For each date, open each file and compute ETref with et
-#All files have the same initialized days (part of the pre-processing that is 
+#All files have the same initialized days (part of _datethe pre-processing that is 
 #completed)
 def return_date_list(var):
     date_list = []
@@ -341,7 +341,7 @@ def relative_humidity_subx(_date):
         tasmin = xr.open_dataset(glob(f'tasmin*{_date}.nc4')[0])
         tdps = xr.open_dataset(glob(f'tdps*{_date}.nc4')[0])
     
-
+# tasmax.tasmax[:,:,0:7,:,:].mean(dim='M').shape
         def convert_temperature(tasmax, tasmin, dewpoint_temp) -> float:
             '''Convert temperature to Celsius (from Kelvin), calculate vapor pressure (ea)
             from dewpoint temp'''
@@ -358,9 +358,9 @@ def relative_humidity_subx(_date):
         tavg = (tasmax.tasmax + tasmin.tasmin)/2
         
         #formula https://www.omnicalculator.com/physics/relative-humidity
-        rh = 100 * ((np.exp((17.27*dewpoint_temp)/(237.3 + dewpoint_temp))/ \
-                     ((np.exp((17.27*tavg)/(237.3 + tavg))))))
+        rh = 100 * (ea/(0.6112*(np.exp((17.27*tavg)/(237.3 + tavg)))))
             
+        # rh.tdps.values
         #save to a new file
         #Convert to an xarray object
         var_OUT = xr.Dataset(
@@ -399,8 +399,6 @@ def relative_humidity_gridMET():
             
         #take the mean of RHmin and RHmax
         rh_final = (RHmin.relative_humidity + RHmax.relative_humidity)/2
-
-            
 
         #Convert to an xarray object
         var_OUT = xr.Dataset(

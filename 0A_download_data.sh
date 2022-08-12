@@ -133,12 +133,18 @@ do
        cdo -f nc -remapcon,$data_s/CONUS_mask.grd -settaxis,${year}-${month}-${day},00:00:00,1day -setname,EDDI -input,$data_s/SMERGE_4_EDDI.grd EDDI_nc_file/${outName}.nc4 < $f;
 done
 
-#SubX conus mask was fixed with the following .py script : 0e_fix_CONUS_mask.py
+#Download GMAO GEOS-5 year 2017-2021
+python3 $data_s/00_create_wget_GEOS_2017_2021_years.py
+#save a wget_GMAO_2021.sh script. I moved this into the download location because 
+#wget parameter (-O) wasn't saving properly
+cd /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/preprocess_2017_2021
+bash wget_GMAO_2021.sh
 
-
-
-
-
+#Now shrink files by converting to smaller grid.
+for f in *.nc;do
+cdo -sellonlatbox,235,293,24,50 -remapcon,$mask/CONUS_mask.grd $f "$f"4 &&
+mv "$f"4 $f;
+done
 
 #OLD CODE, SMERGE only goes through year 2019, switching to GLEAM soil moisture instead
 ################### SMERGE soil moisture ##########################

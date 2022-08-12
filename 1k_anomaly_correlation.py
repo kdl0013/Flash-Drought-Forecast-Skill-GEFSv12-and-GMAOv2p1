@@ -445,6 +445,7 @@ for clus_num in np.arange(1,7):
 #%%
 all_cluster_acc_ETo = {}
 for clus_num in np.arange(1,7):
+    print(f'Working on cluster {clus_num} out of 6.')
     all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(var='ETo',cluster_num=clus_num, mask_path=mask_path,obs_eto_path=obs_eto_path, obs_rzsm_path=obs_rzsm_path)
     #print(all_cluster_acc_ETo[f'Cluster {clus_num}'])
 

@@ -57,5 +57,23 @@ for f in *.nc4;do
     rm "${f}"; fi
 done
 
+#MME anomalies (subx)
+cd /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GMAO/anomaly/MME
+
+for f in *.nc4;do
+    if [[  "${#f}" -gt 32  ]];then
+    rm "${f}"; fi
+done
+
+cd /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GEFSv12/raw_ensemble_files/cape_sfc
+
+for f in *.nc4;do
+    if [[  "${#f}" -gt 32  ]];then
+    rm "${f}"; fi
+done
+
+
+
+
 #return to script directory
 cd /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Scripts
