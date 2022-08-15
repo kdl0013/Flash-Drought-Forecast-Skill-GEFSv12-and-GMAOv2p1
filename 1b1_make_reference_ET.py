@@ -2,6 +2,26 @@
 # -*- coding: utf-8 -*-
 """
 Notes:
+    
+    https://wetlandscapes.github.io/blog/blog/penman-monteith-and-priestley-taylor/
+    
+    https://soilwater.github.io/pynotes-agriscience/notebooks/evapotranspiration.html
+    
+    ## Priestley-Taylor (1972)
+change altitude to elevation
+change alpha to be priestely taylor coefficient
+
+def priestley_taylor(T_min,T_max,solar_rad,altitude):
+    T_avg = (T_min + T_max)/2
+    atm_pressure = 101.3 * ((293 - 0.0065 * altitude)/293)**5.26 # kPa
+    gamma = 0.000665 * atm_pressure # Psychrometric constant Cp/(2.45 * 0.622 = 0.000665
+    delta = 4098 * (0.6108 * np.exp(17.27 * T_avg / (T_avg  + 237.3))) / (T_avg  + 237.3)**2 # Slope saturated vapor pressure
+    soil_heat_flux = 0;
+    alpha = 0.5
+    PET = alpha*delta/(delta+gamma)*(solar_rad-soil_heat_flux)
+    return PET
+    
+    
     GMAO calculate reference evapotranspiration (ETo) using ASCE Penman Monteith
     method https://pypi.org/project/refet/ python package : refet
     
