@@ -25,7 +25,6 @@ mask=$data_s/CONUS_mask
 #mkdir $data_s/cython_scripts
 
 
-
 # --- Functions
 make_reference_ET () {
 name=${1::-3}

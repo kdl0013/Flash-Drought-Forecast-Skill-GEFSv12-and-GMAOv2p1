@@ -1,0 +1,40 @@
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+  File "/cm/local/apps/slurm/var/spool/job293211/slurm_script", line 44, in cluster_compression_for_GEFS_files
+    grib_o = xr.open_dataset(file_o,filter_by_keys={'dataType': 'cf'}) #This works
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/api.py", line 479, in open_dataset
+    engine = plugins.guess_engine(filename_or_obj)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/plugins.py", line 148, in guess_engine
+    raise ValueError(error_msg)
+ValueError: found the following matches with the input file in xarray's IO backends: ['cfgrib']. But their dependencies may not be installed, see:
+https://docs.xarray.dev/en/stable/user-guide/io.html 
+https://docs.xarray.dev/en/stable/getting-started-guide/installing.html
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/cm/local/apps/slurm/var/spool/job293211/slurm_script", line 84, in <module>
+    p.map(cluster_compression_for_GEFS_files,vars_to_process)
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 364, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 771, in get
+    raise self._value
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+  File "/cm/local/apps/slurm/var/spool/job293211/slurm_script", line 44, in cluster_compression_for_GEFS_files
+    grib_o = xr.open_dataset(file_o,filter_by_keys={'dataType': 'cf'}) #This works
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/api.py", line 479, in open_dataset
+    engine = plugins.guess_engine(filename_or_obj)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/plugins.py", line 148, in guess_engine
+    raise ValueError(error_msg)
+ValueError: found the following matches with the input file in xarray's IO backends: ['cfgrib']. But their dependencies may not be installed, see:
+https://docs.xarray.dev/en/stable/user-guide/io.html 
+https://docs.xarray.dev/en/stable/getting-started-guide/installing.html

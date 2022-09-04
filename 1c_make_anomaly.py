@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Notes:
-    GMAO calculate anomaly for RZSM.
+    EMC calculate anomaly for RZSM.
     
 Anomaly is calculated as the 7-day average of RZSM by 7-day window for each lead time.
-
-E.g., First initialized file is 01-10-1999, and the actual first date for values is 01-11-1999
-which has a julian day of 11. Find the weekly average of RZSM and find anomalies by week lead 
-from all other years (total of 15 years (samples)).
-
+Grab all sample values from within a 42 day window to construct distribution.
 Then subtract the mean from the value to find the anomaly.
+
+EMC is already in volumetric soil moisture content m3/m3
 
 This script only has to process 1 years worth of files because you need all files 
 to create the distribution. While processing, it adds to all other files.
@@ -39,32 +37,38 @@ dir1 = 'main_dir'
 start_ = int('start_init')
 end_ = start_ + int('init_step')
 model_NAM1 = 'model_name'
-var = 'variable_'  #for anomaly function
+var = 'RZSM'  #for anomaly function
+
+if var == "RZSM":
+    varname='soilw_bgrnd'
+
 
 # # Test for 1 step size and model
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# start_ = int('0')
-# end_ = start_ + int('40')
-# model_NAM1 = 'GMAO'
-# var = 'ETo'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+start_ = int('0')
+end_ = start_ + int('40')
+model_NAM1 = 'EMC'
+var = 'soilw_bgrnd'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
-rzsm_dir = f'{home_dir}/SM_converted_m3_m3'
+os.chdir(home_dir)
+
+rzsm_dir = f'{home_dir}' #don't have to change directory, no conversion done
 
 anom_dir = f'{home_dir}/anomaly'
 new_dir_mean = f'{anom_dir}/mean_for_ACC' #for saving the mean value output
-os.system(f'mkdir {new_dir_mean}')
+os.system(f'mkdir -p {new_dir_mean}')
 
 save_MME_anomaly_mean = f'{home_dir}/anomaly/MME/mean_MME'
 save_MME_anomaly = f'{home_dir}/anomaly/MME'
 
 script_dir = f'{dir1}/Scripts'
-os.chdir(home_dir)
+
 #Additional datasets
 elevation_dir = f'{dir1}/Data/elevation/'
 
-gridMET_dir = f'{dir1}/Data/gridMET'
+merra_dir = f'{dir1}/Data/MERRA2_NASA_POWER'
 
 #Mask for CONUS
 HP_conus_path = f'{dir1}/Data/CONUS_mask/High_Plains_mask.nc'
@@ -77,15 +81,16 @@ file_list = os.listdir()
 #All files have the same initialized days (part of the pre-processing that is 
 #completed)
     
-var_list='SM'
 
-def return_date_list():
+def return_date_list(varname):
     date_list = []
-    for file in sorted(glob(f'{rzsm_dir}/{var_list}*.nc4')):
+    for file in sorted(glob(f'{rzsm_dir}/{varname}*.nc4')):
         date_list.append(file[-14:-4])
     return(date_list)
         
-init_date_list = return_date_list()    
+init_date_list = return_date_list(varname)    #get all dates of files
+
+#Make a full time series (some models have missing dates)
 
 '''Steps for anomaly calculation. 
 1.) For each date:
@@ -110,9 +115,9 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
     if var == 'RZSM':
         # subx_all = xr.open_mfdataset(f'{home_dir}/{var}_SubX*.nc4', concat_dim=['S'], combine='nested')
         #Use subx_all to create the full distribution of all data
-        subx_all = xr.open_mfdataset(f'{home_dir}/{var}_SubX*.nc4', concat_dim=['S'], combine='nested').persist()
+        subx_all = xr.open_mfdataset(f'{home_dir}/{varname}*.nc4', concat_dim=['S'], combine='nested').persist()
         #Process indivdual files for output
-        subx_out = xr.open_dataset(f'{home_dir}/{var}_SubX_m3_m3_{_date}.nc4')
+        subx_out = xr.open_dataset(f'{home_dir}/{varname}_{_date}.nc4')
         variable='SM_SubX_m3_m3'
         var_name = f'{variable}_value'
 
@@ -159,18 +164,19 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                                 
                                 mean_var_mod3[f'{julian_d}']=[]
                                 mean_var_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=idx).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
-                            elif idx % 7 == 0:
+                            elif idx >= 7 :
+                                #Subtract minus 6 because of indexing. First is leads 1-7, which equals 7 days
                                 mean_var_mod0[f'{julian_d}']=[]
-                                mean_var_mod0[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                mean_var_mod0[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
                                 
                                 mean_var_mod1[f'{julian_d}']=[]
-                                mean_var_mod1[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                mean_var_mod1[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
                                 
                                 mean_var_mod2[f'{julian_d}']=[]
-                                mean_var_mod2[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                mean_var_mod2[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
                                 
                                 mean_var_mod3[f'{julian_d}']=[]
-                                mean_var_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
+                                mean_var_mod3[f'{julian_d}'].append({f'{_date}':bn.nanmean(subx_out[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})
                             
                             ''''#if we want to look at weekly summation of ETo. But it's much harder to
                             #create an anomaly distribution if you apply a rolling mean to 
@@ -222,12 +228,12 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                                     mean_var_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=idx).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
     
                             
-                                elif idx % 7 == 0:
+                                elif idx >= 7 :
                                     try:
-                                        mean_var_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
-                                        mean_var_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
-                                        mean_var_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
-                                        mean_var_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-7,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod0[f'{julian_d}'].append({f'{file[day_s:day_e]}':np.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=0, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod1[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=1, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod2[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=2, X=i_X, Y=i_Y).values)})   
+                                        mean_var_mod3[f'{julian_d}'].append({f'{file[day_s:day_e]}':bn.nanmean(open_f[f'{var_name}'].isel(lead=slice(idx-6,idx)).isel(S=0, model=3, X=i_X, Y=i_Y).values)})   
     
                                     #Some shouldn't/can't be appended to dictionary because they are useless
                                     except KeyError:

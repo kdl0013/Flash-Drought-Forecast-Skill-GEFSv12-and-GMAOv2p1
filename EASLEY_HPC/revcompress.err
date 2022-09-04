@@ -1,0 +1,236 @@
+
+The following have been reloaded with a version change:
+  1) gcc/4.8.5 => gcc/5.3.0
+
+
+The following have been reloaded with a version change:
+  1) netcdf/4.9.0 => netcdf/4.4.1
+
+Can't create file 'd35_dswrf_sfc_2018061300_p09.grib2.923a8.idx'
+Traceback (most recent call last):
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 199, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/lru_cache.py", line 53, in __getitem__
+    value = self._cache[key]
+KeyError: [<function _open_scipy_netcdf at 0x2aab52fe7ca0>, ('/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2018061300_p09.nc4',), 'r', (('mmap', None), ('version', 2))]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/process_GEFS/reverse_multiprocess_GEFS_compression.py", line 45, in cluster_compression_for_GEFS_files
+    xr.open_dataset(f'{save_dir}/{file_o[:-6]}.nc4')
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/api.py", line 495, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 282, in open_dataset
+    ds = store_entrypoint.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/store.py", line 24, in open_dataset
+    vars, attrs = store.load()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/common.py", line 123, in load
+    (_decode_variable_name(k), v) for k, v in self.get_variables().items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 171, in get_variables
+    (k, self.open_store_variable(k, v)) for k, v in self.ds.variables.items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 160, in ds
+    return self._manager.acquire()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 181, in acquire
+    file, _ = self._acquire_with_cache_info(needs_lock)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 205, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 99, in _open_scipy_netcdf
+    return scipy.io.netcdf_file(filename, mode=mode, mmap=mmap, version=version)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/scipy/io/_netcdf.py", line 245, in __init__
+    self.fp = open(self.filename, '%sb' % omode)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2018061300_p09.nc4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 261, in itervalues
+    yield self.filestream.message_from_file(file, errors=errors)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 328, in message_from_file
+    return Message.from_file(file, offset, **kwargs)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 102, in from_file
+    raise EOFError("End of file: %r" % file)
+EOFError: End of file: <_io.BufferedReader name='d35_dswrf_sfc_2018061300_p09.grib2'>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 523, in from_indexpath_or_filestream
+    self = cls.from_fieldset(filestream, index_keys, computed_keys)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 366, in from_fieldset
+    return cls.from_fieldset_and_iteritems(fieldset, iteritems, index_keys, computed_keys)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 379, in from_fieldset_and_iteritems
+    for field_id, raw_field in iteritems:
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 279, in __iter__
+    for message in self.itervalues():
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 265, in itervalues
+    raise EOFError("No valid message found: %r" % self.filestream.path)
+EOFError: No valid message found: 'd35_dswrf_sfc_2018061300_p09.grib2'
+Can't read index file 'd35_dswrf_sfc_2018061300_p09.grib2.923a8.idx'
+Traceback (most recent call last):
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 199, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/lru_cache.py", line 53, in __getitem__
+    value = self._cache[key]
+KeyError: [<function _open_scipy_netcdf at 0x2aab52fe7ca0>, ('/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2018061300_p09.nc4',), 'r', (('mmap', None), ('version', 2))]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/process_GEFS/reverse_multiprocess_GEFS_compression.py", line 45, in cluster_compression_for_GEFS_files
+    xr.open_dataset(f'{save_dir}/{file_o[:-6]}.nc4')
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/api.py", line 495, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 282, in open_dataset
+    ds = store_entrypoint.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/store.py", line 24, in open_dataset
+    vars, attrs = store.load()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/common.py", line 123, in load
+    (_decode_variable_name(k), v) for k, v in self.get_variables().items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 171, in get_variables
+    (k, self.open_store_variable(k, v)) for k, v in self.ds.variables.items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 160, in ds
+    return self._manager.acquire()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 181, in acquire
+    file, _ = self._acquire_with_cache_info(needs_lock)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 205, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 99, in _open_scipy_netcdf
+    return scipy.io.netcdf_file(filename, mode=mode, mmap=mmap, version=version)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/scipy/io/_netcdf.py", line 245, in __init__
+    self.fp = open(self.filename, '%sb' % omode)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2018061300_p09.nc4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 532, in from_indexpath_or_filestream
+    index_mtime = os.path.getmtime(indexpath)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/genericpath.py", line 55, in getmtime
+    return os.stat(filename).st_mtime
+FileNotFoundError: [Errno 2] No such file or directory: 'd35_dswrf_sfc_2018061300_p09.grib2.923a8.idx'
+Can't create file 'd35_dswrf_sfc_2005091400_p08.grib2.923a8.idx'
+Traceback (most recent call last):
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 199, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/lru_cache.py", line 53, in __getitem__
+    value = self._cache[key]
+KeyError: [<function _open_scipy_netcdf at 0x2aab52fe7ca0>, ('/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2005091400_p08.nc4',), 'r', (('mmap', None), ('version', 2))]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/process_GEFS/reverse_multiprocess_GEFS_compression.py", line 45, in cluster_compression_for_GEFS_files
+    xr.open_dataset(f'{save_dir}/{file_o[:-6]}.nc4')
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/api.py", line 495, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 282, in open_dataset
+    ds = store_entrypoint.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/store.py", line 24, in open_dataset
+    vars, attrs = store.load()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/common.py", line 123, in load
+    (_decode_variable_name(k), v) for k, v in self.get_variables().items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 171, in get_variables
+    (k, self.open_store_variable(k, v)) for k, v in self.ds.variables.items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 160, in ds
+    return self._manager.acquire()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 181, in acquire
+    file, _ = self._acquire_with_cache_info(needs_lock)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 205, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 99, in _open_scipy_netcdf
+    return scipy.io.netcdf_file(filename, mode=mode, mmap=mmap, version=version)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/scipy/io/_netcdf.py", line 245, in __init__
+    self.fp = open(self.filename, '%sb' % omode)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2005091400_p08.nc4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 261, in itervalues
+    yield self.filestream.message_from_file(file, errors=errors)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 328, in message_from_file
+    return Message.from_file(file, offset, **kwargs)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 102, in from_file
+    raise EOFError("End of file: %r" % file)
+EOFError: End of file: <_io.BufferedReader name='d35_dswrf_sfc_2005091400_p08.grib2'>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 523, in from_indexpath_or_filestream
+    self = cls.from_fieldset(filestream, index_keys, computed_keys)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 366, in from_fieldset
+    return cls.from_fieldset_and_iteritems(fieldset, iteritems, index_keys, computed_keys)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 379, in from_fieldset_and_iteritems
+    for field_id, raw_field in iteritems:
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 279, in __iter__
+    for message in self.itervalues():
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 265, in itervalues
+    raise EOFError("No valid message found: %r" % self.filestream.path)
+EOFError: No valid message found: 'd35_dswrf_sfc_2005091400_p08.grib2'
+Can't read index file 'd35_dswrf_sfc_2005091400_p08.grib2.923a8.idx'
+Traceback (most recent call last):
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 199, in _acquire_with_cache_info
+    file = self._cache[self._key]
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/lru_cache.py", line 53, in __getitem__
+    value = self._cache[key]
+KeyError: [<function _open_scipy_netcdf at 0x2aab52fe7ca0>, ('/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2005091400_p08.nc4',), 'r', (('mmap', None), ('version', 2))]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/process_GEFS/reverse_multiprocess_GEFS_compression.py", line 45, in cluster_compression_for_GEFS_files
+    xr.open_dataset(f'{save_dir}/{file_o[:-6]}.nc4')
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/api.py", line 495, in open_dataset
+    backend_ds = backend.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 282, in open_dataset
+    ds = store_entrypoint.open_dataset(
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/store.py", line 24, in open_dataset
+    vars, attrs = store.load()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/common.py", line 123, in load
+    (_decode_variable_name(k), v) for k, v in self.get_variables().items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 171, in get_variables
+    (k, self.open_store_variable(k, v)) for k, v in self.ds.variables.items()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 160, in ds
+    return self._manager.acquire()
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 181, in acquire
+    file, _ = self._acquire_with_cache_info(needs_lock)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/file_manager.py", line 205, in _acquire_with_cache_info
+    file = self._opener(*self._args, **kwargs)
+  File "/home/kdl0013/.local/lib/python3.8/site-packages/xarray/backends/scipy_.py", line 99, in _open_scipy_netcdf
+    return scipy.io.netcdf_file(filename, mode=mode, mmap=mmap, version=version)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/scipy/io/_netcdf.py", line 245, in __init__
+    self.fp = open(self.filename, '%sb' % omode)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/kdl0013/GEFSv12/dswrf_sfc/d35_dswrf_sfc_2005091400_p08.nc4'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/site-packages/cfgrib/messages.py", line 532, in from_indexpath_or_filestream
+    index_mtime = os.path.getmtime(indexpath)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/genericpath.py", line 55, in getmtime
+    return os.stat(filename).st_mtime
+FileNotFoundError: [Errno 2] No such file or directory: 'd35_dswrf_sfc_2005091400_p08.grib2.923a8.idx'
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+  File "/home/kdl0013/process_GEFS/reverse_multiprocess_GEFS_compression.py", line 39, in cluster_compression_for_GEFS_files
+    os.chdir(f'{scratch_dir}/{var}')
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/kdl0013/vflx_sfc'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kdl0013/process_GEFS/reverse_multiprocess_GEFS_compression.py", line 106, in <module>
+    p.map(cluster_compression_for_GEFS_files,vars_to_process)
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/multiprocessing/pool.py", line 364, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/home/kdl0013/.conda/envs/cfgrib/lib/python3.8/multiprocessing/pool.py", line 771, in get
+    raise self._value
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/kdl0013/vflx_sfc'

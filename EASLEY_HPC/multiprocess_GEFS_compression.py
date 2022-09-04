@@ -16,20 +16,10 @@ import xarray as xr
 from glob import glob
 from multiprocessing import Pool
 
-# #for linux
-# home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX'
-# script_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Scripts'
-# gefs_dir = f'{home_dir}/GEFSv12/raw_ensemble_files'
-# mask_dir = f'{script_dir}/CONUS_mask'
-
-# model = 'GEFSv12'
-
 # #for Easley cluster
 scratch_dir = '/scratch/kdl0013' #where all directories are stored
 home_dir = '/home/kdl0013/GEFSv12'
 mask_dir = '/home/kdl0013'
-#radiation,   u-wind,   v-wind,                                       soil,         specific humid$
-#vars_to_process= ['cape_sfc', 'uflx_sfc','vflx_sfc', 'dswrf_sfc','tmax_2m','tmin_2m', 'soilw_bgrn$
 
 #Test file
 # file_o = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/GEFSv12/raw_ensemble_files/pres$
@@ -66,7 +56,7 @@ def cluster_compression_for_GEFS_files(var):
                     #Now use cdo operators on the file. Daily mean, remap to CONUS grid, select only CONUS$
                     #remove old nc file (to save on storage space)
 
-                    os.system(f'cdo -sellonlatbox,235,293,24,50 -remapcon,{mask_dir}/CONUS_mask.grd  {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
+                    os.system(f'cdo -remapcon,{mask_dir}/CONUS_mask.grd  {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
                     os.system(f"rm {var_location}/{file_nc_name}")
                     
                 except EOFError:
@@ -82,7 +72,7 @@ def cluster_compression_for_GEFS_files(var):
                     #Now use cdo operators on the file. Daily mean, remap to CONUS grid, select only CONUS$
                     #remove old nc file (to save on storage space)
 
-                    os.system(f'cdo -sellonlatbox,235,293,24,50 -remapcon,{mask_dir}/CONUS_mask.grd {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
+                    os.system(f'cdo -remapcon,{mask_dir}/CONUS_mask.grd {var_location}/{file_nc_name} {save_dir}/{file_nc_name}')
                     os.system(f"rm {var_location}/{file_nc_name}")
                 except EOFError:
                     pass
@@ -98,10 +88,11 @@ def cluster_compression_for_GEFS_files(var):
 # os.system(f'cp {var_location}/{final_outname} {save_dir}/{final_outname}')
 
 
-vars_to_process= ['dswrf_sfc', 'uflx_sfc','vflx_sfc','cape_sfc', 'tmax_2m','tmin_2m', 'soilw_bgrnd', 'spfh_2m','pres_msl']
+vars_to_process= ['dswrf_sfc', 'dlwrf_sfc', 'soilw_bgrnd', 'apcp_sfc','tmp_2m']
 
 
 if __name__ == '__main__':
     p = Pool(9)
     p.map(cluster_compression_for_GEFS_files,vars_to_process)
+
 

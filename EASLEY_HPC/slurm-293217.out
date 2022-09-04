@@ -1,0 +1,4 @@
+  File "/cm/local/apps/slurm/var/spool/job293217/slurm_script", line 41
+    save_dir = f'{home_dir}/{var}')
+                                  ^
+TabError: inconsistent use of tabs and spaces in indentation

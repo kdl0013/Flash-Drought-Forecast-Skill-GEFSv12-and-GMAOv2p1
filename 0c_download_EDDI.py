@@ -18,9 +18,14 @@ import os
 import numpy as np
 
 
-home_dir = 'main_dir'
-script_dir = f'{home_dir}/Scripts'
+# home_dir = 'main_dir'
+# script_dir = f'{home_dir}/Scripts'
+# eddi_save_dir = "out_dir"
 #Create a file for multiproc
+
+home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+script_dir = f'{home_dir}/Scripts'
+eddi_save_dir = "/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/EDDI/convert_2_nc"
 
 os.chdir(script_dir)
 
@@ -29,7 +34,7 @@ os.chdir(script_dir)
 date_list = []
 date_list.append('#!/bin/bash')
 #Date ranges                    
-years = range(1999, 2017)
+years = range(2000, 2023)
 months = range(1, 13) 
 #Loop for file download where EDDI data is saved
 url0 = 'https://downloads.psl.noaa.gov/Projects/EDDI/CONUS_archive/data/'
@@ -51,4 +56,4 @@ for y in years:
             
             count +=1
 
-np.savetxt(os.path.join(script_dir,'0d_download_EDDI_wget.sh'), date_list, fmt = '%s')                                       
+np.savetxt(os.path.join(script_dir,'0c_download_EDDI_wget.sh'), date_list, fmt = '%s')                                       

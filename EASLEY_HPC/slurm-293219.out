@@ -1,0 +1,28 @@
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+  File "/cm/local/apps/slurm/var/spool/job293219/slurm_script", line 41, in cluster_compression_for_GEFS_files
+    save_dir = f('{home_dir}/{var}')
+NameError: name 'f' is not defined
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/cm/local/apps/slurm/var/spool/job293219/slurm_script", line 84, in <module>
+    p.map(cluster_compression_for_GEFS_files,vars_to_process)
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 364, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 771, in get
+    raise self._value
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/tools/anacondapython-3.8.6/lib/python3.8/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+  File "/cm/local/apps/slurm/var/spool/job293219/slurm_script", line 41, in cluster_compression_for_GEFS_files
+    save_dir = f('{home_dir}/{var}')
+NameError: name 'f' is not defined

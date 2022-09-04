@@ -1,0 +1,13 @@
+no change     /tools/anacondapython-3.8.6/condabin/conda
+no change     /tools/anacondapython-3.8.6/bin/conda
+no change     /tools/anacondapython-3.8.6/bin/conda-env
+no change     /tools/anacondapython-3.8.6/bin/activate
+no change     /tools/anacondapython-3.8.6/bin/deactivate
+no change     /tools/anacondapython-3.8.6/etc/profile.d/conda.sh
+no change     /tools/anacondapython-3.8.6/etc/fish/conf.d/conda.fish
+no change     /tools/anacondapython-3.8.6/shell/condabin/Conda.psm1
+no change     /tools/anacondapython-3.8.6/shell/condabin/conda-hook.ps1
+no change     /tools/anacondapython-3.8.6/lib/python3.8/site-packages/xontrib/conda.xsh
+no change     /tools/anacondapython-3.8.6/etc/profile.d/conda.csh
+no change     /home/kdl0013/.bashrc
+No action taken.

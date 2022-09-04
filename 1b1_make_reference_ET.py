@@ -51,7 +51,7 @@ mod = 'model_name'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # num_processors = 10
-# mod = 'GMAO'
+# mod = 'EMC'
 # var = 'ETo'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'
@@ -60,6 +60,7 @@ os.chdir(home_dir)
 
 #Additional datasets
 elevation_dir = f'{dir1}/Data/elevation/'
+ptC_dir = f'{dir1}/Data/Priestley_Taylor_Makkink_evap_coeff_maps'
 gridMET_dir = f'{dir1}/Data/gridMET'
 smerge_dir = f'{dir1}/Data/SMERGE_SM/Raw_data'
 
@@ -83,6 +84,11 @@ init_date_list = return_date_list(var = 'vas')
 
 # for _date in init_date_list:
 #_date = init_date_list[0]
+
+
+'''IMPORTANT NOTE: RSMAS has no dlwrf data for year 2018 or 2019. So if no data, 
+just use the shortwave flux alone as the net radiation'''
+
 #%%
 '''Compute Reference ET for SubX data'''
 def multiProcess_Refet_SubX(_date):
@@ -93,16 +99,18 @@ def multiProcess_Refet_SubX(_date):
         print(f'{_date} already completed for ETo. Saved in {home_dir}.')
     except FileNotFoundError:
             
-        print(f'Working on date {_date} to calculate SubX ETo and save into {home_dir}.')
+        print(f'Working on date {mod} {_date} to calculate SubX ETo.')
         #Open up each file
-        tasmax = xr.open_dataset(glob(f'tasmax*{_date}.nc4')[0])
-        tasmin = xr.open_dataset(glob(f'tasmin*{_date}.nc4')[0])
-        tdps = xr.open_dataset(glob(f'tdps*{_date}.nc4')[0])
+        tasmax = xr.open_dataset(glob(f'tas*{_date}.nc4')[0])
+        # tdps = xr.open_dataset(glob(f'tdps*{_date}.nc4')[0])
         dswrf = xr.open_dataset(glob(f'dswrf*{_date}.nc4')[0])
-        windU = xr.open_dataset(glob(f'uas*{_date}.nc4')[0])
-        windV = xr.open_dataset(glob(f'vas*{_date}.nc4')[0])
+        dlwrf = xr.open_dataset(glob(f'dslrf*{_date}.nc4')[0])
+        # windU = xr.open_dataset(glob(f'uas*{_date}.nc4')[0])
+        # windV = xr.open_dataset(glob(f'vas*{_date}.nc4')[0])
         elevation = xr.open_dataset(f'{elevation_dir}/elev_regrid.nc', decode_times=False)
-    
+        albedo = xr.open_dataset() #Take from 
+        ptC = xr.open_dataset(f'{ptC_dir}/pt_coeff_FINAL.nc')
+        
         #CONUS mask
         conus_mask = xr.open_dataset(f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4')
         

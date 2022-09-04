@@ -24,11 +24,10 @@ model_dir = f'{home_dir}/{model}'
 os.system(f'mkdir -p {model_dir}')
 #Works for GMAO GEOSo
 #https://noaa-gefs-retrospective.s3.amazonaws.com/Description_of_reforecast_data.pdf
-                    #radiation,   u-wind,   v-wind,                                       soil,         specific humidity (spfh), mean sea level pressure (pres)            
-#vars_to_download = ['dswrf_sfc', 'uflx_sfc','vflx_sfc', 'tmax_2m','tmin_2m', 'soilw_bgrnd', 'spfh_2m','pres_msl','cape_sfc']
+vars_to_download = ['dswrf_sfc','dlwrf_sfc','tmp_2m', 'soilw_bgrnd','apcp_sfc']
 
 #Good to go vars: dswrf, cape, pres
-vars_to_download = ['uflx_sfc']
+#vars_to_download = ['uflx_sfc']
 
 #TODO: investigate for specific humidity to actual vapor pressure https://earthscience.stackexchange.com/questions/2360/how-do-i-convert-specific-humidity-to-relative-humidity
 
@@ -46,8 +45,6 @@ dates = [start_date + dt.timedelta(days=d) for d in range(0, end_date.toordinal(
 
 #from date time, Wednesday is a 2. (Monday is a 0) https://docs.python.org/3/library/datetime.html#datetime.datetime.weekday
 dates = [i for i in dates if i.weekday() ==2]
-
-#vars=['tas']
 
 
 #%%

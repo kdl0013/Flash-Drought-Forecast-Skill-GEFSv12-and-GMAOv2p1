@@ -1,0 +1,2269 @@
+no change     /tools/anacondapython-3.8.6/condabin/conda
+no change     /tools/anacondapython-3.8.6/bin/conda
+no change     /tools/anacondapython-3.8.6/bin/conda-env
+no change     /tools/anacondapython-3.8.6/bin/activate
+no change     /tools/anacondapython-3.8.6/bin/deactivate
+no change     /tools/anacondapython-3.8.6/etc/profile.d/conda.sh
+no change     /tools/anacondapython-3.8.6/etc/fish/conf.d/conda.fish
+no change     /tools/anacondapython-3.8.6/shell/condabin/Conda.psm1
+no change     /tools/anacondapython-3.8.6/shell/condabin/conda-hook.ps1
+no change     /tools/anacondapython-3.8.6/lib/python3.8/site-packages/xontrib/conda.xsh
+no change     /tools/anacondapython-3.8.6/etc/profile.d/conda.csh
+no change     /home/kdl0013/.bashrc
+No action taken.
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [3.51s 106MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.63s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 128MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 140MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 141MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 141MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 142MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 142MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 142MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 143MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 143MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.80s 144MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 144MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 144MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 145MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 145MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.81s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 146MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 154MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 154MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 154MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 155MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 155MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 155MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 156MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 156MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.64s 157MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 157MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 157MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 158MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 158MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 159MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 159MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 159MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 160MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 160MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 161MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 161MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 161MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 162MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 162MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 163MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 163MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 163MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 164MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 164MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 165MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 165MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 165MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.63s 166MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 166MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 167MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 167MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 167MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 168MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 168MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.80s 169MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 169MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 169MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 170MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 170MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 171MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 171MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 171MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.65s 172MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 172MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 173MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 173MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.65s 173MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 174MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 174MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 175MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 175MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 175MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 176MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 176MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 177MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 177MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.65s 177MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.63s 178MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 178MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 179MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 179MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 179MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 180MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 180MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 181MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 181MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 181MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 182MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 182MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 183MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 183MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 183MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 184MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 184MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 185MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 185MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 185MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 186MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 186MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 187MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 187MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 187MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 188MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 188MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 189MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 189MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 189MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 190MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 190MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 191MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 191MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 191MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 192MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 192MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 192MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 193MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 193MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 194MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 194MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 194MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 195MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 195MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 196MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 196MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 196MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 197MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 197MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 198MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 198MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 198MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 199MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 199MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.62s 200MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 200MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 200MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 201MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 201MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 202MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 202MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 202MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 203MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 203MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 204MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 204MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 204MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 205MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 205MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 206MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 206MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 206MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 207MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 207MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 208MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 208MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 208MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 209MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 209MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 210MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 210MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 210MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 211MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 211MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 212MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 212MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 212MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 213MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 213MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 214MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 214MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 214MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 215MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 215MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 216MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 216MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 216MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 217MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 217MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 218MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 218MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 218MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 219MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 219MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 220MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 220MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 220MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 221MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 221MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 221MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 222MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 222MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 223MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 223MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 223MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 224MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 224MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 225MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 225MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 225MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 226MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 226MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 227MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 227MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.78s 227MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 228MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 228MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 229MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 229MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 229MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 230MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 230MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 231MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.66s 231MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 231MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 232MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 232MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 233MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 233MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 233MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 234MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 234MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 235MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 235MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 235MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 236MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 236MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 237MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 237MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 237MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 238MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 238MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 239MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 239MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 239MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 240MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 240MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 241MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 241MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.64s 241MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 242MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 242MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 243MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 243MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 243MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 244MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 244MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 245MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 245MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 245MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 246MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 246MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 247MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 247MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 247MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 248MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 248MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 249MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 249MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 249MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 250MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 250MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.64s 251MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.63s 251MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 251MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 252MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 252MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 253MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 253MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 253MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 254MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 254MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 255MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.68s 255MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 255MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.67s 256MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.69s 256MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 256MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 257MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 257MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.73s 258MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 258MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 258MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.72s 259MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.71s 259MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.74s 260MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.65s 260MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.70s 260MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 261MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.76s 261MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.79s 262MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.75s 262MB].
+cdo(1) remapcon: Process started
+cdo(2) dayavg: Process started
+cdo(1) remapcon: YAC first order conservative weights from lonlat (720x361) to lonlat (59x27) grid
+cdo(2) dayavg: Processed 25992000 values from 1 variable over 122 timesteps.
+cdo(1) remapcon: Processed 5978160 values from 1 variable over 23 timesteps.
+cdo    sellonlatbox: Processed 36639 values from 1 variable over 23 timesteps [1.77s 262MB].
+d35_spfh_2m_2006010400_c00.grib2.nc4 completed
+d35_spfh_2m_2006010400_p01.grib2.nc4 completed
+d35_spfh_2m_2006010400_p02.grib2.nc4 completed
+d35_spfh_2m_2006010400_p03.grib2.nc4 completed
+d35_spfh_2m_2006010400_p04.grib2.nc4 completed
+d35_spfh_2m_2006010400_p05.grib2.nc4 completed
+d35_spfh_2m_2006010400_p06.grib2.nc4 completed
+d35_spfh_2m_2006010400_p07.grib2.nc4 completed
+d35_spfh_2m_2006010400_p08.grib2.nc4 completed
+d35_spfh_2m_2006010400_p09.grib2.nc4 completed
+d35_spfh_2m_2006010400_p10.grib2.nc4 completed
+d35_spfh_2m_2006011100_c00.grib2.nc4 completed
+d35_spfh_2m_2006011100_p01.grib2.nc4 completed
+d35_spfh_2m_2006011100_p02.grib2.nc4 completed
+d35_spfh_2m_2006011100_p03.grib2.nc4 completed
+d35_spfh_2m_2006011100_p04.grib2.nc4 completed
+d35_spfh_2m_2006011100_p05.grib2.nc4 completed
+d35_spfh_2m_2006011100_p06.grib2.nc4 completed
+d35_spfh_2m_2006011100_p07.grib2.nc4 completed
+d35_spfh_2m_2006011100_p08.grib2.nc4 completed
+d35_spfh_2m_2006011100_p09.grib2.nc4 completed
+d35_spfh_2m_2006011100_p10.grib2.nc4 completed
+d35_spfh_2m_2006011800_c00.grib2.nc4 completed
+d35_spfh_2m_2006011800_p01.grib2.nc4 completed
+d35_spfh_2m_2006011800_p02.grib2.nc4 completed
+d35_spfh_2m_2006011800_p03.grib2.nc4 completed
+d35_spfh_2m_2006011800_p04.grib2.nc4 completed
+d35_spfh_2m_2006011800_p05.grib2.nc4 completed
+d35_spfh_2m_2006011800_p06.grib2.nc4 completed
+d35_spfh_2m_2006011800_p07.grib2.nc4 completed
+d35_spfh_2m_2006011800_p08.grib2.nc4 completed
+d35_spfh_2m_2006011800_p09.grib2.nc4 completed
+d35_spfh_2m_2006011800_p10.grib2.nc4 completed
+d35_spfh_2m_2006012500_c00.grib2.nc4 completed
+d35_spfh_2m_2006012500_p01.grib2.nc4 completed
+d35_spfh_2m_2006012500_p02.grib2.nc4 completed
+d35_spfh_2m_2006012500_p03.grib2.nc4 completed
+d35_spfh_2m_2006012500_p04.grib2.nc4 completed
+d35_spfh_2m_2006012500_p05.grib2.nc4 completed
+d35_spfh_2m_2006012500_p06.grib2.nc4 completed
+d35_spfh_2m_2006012500_p07.grib2.nc4 completed
+d35_spfh_2m_2006012500_p08.grib2.nc4 completed
+d35_spfh_2m_2006012500_p09.grib2.nc4 completed
+d35_spfh_2m_2006012500_p10.grib2.nc4 completed
+d35_spfh_2m_2006020100_c00.grib2.nc4 completed
+d35_spfh_2m_2006020100_p01.grib2.nc4 completed
+d35_spfh_2m_2006020100_p02.grib2.nc4 completed
+d35_spfh_2m_2006020100_p03.grib2.nc4 completed
+d35_spfh_2m_2006020100_p04.grib2.nc4 completed
+d35_spfh_2m_2006020100_p05.grib2.nc4 completed
+d35_spfh_2m_2006020100_p06.grib2.nc4 completed
+d35_spfh_2m_2006020100_p07.grib2.nc4 completed
+d35_spfh_2m_2006020100_p08.grib2.nc4 completed
+d35_spfh_2m_2006020100_p09.grib2.nc4 completed
+d35_spfh_2m_2006020100_p10.grib2.nc4 completed
+d35_spfh_2m_2006020800_c00.grib2.nc4 completed
+d35_spfh_2m_2006020800_p01.grib2.nc4 completed
+d35_spfh_2m_2006020800_p02.grib2.nc4 completed
+d35_spfh_2m_2006020800_p03.grib2.nc4 completed
+d35_spfh_2m_2006020800_p04.grib2.nc4 completed
+d35_spfh_2m_2006020800_p05.grib2.nc4 completed
+d35_spfh_2m_2006020800_p06.grib2.nc4 completed
+d35_spfh_2m_2006020800_p07.grib2.nc4 completed
+d35_spfh_2m_2006020800_p08.grib2.nc4 completed
+d35_spfh_2m_2006020800_p09.grib2.nc4 completed
+d35_spfh_2m_2006020800_p10.grib2.nc4 completed
+d35_spfh_2m_2006021500_c00.grib2.nc4 completed
+d35_spfh_2m_2006021500_p01.grib2.nc4 completed
+d35_spfh_2m_2006021500_p02.grib2.nc4 completed
+d35_spfh_2m_2006021500_p03.grib2.nc4 completed
+d35_spfh_2m_2006021500_p04.grib2.nc4 completed
+d35_spfh_2m_2006021500_p05.grib2.nc4 completed
+d35_spfh_2m_2006021500_p06.grib2.nc4 completed
+d35_spfh_2m_2006021500_p07.grib2.nc4 completed
+d35_spfh_2m_2006021500_p08.grib2.nc4 completed
+d35_spfh_2m_2006021500_p09.grib2.nc4 completed
+d35_spfh_2m_2006021500_p10.grib2.nc4 completed
+d35_spfh_2m_2006022200_c00.grib2.nc4 completed
+d35_spfh_2m_2006022200_p01.grib2.nc4 completed
+d35_spfh_2m_2006022200_p02.grib2.nc4 completed
+d35_spfh_2m_2006022200_p03.grib2.nc4 completed
+d35_spfh_2m_2006022200_p04.grib2.nc4 completed
+d35_spfh_2m_2006022200_p05.grib2.nc4 completed
+d35_spfh_2m_2006022200_p06.grib2.nc4 completed
+d35_spfh_2m_2006022200_p07.grib2.nc4 completed
+d35_spfh_2m_2006022200_p08.grib2.nc4 completed
+d35_spfh_2m_2006022200_p09.grib2.nc4 completed
+d35_spfh_2m_2006022200_p10.grib2.nc4 completed
+d35_spfh_2m_2006030100_c00.grib2.nc4 completed
+d35_spfh_2m_2006030100_p01.grib2.nc4 completed
+d35_spfh_2m_2006030100_p02.grib2.nc4 completed
+d35_spfh_2m_2006030100_p03.grib2.nc4 completed
+d35_spfh_2m_2006030100_p04.grib2.nc4 completed
+d35_spfh_2m_2006030100_p05.grib2.nc4 completed
+d35_spfh_2m_2006030100_p06.grib2.nc4 completed
+d35_spfh_2m_2006030100_p07.grib2.nc4 completed
+d35_spfh_2m_2006030100_p08.grib2.nc4 completed
+d35_spfh_2m_2006030100_p09.grib2.nc4 completed
+d35_spfh_2m_2006030100_p10.grib2.nc4 completed
+d35_spfh_2m_2006030800_c00.grib2.nc4 completed
+d35_spfh_2m_2006030800_p01.grib2.nc4 completed
+d35_spfh_2m_2006030800_p02.grib2.nc4 completed
+d35_spfh_2m_2006030800_p03.grib2.nc4 completed
+d35_spfh_2m_2006030800_p04.grib2.nc4 completed
+d35_spfh_2m_2006030800_p05.grib2.nc4 completed
+d35_spfh_2m_2006030800_p06.grib2.nc4 completed
+d35_spfh_2m_2006030800_p07.grib2.nc4 completed
+d35_spfh_2m_2006030800_p08.grib2.nc4 completed
+d35_spfh_2m_2006030800_p09.grib2.nc4 completed
+d35_spfh_2m_2006030800_p10.grib2.nc4 completed
+d35_spfh_2m_2006031500_c00.grib2.nc4 completed
+d35_spfh_2m_2006031500_p01.grib2.nc4 completed
+d35_spfh_2m_2006031500_p02.grib2.nc4 completed
+d35_spfh_2m_2006031500_p03.grib2.nc4 completed
+d35_spfh_2m_2006031500_p04.grib2.nc4 completed
+d35_spfh_2m_2006031500_p05.grib2.nc4 completed
+d35_spfh_2m_2006031500_p06.grib2.nc4 completed
+d35_spfh_2m_2006031500_p07.grib2.nc4 completed
+d35_spfh_2m_2006031500_p08.grib2.nc4 completed
+d35_spfh_2m_2006031500_p09.grib2.nc4 completed
+d35_spfh_2m_2006031500_p10.grib2.nc4 completed
+d35_spfh_2m_2006032200_c00.grib2.nc4 completed
+d35_spfh_2m_2006032200_p01.grib2.nc4 completed
+d35_spfh_2m_2006032200_p02.grib2.nc4 completed
+d35_spfh_2m_2006032200_p03.grib2.nc4 completed
+d35_spfh_2m_2006032200_p04.grib2.nc4 completed
+d35_spfh_2m_2006032200_p05.grib2.nc4 completed
+d35_spfh_2m_2006032200_p06.grib2.nc4 completed
+d35_spfh_2m_2006032200_p07.grib2.nc4 completed
+d35_spfh_2m_2006032200_p08.grib2.nc4 completed
+d35_spfh_2m_2006032200_p09.grib2.nc4 completed
+d35_spfh_2m_2006032200_p10.grib2.nc4 completed
+d35_spfh_2m_2006032900_c00.grib2.nc4 completed
+d35_spfh_2m_2006032900_p01.grib2.nc4 completed
+d35_spfh_2m_2006032900_p02.grib2.nc4 completed
+d35_spfh_2m_2006032900_p03.grib2.nc4 completed
+d35_spfh_2m_2006032900_p04.grib2.nc4 completed
+d35_spfh_2m_2006032900_p05.grib2.nc4 completed
+d35_spfh_2m_2006032900_p06.grib2.nc4 completed
+d35_spfh_2m_2006032900_p07.grib2.nc4 completed
+d35_spfh_2m_2006032900_p08.grib2.nc4 completed
+d35_spfh_2m_2006032900_p09.grib2.nc4 completed
+d35_spfh_2m_2006032900_p10.grib2.nc4 completed
+d35_spfh_2m_2006040500_c00.grib2.nc4 completed
+d35_spfh_2m_2006040500_p01.grib2.nc4 completed
+d35_spfh_2m_2006040500_p02.grib2.nc4 completed
+d35_spfh_2m_2006040500_p03.grib2.nc4 completed
+d35_spfh_2m_2006040500_p04.grib2.nc4 completed
+d35_spfh_2m_2006040500_p05.grib2.nc4 completed
+d35_spfh_2m_2006040500_p06.grib2.nc4 completed
+d35_spfh_2m_2006040500_p07.grib2.nc4 completed
+d35_spfh_2m_2006040500_p08.grib2.nc4 completed
+d35_spfh_2m_2006040500_p09.grib2.nc4 completed
+d35_spfh_2m_2006040500_p10.grib2.nc4 completed
+d35_spfh_2m_2006041200_c00.grib2.nc4 completed
+d35_spfh_2m_2006041200_p01.grib2.nc4 completed
+d35_spfh_2m_2006041200_p02.grib2.nc4 completed
+d35_spfh_2m_2006041200_p03.grib2.nc4 completed
+d35_spfh_2m_2006041200_p04.grib2.nc4 completed
+d35_spfh_2m_2006041200_p05.grib2.nc4 completed
+d35_spfh_2m_2006041200_p06.grib2.nc4 completed
+d35_spfh_2m_2006041200_p07.grib2.nc4 completed
+d35_spfh_2m_2006041200_p08.grib2.nc4 completed
+d35_spfh_2m_2006041200_p09.grib2.nc4 completed
+d35_spfh_2m_2006041200_p10.grib2.nc4 completed
+d35_spfh_2m_2006041900_c00.grib2.nc4 completed
+d35_spfh_2m_2006041900_p01.grib2.nc4 completed
+d35_spfh_2m_2006041900_p02.grib2.nc4 completed
+d35_spfh_2m_2006041900_p03.grib2.nc4 completed
+d35_spfh_2m_2006041900_p04.grib2.nc4 completed
+d35_spfh_2m_2006041900_p05.grib2.nc4 completed
+d35_spfh_2m_2006041900_p06.grib2.nc4 completed
+d35_spfh_2m_2006041900_p07.grib2.nc4 completed
+d35_spfh_2m_2006041900_p08.grib2.nc4 completed
+d35_spfh_2m_2006041900_p09.grib2.nc4 completed
+d35_spfh_2m_2006041900_p10.grib2.nc4 completed
+d35_spfh_2m_2006042600_c00.grib2.nc4 completed
+d35_spfh_2m_2006042600_p01.grib2.nc4 completed
+d35_spfh_2m_2006042600_p02.grib2.nc4 completed
+d35_spfh_2m_2006042600_p03.grib2.nc4 completed
+d35_spfh_2m_2006042600_p04.grib2.nc4 completed
+d35_spfh_2m_2006042600_p05.grib2.nc4 completed
+d35_spfh_2m_2006042600_p06.grib2.nc4 completed
+d35_spfh_2m_2006042600_p07.grib2.nc4 completed
+d35_spfh_2m_2006042600_p08.grib2.nc4 completed
+d35_spfh_2m_2006042600_p09.grib2.nc4 completed
+d35_spfh_2m_2006042600_p10.grib2.nc4 completed
+d35_spfh_2m_2006050300_c00.grib2.nc4 completed
+d35_spfh_2m_2006050300_p01.grib2.nc4 completed
+d35_spfh_2m_2006050300_p02.grib2.nc4 completed
+d35_spfh_2m_2006050300_p03.grib2.nc4 completed
+d35_spfh_2m_2006050300_p04.grib2.nc4 completed
+d35_spfh_2m_2006050300_p05.grib2.nc4 completed
+d35_spfh_2m_2006050300_p06.grib2.nc4 completed
+d35_spfh_2m_2006050300_p07.grib2.nc4 completed
+d35_spfh_2m_2006050300_p08.grib2.nc4 completed
+d35_spfh_2m_2006050300_p09.grib2.nc4 completed
+d35_spfh_2m_2006050300_p10.grib2.nc4 completed
+d35_spfh_2m_2006051000_c00.grib2.nc4 completed
+d35_spfh_2m_2006051000_p01.grib2.nc4 completed
+d35_spfh_2m_2006051000_p02.grib2.nc4 completed
+d35_spfh_2m_2006051000_p03.grib2.nc4 completed
+d35_spfh_2m_2006051000_p04.grib2.nc4 completed
+d35_spfh_2m_2006051000_p05.grib2.nc4 completed
+d35_spfh_2m_2006051000_p06.grib2.nc4 completed
+d35_spfh_2m_2006051000_p07.grib2.nc4 completed
+d35_spfh_2m_2006051000_p08.grib2.nc4 completed
+d35_spfh_2m_2006051000_p09.grib2.nc4 completed
+d35_spfh_2m_2006051000_p10.grib2.nc4 completed
+d35_spfh_2m_2006051700_c00.grib2.nc4 completed
+d35_spfh_2m_2006051700_p01.grib2.nc4 completed
+d35_spfh_2m_2006051700_p02.grib2.nc4 completed
+d35_spfh_2m_2006051700_p03.grib2.nc4 completed
+d35_spfh_2m_2006051700_p04.grib2.nc4 completed
+d35_spfh_2m_2006051700_p05.grib2.nc4 completed
+d35_spfh_2m_2006051700_p06.grib2.nc4 completed
+d35_spfh_2m_2006051700_p07.grib2.nc4 completed
+d35_spfh_2m_2006051700_p08.grib2.nc4 completed
+d35_spfh_2m_2006051700_p09.grib2.nc4 completed
+d35_spfh_2m_2006051700_p10.grib2.nc4 completed
+d35_spfh_2m_2006052400_c00.grib2.nc4 completed
+d35_spfh_2m_2006052400_p01.grib2.nc4 completed
+d35_spfh_2m_2006052400_p02.grib2.nc4 completed
+d35_spfh_2m_2006052400_p03.grib2.nc4 completed
+d35_spfh_2m_2006052400_p04.grib2.nc4 completed
+d35_spfh_2m_2006052400_p05.grib2.nc4 completed
+d35_spfh_2m_2006052400_p06.grib2.nc4 completed
+d35_spfh_2m_2006052400_p07.grib2.nc4 completed
+d35_spfh_2m_2006052400_p08.grib2.nc4 completed
+d35_spfh_2m_2006052400_p09.grib2.nc4 completed
+d35_spfh_2m_2006052400_p10.grib2.nc4 completed
+d35_spfh_2m_2006053100_c00.grib2.nc4 completed
+d35_spfh_2m_2006053100_p01.grib2.nc4 completed
+d35_spfh_2m_2006053100_p02.grib2.nc4 completed
