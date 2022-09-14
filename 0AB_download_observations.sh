@@ -18,14 +18,41 @@ processors=8
 
 data_d=$main_directory/Data
 data_s=$main_directory/Scripts
-mkdir -p $data_d/SubX/GMAO
 mkdir -p $data_s 
 
 mask=$data_s/CONUS_mask
 
 ############## MERRA 2 ##################################################
-python3 $data_s/00_download_MERRA2.py
+mkdir -p $data_d/MERRA2
+python3 $data_s/00_download_MERRA2.py #make files to download with multiprocessing
+
+download_MERRA_loop () {
+#GES DISC will create a file with 0 bytes sometimes (and frequently). This can get around it.
+count=1
+while [ $count -gt 0 ];do
+
 bash $data_s/wget_MERRA.sh
+
+merra_dir=$data_d/MERRA2
+for var in $merra_dir/*/;do
+count=`find $var/ -size 0 -print | wc -l` 
+find $var/ -size 0 -delete; #delete files
+done;done
+}
+
+for num in {1..100};do
+download_MERRA_loop
+sleep 3;done
+#Sometimes, GES DISC doesn't have a good connection and makes empty files
+
+bash $data_s/wget_MERRA_small.sh  #last 30 days download
+
+
+ulimit -n 9000
+#Merge files into 1
+cdo -remapcon,$mask/CONUS_mask.grd -mergetime $merra_dir/RZSM/*.nc4 $merra_dir/RZSM_merged.nc4
+cdo -remapcon,$mask/CONUS_mask.grd -mergetime $merra_dir/albedo_netshortFlux_netdownFlux/*.nc4 $merra_dir/albedo_netshortFlux_netdownFlux_merged.nc4
+cdo -remapcon,$mask/CONUS_mask.grd -mergetime $merra_dir/temperature/*.nc4 $merra_dir/temperature_merged.nc4
 
 ############## Evaporative Demand Drought Index ##########################
 {

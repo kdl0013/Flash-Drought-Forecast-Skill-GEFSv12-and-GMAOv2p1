@@ -87,10 +87,10 @@ def merge_ensemble_members(var):
         
         # final_out_name= f"{var.split('_')[0]}_{out_date}.nc"
         try:
-            xr.open_dataset(f"{path_out}/{final_out_name}")
+            # xr.open_dataset(f"{path_out}/{final_out_name}")
             #uncomment below to recreate new files
-            # t_name='test.nc'
-            # xr.open_dataset(f'{t_name}')
+            t_name='test.nc'
+            xr.open_dataset(f'{t_name}')
         except FileNotFoundError:
             
             template_GEFS_initial[:,:,:,:,:] = np.nan
@@ -355,7 +355,7 @@ def merge_ensemble_members(var):
             if 'apcp' in var:
                 GEFS_out = xr.Dataset(
                     data_vars = dict(
-                        pr = (['S','model','lead','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                        pr = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
                     ),
                     coords = dict(
                       
@@ -371,7 +371,7 @@ def merge_ensemble_members(var):
             elif 'dlwrf' in var:
                 GEFS_out = xr.Dataset(
                     data_vars = dict(
-                        dlwrf = (['S','model','lead','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                        dlwrf = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
                     ),
                     coords = dict(
                       
@@ -389,7 +389,7 @@ def merge_ensemble_members(var):
             elif 'dswrf' in var:
                 GEFS_out = xr.Dataset(
                     data_vars = dict(
-                        dswrf = (['S','model','lead','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                        dswrf = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
                     ),
                     coords = dict(
                       
@@ -405,7 +405,7 @@ def merge_ensemble_members(var):
             elif 'soil' in var:
                 GEFS_out = xr.Dataset(
                     data_vars = dict(
-                        RZSM = (['S','model','lead','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                        RZSM = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
                     ),
                     coords = dict(
                       
@@ -422,7 +422,7 @@ def merge_ensemble_members(var):
             elif 'tmp' in var:
                 GEFS_out = xr.Dataset(
                     data_vars = dict(
-                        tmp = (['S','model','lead','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                        tmp = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
                     ),
                     coords = dict(
                       

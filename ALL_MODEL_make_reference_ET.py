@@ -42,7 +42,7 @@ from glob import glob
 import refet
 from multiprocessing import Pool
 from datetime import timedelta
-
+import datetime as dt
 
 # dir1 = 'main_dir'
 # num_processors = int('procs')
@@ -58,9 +58,9 @@ script_dir = f'{dir1}/Scripts'
 os.chdir(home_dir)
 
 #Additional datasets
-elevation_dir = f'{dir1}/Data/elevation/'
+elevation_dir = xr.open_dataset(f'{dir1}/Data/elevation/elev_regrid.nc',decode_times=False)
 ptC_dir = f'{dir1}/Data/Priestley_Taylor_Makkink_evap_coeff_maps'
-albedo_dir = 
+albedo_dir = xr.open_dataset(f'{dir1}/Data/MERRA2/albedo_netshortFlux_netdownFlux_merged.nc4')
 
 ###Files
 file_list = os.listdir()
@@ -90,22 +90,44 @@ def multiProcess_Refet_SubX(_date):
          
         print(f'Working on date {mod} {_date} to calculate Priestley-Taylor ETo.')
         #Open up each file
-
+        
+        
+        
+#%%        
         if mod == "GMAO" or mod == "EMC":
             #These two models need to have net radiation computed
             #Missing data
+            
+            try:
+                tavg = xr.open_dataset(f'tas_{mod}_{_date}.nc4')
+                #convert to celsius
+                tavg = np.subtract(tavg,273.15)
+            except IndexError:
+                pass
+            except ValueError:
+                pass
+            except FileNotFoundError:
+                pass
+
+                
             try:
                 dswrf = xr.open_dataset(f'dswrf_{mod}_{_date}.nc4')
-                #86000 seconds in 1 day, 1000000J in 1 MJ https://www.anycodings.com/1questions/2366349/solar-energy-conversion-wm2-to-mjm2
-                divisor = 1000000/86000
                 dswrf.dswrf.values
-                dswrf = np.divide(dswrf,divisor) #convert to MJ/m2
+                #86000 seconds in 1 day, 1000000J in 1 MJ https://www.anycodings.com/1questions/2366349/solar-energy-conversion-wm2-to-mjm2
+                divisor = 0.0864
+                dswrf = np.multiply(dswrf,divisor) #convert to MJ/m2
+                dswrf.dswrf.values
                 #Must make dswrf into mm/day by mulitplying by .408 https://www.fao.org/3/x0490e/x0490e08.htm
-                srad = np.multiply(dswrf,0.408)#convert to mm/d
+                # dswrf = np.multiply(dswrf,0.408)#convert to mm/d
                 
                 #Now multiply shortwave radiation by 1 - albedo to get net shortwave
+                day_select = pd.to_datetime(list(dswrf.S.values)[0]).strftime("%Y-%m-%d")
+                #We now have the date of the subx file  
+                merra_days = list(pd.to_datetime(list(albedo_dir.ALBEDO.time.values)).strftime("%Y-%m-%d"))
                 
+                merra_days.index(day_select)
                 
+                dswrf = np.multiply(dswrf,(1 - albedo_dir.ALBEDO.isel(time=0).values))
             except IndexError:
                 pass
             except ValueError:
@@ -116,9 +138,11 @@ def multiProcess_Refet_SubX(_date):
     
             try:
                 dlwrf = xr.open_dataset(f'dlwrf_{mod}_{_date}.nc4')
-                divisor = 1000000/86000
-                dlwrf = np.divide(dlwrf,divisor) #convert to MJ/m2
-                dlwrf = np.multiply(dlwrf,0.408)#convert to mm/d
+                dlwrf.dlwrf.values
+                divisor = 0.0864
+                dlwrf = np.multiply(dlwrf,divisor) #convert to MJ/m2
+                dlwrf.dlwrf.values
+                # dlwrf = np.multiply(dlwrf,0.408)#convert to mm/d
             except IndexError:
                 pass
             except ValueError:
@@ -168,6 +192,7 @@ def multiProcess_Refet_SubX(_date):
                 delta = 4098 * (0.6108 * np.exp(17.27 * tavg1 / (tavg1  + 237.3))) / (tavg1  + 237.3)**2 # Slope saturated vapor pressure
                 soil_heat_flux = np.zeros_like(delta)
                 PET = ptC1*delta/(delta+gamma)*(srad1-soil_heat_flux)
+                #check PET, add more parenthesis...may not 
                 return PET
     
             for i_mod in range(tavg[list(tavg.keys())[0]].shape[1]):
@@ -184,7 +209,7 @@ def multiProcess_Refet_SubX(_date):
                     except ValueError:
                         srad1=srad[list(srad.keys())[0]].isel(lead=i_lead,model=i_mod).values[0]
 
-                    elevation1=elevation[list(elevation.keys())[0]].isel(time=0).values
+                    elevation1=elevation_dir[list(elevation_dir.keys())[0]].isel(time=0).values
                     ptC1=ptC[list(ptC.keys())[0]].values
                     
                     # output_f[list(output_f.keys())[0]][0,i_mod, i_lead, :, :] = priestley_taylor(tavg1,srad1,elevation1,ptC1)*1000

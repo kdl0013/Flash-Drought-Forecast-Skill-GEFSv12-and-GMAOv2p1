@@ -67,7 +67,7 @@ for idx,i in enumerate(zip(all_files1,all_files2,all_files3)):
     open_f1['L']= ("L",julian_list)
     open_f1.close()
     
-    open_f1.to_netcdf(f'soilw_bgrnd_{file_date.year}-{file_date.month:02}-{file_date.day:02}.nc4')
+    open_f1.to_netcdf(f'RZSM_{file_date.year}-{file_date.month:02}-{file_date.day:02}.nc4')
     # ff='soilw_bgrnd_2022-06-29.nc4'
     # xr.open_dataset(ff)
 # for i in vars_to_process:

@@ -4,6 +4,7 @@
 Notes:
     
     EMC dswrf and dlwrf units = W/m2
+    RSMAS - W/m2
     
     https://wetlandscapes.github.io/blog/blog/penman-monteith-and-priestley-taylor/
     

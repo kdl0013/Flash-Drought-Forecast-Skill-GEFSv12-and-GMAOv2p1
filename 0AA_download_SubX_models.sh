@@ -43,25 +43,63 @@ rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/*/compress_re
 rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/wget* $1
 }
 return_CASPER_SUBx_files $scripts $outData
-#Return file format ----- EMC.nc, GMAO.nc,
+
+#TODO: Preprocess files sent from ESRL FIMr1p1 agency
+ESRL_dir=$data_d/SubX/ESRL/from_ESRL_agency_missing_days
+mkdir -p $ESRL_dir/keep_variables
+
+cd $ESRL_dir
+
+for zip in *.zip;do
+unzip $zip;done
+
+cp tas_2m* rad* keep_variables
+rm *.nc #remove everything else for now
+
+#restrict coordinates
+cd $ESRL_dir/keep_variables
+
+for f in *.nc;do 
+cdo -f nc -remapcon,$mask/CONUS_mask.grd $f "$f"4;done
+
+#rename files
+python3 $data_s/ESRL1_rename_files.py
 
 
 
 ###Preprocess data
-#TODO: Make a script to only get the correct days for RSMAS -- DONE
+#TODO: Make a script to only get the correct days for RSMAS
 python3 $data_s/01d_select_RSMAS_dates.py
-
+#TODO: Remove unncessary dates GMAO
+python3 $data_s/GMAO1_remove_unncessary_dates.py
 #TODO: Remove s dimension for later processing
 python3 $data_s/01e_remove_S_dimsension_all_models.py
 
 #TODO: Move files into seperate directories
 model_array=(GMAO ESRL RSMAS EMC)
-
+#model_array=(RSMAS)
 for model in "${model_array[@]}";
 do mkdir $subx/$model
 cp $outData/S_dim_removed/*$model*.nc4 $subx/$model/;
 done
 
+
+#Process model data produced from ESRL FIMr1p1 seperatley (for me :) )
+python3 ESRL1_rename_files.py
+
+#TODO: Merge GEFSv12 raw files
+#Get the daily average, cdo operators do not do this properly because because the files
+#were originally split. First 10 lead days. The 10th day had its data split between 2 seperate files.
+python3 $data_s/EMC0_day_average_GEFSv12_HPC.py
+python3 $data_s/EMC1_merge_3_soil_moisture_fields_GEFSv12.py
+python3 $data_s/EMC2_make_anomaly_mean.py
+
+#Remove years 2011 and 2012 from the EMC GEFSv12 model (Deangelis et al. 2020)
+cd $subx/EMC
+
+#Deangelis et al. (2020). Don't include these years from GEFSv12
+rm *2011*
+rm *2012*
 
 
 ### At this point, all model data has the S dimension removed, and has 
