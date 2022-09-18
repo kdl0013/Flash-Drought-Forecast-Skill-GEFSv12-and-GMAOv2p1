@@ -153,7 +153,7 @@ def multiProcess_Refet_SubX(_date):
 
             julian_list = date_file_info(tavg)
             
-            save_output = xr.zeros_like(srad).rename(rad='ETo')
+            save_output = xr.zeros_like(srad)
 
             
             def priestley_taylor(tavg1,srad1,elevation1,ptC1):
@@ -191,30 +191,31 @@ def multiProcess_Refet_SubX(_date):
                 #Convert to an xarray object
                 var_OUT = xr.Dataset(
                     data_vars = dict(
-                        ETo = (['S', 'model','lead','Y','X'],  save_output[list(save_output.keys())[0]].values),
+                        ETo = (['S', 'M','L','Y','X'],  save_output[list(save_output.keys())[0]].values),
                     ),
                     coords = dict(
                         X = save_output.X.values,
                         Y = save_output.Y.values,
-                        lead = julian_list,
-                        model = save_output.M.values,
+                        L = julian_list,
+                        M = save_output.M.values,
                         S = save_output.S.values
                     ),
                     attrs = dict(
                         Description = 'Reference crop evapotranspiration (mm/day). Priestley-Taylor formula'),
-                )              
+                )
+
             except AttributeError:
                 
                 #Convert to an xarray object
                 var_OUT = xr.Dataset(
                     data_vars = dict(
-                        ETo = (['S', 'model','lead','Y','X'],  save_output[list(save_output.keys())[0]].values),
+                        ETo = (['S', 'M','L','Y','X'],  save_output[list(save_output.keys())[0]].values),
                     ),
                     coords = dict(
                         X = save_output.X.values,
                         Y = save_output.Y.values,
-                        lead = julian_list,
-                        model = save_output.model.values,
+                        L = julian_list,
+                        M = save_output.model.values,
                         S = save_output.S.values
                     ),
                     attrs = dict(
@@ -228,7 +229,6 @@ def multiProcess_Refet_SubX(_date):
             os.system(f'ncks -4 -L 1 {home_dir}/ETo_{mod}_{_date}.nc {home_dir}/{fileOUT_name}')
             os.system(f'rm {home_dir}/ETo_{mod}_{_date}.nc')
             print(f'Saved {_date} into {home_dir}.')
-
 
 #%%    
 if __name__ == '__main__':

@@ -14,20 +14,6 @@ model_array=(GMAO ESRL RSMAS EMC)
 for mod in "${model_array[@]}";do
 ls -ls $data_d/SubX/$mod | tail -7;done
 
-
-############ Continue pre-processing SubX models ###############################
-#Get the daily average, cdo operators do not do this properly because because the files
-#were originally split. First 10 lead days. The 10th day had its data split between 2 seperate files.
-python3 $data_s/EMC0_day_average_GEFSv12_HPC.py
-python3 $data_s/EMC1_merge_3_soil_moisture_fields_GEFSv12.py
-
-#Remove years 2011 and 2012 from the EMC GEFSv12 model (Deangelis et al. 2020)
-cd $subx/EMC
-
-#Deangelis et al. (2020). Don't include these years from GEFSv12
-rm *2011*
-rm *2012*
-
 #Priestley-Taylor coefficient -- COMPLETE
 pt_dir=$data_d/Priestley_Taylor_Makkink_evap_coeff_maps
 ncatted -O -a units,X,c,c,"degrees_east" -a units,Y,c,c,"degrees_south" pt_coeff.nc pt_coeff_add_metadata.nc

@@ -6,6 +6,13 @@ Notes:
     
 Anomaly mean is calculated as the 7-day average of RZSM by 42-day window for each calendar day/lead date.
 
+Edits:
+    -Fixed 42 day spread to be get correct dates
+    
+Notes:
+    -Need to fix leap year. It just looks off in the mean files for Feb. 29 in the mean file. But I don't know 
+    how much that would throw off skill. Maybe investigate later.
+
 @author: kdl
 """
 
@@ -75,24 +82,6 @@ init_date_list = return_date_list(var)
         
 '''
 
-            
-
-#%%
-'''Make empty text files to not have to re-run code'''
-new_eto_anom = f'ETo_completed_mean_for_anomaly_{model_NAM1}.txt'
-
-new_rzsm_anom = f'RZSM_completed_mean_for_anomaly_{model_NAM1}.txt'
-
-#since this is a pretty slow process
-for name in [new_eto_anom,new_rzsm_anom]:
-    try:
-        completed_dates = np.loadtxt(f'{script_dir}/{name}',dtype='str')         
-    except OSError:
-        os.system(f'touch {script_dir}/{name}')
-        name_index = f'{name}'.split('_')[0]
-        os.system(f'echo "Completed {name_index}" > {script_dir}/{name}')
-
-
 #%%    
 '''process SubX files and create EDDI values from Subx, soil moisture anomalies, and 
 reference evapotranspiration anomalies'''
@@ -140,15 +129,8 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
         use_date = init_date_list[index_of_actual_date]
         #Process indivdual files for output
         subx_out = xr.open_dataset(f'{home_dir}/{var}_{model_NAM1}_{use_date}.nc4', engine='netcdf4')
-        
-        
-        #Test why there is an issue 
-        os.getcwd()
-        file_list = sorted(glob('soilw*'))
-        
-        for file in file_list:
-            open_f = xr.open_dataset(file)
-            open_f.shape()
+
+
         
     elif var == 'ETo':
         #Open all files for faster processing (for EDDI and ETo anomaly)
@@ -249,7 +231,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                             julian_d = int(list(julian_d)[0])
                             '''Grab all days with 42 days of day of year, need
                             this weird approach because of slicing issues'''
-                            if int(julian_d) <= anomaly_spread:
+                            if int(julian_d) < anomaly_spread:
                                 subtract_ = int(julian_d)-anomaly_spread
                                 front_half = test_arr[:,int(mod),0:julian_d+anomaly_spread,i_Y,i_X]
                                 front_half=np.concatenate((front_half),axis=0)
@@ -283,10 +265,10 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
                             else:
                                 #Need to find a way to get the index value from subx_all lead dimension because numpy has no way to tell what the actual value is
 
-                                first_lead = list(subx_all.lead.values).index(julian_d-anomaly_spread)
-                                second_lead = list(subx_all.lead.values).index(julian_d+anomaly_spread)
+                                first_lead = list(subx_all.L.values).index(julian_d+1-anomaly_spread) #add plus 1 because of indexing specific issue
+                                second_lead = list(subx_all.L.values).index(julian_d+1+anomaly_spread)
                                 #Seems easier just to get keep this loaded instead of changing to an array
-                                sub_out = test_arr[:,int(mod),0:first_lead+second_lead,i_Y,i_X]
+                                sub_out = test_arr[:,int(mod),first_lead:second_lead,i_Y,i_X]
                                 mean_value=bn.nanmean(sub_out)
 
                                 '''for some reason, model 3 with ETo has some inf values
@@ -334,7 +316,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
     if var == 'RZSM':
         var_OUT = xr.Dataset(
             data_vars = dict(
-                RZSM_anom = (['S', 'model','L','Y','X'], out_template[list(out_template.keys())[0]].values),
+                RZSM_mean = (['S', 'M','L','Y','X'], out_template[list(out_template.keys())[0]].values),
             ),
             coords = dict(
                 X = out_template.X.values,
@@ -349,7 +331,7 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
     elif var == 'ETo':
         var_OUT = xr.Dataset(
             data_vars = dict(
-                ETo_anom = (['S', 'model','L','Y','X'], out_template[list(out_template.keys())[0]].values),
+                ETo_mean= (['S', 'M','L','Y','X'], out_template[list(out_template.keys())[0]].values),
             ),
             coords = dict(
                 X = out_template.X.values,
@@ -367,28 +349,14 @@ def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_
     print(f'Completed date {_date} and saved into {new_dir_mean}.')
     
     #save the dates that were completed to not re-run
-    os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_mean_for_anomaly_{model_NAM1}.txt')
+    # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_mean_for_anomaly_{model_NAM1}.txt')
     return(0)
 #%%
 #Run function
 
 vars_to_process = ['RZSM','ETo']
 for var in vars_to_process:
-    # _date=init_date_list[0]
-    '''Read {var}_completed_anomaly_nc_.txt file to not have to re-run extra code'''
-    completed_dates = np.loadtxt(f'{script_dir}/{var}_completed_mean_for_anomaly_{model_NAM1}.txt',dtype='str')
-    try:
-        #first line contains a header, nothing with dates
-        completed_dates = completed_dates[:,1]
-    except IndexError:
-        completed_dates = ''
-    
-    
-    #only work on dates that aren't completed
-    subset_completed_dates = [i for i in completed_dates]
-    
-    #TODO: Need to create a new object that stores all of the yearly dates within a single year.
-    
+ 
     #Step 1, use init date list and get only the months and the dates
     init_date_list[0][5:]
     month_day=[i[5:] for i in init_date_list]
@@ -399,8 +367,7 @@ for var in vars_to_process:
     for idx, md in enumerate(month_day):
         new_date = f'2000-{md}'
         # print(idx,md)
-        if new_date not in subset_completed_dates:
-            make_subX_anomaly(_date=new_date,var=var, HP_conus_mask = HP_conus_mask, anomaly_spread=42,\
-                              save_MME_anomaly_mean=save_MME_anomaly_mean,save_MME_anomaly=save_MME_anomaly,init_date_list=init_date_list)
-    
+        make_subX_anomaly(_date=new_date,var=var, HP_conus_mask = HP_conus_mask, anomaly_spread=42,\
+                          save_MME_anomaly_mean=save_MME_anomaly_mean,save_MME_anomaly=save_MME_anomaly,init_date_list=init_date_list)
+
 

@@ -27,11 +27,6 @@ rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/wget* ~/Insync/OneDrive/NRT_CP
 
 return_easley_files
 
-# EMC GEFSv12 Get the daily average, cdo operators do not do this properly because because the files
-#were originally split. First 10 lead days. The 10th day had its data split between 2 seperate files.
-python3 $data_s/01a_day_average_GEFSv12_HPC.py
-python3 $data_s/01b_merge_3_soil_moisture_fields_GEFSv12.py
-
 
 echo An
 #TODO:Return netcdf file forecasts from CASPER (all models, part of EMC)
@@ -70,22 +65,45 @@ python3 $data_s/ESRL1_rename_files.py
 ###Preprocess data
 #TODO: Make a script to only get the correct days for RSMAS
 python3 $data_s/01d_select_RSMAS_dates.py
-#TODO: Remove unncessary dates GMAO
-python3 $data_s/GMAO1_remove_unncessary_dates.py
+
 #TODO: Remove s dimension for later processing
 python3 $data_s/01e_remove_S_dimsension_all_models.py
 
 #TODO: Move files into seperate directories
 model_array=(GMAO ESRL RSMAS EMC)
-#model_array=(RSMAS)
+model_array=(GMAO)
 for model in "${model_array[@]}";
 do mkdir $subx/$model
 cp $outData/S_dim_removed/*$model*.nc4 $subx/$model/;
 done
 
+#Turn observations into SubX format
+python3 $data_s/MERRA0_reformat_to_SubX.py
 
+
+#TODO: GMAO process
+python3 $data_s/ETo_reference_ET_GMAO.py
+python3 $data_s/GMAO1_make_anomaly_mean.py
+
+
+python3 $data_s/GMAO4_compute_anomaly_from_mean.py #make anomaly and multi ensemble mean anomaly
+
+
+#Make evaporative demand datasets (All models)
+python3 $data_s/ETo_reference_ET_RSMAS.py
+python3 $data_s/RSMAS1_make_anomaly_mean.py
+
+
+
+
+
+
+#TODO: ESRL 
 #Process model data produced from ESRL FIMr1p1 seperatley (for me :) )
-python3 ESRL1_rename_files.py
+python3 $data_s/ESRL1_rename_files.py
+python3 $data_s/ETo_reference_ET_ESRL.py
+python3 $data_s/ESRL2_make_anomaly_mean.py
+
 
 #TODO: Merge GEFSv12 raw files
 #Get the daily average, cdo operators do not do this properly because because the files
@@ -94,14 +112,26 @@ python3 $data_s/EMC0_day_average_GEFSv12_HPC.py
 python3 $data_s/EMC1_merge_3_soil_moisture_fields_GEFSv12.py
 python3 $data_s/EMC2_make_anomaly_mean.py
 
-#Remove years 2011 and 2012 from the EMC GEFSv12 model (Deangelis et al. 2020)
-cd $subx/EMC
-
 #Deangelis et al. (2020). Don't include these years from GEFSv12
-rm *2011*
-rm *2012*
+rm $subx/EMC/*2011* $subx/EMC/*2012*
 
+
+
+
+# EMC GEFSv12 Get the daily average, cdo operators do not do this properly because because the files
+#were originally split. First 10 lead days. The 10th day had its data split between 2 seperate files.
+python3 $data_s/01a_day_average_GEFSv12_HPC.py
+python3 $data_s/01b_merge_3_soil_moisture_fields_GEFSv12.py
 
 ### At this point, all model data has the S dimension removed, and has 
 #already been verified to have data. Also all years 2000-2022 are in the same directory
 
+
+
+
+
+
+
+#OLD STUFF
+#TODO: Remove unncessary dates GMAO
+python3 $data_s/GMAO1_remove_unncessary_dates.py

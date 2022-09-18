@@ -44,7 +44,7 @@ os.chdir(subX_dir)
 # elif mod == 'EMC':
 #     variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tasmax','tasmin','dswrf'] 
 
-variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tas','dswrf','dlwrf','rad','mrso'] 
+variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tas','dswrf','dlwrf','rad','mrso','ulwrf','uswrf'] 
 
 #test GMAO var dlwrf, not writing correctly
 # var='dlwrf'
@@ -82,13 +82,10 @@ def remove_S_dim(var):
                       
             '''
             def julian_date(open_f,file):
-                #Return julian date for anomaly calculation
+                #Return julian date (doy) for anomaly calculation
                 a_date_in= len(open_f.L.values)
                 #get the start date
-                if 'GMAO' in file:
-                    a_start_date = pd.to_datetime(open_f.S.values[0]) - np.timedelta64(1,'D')
-                else:
-                    a_start_date = pd.to_datetime(open_f.S.values[0]) 
+                a_start_date =pd.to_datetime(file.split('_')[-1].split('.')[0])
     
                 a_date_out=[]
                 for a_i in range(a_date_in):
@@ -120,7 +117,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            pr = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            pr = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -136,7 +133,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            RZSM = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            RZSM = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -152,7 +149,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            dswrf = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            dswrf = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -168,7 +165,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            dlwrf = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            dlwrf = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -184,7 +181,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            rad = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            rad = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -200,7 +197,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            tas = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            tas = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -216,7 +213,7 @@ def remove_S_dim(var):
                     #Convert to an xarray object to save dates as 
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            soilw1 = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            soilw1 = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -231,7 +228,7 @@ def remove_S_dim(var):
                 elif 'soilw2' in file:
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            soilw2 = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            soilw2 = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -246,7 +243,7 @@ def remove_S_dim(var):
                 elif 'soilw3' in file:
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            soilw3 = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            soilw3 = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -261,7 +258,7 @@ def remove_S_dim(var):
                 elif 'soilw4' in file:
                     var_OUT = xr.Dataset(
                         data_vars = dict(
-                            soilw4 = (['S', 'model','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                            soilw4 = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
                         ),
                         coords = dict(
                             X = open_f.X.values,
@@ -273,8 +270,36 @@ def remove_S_dim(var):
                         attrs = dict(
                             Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
                     )   
-                    
-                    
+                elif 'ulwrf' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            ulwrf = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    )   
+                elif 'uswrf' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            uswrf = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    )   
                 var_OUT.close()
                 
 

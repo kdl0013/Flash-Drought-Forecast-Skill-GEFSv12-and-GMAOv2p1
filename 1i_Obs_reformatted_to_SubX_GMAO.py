@@ -17,34 +17,23 @@ import pandas as pd
 from glob import glob
 from multiprocessing import Pool
 
-#open a single file for SubX reference ET and a single file from gridMET 
-dir1 = 'main_dir'
-num_processors = int('procs')
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+model_ = 'GMAO'
+subX_dir = f'{dir1}/Data/SubX/{model_}'
 
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+obs_dir = f'{dir1}/Data/MERRA2' #reference evapotranspiration
+output_ETo_dir = f'{obs_dir}/ETo_{model_}_SubX_values' #Refernce ET output directory
+output_RZSM_dir = f'{obs_dir}/RZSM_{model_}_SubX_values' 
 
-subX_dir = f'{dir1}/Data/SubX/GMAO'
-
-gridMET_dir = f'{dir1}/Data/gridMET' #reference evapotranspiration
-output_ETo_dir = f'{gridMET_dir}/ETo_SubX_values' #Refernce ET output directory
-smerge_in_dir = f'{dir1}/Data/GLEAM_RZSM' #raw files that have been boxed in CONUS
-SM_SubX_out_dir = f'{smerge_in_dir}/SM_SubX_values' #Smerge values overlayed on SubX grid
-subx_anomaly_dir = f'{subX_dir}/anomaly'
-#Didn't do EDDI because I may not need to do it.
-# eddi_dir = f'{dir1}/Data/EDDI/convert_2_nc'
-# eddi_subX_dir = f'{dir1}/Data/EDDI/EDDI_SubX_values'
-
-image_dir = f'{dir1}/Outputs/MSE_plots'
-
-#Make new directories
-os.system(f'mkdir -p {image_dir}')
-os.system(f'mkdir {SM_SubX_out_dir}')
-# os.system(f'mkdir {eddi_subX_dir}')
-os.system(f'mkdir {output_ETo_dir}')
+if model_ == 'EMC':
+    #Only EMC has the correct root zone soil moisture
+    os.system(f'mkdir -p {output_ETo_dir} {output_RZSM_dir}')
+else:
+    os.system(f'mkdir -p {output_ETo_dir}')
 
 os.chdir(subX_dir) #Set directory for SubX
 #Get date list for initialized files
-date_list = sorted(glob('mrso*_*-*.nc4'))
+date_list = sorted(glob('ETo*.nc4'))
 date_list = [i[-14:-4] for i in date_list]
 
 # _date = date_list[0]
@@ -55,15 +44,14 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
         xr.open_dataset(f'{output_ETo_dir}/ETo_SubX_anomaly_{_date}.nc4')
         print(f'Already completed date {_date}. Saved in {output_ETo_dir}')
     except FileNotFoundError:
+        print(f'Working on initialized day {_date} to find MERRA values from SubX models, leads, & coordinates and saving data into {output_ETo_dir}.')
+
         #Open up anomaly file to get proper formatting
-        sub_anomaly = xr.open_dataset(f'{subx_anomaly_dir}/ETo_anomaly_{_date}.nc4')
+        sub_file = xr.open_dataset(f'{subX_dir}/ETo_{model_}_{_date}.nc4')
     
         #Open gridMET and subset to the correct dates as SubX for full time series
-        gridMET_file = xr.open_dataset(f'{gridMET_dir}/ETo_anomaly_gridMET_merged.nc').astype('float64')
+        obs_file = xr.open_dataset(f'{obs_dir}/ETo_anomaly_MERRA.nc').astype('float64')
 
-        print(f'Working on initialized day {_date} to find gridMET values from SubX models, leads, & coordinates and saving data into {output_ETo_dir}.')
-        sub_file = xr.open_dataset(f'ETo_{_date}.nc')
-        
         #Mask for CONUS (don't process additional data)
         HP_conus_path = f'{dir1}/Data/CONUS_mask/High_Plains_mask.nc'
         HP_conus_mask = xr.open_dataset(HP_conus_path) #open mask files
@@ -82,7 +70,7 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
         
         Find the same date(s) values from each dataset and append to output dataset
         '''
-        gridMET_out = (np.zeros_like(sub_file.ETo)).astype('float64')
+        var_out = (np.zeros_like(sub_file.ETo)).astype('float64')
      
         for i_lead in range(sub_file.ETo.shape[2]):
             #Because the S value is actually the first day of the forecast, don't add one
@@ -94,87 +82,87 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
                         #1 day appears to have not been calculated because of julian days and 
                         #anomaly code for +/-42 day (specically December 31, 2000)
                         #Just take the average of the other two days before and after
-                        if np.count_nonzero( gridMET_file.ETo_gridmet.sel(day = date_val).values == 0) == 1593:
+                        if np.count_nonzero( obs_file.ETo_anom.sel(time = date_val).values == 0) == 1593:
                             date_val1 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead-1)
                             date_val2 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
                             
-                            gridMET_out[0,:, i_lead, i_Y, i_X] = \
-                            np.nanmean( gridMET_file.ETo_gridmet.sel(day = date_val1).isel(lon = i_X, lat = i_Y).values + \
-                                 gridMET_file.ETo_gridmet.sel(day = date_val2).isel(lon = i_X, lat = i_Y).values)
+                            obs_file[0,:, i_lead, i_Y, i_X] = \
+                            np.nanmean( obs_file.ETo_anom.sel(day = date_val1).isel(lon = i_X, lat = i_Y).values + \
+                                 obs_file.ETo_anom.sel(day = date_val2).isel(lon = i_X, lat = i_Y).values)
                         else:
-                            gridMET_out[0,:, i_lead, i_Y, i_X] = \
-                                gridMET_file.ETo_gridmet.sel(day = date_val).isel(lon = i_X, lat = i_Y).values
+                            obs_file[0,:, i_lead, i_Y, i_X] = \
+                                obs_file.ETo_anom.sel(day = date_val).isel(lon = i_X, lat = i_Y).values
                                      
-        gridMET_get_weekly_leads = gridMET_out[:,:,::7,:,:]
+        gridMET_get_weekly_leads = obs_file[:,:,::7,:,:]
         #Create a new dataset in which we can append the average leads (3-4,3-5,3-6,4-6)
         #for anomalies
-        final_lead_file = np.empty(shape=[gridMET_out.shape[0],gridMET_out.shape[1],sub_anomaly.ETo_anom.shape[2],gridMET_out.shape[3],gridMET_out.shape[4]])
+        final_lead_file = np.empty(shape=[obs_file.shape[0],obs_file.shape[1],sub_file.ETo_anom.shape[2],obs_file.shape[3],obs_file.shape[4]])
         final_lead_file[:,:,0:7,:,:] = gridMET_get_weekly_leads[:,:,:,:,:]
         
-        for Y in range(final_lead_file.shape[3]):
-            for X in range(final_lead_file.shape[4]):
-                if (HP_conus_mask.High_Plains[0,Y,X].values in np.arange(1,7)):
-                    for idx,lead in enumerate(sub_anomaly.lead.values):
-                        #Don't have to work on the first 7 values (they are already in the file)
-                        if lead ==0 or lead ==1 or lead==2 or lead==3 or lead==4 or lead ==5 or lead==6:
-                            pass
-                        else:
-                            if lead == 3.4:
-                                lead1 = 3
-                                lead2 = 4
-                                #Take averages, add to file
-                                final_lead_file[:,:,idx,Y,X] = \
-                                    np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X]])
+        # for Y in range(final_lead_file.shape[3]):
+        #     for X in range(final_lead_file.shape[4]):
+        #         if (HP_conus_mask.High_Plains[0,Y,X].values in np.arange(1,7)):
+        #             for idx,lead in enumerate(sub_file.L.values):
+        #                 #Don't have to work on the first 7 values (they are already in the file)
+        #                 if lead ==0 or lead ==1 or lead==2 or lead==3 or lead==4 or lead ==5 or lead==6:
+        #                     pass
+        #                 else:
+        #                     if lead == 3.4:
+        #                         lead1 = 3
+        #                         lead2 = 4
+        #                         #Take averages, add to file
+        #                         final_lead_file[:,:,idx,Y,X] = \
+        #                             np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X]])
                             
-                            elif lead == 3.5:
+        #                     elif lead == 3.5:
                                 
-                                lead1 = 3
-                                lead2 = 4
-                                lead3 = 5
+        #                         lead1 = 3
+        #                         lead2 = 4
+        #                         lead3 = 5
 
-                                final_lead_file[:,:,idx,Y,X] = \
-                                    np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X],\
-                                               final_lead_file[0,:,lead3,Y,X]])
+        #                         final_lead_file[:,:,idx,Y,X] = \
+        #                             np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X],\
+        #                                        final_lead_file[0,:,lead3,Y,X]])
 
-                            elif lead == 3.6:
+        #                     elif lead == 3.6:
                                 
-                                lead1 = 3
-                                lead2 = 4
-                                lead3 = 5
-                                lead4 = 6
+        #                         lead1 = 3
+        #                         lead2 = 4
+        #                         lead3 = 5
+        #                         lead4 = 6
 
-                                final_lead_file[:,:,idx,Y,X] = \
-                                    np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X],\
-                                               final_lead_file[0,:,lead3,Y,X],final_lead_file[0,:,lead4,Y,X]])
+        #                         final_lead_file[:,:,idx,Y,X] = \
+        #                             np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X],\
+        #                                        final_lead_file[0,:,lead3,Y,X],final_lead_file[0,:,lead4,Y,X]])
 
-                            elif lead == 4.6:
+        #                     elif lead == 4.6:
                                 
-                                lead1 = 4
-                                lead2 = 5
-                                lead3 = 6
+        #                         lead1 = 4
+        #                         lead2 = 5
+        #                         lead3 = 6
 
-                                final_lead_file[:,:,idx,Y,X] = \
-                                    np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X],\
-                                               final_lead_file[0,:,lead3,Y,X]])
+        #                         final_lead_file[:,:,idx,Y,X] = \
+        #                             np.nanmean([final_lead_file[0,:,lead1,Y,X],final_lead_file[0,:,lead2,Y,X],\
+        #                                        final_lead_file[0,:,lead3,Y,X]])
 
         
         #TODO: Only keep the first 7 leads (total of 6 weeks). 0 index is 12 hour lead from initialization.
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
-                ETo_anom = (['S','model','lead','Y','X'], final_lead_file[:,:,:,:,:]),
+                ETo_anom = (['S','M','L','Y','X'], final_lead_file[:,:,:,:,:]),
             ),
             coords = dict(
                 S = sub_file.S.values,
                 X = sub_file.X.values,
                 Y = sub_file.Y.values,
-                lead = sub_anomaly.lead.values,
-                model = sub_file.model.values,
+                L = sub_file.L.values,
+                M = sub_file.M.values,
         
             ),
             attrs = dict(
-                Description = 'gridMET reference ETo anomaly values on the exact same date and grid \
-                cell as SubX data'),
+                Description = f'MERRA2 reference ETo anomaly values on the exact same date and grid \
+                cell as {model_} SubX data'),
         )                    
         
         file_name = f'ETo_SubX_anomaly_{_date}.nc4'
@@ -254,7 +242,7 @@ def anomaly_GLEAM_SubX_creation(_date):
         for Y in range(final_lead_file.shape[3]):
             for X in range(final_lead_file.shape[4]):
                 if (HP_conus_mask.High_Plains[0,Y,X].values in np.arange(1,7)):
-                    for idx,lead in enumerate(sub_anomaly.lead.values):
+                    for idx,lead in enumerate(sub_anomaly.L.values):
                         #Don't have to work on the first 7 values (they are already in the file)
                         if lead ==0 or lead ==1 or lead==2 or lead==3 or lead==4 or lead ==5 or lead==6:
                             pass
@@ -308,7 +296,7 @@ def anomaly_GLEAM_SubX_creation(_date):
                 S = sub_file.S.values,
                 X = sub_file.X.values,
                 Y = sub_file.Y.values,
-                lead = sub_anomaly.lead.values,
+                lead = sub_anomaly.L.values,
                 model = sub_file.M.values,
         
             ),
@@ -383,8 +371,8 @@ def anomaly_GLEAM_SubX_creation(_date):
 #                 S = var_file.S.values,
 #                 X = var_file.X.values,
 #                 Y = var_file.Y.values,
-#                 lead = var_file.lead.values,
-#                 model = var_file.model.values,
+#                 lead = var_file.L.values,
+#                 model = var_file.M.values,
         
 #             ),
 #             attrs = dict(

@@ -82,6 +82,7 @@ def return_date_list(var):
         date_list.append(file[-14:-4])
     return(date_list)
         
+init_date_list = return_date_list(var)
 
 
 #%%
@@ -194,13 +195,13 @@ def multiProcess_Refet_SubX(_date):
                 #Convert to an xarray object
                 var_OUT = xr.Dataset(
                     data_vars = dict(
-                        ETo = (['S', 'model','lead','Y','X'],  save_output[list(save_output.keys())[0]].values),
+                        ETo = (['S', 'M','L','Y','X'],  save_output[list(save_output.keys())[0]].values),
                     ),
                     coords = dict(
                         X = save_output.X.values,
                         Y = save_output.Y.values,
-                        lead = julian_list,
-                        model = save_output.M.values,
+                        L = julian_list,
+                        M = save_output.M.values,
                         S = save_output.S.values
                     ),
                     attrs = dict(
@@ -211,13 +212,13 @@ def multiProcess_Refet_SubX(_date):
                 #Convert to an xarray object
                 var_OUT = xr.Dataset(
                     data_vars = dict(
-                        ETo = (['S', 'model','lead','Y','X'],  save_output[list(save_output.keys())[0]].values),
+                        ETo = (['S', 'M','L','Y','X'],  save_output[list(save_output.keys())[0]].values),
                     ),
                     coords = dict(
                         X = save_output.X.values,
                         Y = save_output.Y.values,
-                        lead = julian_list,
-                        model = save_output.model.values,
+                        L = julian_list,
+                        M = save_output.model.values,
                         S = save_output.S.values
                     ),
                     attrs = dict(
