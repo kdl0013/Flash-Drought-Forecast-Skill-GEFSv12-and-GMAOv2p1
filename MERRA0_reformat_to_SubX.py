@@ -18,25 +18,34 @@ from glob import glob
 from multiprocessing import Pool
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_ = 'GMAO'
-subX_dir = f'{dir1}/Data/SubX/{model_}'
-n_processors = 10
-
 obs_dir = f'{dir1}/Data/MERRA2' #reference evapotranspiration
 output_ETo_dir = f'{obs_dir}/ETo_SubX_values' #Refernce ET output directory
 output_RZSM_dir = f'{obs_dir}/RZSM_SubX_values' 
 
 os.system(f'mkdir -p {output_ETo_dir} {output_RZSM_dir}')
 
-os.chdir(subX_dir) #Set directory for SubX
-#Get date list for initialized files
-date_list = sorted(glob('ETo*.nc4'))
-date_list = [i[-14:-4] for i in date_list]
+model_list = ['GMAO','RSMAS']
+
+# model_ = 'GMAO'
+all_dates = []
+for model_ in model_list:
+    subX_dir = f'{dir1}/Data/SubX/{model_}'
+    n_processors = 10
+    
+    os.chdir(subX_dir) #Set directory for SubX
+    #Get date list for initialized files
+    date_list = sorted(glob('ETo*.nc4'))
+    date_list = [i[-14:-4] for i in date_list]
+    
+    all_dates.append(date_list)
+    
+merged_dates=[i for iv in all_dates for i in iv ]
+merged_dates=list(np.unique(np.array(merged_dates)))
 
 # _date = date_list[0]
 # _date='1999-12-06'
 #%% ETo gridMET
-def anomaly_ETo_gridMET_SubX_creation(_date) -> float:    
+def anomaly_ETo_Priestley_gridMET_SubX_creation(_date) -> float:    
     try:
         xr.open_dataset(f'{output_ETo_dir}/ETo_SubX_anomaly_{_date}.nc4')
         # xr.open_dataset('test.nc') #only to make new files
@@ -82,23 +91,19 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
         for i_lead in range(sub_file.ETo.shape[2]):
             #Because the S value is actually the first day of the forecast, don't add one
             date_val = pd.to_datetime(pd.to_datetime(_date) + dt.timedelta(days=i_lead))
-        
-            for i_Y in range(sub_file.ETo.shape[3]):
-                for i_X in range(sub_file.ETo.shape[4]):
-                    if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
-                        #1 day appears to have not been calculated because of julian days and 
-                        #anomaly code for +/-42 day (specically December 31, 2000)
-                        #Just take the average of the other two days before and after
-                        if np.count_nonzero( obs_file.ETo_anom.sel(time = date_val).values == 0) == 1593:
-                            date_val1 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead-1)
-                            date_val2 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
-                            
-                            out_file.ETo[0,:, i_lead, i_Y, i_X] = \
-                            np.nanmean( obs_file.ETo_anom.sel(time = date_val1).isel(X = i_X, Y = i_Y).values + \
-                                 obs_file.ETo_anom.sel(time = date_val2).isel(X = i_X, Y = i_Y).values)
-                        else:
-                            out_file.ETo[0,:, i_lead, i_Y, i_X] = \
-                                obs_file.ETo_anom.sel(time = date_val).isel(X = i_X, Y = i_Y).values
+            #1 day appears to have not been calculated because of julian days and 
+            #anomaly code for +/-42 day (specically December 31, 2000)
+            #Just take the average of the other two days before and after
+            if np.count_nonzero( obs_file.ETo_anom.sel(time = date_val).values == 0) == 1593:
+                date_val1 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead-1)
+                date_val2 = pd.to_datetime(sub_file.S.values[0]) + dt.timedelta(days=i_lead+1)
+                
+                out_file.ETo[0,:, i_lead, :, :] = \
+                np.nanmean( obs_file.ETo_anom.sel(time = date_val1).values + \
+                     obs_file.ETo_anom.sel(time = date_val2).values)
+            else:
+                out_file.ETo[0,:, i_lead, :, :] = \
+                    obs_file.ETo_anom.sel(time = date_val).values
        
         #TODO: Only keep the first 7 leads (total of 6 weeks). 0 index is 12 hour lead from initialization.
         #Convert to an xarray object
@@ -119,7 +124,7 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
                 cell as {model_} SubX data'),
         )                    
         
-        file_name = f'ETo_SubX_anomaly_{_date}.nc4'
+        file_name = f'ETo_SubX_anomaly_Priestley_{_date}.nc4'
 
         #Save as a netcdf for later processing
         var_OUT.to_netcdf(path = f'{output_ETo_dir}/{file_name}', mode ='w')
@@ -135,4 +140,4 @@ def anomaly_ETo_gridMET_SubX_creation(_date) -> float:
 #%%
 if __name__ == '__main__':
     p = Pool(n_processors)
-    p.map(anomaly_ETo_gridMET_SubX_creation,date_list)
+    p.map(anomaly_ETo_Priestley_gridMET_SubX_creation,merged_dates)

@@ -87,7 +87,7 @@ init_date_list = return_date_list(var = 'tas')
 def multiProcess_Refet_SubX(_date):
     # _date=init_date_list[0]
 # for _date in init_date_list:
-    fileOUT_name=f'ETo_{mod}_{_date}.nc4'
+    fileOUT_name=f'ETo_Priestley_{mod}_{_date}.nc4'
     try:
         xr.open_dataset(f'{fileOUT_name}')
 

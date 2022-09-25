@@ -31,7 +31,7 @@ os.listdir()
 
 download_list = []
 
-file_list_name=["RZSM.txt","albedo_netshortFlux_netdownFlux.txt","temperature.txt"]
+file_list_name=["temperature_min_mean_max.txt","wind_humidity.txt","radiation.txt","RZSM.txt"]
 count=0
 for i_x,f in enumerate(file_list_name):
     

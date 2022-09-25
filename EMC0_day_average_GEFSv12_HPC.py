@@ -26,7 +26,7 @@ home_dir = f'{dir1}/Data/SubX/EMC/raw_ensemble_files/'
 save_out_dir_GEFS = f'{dir1}/Data/SubX/EMC/'
 
 
-vars_to_process= ['apcp_sfc','dswrf_sfc', 'dlwrf_sfc','soilw_bgrnd', 'tmp_2m']
+vars_to_process= ['apcp_sfc','dswrf_sfc', 'dlwrf_sfc','soilw_bgrnd', 'tmp_2m','ulwrf_sfc','uswrf_sfc']
 
 
 
@@ -82,15 +82,19 @@ def merge_ensemble_members(var):
             final_out_name = f'dswrf_EMC_{out_date}.nc'
         if var=='dlwrf_sfc':
             final_out_name = f'dlwrf_EMC_{out_date}.nc'
-        if var=='soilw_bgrnd':
-            final_out_name = f'soilw_bgrnd_EMC_{out_date}.nc'
+        if var=='ulwrf_sfc':
+            final_out_name = f'ulwrf_EMC_{out_date}.nc'
+        if var=='uswrf_sfc':
+            final_out_name = f'uswrf_EMC_{out_date}.nc'
+
+        
         
         # final_out_name= f"{var.split('_')[0]}_{out_date}.nc"
         try:
-            # xr.open_dataset(f"{path_out}/{final_out_name}")
+            xr.open_dataset(f"{path_out}/{final_out_name}4")
             #uncomment below to recreate new files
-            t_name='test.nc'
-            xr.open_dataset(f'{t_name}')
+            # t_name='test.nc'
+            # xr.open_dataset(f'{t_name}')
         except FileNotFoundError:
             
             template_GEFS_initial[:,:,:,:,:] = np.nan
@@ -435,7 +439,39 @@ def merge_ensemble_members(var):
                     attrs = dict(
                         Description = 'Average temperature GEFSv12. Daily average already computed. All ensembles and leads in one file')
                 )
-    
+            elif 'ulwrf' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        ulwrf = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        lead = julian_list,
+                        model = range(template_GEFS_initial.shape[1]),
+            
+                    ),
+                    attrs = dict(
+                        Description = 'Longwave upwelling radiation. Daily average already computed. All ensembles and leads in one file')
+                )
+            elif 'uswrf' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        uswrf = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        lead = julian_list,
+                        model = range(template_GEFS_initial.shape[1]),
+            
+                    ),
+                    attrs = dict(
+                        Description = 'Shortwave upwelling radiation. Daily average already computed. All ensembles and leads in one file')
+                )
+
             # GEFS_out.assign_coords(S=out_date_create)
         
             out_name1 = 'out_1.nc4'

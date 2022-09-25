@@ -26,13 +26,16 @@ from multiprocessing import Pool
 
 # dir1 = 'main_dir'
 # mod = 'model_name'
-num_processors=10
+num_processors=8
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-# mod='GMAO'
+mod='model_name'
 subX_dir = f'{dir1}/Data/SubX/fromCasper'
 out_dir = f'{subX_dir}/S_dim_removed'
 os.system(f'mkdir -p {out_dir}')
 os.chdir(subX_dir)
+
+#remove all files
+# os.system(f'rm {out_dir}/*{mod}*')
 
 #%%#SMERGE Soil Moisture
 #SubX.dat depth file
@@ -44,7 +47,7 @@ os.chdir(subX_dir)
 # elif mod == 'EMC':
 #     variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tasmax','tasmin','dswrf'] 
 
-variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tas','dswrf','dlwrf','rad','mrso','ulwrf','uswrf'] 
+variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tas','dswrf','dlwrf','rad','mrso','ulwrf','uswrf','tasmin','tasmax','tdps','uas','vas'] 
 
 #test GMAO var dlwrf, not writing correctly
 # var='dlwrf'
@@ -59,7 +62,7 @@ def remove_S_dim(var):
     #     xr.open_dataset(sorted(glob(f'{var}*.nc4'))[0])
     # except IndexError:
    
-    for file in sorted(glob(f'{var}*.nc')):
+    for file in sorted(glob(f'{var}*{mod}*.nc')):
         try:
             xr.open_dataset(f'{out_dir}/{file}4')
             # xr.open_dataset(f'no_file.nc')
@@ -300,8 +303,87 @@ def remove_S_dim(var):
                         attrs = dict(
                             Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
                     )   
+                elif 'tasmin' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            tasmin = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    )   
+                    
+                elif 'tasmax' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            tasmax = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    ) 
+                elif 'uas' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            uas = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    )   
+                elif 'vas' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            vas = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    )   
+
+                elif 'tdps' in file:
+                    var_OUT = xr.Dataset(
+                        data_vars = dict(
+                            tdps = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
+                        ),
+                        coords = dict(
+                            X = open_f.X.values,
+                            Y = open_f.Y.values,
+                            L = julian_list,
+                            M = open_f.M.values,
+                            S = open_f.S.values
+                        ),
+                        attrs = dict(
+                            Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
+                    )   
+
+
                 var_OUT.close()
-                
+
 
                 #Flip the X,Y coordinates to match other datasets. 0,0 at top left corner
                 if ('GMAO' in file) or ('ESRL' in file) or ('RSMAS' in file):

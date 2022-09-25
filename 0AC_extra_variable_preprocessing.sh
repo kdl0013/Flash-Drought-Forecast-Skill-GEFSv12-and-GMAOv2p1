@@ -28,10 +28,8 @@ cdo -remapcon,$mask/CONUS_mask.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
 ################################################################################
 
 ####### MERRA2 make anomalies
-python3 $data_s/OBS_make_anomalies.py
-
-#Make evaporative demand datasets (All models)
-python3 $data_s/ETo_reference_ET_RSMAS.py
+python3 $data_s/OBS_make_anomalies_Penman.py
+python3 $data_s/OBS_make_anomalies_Priestley_and_RZSM.py
 
 
 
