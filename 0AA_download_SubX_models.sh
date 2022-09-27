@@ -107,30 +107,33 @@ python3 $data_s/ETo_reference_ET_GMAO_Penman.py
 
 #Make ETo mean 
 make_ETo_Priestley_mean_for_anomaly () {
-cat anomaly_mean_Priestley_Taylor_not_EMC.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_mean_Priestley_Taylor_not_EMC.py &&
-python3 $data_s/$1_anomaly_mean_Priestley_Taylor_not_EMC.py
+cat $data_s/anomaly_mean_Priestley_Taylor_not_EMC.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_mean_Priestley_Taylor_not_EMC.py && python3 $data_s/$1_anomaly_mean_Priestley_Taylor_not_EMC.py
 
 #Make the observations in same format to go with anomaly correlation
-cat MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
-python3 $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
+cat $data_s/MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
+
+#Create anomaly 
+cat $data_s/anomaly_compute_from_mean_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_compute_from_mean_Priestley.py && python3 $data_s/$1_anomaly_compute_from_mean_Priestley.py
 
 }
-
-make_ETo_Priestley_mean_for_anomaly "GMAO"
 make_ETo_Priestley_mean_for_anomaly "ESRL"
+make_ETo_Priestley_mean_for_anomaly "GMAO"
 make_ETo_Priestley_mean_for_anomaly "RSMAS"
 
+
 python3 $data_s/anomaly_mean_Priestley_Taylor_only_EMC_11_models_ETo.py
-
-
+cat $data_s/MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
+cat $data_s/MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
 
 make_anomaly_correlation_graph () {
-cat anomaly_correlation_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_correlation_Priestley.py
+cat $data_s/anomaly_correlation_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_correlation_Priestley.py
 python3 $data_s/$1_anomaly_correlation_Priestley.py
 
 }
 make_anomaly_correlation_graph "GMAO"
-
+make_anomaly_correlation_graph "RSMAS"
+make_anomaly_correlation_graph "ESRL"
+make_anomaly_correlation_graph "EMC"
 #view correlation plots
 
 

@@ -24,7 +24,7 @@ output_RZSM_dir = f'{obs_dir}/RZSM_SubX_values'
 
 os.system(f'mkdir -p {output_ETo_dir} {output_RZSM_dir}')
 
-model_='GMAO'
+model_='RSMAS'
 evap='Priestley'
 
 subX_dir = f'{dir1}/Data/SubX/{model_}'

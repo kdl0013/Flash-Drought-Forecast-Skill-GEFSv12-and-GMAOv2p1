@@ -29,7 +29,7 @@ from multiprocessing import Pool
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'EMC'
 var = 'RZSM'
-n_processes = 3
+n_processes = 1
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
@@ -87,10 +87,9 @@ def make_subX_anomaly(_date):
     # i_X,i_Y=10,10
     # anomaly_spread=42
     #TODO: Change to penman or priestley for name
-    name_='Priestley'  #or Penman
     num_models='11'
     
-    fileOut = "{}/{}_mean_{}_models_{}_{}.nc4".format(new_dir_mean,var,num_models,name_,_date)
+    fileOut = "{}/{}_mean_{}_models_{}.nc4".format(new_dir_mean,var,num_models,_date)
 
     
     print(f'Calculating {var} mean on SubX for {_date} and saving as .nc4 in {new_dir_mean}.') 
@@ -102,7 +101,7 @@ def make_subX_anomaly(_date):
         dates_to_keep = []
         
         '''if within 3 months, keep files'''
-        for file in sorted(glob(f'{home_dir}/{var}*{name_}*.nc4')):
+        for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
             test_1 = month_start - pd.to_datetime(file[-14:-4]).month
             test_2 = pd.to_datetime(file[-14:-4]).month - month_start
             
@@ -123,7 +122,7 @@ def make_subX_anomaly(_date):
         # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc4', concat_dim=['S'], combine='nested').persist() #Load all into memory (really big)
         # subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested', chunks={"S": 1},parallel='True').persist()
 
-        subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True').persist() #load first
+        subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True')
         
         #Get a file with the actual dates
         new_list = [i[-5:] for i in init_date_list]

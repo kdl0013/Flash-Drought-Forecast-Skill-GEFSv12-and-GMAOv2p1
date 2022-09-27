@@ -24,7 +24,7 @@ output_RZSM_dir = f'{obs_dir}/RZSM_SubX_values'
 
 os.system(f'mkdir -p {output_ETo_dir} {output_RZSM_dir}')
 
-model_='RSMAS'
+model_='model_name'
 evap='Priestley'
 
 subX_dir = f'{dir1}/Data/SubX/{model_}'
@@ -43,8 +43,8 @@ def anomaly_ETo_Priestley_gridMET_SubX_creation(_date) -> float:
     file_name = f'ETo_SubX_anomaly_Priestley_{model_}_{_date}.nc4'
 
     try:
-        xr.open_dataset(f'{output_ETo_dir}/{file_name}')
-        # xr.open_dataset('test.nc') #only to make new files
+        # xr.open_dataset(f'{output_ETo_dir}/{file_name}')
+        xr.open_dataset('test.nc') #only to make new files
         print(f'Already completed date {_date}. Saved in {output_ETo_dir}')
     except FileNotFoundError:
         print(f'Working on initialized day {_date} to find MERRA values from SubX models, leads, & coordinates and saving data into {output_ETo_dir}.')
@@ -100,19 +100,21 @@ def anomaly_ETo_Priestley_gridMET_SubX_creation(_date) -> float:
             else:
                 out_file.ETo[0,:, i_lead, :, :] = \
                     obs_file.ETo_anom.sel(time = date_val).values
-       
+                
+                
+        #Only keep 1 model
+        out_file = out_file.isel(M=0)
         #TODO: Only keep the first 7 leads (total of 6 weeks). 0 index is 12 hour lead from initialization.
         #Convert to an xarray object
         var_OUT = xr.Dataset(
             data_vars = dict(
-                ETo_anom = (['S','M','L','Y','X'], out_file.ETo.values),
+                ETo_anom = (['S','L','Y','X'], out_file.ETo.values),
             ),
             coords = dict(
-                S = sub_file.S.values,
+                S = np.atleast_1d(pd.to_datetime(_date)),
                 X = sub_file.X.values,
                 Y = sub_file.Y.values,
                 L = np.arange(sub_file.L.shape[0]),
-                M = sub_file.M.values,
         
             ),
             attrs = dict(

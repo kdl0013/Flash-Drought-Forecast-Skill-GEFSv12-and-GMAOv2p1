@@ -82,7 +82,6 @@ init_date_list = return_date_list(var)
 reference evapotranspiration anomalies'''
 # def multiProcess_EDDI_SubX_TEST(_date):
 def make_subX_anomaly(_date):
-    # def make_subX_anomaly(_date, var,HP_conus_mask,anomaly_spread, save_MME_anomaly_mean,save_MME_anomaly,init_date_list):
 
     # _date=init_date_list[0]
     # i_X,i_Y=10,10
@@ -126,7 +125,7 @@ def make_subX_anomaly(_date):
             # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc4', concat_dim=['S'], combine='nested').persist() #Load all into memory (really big)
             # subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested', chunks={"S": 1},parallel='True').persist()
     
-            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True').persist() #load first
+            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True') #load first
             
             #Get a file with the actual dates
             new_list = [i[-5:] for i in init_date_list]
@@ -138,7 +137,7 @@ def make_subX_anomaly(_date):
         elif var == 'ETo':
             #Open all files for faster processing (for EDDI and ETo anomaly)
             # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc', concat_dim=['S'], combine='nested')
-            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True').persist()
+            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True')
             # tt=subx_all.ETo[:,0,:,10,10].values
             #Get a file with the actual dates
             new_list = [i[-5:] for i in init_date_list]
@@ -180,7 +179,7 @@ def make_subX_anomaly(_date):
     
         #convert to a numpy array for testing
         test_arr = subx_all[list(subx_all.keys())[0]].to_numpy()
-        
+        # del test_arr        
         test_arr.shape
         '''We can now select the values based on only the lead julian date values. Because
         files with nothing in the julian date for that day will have an np.nan

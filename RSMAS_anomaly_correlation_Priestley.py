@@ -78,7 +78,7 @@ print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'GMAO'
+model_NAM1 = 'RSMAS'
 name_ = 'Priestley'
 # model_NAM1 = 'RSMAS'
 
@@ -123,51 +123,55 @@ def return_cluster_name(cluster_num):
     return(out_name)
 
 
+#Don't have to load into memory because I'm immediately converting them into a np.array
+'''ISSUE: I technically need more data from MERRA for the latest GMAO forecasts past June 20, 2022
+
+For right now, just do through month of may'''
+
+var='ETo'
+
+conus_mask = xr.open_dataset(f'{mask_path}')  
+HP_conus_mask = conus_mask['USDM-HP_mask']
+West_conus_mask = conus_mask['USDM-West_mask']
+
+if var == 'ETo':
+    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
+    sub_name = 'ETo_anom'
+    sub_name_MEM = 'ETo_anom_MEM'
+
+elif var == 'RZSM':
+    obs_name = 'SM_SubX_anomaly_*.nc4'
+    sub_name = 'RZSM_anom'
+
+#Some days may be missing
+if model_NAM1 == "GMAO":
+    subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
+    obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
+    subx_files = subx_files.sel(S=obs_files.S.values)
+elif model_NAM1 == 'RSMAS':
+    subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
+    obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
+    all_dates = [i for i in obs_files.S.values]
+    subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
+elif model_NAM1 == 'ESRL':
+    subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',engine='netcdf4').sel(S=slice('2000-01-01','2022-05-30'))    
+    obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
 
 
 #%%
 #variables for function (test)
-var='ETo'
+
 # cluster_num = 1
 # var='RZSM'
-def all_season_mod_skill(cluster_num):
+def all_season_mod_skill(cluster_num,obs_files,subx_files):
     '''Split by season, model, lead, then calculate the anomaly correlation 
     coefficient'''
     print(f'Working on cluster {cluster_num} out of 6 for ETo {name_}.')
 
-    conus_mask = xr.open_dataset(f'{mask_path}')  
-    HP_conus_mask = conus_mask['USDM-HP_mask']
-    West_conus_mask = conus_mask['USDM-West_mask']
-
-    if var == 'ETo':
-        obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
-        sub_name = 'ETo_anom'
-        sub_name_MEM = 'ETo_anom_MEM'
-
-    elif var == 'RZSM':
-        obs_name = 'SM_SubX_anomaly_*.nc4'
-        sub_name = 'RZSM_anom'
         # obs_mean = obs_rzsm_mean #only use variable .CCI from obs_mean for smerge
         # obs_path = obs_rzsm_path
         
 
-    #Don't have to load into memory because I'm immediately converting them into a np.array
-    '''ISSUE: I technically need more data from MERRA for the latest GMAO forecasts past June 20, 2022
-    
-    For right now, just do through month of may'''
-    #Some days may be missing
-    if model_NAM1 == "GMAO":
-        subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
-        obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
-        subx_files = subx_files.sel(S=obs_files.S.values)
-    elif model_NAM1 == 'RSMAS':
-        subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
-        obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
-        all_dates = [i for i in obs_files.S.values]
-        subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
-    elif model_NAM1 == 'ESRL':
-        subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',engine='netcdf4').sel(S=slice('2000-01-01','2022-05-30'))    
-        obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
         # all_dates = [i for i in obs_files.S.values]
         # subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
         # subx_files=subx_files.sel(S=obs_files.S.values)
@@ -345,7 +349,7 @@ def all_season_mod_skill(cluster_num):
 
 all_cluster_acc_ETo = {}
 for clus_num in np.arange(1,7):
-    all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(cluster_num=clus_num)
+    all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(cluster_num=clus_num,obs_files=obs_files,subx_files=subx_files)
     #print(all_cluster_acc_ETo[f'Cluster {clus_num}'])
 
 #%% Plot anomaly values in pcolormesh

@@ -78,7 +78,7 @@ print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'GMAO'
+model_NAM1 = 'ESRL'
 name_ = 'Priestley'
 # model_NAM1 = 'RSMAS'
 

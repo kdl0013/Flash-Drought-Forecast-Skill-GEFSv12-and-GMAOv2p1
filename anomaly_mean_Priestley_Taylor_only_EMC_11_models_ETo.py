@@ -29,7 +29,7 @@ from multiprocessing import Pool
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'EMC'
 var = 'ETo'
-n_processes = 3
+n_processes = 1
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
@@ -168,7 +168,7 @@ def make_subX_anomaly(_date):
 
     ''' We cannot load it all into memory with 60GB. We are going to work through each model'''        
     #Save outputs into this file
-    out_template = xr.zeros_like(subx_all)
+    out_template = xr.zeros_like(subx_out)
     out_template.ETo.shape
     # #convert to a numpy array for testing
     test_arr = subx_all[list(subx_all.keys())[0]].to_numpy()
@@ -244,78 +244,84 @@ def make_subX_anomaly(_date):
                     '''This will return all the data for each file for averages
                     because of day of year, we have to subset the +/- 42 days in 
                     a different way due to how the files day of year is setup'''
-
-                    for k, julian_d in enumerate((all_mean_var_mod)):
+                    for mod in all_mean_var_mod.keys():
+                        # print(mod)
                         
-                        julian_d = int(list(julian_d)[0])
-                        # if julian_d == 366:
-                        #     break
-                        '''Grab all days with 42 days of day of year, need
-                        this weird approach because of slicing issues'''
-                        #If doy <= 42
-                        if int(julian_d) < anomaly_spread:
-                            subtract_ = int(julian_d)-anomaly_spread #what to grabl from back of dataset
-                            front_half = test_arr[:,0:julian_d+anomaly_spread,i_Y,i_X] # doy 1 through front of dataset
-                            front_half=np.concatenate((front_half),axis=0) #flatten
+                        out_mean[mod] = []
+                        out_dict[mod] = []
+                        for k, julian_d in enumerate((all_mean_var_mod[mod])):
                             
-                            back_half = test_arr[:,subtract_:,i_Y,i_X] #take the last n values from the end of the list which is the latest julian dates
-                            back_half=np.concatenate((back_half),axis=0)
-                            
-                            mean_value=bn.nanmean(np.concatenate((front_half,back_half)))
-                        #If doy >= 324
-                        elif julian_d > (366-anomaly_spread) and julian_d != 366:
+                            julian_d = int(list(julian_d)[0])
+                            # if julian_d == 366:
+                            #     break
+                            '''Grab all days with 42 days of day of year, need
+                            this weird approach because of slicing issues'''
+                            #If doy <= 42
+                            if int(julian_d) < anomaly_spread:
+                                subtract_ = int(julian_d)-anomaly_spread #what to grabl from back of dataset
+                                front_half = test_arr[:,int(mod),0:julian_d+anomaly_spread,i_Y,i_X] # doy 1 through front of dataset
+                                front_half=np.concatenate((front_half),axis=0) #flatten
+                                
+                                back_half = test_arr[:,int(mod),subtract_:,i_Y,i_X] #take the last n values from the end of the list which is the latest julian dates
+                                back_half=np.concatenate((back_half),axis=0)
+                                
+                                mean_value=bn.nanmean(np.concatenate((front_half,back_half)))
+                            #If doy >= 324
+                            elif julian_d > (366-anomaly_spread) and julian_d != 366:
 
-                            # break
-                            add_ = (366-julian_d)*-1 #going to get from the front half of dataset
-                            diff_ = anomaly_spread - add_ #total other days missing
-                            
-                            #Example juilan day = 359
-                            #sub_small1 = all days after julian day (only a few for this example (7 days))
-                            sub_small1 = test_arr[:,add_:,i_Y,i_X] 
-                            sub_small1=np.concatenate((sub_small1))
-                            #Now get the difference dates from the beginning of the time series
-                            sub_small2 = test_arr[:,0:diff_,i_Y,i_X] 
-                            sub_small2=np.concatenate((sub_small2))
-
-                            #Now get all the julian days before the current julian_day
-                            second_lead = list(subx_all.L.values).index(julian_d)
-                            first_lead = list(subx_all.L.values).index(julian_d-anomaly_spread)
-                           
-                            sub_small3 = test_arr[:,first_lead:second_lead,i_Y,i_X] 
-                            sub_small3=np.concatenate((sub_small3))
-                            
-                            mean_value=bn.nanmean(np.concatenate((sub_small1,sub_small2,sub_small3)))
-
-                        else:
-                            if julian_d == 366:
-                                sub_small1 = test_arr[:,0:anomaly_spread,i_Y,i_X]
+                                # break
+                                add_ = (366-julian_d)*-1 #going to get from the front half of dataset
+                                diff_ = anomaly_spread - add_ #total other days missing
+                                
+                                #Example juilan day = 359
+                                #sub_small1 = all days after julian day (only a few for this example (7 days))
+                                sub_small1 = test_arr[:,int(mod),add_:,i_Y,i_X] 
                                 sub_small1=np.concatenate((sub_small1))
-
-                                sub_small2 = test_arr[:,-anomaly_spread:,i_Y,i_X]
+                                #Now get the difference dates from the beginning of the time series
+                                sub_small2 = test_arr[:,int(mod),0:diff_,i_Y,i_X] 
                                 sub_small2=np.concatenate((sub_small2))
-                                mean_value=bn.nanmean(np.concatenate((sub_small1,sub_small2)))
+
+                                #Now get all the julian days before the current julian_day
+                                second_lead = list(subx_all.L.values).index(julian_d)
+                                first_lead = list(subx_all.L.values).index(julian_d-anomaly_spread)
+                               
+                                sub_small3 = test_arr[:,int(mod),first_lead:second_lead,i_Y,i_X] 
+                                sub_small3=np.concatenate((sub_small3))
+                                
+                                mean_value=bn.nanmean(np.concatenate((sub_small1,sub_small2,sub_small3)))
+
                             else:
-                                #Need to find a way to get the index value from subx_all lead dimension because numpy has no way to tell what the actual value is
-                                if julian_d ==anomaly_spread:
-                                    #fix indexing issues 
-                                    first_lead = list(subx_all.L.values).index(julian_d+1-anomaly_spread) 
-                                    second_lead = list(subx_all.L.values).index(julian_d+1+anomaly_spread)
+                                if julian_d == 366:
+                                    sub_small1 = test_arr[:,int(mod),0:anomaly_spread,i_Y,i_X]
+                                    sub_small1=np.concatenate((sub_small1))
+
+                                    sub_small2 = test_arr[:,int(mod),-anomaly_spread:,i_Y,i_X]
+                                    sub_small2=np.concatenate((sub_small2))
+                                    mean_value=bn.nanmean(np.concatenate((sub_small1,sub_small2)))
                                 else:
-                                    first_lead = list(subx_all.L.values).index(julian_d-anomaly_spread) 
-                                    second_lead = list(subx_all.L.values).index(julian_d+anomaly_spread)
+                                    #Need to find a way to get the index value from subx_all lead dimension because numpy has no way to tell what the actual value is
+                                    if julian_d ==anomaly_spread:
+                                        #fix indexing issues 
+                                        first_lead = list(subx_all.L.values).index(julian_d+1-anomaly_spread) 
+                                        second_lead = list(subx_all.L.values).index(julian_d+1+anomaly_spread)
+                                    else:
+                                        first_lead = list(subx_all.L.values).index(julian_d-anomaly_spread) 
+                                        second_lead = list(subx_all.L.values).index(julian_d+anomaly_spread)
 
-                                #Seems easier just to get keep this loaded instead of changing to an array
-                                sub_out = test_arr[:,first_lead:second_lead,i_Y,i_X]
-                                mean_value=bn.nanmean(sub_out)
+                                    #Seems easier just to get keep this loaded instead of changing to an array
+                                    sub_out = test_arr[:,int(mod),first_lead:second_lead,i_Y,i_X]
+                                    mean_value=bn.nanmean(sub_out)
 
-                        out_mean.append({str(julian_d):mean_value})
-                        
-                        return(out_mean)
+                            out_mean[mod].append({str(julian_d):mean_value})
+                            
+                    return(out_mean)
                     
                     
                     
                 model_mean_vals =find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr)
-                model_mean_vals
+                # model_mean_vals
+                
+                #%%
                 def add_mean_to_nc_file(model_mean_vals):
                     for mod in model_mean_vals.keys():
                         # model_mean_vals[mod]

@@ -50,9 +50,9 @@ init_date_list = [i[-14:-4] for i in sorted(glob('tas_GMAO*.nc4'))]
 
 #%%
 '''Compute Reference ET for SubX data'''
-def multiProcess_Refet_SubX(_date):
+# def multiProcess_Refet_SubX(_date):
     # _date=init_date_list[0]
-# for _date in init_date_list:
+for _date in init_date_list:
     # print(_date)
     fileOUT_name=f'ETo_Penman_{mod}_{_date}.nc4'
     try:
@@ -192,7 +192,8 @@ def multiProcess_Refet_SubX(_date):
         if (('dswrf' in list(locals().keys())) and ('tasmin' in list(locals().keys())) \
             and ('tdps' in list(locals().keys())) and ('windU' in list(locals().keys())) \
                 and ('windV' in list(locals().keys())) and ('tasmax' in list(locals().keys())) \
-                    and ('ulwrf' in list(locals().keys())) and ('uswrf' in list(locals().keys()))):
+                    and ('ulwrf' in list(locals().keys())) and ('uswrf' in list(locals().keys())) \
+                        and ('dlwrf' in list(locals().keys()))):
             # print('calc')
             #net radiation
             short_rad = np.subtract(dswrf.dswrf,uswrf.uswrf).rename('short_rad')
@@ -285,7 +286,7 @@ def multiProcess_Refet_SubX(_date):
                                         
 
     
-    #%%
+    
             #Convert to an xarray object
             var_OUT = xr.Dataset(
                 data_vars = dict(
