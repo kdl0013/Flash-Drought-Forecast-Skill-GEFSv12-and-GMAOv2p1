@@ -200,6 +200,7 @@ for _date in init_date_list:
             long_rad = np.subtract(dlwrf.dlwrf,ulwrf.ulwrf).rename('long_rad')
             
             srad = np.add(short_rad,long_rad).rename('srad').to_dataset()
+            srad = srad.assign_coords(S=np.atleast_1d(_date))
             
             tavg = (tasmax.tasmax-tasmin.tasmin).rename('tavg')*units.degC
             tdps = tdps * units.degC

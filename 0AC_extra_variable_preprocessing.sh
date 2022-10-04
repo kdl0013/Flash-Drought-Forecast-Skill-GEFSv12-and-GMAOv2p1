@@ -1,13 +1,17 @@
 #!/bin/bash
-
 main_directory='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 processors=8
 
 data_d=$main_directory/Data
 data_s=$main_directory/Scripts
-mask=$data_s/CONUS_mask
 subx=$data_d/SubX
+mask=$data_s/CONUS_mask
 
+
+#SubX GEOS-5, FIMr1p1, CCSM4 hindcasts/forecasts, and ESRL forecasts
+#return from Cheyenne UCAR cluster
+scripts=$data_s/NCAR_scripts
+outData=$data_d/SubX/fromCasper
 model_array=(GMAO ESRL RSMAS EMC)
 
 #Check latest dates downloaded
@@ -26,6 +30,21 @@ data_e=$data_d/elevation
 
 cdo -remapcon,$mask/CONUS_mask.grd $data_e/elev.1-deg.nc $data_e/elev_regrid.nc
 ################################################################################
+
+
+#TODO: Test GMAO radiation
+python3 $data_s/MERRA0_reformat_to_SubX_radiation.py
+python3 $data_s/anomaly_correlation_radiation.py
+
+
+#TODO: Create individual variable anomalies
+anomaly_by_variable () {
+cat $data_s/anomaly_mean_individual_variables_not_EMC.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${2}'|g' > $data_s/$1_anomaly_mean_$2_not_EMC.py && python3 $data_s/$1_anomaly_mean_$2_not_EMC.py
+
+}
+
+anomaly_by_variable "GMAO" "tasmin"
+anomaly_by_variable "GMAO" "tasmax"
 
 ####### MERRA2 make anomalies
 python3 $data_s/OBS_make_anomalies_Penman.py

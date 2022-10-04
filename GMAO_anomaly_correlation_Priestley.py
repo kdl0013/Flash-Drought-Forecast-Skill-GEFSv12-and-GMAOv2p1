@@ -81,7 +81,7 @@ dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'GMAO'
 name_ = 'Priestley'
 # model_NAM1 = 'RSMAS'
-
+#%%
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
 os.chdir(f'{subX_dir}/MEM') #for multi ensemble mean
 
@@ -123,51 +123,50 @@ def return_cluster_name(cluster_num):
     return(out_name)
 
 
+#Don't have to load into memory because I'm immediately converting them into a np.array
+'''ISSUE: I technically need more data from MERRA for the latest GMAO forecasts past June 20, 2022
 
+For right now, just do through month of may'''
 
+var='ETo'
+
+conus_mask = xr.open_dataset(f'{mask_path}')  
+HP_conus_mask = conus_mask['USDM-HP_mask']
+West_conus_mask = conus_mask['USDM-West_mask']
+
+if var == 'ETo':
+    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
+    sub_name = 'ETo_anom'
+    sub_name_MEM = 'ETo_anom_MEM'
+
+elif var == 'RZSM':
+    obs_name = 'SM_SubX_anomaly_*.nc4'
+    sub_name = 'RZSM_anom'
+
+#Open files
+subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
+obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
+
+if model_NAM1 == 'RSMAS':
+    all_dates = [i for i in obs_files.S.values]
+    subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
+    
+else:
+    subx_files = subx_files.sel(S=obs_files.S.values)
 #%%
 #variables for function (test)
-var='ETo'
+
 # cluster_num = 1
 # var='RZSM'
-def all_season_mod_skill(cluster_num):
+def all_season_mod_skill(cluster_num,obs_files,subx_files):
     '''Split by season, model, lead, then calculate the anomaly correlation 
     coefficient'''
     print(f'Working on cluster {cluster_num} out of 6 for ETo {name_}.')
 
-    conus_mask = xr.open_dataset(f'{mask_path}')  
-    HP_conus_mask = conus_mask['USDM-HP_mask']
-    West_conus_mask = conus_mask['USDM-West_mask']
-
-    if var == 'ETo':
-        obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
-        sub_name = 'ETo_anom'
-        sub_name_MEM = 'ETo_anom_MEM'
-
-    elif var == 'RZSM':
-        obs_name = 'SM_SubX_anomaly_*.nc4'
-        sub_name = 'RZSM_anom'
         # obs_mean = obs_rzsm_mean #only use variable .CCI from obs_mean for smerge
         # obs_path = obs_rzsm_path
         
 
-    #Don't have to load into memory because I'm immediately converting them into a np.array
-    '''ISSUE: I technically need more data from MERRA for the latest GMAO forecasts past June 20, 2022
-    
-    For right now, just do through month of may'''
-    #Some days may be missing
-    if model_NAM1 == "GMAO":
-        subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
-        obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
-        subx_files = subx_files.sel(S=obs_files.S.values)
-    elif model_NAM1 == 'RSMAS':
-        subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
-        obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
-        all_dates = [i for i in obs_files.S.values]
-        subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
-    elif model_NAM1 == 'ESRL':
-        subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',engine='netcdf4').sel(S=slice('2000-01-01','2022-05-30'))    
-        obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
         # all_dates = [i for i in obs_files.S.values]
         # subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
         # subx_files=subx_files.sel(S=obs_files.S.values)
@@ -251,12 +250,21 @@ def all_season_mod_skill(cluster_num):
         # #and use Numba for faster processing
         # else:
         subx_converted = (skill_subx[season].to_numpy().squeeze()) #drop unneed dimension
-        
+        subx_converted=subx_converted[:,::7,:,:]
+        subx_converted=subx_converted[:,1:,:,:]
+
         obs_converted = (skill_obs[season].to_numpy().squeeze())  #drop unneed dimension
+        obs_converted=obs_converted[:,::7,:,:]
+        obs_converted=obs_converted[:,1:,:,:]
+
         # obs_converted = obs_converted[:,0,:,:,:] #only need 1 set of observations because they are all the same
         
         #Make an empty file to store the fcluster_numinal outcomes
-        var_OUT = np.empty_like(subx_converted)
+        if model_NAM1 == "GMAO" or model_NAM1 == "RSMAS":
+            add_ = 4
+        else:
+            add_ = 1
+        var_OUT = np.zeros(shape=(subx_converted.shape[0],(subx_converted.shape[1]+add_),subx_converted.shape[2],subx_converted.shape[3]))
         var_OUT[:,:,:,:] = np.nan
         #Only want to save dim (lead x Y x X)
         var_OUT = var_OUT[0,:,:,:]
@@ -283,7 +291,7 @@ def all_season_mod_skill(cluster_num):
                 # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
                 for X in range(var_OUT.shape[2]):
                     #anomalies are only present in weekly leads of 7
-                    for lead in range(var_OUT.shape[0]):
+                    for lead in range(obs_converted.shape[1]):
                         
                         '''There is a Zero division error that occurs, to fix this (because numba doesn't like it)
                         just check and see if the two files have all 0s or np.nans'''
@@ -302,13 +310,101 @@ def all_season_mod_skill(cluster_num):
             return(var_OUT)
         
         seasonal_skill = season_anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted)
-        seasonal_skill=var_OUT
+        # seasonal_skill=var_OUT
+        
+        # #Now add back to a dictionary for each model/lead week/weason
+        # for lead_week in range(obs_converted.shape[1]):
+        #     seasonal_mod_skill = np.nanmean(seasonal_skill[lead_week,:,:])
+        #     output_dictionary[f'Lead{lead_week+1}_{season_name[season]}']= seasonal_mod_skill
+    
+    
+        #TODO: Now get the averages of weekly leads
+        def weekly_averages(var_OUT):
+            
+            '''I put this function into the loop (tried numba, didn't work well) 
+            Source ACC:
+            https://metclim.ucd.ie/wp-content/uploads/2017/07/DeterministicSkillScore.pdf
+            def ACC(FC_anom,OBS_anom):
+                top = np.nanmean(FC_anom*OBS_anom) #all forecast anomalies * all observation anomalies                    
+                bottom = np.sqrt(np.nanmean(FC_anom**2)*np.nanmean(OBS_anom**2)) #variance of forecast anomalies * variance of observation anomalies
+                ACC = top/bottom
+                return (ACC)
+            '''
+
+
+            # #Now find pearson correlation by model, lead, and lat/lon
+            # for model in range(var_OUT.shape[0]):
+            # # for model in range(3,4): for testing
+            #     # print(f'Working on model {model+1} for pearson r correlation')
+            for Y in range(var_OUT.shape[1]):
+                # print(f"Working on latitude index {Y} out of {var_OUT.Y.shape[0]}")
+                for X in range(var_OUT.shape[2]):
+                    
+                    #week 3-4
+                    if model_NAM1 == 'GMAO' or model_NAM1 == 'RSMAS':
+
+                        wk34=obs_converted[:, 2:4, Y, X].mean(axis=1)
+                        wk345=obs_converted[:, 2:5, Y, X].mean(axis=1)
+                        wk3456=obs_converted[:, 2:, Y, X].mean(axis=1)
+                        wk456=obs_converted[:, 3:, Y, X].mean(axis=1)
+                        
+                        bwk34=subx_converted[:, 2:4, Y, X].mean(axis=1)
+                        bwk345=subx_converted[:, 2:5, Y, X].mean(axis=1)
+                        bwk3456=subx_converted[:, 2:, Y, X].mean(axis=1)
+                        bwk456=subx_converted[:, 3:, Y, X].mean(axis=1)
+                        
+                        
+                        top34 = np.nanmean(wk34*bwk34)
+                        top345 = np.nanmean(wk345*bwk345)
+                        top3456 = np.nanmean(wk3456*bwk3456)
+                        top456 = np.nanmean(wk456*bwk456)
+                    
+                        bottom34 = np.sqrt(np.nanmean(wk34**2)*np.nanmean(bwk34**2))
+                        bottom345 = np.sqrt(np.nanmean(wk345**2)*np.nanmean(bwk345**2))
+                        bottom3456 = np.sqrt(np.nanmean(wk3456**2)*np.nanmean(bwk3456**2))
+                        bottom456 = np.sqrt(np.nanmean(wk456**2)*np.nanmean(bwk456**2))
+                        
+                        
+                        ACC34 = top34/bottom34
+                        ACC345 = top345/bottom345
+                        ACC3456 = top3456/bottom3456
+                        ACC456 = top456/bottom456
+                        
+                        var_OUT[-4,Y,X] = ACC34
+                        var_OUT[-3,Y,X] = ACC345
+                        var_OUT[-2,Y,X] = ACC3456
+                        var_OUT[-1,Y,X] = ACC456
+
+                    else:
+                        wk34=obs_converted[:, 2:, Y, X].mean(axis=1)
+                        bwk34=obs_converted[:, 2:, Y, X].mean(axis=1)
+
+                        '''There is a Zero division error that occurs, to fix this (because numba doesn't like it)
+                        just check and see if the two files have all 0s or np.nans'''
+
+
+            return(var_OUT)
+
+        seasonal_skill = weekly_averages(seasonal_skill)
+        # seasonal_skill=var_OUT
         
         #Now add back to a dictionary for each model/lead week/weason
-        for lead_week in range(skill_subx[season].L.shape[0]):
+        for lead_week in range(seasonal_skill.shape[0]):
             seasonal_mod_skill = np.nanmean(seasonal_skill[lead_week,:,:])
-            output_dictionary[f'Lead{skill_subx[season].L.values[lead_week]}_{season_name[season]}']= seasonal_mod_skill
+            if lead_week == 6:
+                lead_week_='3.4'
+            elif lead_week == 7:
+                lead_week_='3.5'
+            elif lead_week == 8:
+                lead_week_='3.6'
+            elif lead_week == 9:
+                lead_week_='4.6'
+            else:
+                lead_week_ = str(lead_week+ 1) 
+            # print(lead_week_)
+            output_dictionary[f'Lead_{lead_week_}_{season_name[season]}']= seasonal_mod_skill
     
+
     # all_cluster_acc_ETo[f'Cluster {clus_num}'] = output_dictionary
     
     #just appending to a dictionary
@@ -337,7 +433,7 @@ def all_season_mod_skill(cluster_num):
 #     p.map(all_season_mod_skill,np.array(np.arange(1,7)))
 
 
-# file_exists = exists(f'{output_season_dir}/all_season_MEM_skill_{var}.tif')
+# file_exists = exists(f'{output_season_dir}/all_season_MEM_skill_{var}_{name_}.tif')
 # if file_exists:
 #     print('Already completed anomaly correlation. This is a 10 minute long script.')
 #     sys.exit(0)
@@ -345,7 +441,7 @@ def all_season_mod_skill(cluster_num):
 
 all_cluster_acc_ETo = {}
 for clus_num in np.arange(1,7):
-    all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(cluster_num=clus_num)
+    all_cluster_acc_ETo[f'Cluster {clus_num}'] = all_season_mod_skill(cluster_num=clus_num,obs_files=obs_files,subx_files=subx_files)
     #print(all_cluster_acc_ETo[f'Cluster {clus_num}'])
 
 #%% Plot anomaly values in pcolormesh
@@ -370,31 +466,31 @@ def setup_plot_all_leads(all_cluster_acc,cluster_num):
         #split to get model, lead, and season
         split_ = k.split('_')
         
-        df_OUT=df_OUT.append({'Lead':int(split_[0][-1:]), \
+        df_OUT=df_OUT.append({'Lead':split_[1], \
                              'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
 
     return(df_OUT)
 
-def setup_plot_mean_of_multi_weeks(all_cluster_acc,cluster_num):
-    #The goal of this function is to take our outputs from anomaly correlation 
-    #coefficient, convert them to a dataframe by model, lead, season,
-    #to set up for plot
-    col_names = ['Lead','Season','ACC']
+# def setup_plot_mean_of_multi_weeks(all_cluster_acc,cluster_num):
+#     #The goal of this function is to take our outputs from anomaly correlation 
+#     #coefficient, convert them to a dataframe by model, lead, season,
+#     #to set up for plot
+#     col_names = ['Lead','Season','ACC']
     
-    df_OUT = pd.DataFrame(columns=col_names)
+#     df_OUT = pd.DataFrame(columns=col_names)
     
-    var_cluster = all_cluster_acc[f'Cluster {cluster_num}']
+#     var_cluster = all_cluster_acc[f'Cluster {cluster_num}']
     
-    for idx,k in enumerate(var_cluster.keys()):
-        #split to get model, lead, and season
-        split_ = k.split('_')
+#     for idx,k in enumerate(var_cluster.keys()):
+#         #split to get model, lead, and season
+#         split_ = k.split('_')
         
-        df_OUT=df_OUT.append({'Lead':int(split_[0][-1]), \
-                             'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
+#         df_OUT=df_OUT.append({'Lead':int(split_[0][-1]), \
+#                              'Season': split_[-1],'ACC':var_cluster[k]},ignore_index=True)
 
-    # subset_1 = df_OUT[(df_OUT['Lead'] ==1) | (df_OUT['Lead'] ==2 ) | (df_OUT['Lead'] ==3 )]
+#     # subset_1 = df_OUT[(df_OUT['Lead'] ==1) | (df_OUT['Lead'] ==2 ) | (df_OUT['Lead'] ==3 )]
 
-    return(df_OUT)
+#     return(df_OUT)
 
 #%%
 
@@ -404,35 +500,7 @@ for clus_num in np.arange(1,7):
 
 
 # r1_r = setup_plot(all_vals['Cluster 1'])
-#%%
-if var == 'ETo':
-    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
-    sub_name = 'ETo_anom'
-    sub_name_MEM = 'ETo_anom_MEM'
 
-elif var == 'RZSM':
-    obs_name = 'SM_SubX_anomaly_*.nc4'
-    sub_name = 'RZSM_anom'
-    # obs_mean = obs_rzsm_mean #only use variable .CCI from obs_mean for smerge
-    # obs_path = obs_rzsm_path
-    
-subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',engine='netcdf4').sel(S=slice('2000-01-01','2022-05-30'))    
-obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
-
-#Some days may be missing
-if model_NAM1 == "GMAO":
-    subx_files = subx_files.sel(S=obs_files.S.values)
-elif model_NAM1 == 'RSMAS':
-    all_dates = [i for i in obs_files.S.values]
-    subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
-
-
-
-# subx_files.ETo_anom[0,3,7,10,10].values
-# obs_files.ETo_anom[0,3,7,10,10].values
-''''Reassign coordinates because of a random issue where if you don't fix it
-there is one day missing when running the next block of code between subx and obs for each season'''
-obs_files=obs_files.assign_coords(S=subx_files.S.values)
 
 #%%
 def plot_lead_week_season_model(all_vals_setup,obs_files,subx_files):
@@ -450,7 +518,8 @@ def plot_lead_week_season_model(all_vals_setup,obs_files,subx_files):
             #convert to np array for pcolor mesh
             #season order: Spring, Summer, Fall, Winter
             
-            var_OUT = np.zeros(shape = (4,subx_files.L.shape[0]))
+            length_of_leads = (all_vals_setup[list(all_cluster_acc_ETo.keys())[0]]['Season'] == 'Winter').sum()
+            var_OUT = np.zeros(shape = (4,length_of_leads))
             #Place names in this order for better visual
             var_OUT[0,:] = subset_by_cluster[subset_by_cluster['Season']=='Spring']['ACC']
             var_OUT[1,:] = subset_by_cluster[subset_by_cluster['Season']=='Summer']['ACC']
@@ -463,19 +532,16 @@ def plot_lead_week_season_model(all_vals_setup,obs_files,subx_files):
             y=np.arange(1.5,var_OUT.shape[0]+2)
             Z=var_OUT[:,:]
             
-            #now only grab the weekly leads
-            var_LEAD = var_OUT[:,::7]
-            var_LEAD = var_LEAD[:,1:]
+            # #now only grab the weekly leads
+            # var_LEAD = var_OUT[:,::7]
+            # var_LEAD = var_LEAD[:,1:]
             
             Index = ['Spring', 'Summer', 'Fall', 'Winter']
-            if model_NAM1 == 'ESRL':
-                Cols = ['1', '2', '3', '4']
-            elif model_NAM1 == 'EMC':
-                Cols = ['1', '2', '3', '4', '5']
-
+            if model_NAM1 == 'ESRL' or model_NAM1 == 'EMC':
+                Cols = ['1', '2', '3', '4','3.4']
             else:
-                Cols = ['1', '2', '3', '4', '5', '6']
-            var_OUT = pd.DataFrame(var_LEAD,index=Index, columns=Cols)
+                Cols = ['1', '2', '3', '4', '5', '6','3.4','3.5','3.6','4.6']
+            var_OUT = pd.DataFrame(var_OUT,index=Index, columns=Cols)
             
             return(var_OUT,x,y,Z)
         
@@ -564,7 +630,7 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
 
     s.set_xlabel('Week Lead',fontsize=25)
     
-    plt.savefig(f'{output_season_dir}/all_season_MEM_skill_{var}.tif',dpi=300)
+    plt.savefig(f'{output_season_dir}/all_season_MEM_skill_{var}_{name_}.tif',dpi=300)
     return(0)
 
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=ETo_acc_values_to_plot,var=var,min_all=min_all,max_all=max_all)

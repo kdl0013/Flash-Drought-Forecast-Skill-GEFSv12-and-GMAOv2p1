@@ -25,11 +25,7 @@ dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
 home_dir = f'{dir1}/Data/SubX/EMC/raw_ensemble_files/'
 save_out_dir_GEFS = f'{dir1}/Data/SubX/EMC/'
 
-
-vars_to_process= ['apcp_sfc','dswrf_sfc', 'dlwrf_sfc','soilw_bgrnd', 'tmp_2m','ulwrf_sfc','uswrf_sfc']
-
-
-
+vars_to_process= [i for i in os.listdir(home_dir)]
 # for i in vars_to_process:
 #     os.system(f'mkdir -p {out_dir}/{i}')
 #%%
@@ -38,7 +34,7 @@ def merge_ensemble_members(var):
 # for var in vars_to_process:
     # var=vars_to_process[0]
     print(f'Working on variable {var} to merge ensemble members.')
-    #%%
+
     os.chdir(f'{home_dir}/{var}')
     
     #dates
@@ -78,17 +74,26 @@ def merge_ensemble_members(var):
             final_out_name = f'pr_EMC_{out_date}.nc'
         elif var=='tmp_2m':
             final_out_name = f'tas_EMC_{out_date}.nc'
-        if var=='dswrf_sfc':
+        elif var=='dswrf_sfc':
             final_out_name = f'dswrf_EMC_{out_date}.nc'
-        if var=='dlwrf_sfc':
+        elif var=='dlwrf_sfc':
             final_out_name = f'dlwrf_EMC_{out_date}.nc'
-        if var=='ulwrf_sfc':
+        elif var=='ulwrf_sfc':
             final_out_name = f'ulwrf_EMC_{out_date}.nc'
-        if var=='uswrf_sfc':
+        elif var=='uswrf_sfc':
             final_out_name = f'uswrf_EMC_{out_date}.nc'
-
-        
-        
+        elif var=='soilw_bgrnd':
+            final_out_name = f'RZSM_EMC_{out_date}.nc'
+        elif var=='spfh_2m':
+            final_out_name = f'huss_EMC_{out_date}.nc'
+        elif var=='tmax_2m':
+            final_out_name = f'tasmax_EMC_{out_date}.nc'
+        elif var=='tmin_2m':
+            final_out_name = f'tasmin_EMC_{out_date}.nc'
+        elif var=='uflx_sfc':
+            final_out_name = f'uas_EMC_{out_date}.nc'
+        elif var=='vflx_sfc':
+            final_out_name = f'vas_EMC_{out_date}.nc'        
         # final_out_name= f"{var.split('_')[0]}_{out_date}.nc"
         try:
             xr.open_dataset(f"{path_out}/{final_out_name}4")
@@ -365,12 +370,13 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
             
                     ),
                     attrs = dict(
-                        Description = 'Total daily precipitation GEFSv12. Daily average already computed. All ensembles and leads in one file'),
+                        Description = 'Total daily precipitation GEFSv12. Daily average already computed. All ensembles and Ls in one file'),
                 )  
             elif 'dlwrf' in var:
                 GEFS_out = xr.Dataset(
@@ -381,12 +387,12 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
-            
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
                     ),
                     attrs = dict(
-                        Description = 'Downwelling longwave radiation GEFSv12. Daily average already computed. All ensembles and leads in one file'),
+                        Description = 'Downwelling longwave radiation GEFSv12. Daily average already computed. All ensembles and Ls in one file'),
                 )  
                 
            
@@ -399,12 +405,12 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
-            
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
                     ),
                     attrs = dict(
-                        Description = 'Downwelling shortwave radiation GEFSv12. Daily average already computed. All ensembles and leads in one file'),
+                        Description = 'Downwelling shortwave radiation GEFSv12. Daily average already computed. All ensembles and Ls in one file'),
                 )  
             elif 'soil' in var:
                 GEFS_out = xr.Dataset(
@@ -415,13 +421,14 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
             
                     ),
                     attrs = dict(
                         Description = 'Volumetric soil moisture content at 4 levels: 0.0-0.1, 0.1-0.4, 0.4-1.0 and 1.-2. m depth \
-    (fraction between wilting and saturation) GEFSv12. Daily average already computed. All ensembles and leads in one file')
+    (fraction between wilting and saturation) GEFSv12. Daily average already computed. All ensembles and Ls in one file')
                 )
             elif 'tmp' in var:
                 GEFS_out = xr.Dataset(
@@ -432,12 +439,12 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
-            
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
                     ),
                     attrs = dict(
-                        Description = 'Average temperature GEFSv12. Daily average already computed. All ensembles and leads in one file')
+                        Description = 'Average temperature GEFSv12. Daily average already computed. All ensembles and Ls in one file')
                 )
             elif 'ulwrf' in var:
                 GEFS_out = xr.Dataset(
@@ -448,12 +455,12 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
-            
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
                     ),
                     attrs = dict(
-                        Description = 'Longwave upwelling radiation. Daily average already computed. All ensembles and leads in one file')
+                        Description = 'Longwave upwelling radiation. Daily average already computed. All ensembles and Ls in one file')
                 )
             elif 'uswrf' in var:
                 GEFS_out = xr.Dataset(
@@ -464,14 +471,64 @@ def merge_ensemble_members(var):
                       
                         X = open_d10.X.values,
                         Y = open_d10.Y.values,
-                        lead = julian_list,
-                        model = range(template_GEFS_initial.shape[1]),
-            
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
                     ),
                     attrs = dict(
-                        Description = 'Shortwave upwelling radiation. Daily average already computed. All ensembles and leads in one file')
+                        Description = 'Shortwave upwelling radiation. Daily average already computed. All ensembles and Ls in one file')
                 )
-
+            elif 'spfh' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        spfh = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
+                    ),
+                    attrs = dict(
+                        Description = 'Specific humidity. Daily average already computed. All ensembles and Ls in one file')
+                )
+            elif 'tmax' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        tasmax = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
+                    ),
+                    attrs = dict(
+                        Description = 'Maximum Temperature. Daily average already computed. All ensembles and Ls in one file')
+                )
+            elif 'tmin' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        tasmin = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
+                    ),
+                    attrs = dict(
+                        Description = 'Minimum Temperature. Daily average already computed. All ensembles and Ls in one file')
+                )
+                
+                
+                
             # GEFS_out.assign_coords(S=out_date_create)
         
             out_name1 = 'out_1.nc4'

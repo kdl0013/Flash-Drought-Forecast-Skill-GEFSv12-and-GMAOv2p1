@@ -27,8 +27,8 @@ os.system(f'mkdir -p {model_dir}')
 #vars_to_download = ['dswrf_sfc','dlwrf_sfc','tmp_2m', 'soilw_bgrnd','apcp_sfc']
 
 #Good to go vars: dswrf, cape, pres
-vars_to_download = ['uswrf_sfc','ulwrf_sfc']
-
+#vars_to_download = ['uswrf_sfc','ulwrf_sfc']
+vars_to_download=['tmax_2m','tmin_2m']
 #TODO: investigate for specific humidity to actual vapor pressure https://earthscience.stackexchange.com/questions/2360/how-do-i-convert-specific-humidity-to-relative-humidity
 
 #GEFS long-term (multi-ensemble) forecasts are only initialized on Wednesdays

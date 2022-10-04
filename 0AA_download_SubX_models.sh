@@ -94,6 +94,10 @@ do mkdir $subx/$model
 cp $outData/S_dim_removed/*$model*.nc4 $subx/$model/;
 done
 
+python3 $data_s/EMC0_day_average_GEFSv12_HPC.py
+python3 $data_s/EMC1_merge_3_soil_moisture_fields_GEFSv12.py
+
+
 make_ETo_Priestley () {
 python3 $data_s/ETo_reference_ET_GMAO_Priestley.py
 python3 $data_s/ETo_reference_ET_ESRL_Priestley.py
@@ -103,38 +107,105 @@ python3 $data_s/ETo_reference_ET_EMC_Priestley.py
 
 make_ETo_Priestley
 
-python3 $data_s/ETo_reference_ET_GMAO_Penman.py
 
 #Make ETo mean 
-make_ETo_Priestley_mean_for_anomaly () {
-cat $data_s/anomaly_mean_Priestley_Taylor_not_EMC.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_mean_Priestley_Taylor_not_EMC.py && python3 $data_s/$1_anomaly_mean_Priestley_Taylor_not_EMC.py
-
+ETo_mean_anomaly_and_correlation () {
+#create the mean file (to subtract and make anomaly)
+cat $data_s/anomaly_mean_ETo_not_EMC.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_mean_$2_not_EMC.py && python3 $data_s/$1_anomaly_mean_$2_not_EMC.py
 #Make the observations in same format to go with anomaly correlation
-cat $data_s/MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
-
+#cat $data_s/MERRA0_reformat_to_SubX_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py
 #Create anomaly 
-cat $data_s/anomaly_compute_from_mean_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_compute_from_mean_Priestley.py && python3 $data_s/$1_anomaly_compute_from_mean_Priestley.py
+#cat $data_s/anomaly_compute_from_mean_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_compute_from_mean_ETo_$2.py && python3 $data_s/$1_anomaly_compute_from_mean_ETo_$2.py
+#Plot correlation
+#cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_correlation_$2.py && python3 $data_s/$1_anomaly_correlation_$2.py
+cat $data_s/CRPS_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_CRPS_skill_ETo_$2.py && python3 $data_s/$1_CRPS_skill_ETo_$2.py
+#cat $data_s/ACC_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_ACC_skill_ETo_$2.py && python3 $data_s/$1_ACC_skill_ETo_$2.py
+}
+
+ETo_mean_anomaly_and_correlation "ESRL" "Priestley"
+ETo_mean_anomaly_and_correlation "RSMAS" "Priestley"
+
+ETo_mean_anomaly_and_correlation "GMAO" "Priestley"
+ETo_mean_anomaly_and_correlation "GMAO" "Penman"
+
+
+
+
+
+
+
+EMC_anomaly_mean () {
+#Make ETo mean file
+cat $data_s/anomaly_mean_ETo_only_EMC_11_models.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_mean_ETo_$2_11_models.py && python3 $data_s/$1_anomaly_mean_ETo_$2_11_models.py
+#Make RZSM mean file
+cat $data_s/anomaly_mean_RZSM_only_EMC_11_models.py | sed 's|model_name|'${1}'|g' > $data_s/$1_anomaly_mean_RZSM_11_models.py && python3 $data_s/$1_anomaly_mean_RZSM_11_models.py
+
+#ETo
+#cat $data_s/MERRA0_reformat_to_SubX_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py
+#cat $data_s/anomaly_compute_from_mean_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_compute_from_mean_ETo_$2.py && python3 $data_s/$1_anomaly_compute_from_mean_ETo_$2.py
+
+#RZSM
+#cat $data_s/MERRA0_reformat_to_SubX_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_MERRA0_reformat_to_SubX_RZSM.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_RZSM.py
+#cat $data_s/anomaly_compute_from_mean_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_anomaly_compute_from_mean_RZSM.py && python3 $data_s/$1_anomaly_compute_from_mean_RZSM.py
+
+#cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_correlation_$2.py && python3 $data_s/$1_anomaly_correlation_$2.py
+
+cat $data_s/anomaly_correlation_RZSM.py | sed 's|model_name|'${1}'|g'  > $data_s/$1_anomaly_correlation_RZSM.py && python3 $data_s/$1_anomaly_correlation_RZSM.py
+
 
 }
-make_ETo_Priestley_mean_for_anomaly "ESRL"
-make_ETo_Priestley_mean_for_anomaly "GMAO"
-make_ETo_Priestley_mean_for_anomaly "RSMAS"
+EMC_anomaly_mean () {
+#cat $data_s/ACC_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_ACC_skill_ETo_$2.py && python3 $data_s/$1_ACC_skill_ETo_$2.py
+#cat $data_s/ACC_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_ACC_skill_RZSM.py && python3 $data_s/$1_ACC_skill_RZSM.py
+#cat $data_s/CRPS_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_CRPS_skill_ETo_$2.py && python3 $data_s/$1_CRPS_skill_ETo_$2.py
+cat $data_s/CRPS_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_CRPS_skill_RZSM.py && python3 $data_s/$1_CRPS_skill_RZSM.py
+}
+
+EMC_anomaly_mean "EMC" "Priestley"
+
+EMC_anomaly_mean "EMC" "Penman"
 
 
-python3 $data_s/anomaly_mean_Priestley_Taylor_only_EMC_11_models_ETo.py
-cat $data_s/MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
-cat $data_s/MERRA0_reformat_to_SubX_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Priestley.py
+
+
+
+
+
+
 
 make_anomaly_correlation_graph () {
-cat $data_s/anomaly_correlation_Priestley.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_correlation_Priestley.py
-python3 $data_s/$1_anomaly_correlation_Priestley.py
-
+cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_correlation_$2.py && python3 $data_s/$1_anomaly_correlation_$2.py
 }
-make_anomaly_correlation_graph "GMAO"
-make_anomaly_correlation_graph "RSMAS"
-make_anomaly_correlation_graph "ESRL"
-make_anomaly_correlation_graph "EMC"
+make_anomaly_correlation_graph "GMAO" "Priestley"
+make_anomaly_correlation_graph "RSMAS" "Priestley"
+make_anomaly_correlation_graph "ESRL" "Priestley"
+make_anomaly_correlation_graph "EMC" "Priestley"
 #view correlation plots
+
+
+
+
+
+
+
+
+
+#TODO: Penman Monteith equation
+python3 $data_s/ETo_reference_ET_GMAO_Penman.py
+python3 $data_s/ETo_reference_ET_EMC_Penman.py
+
+
+#Make ETo mean 
+make_ETo_Penman_mean_for_anomaly () {
+cat $data_s/anomaly_mean_Penman_not_EMC.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_mean_Penman_not_EMC.py && python3 $data_s/$1_anomaly_mean_Penman_not_EMC.py
+#Make the observations in same format to go with anomaly correlation
+cat $data_s/MERRA0_reformat_to_SubX_Penman.py | sed 's|model_name|'${1}'|g'> $data_s/$1_MERRA0_reformat_to_SubX_Penman.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_Penman.py
+#Create anomaly 
+#cat $data_s/anomaly_compute_from_mean_Penman.py | sed 's|model_name|'${1}'|g'> $data_s/$1_anomaly_compute_from_mean_Penman.py && python3 $data_s/$1_anomaly_compute_from_mean_Penman.py
+#anomaly correlation
+cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' |> $data_s/$1_anomaly_correlation_ETo.py && python3 $data_s/$1_anomaly_correlation_ETo.py
+}
+make_ETo_Penman_mean_for_anomaly "GMAO"
 
 
 

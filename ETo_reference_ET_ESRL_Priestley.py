@@ -197,7 +197,7 @@ def multiProcess_Refet_SubX(_date):
                         Y = save_output.Y.values,
                         L = julian_list,
                         M = save_output.M.values,
-                        S = save_output.S.values
+                        S = np.atleast_1d(pd.to_datetime(_date))
                     ),
                     attrs = dict(
                         Description = 'Reference crop evapotranspiration (mm/day). Priestley-Taylor formula'),
@@ -215,7 +215,7 @@ def multiProcess_Refet_SubX(_date):
                         Y = save_output.Y.values,
                         L = julian_list,
                         M = save_output.model.values,
-                        S = save_output.S.values
+                        S = np.atleast_1d(pd.to_datetime(_date))
                     ),
                     attrs = dict(
                         Description = 'Reference crop evapotranspiration (mm/day). Priestley-Taylor formula'),

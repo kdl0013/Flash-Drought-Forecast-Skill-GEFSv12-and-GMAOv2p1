@@ -28,7 +28,7 @@ import bottleneck as bn
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'ESRL'
 name_ = 'Priestley'
-
+#%%
 var = f'ETo_{name_}'
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
@@ -69,8 +69,12 @@ for file in sorted(glob(f'{var}*.nc4')):
     open_f = xr.open_dataset(file)
     open_f.close()
     
-    mean_date = f"ETo_mean_{name_}_2000-{file.split('_')[-1].split('.')[0][5:]}.nc4"
+    if model_NAM1 == 'EMC':
+        mean_date = f"ETo_mean_11_models_{name_}_2000-{file.split('_')[-1].split('.')[0][5:]}.nc4"
+    else:
+        mean_date = f"ETo_mean_{name_}_2000-{file.split('_')[-1].split('.')[0][5:]}.nc4"
     open_mean = xr.open_dataset(f'{mean_dir}/{mean_date}')
+    open_mean.close()
     #for some reason, you have to convert the datasets. Can't just subtract
     if open_f.M.shape[0] != open_mean.M.shape[0]:
         min_ = min(open_f.M.shape[0],open_mean.M.shape[0])
@@ -78,8 +82,15 @@ for file in sorted(glob(f'{var}*.nc4')):
     else:
         anomaly = (open_f.ETo[:,:,:,:,:].to_numpy() - open_mean.ETo_mean[:,:,:,:,:].to_numpy())
         min_ = open_f.M.shape[0]
+        
     anomaly_MEM = (open_f.ETo[:,0:min_,:,:,:].mean(axis=1).to_numpy() - open_mean.ETo_mean[:,0:min_,:,:,:].mean(axis=1).to_numpy())
     
+    if open_f.M.shape[0] < open_mean.M.shape[0]:
+        open_f = xr.zeros_like(open_f.isel(M=slice(0,open_f.M.shape[0])))
+    elif open_mean.M.shape[0] < open_f.M.shape[0]:
+        open_f = xr.zeros_like(open_f.isel(M=slice(0,open_mean.M.shape[0])))
+
+        
     open_f.ETo[:,:,:,:,:] = anomaly
     open_f = open_f.rename(ETo='ETo_anom')
     open_f = open_f.assign_coords(L=np.arange(open_f.L.shape[0])) #now save as lead date for anomaly correlation

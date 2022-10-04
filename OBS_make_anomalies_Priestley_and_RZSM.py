@@ -56,16 +56,24 @@ anomaly_date_r = pd.DataFrame(open_rzsm[list(open_rzsm.keys())[0]].time)
 anomaly_date_r.index = pd.to_datetime(anomaly_date_r.iloc[:,0])
 anomaly_date_r_list = list(anomaly_date_r.iloc[:,0])
 
+
+def name_1(dict_):
+    return(list(dict_.keys())[0])
+
+def name_2(dict_):
+    return(list(dict_.keys())[1])
+
 #%%
 #RZSM anomalies
 def run_MERRA_RZSM(open_rzsm):
     anomaly_r = xr.zeros_like(open_rzsm) #OUTPUT
-
+    anomaly_r = anomaly_r.drop('time_bnds')
+    anomaly_r = anomaly_r.rename(RZMC = 'RZSM_mean')
     try:
         check_mean_file=xr.open_dataset(fileOUT_MERRA_root) #see if file is already created
         print(f'Already created MERRA RZSM anomaly file into {MERRA_dir}.')
     except FileNotFoundError:
-    
+    #%%
         for lat in range(open_rzsm.Y.shape[0]):
             print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for RZSM anomaly MERRA2.')
             for lon in range(open_rzsm.X.shape[0]):
@@ -91,7 +99,7 @@ def run_MERRA_RZSM(open_rzsm):
                         for year_ in np.arange(2000,2023):
                             #Because we haven't taken a rolling mean yet, we need to here (only for anomaly - not day to day forecast comparisons)
                             
-                            weekly_mean = np.nanmean(open_rzsm.RZMC.isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
+                            weekly_mean = np.nanmean(open_rzsm[name_2(open_rzsm)].isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
                             #add to a list
                             # all_values.append(weekly_mean)
                             yearly_average[f'{day_val}']=weekly_mean
@@ -105,7 +113,7 @@ def run_MERRA_RZSM(open_rzsm):
                         #Now choose days 42 days on either side of each year and append to a single file
                         day_val=open_rzsm.time[day].to_numpy()
                         for year_ in np.arange(2000,2023):
-                            all_values.append(list(open_rzsm.RZMC.sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
+                            all_values.append(list(open_rzsm[name_2(open_rzsm)].sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
 
                             if pd.to_datetime(day_val).year % 4 ==0:
                                 day_val = day_val+np.timedelta64(366,'D')
@@ -125,26 +133,28 @@ def run_MERRA_RZSM(open_rzsm):
                             #find the index in anomaly_date_list
                             try:
                                 index_val = anomaly_date_r_list.index(_date)
-                                anomaly_r.RZMC[index_val, lat,lon] = yearly_average[i]
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = yearly_average[i]
                             except ValueError:
                                 #If outside of array, don't process
                                 pass
                             
                             try:
                                 index_val = anomaly_date_r_list.index(_date)
-                                anomaly_r.RZMC[index_val, lat,lon] = mean_
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = mean_
                             except ValueError:
                                 pass
-        
-        anomaly_r = anomaly_r.rename(RZMC = 'RZSM_mean')
-        anomaly_r.RZSM_mean[0:7,:,:] = anomaly_r.RZSM_mean[0+366:7+366].values #account for the first year because I didn't have any values
-        anomaly_r.to_netcdf(path = fileOUT_MERRA_root, mode ='w', engine='scipy')
-        anomaly_r.close()
-        
-        #Create anomaly file
-        anomaly_create = np.subtract(open_rzsm.RZMC, anomaly_r.RZSM_mean).rename('RZSM_anom')
-        anomaly_create.to_netcdf(fileOUT_MERRA_root_anomaly, mode ='w', engine='scipy')
-        anomaly_create.close()
+                            
+                
+                anomaly_r[name_1(anomaly_r)][0:7,:,:] = anomaly_r[name_1(anomaly_r)][0+366:7+366].values #account for the first year because I didn't have any values
+                anomaly_r.to_netcdf(path = fileOUT_MERRA_root, mode ='w', engine='scipy')
+                anomaly_r.close()
+                
+                #Create anomaly file
+                anomaly_create = np.subtract(open_rzsm[name_2(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create.to_netcdf(fileOUT_MERRA_root_anomaly, mode ='w', engine='scipy')
+                anomaly_create.close()
+                
+#%%                
     return(0)
 
 #%%
@@ -183,7 +193,7 @@ def make_MERRA_ETo():
                 return PET
     
             #OUtput is saved in meters
-            save_output.ETo[day,:,:]=priestley_taylor(temp1=temp[list(temp.keys())[0]][day,:,:],\
+            save_output.ETo[day,:,:]=priestley_taylor(temp1=temp.T2MMEAN[day,:,:],\
                               convert_rad1=convert_rad[list(convert_rad.keys())[0]][day,:,:],\
                                   ptC1=ptC[list(ptC.keys())[0]][:,:],\
                                       elevation1=elevation[list(elevation.keys())[0]][0,:,:])        # def priestley_taylor_new_equation(temp1,convert_rad1,ptC1,elevation1):
@@ -205,9 +215,9 @@ def make_MERRA_ETo():
         
         save_output.to_netcdf(f'{eto_merra_save_name}',mode='w')
         #Create a yearly sum file for inspection
-        os.system(f'cdo monmean {eto_merra_save_name} {MERRA_dir}/eto_{evap}_monthly_mean.nc')
-        os.system(f'cdo timmean -yearsum {eto_merra_save_name} {MERRA_dir}/eto_{evap}_mean_annual.nc')
-        os.system(f'cdo -yearsum {eto_merra_save_name} {MERRA_dir}/eto_{evap}_year_average.nc')
+        os.system(f'rm {MERRA_dir}/eto_{evap}_monthly_mean.nc && cdo monmean {eto_merra_save_name} {MERRA_dir}/eto_{evap}_monthly_mean.nc')
+        os.system(f'rm {MERRA_dir}/eto_{evap}_mean_annual.nc && cdo timmean -yearsum {eto_merra_save_name} {MERRA_dir}/eto_{evap}_mean_annual.nc')
+        os.system(f'rm {MERRA_dir}/eto_{evap}_year_average.nc && cdo -yearsum {eto_merra_save_name} {MERRA_dir}/eto_{evap}_year_average.nc')
         
         return(save_output)
 
