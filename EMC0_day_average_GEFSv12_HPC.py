@@ -17,7 +17,7 @@ from glob import glob
 import pandas as pd
 from multiprocessing import Pool
 
-
+# seagate_GEFS_dir = '/media/kdl/Seagate_1/CPC_project/raw_ensemble_files'
 dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
 # dir1 = 'main_dir'
 
@@ -28,12 +28,16 @@ save_out_dir_GEFS = f'{dir1}/Data/SubX/EMC/'
 vars_to_process= [i for i in os.listdir(home_dir)]
 # for i in vars_to_process:
 #     os.system(f'mkdir -p {out_dir}/{i}')
+
+
 #%%
 
 def merge_ensemble_members(var):
 # for var in vars_to_process:
     # var=vars_to_process[0]
     print(f'Working on variable {var} to merge ensemble members.')
+    
+    soil_layer_depth=3 #0-100cm. Can do 0-2m if number =4
 
     os.chdir(f'{home_dir}/{var}')
     
@@ -58,7 +62,7 @@ def merge_ensemble_members(var):
     all_possible_ensemble_members = ['c00', 'p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10']
     #testing with one at a time
     # vars_to_process = ['soilw_bgrnd']
-
+#%%
     #Get the dates of the files
     for _date in dates:
         # _date=dates[0]
@@ -69,10 +73,8 @@ def merge_ensemble_members(var):
         out_date = f'{out_date_create.year}-{out_date_create.month:02}-{out_date_create.day:02}'
                 
         #Make the names the same as the 
-        
-        if var=='apcp_sfc':
-            final_out_name = f'pr_EMC_{out_date}.nc'
-        elif var=='tmp_2m':
+
+        if var=='tmp_2m':
             final_out_name = f'tas_EMC_{out_date}.nc'
         elif var=='dswrf_sfc':
             final_out_name = f'dswrf_EMC_{out_date}.nc'
@@ -130,8 +132,8 @@ def merge_ensemble_members(var):
                         open_d35 = xr.open_dataset(files[1])
                         var_name = [i for i in list(open_d10.keys()) if 'step' not in i][0]
                         #TODO: Take the summation of the first 3 soil layers (0-100cm)
-                        open_d10 = open_d10[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
-                        open_d35 = open_d35[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                        open_d10 = open_d10[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                        open_d35 = open_d35[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
                         
 
                     #First get the dates of the files
@@ -188,8 +190,8 @@ def merge_ensemble_members(var):
                             var_name = [i for i in list(open_d10.keys()) if 'step' not in i][0]
                             
                             if var == 'soilw_bgrnd':
-                                open_d10 = open_d10[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
-                                open_d35 = open_d35[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                                open_d10 = open_d10[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                                open_d35 = open_d35[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
                           
                                 #TODO: Take the summation of the first 3 soil layers (0-100cm)
    
@@ -257,8 +259,8 @@ def merge_ensemble_members(var):
                             var_name = [i for i in list(open_d10.keys()) if 'step' not in i][0]
                             
                             if var == 'soilw_bgrnd':
-                                open_d10 = open_d10[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
-                                open_d35 = open_d35[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                                open_d10 = open_d10[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                                open_d35 = open_d35[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
 
                             #First get the dates of the files
                             '''Take average of first 7 timesteps if d10 file. I have verified
@@ -315,8 +317,8 @@ def merge_ensemble_members(var):
                             var_name = [i for i in list(open_d10.keys()) if 'step' not in i][0]
                             
                             if var == 'soilw_bgrnd':
-                                open_d10 = open_d10[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
-                                open_d35 = open_d35[f'{var_name}'][:,0:2,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                                open_d10 = open_d10[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
+                                open_d35 = open_d35[f'{var_name}'][:,0:soil_layer_depth,:,:].sum(dim=['depthBelowLandLayer']).to_dataset()
 
                             #First get the dates of the files
                             '''Take average of first 7 timesteps if d10 file. I have verified
@@ -345,7 +347,7 @@ def merge_ensemble_members(var):
                         #I can't save the S dimension, but it doesn't matter, we have the initialization date of the file already (it's the filename)
                         #Now all the data is into one file, so save as one file
            
-#%%
+
             def julian_date(_date,template_GEFS_initial):
                 #Return julian date for anomaly calculation
                 a_date_in= template_GEFS_initial.shape[2]
@@ -360,25 +362,8 @@ def merge_ensemble_members(var):
 
             #Add julian date
             julian_list = julian_date(_date,template_GEFS_initial)
-            
-            if 'apcp' in var:
-                GEFS_out = xr.Dataset(
-                    data_vars = dict(
-                        pr = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
-                    ),
-                    coords = dict(
-                      
-                        X = open_d10.X.values,
-                        Y = open_d10.Y.values,
-                        L = julian_list,
-                        M = range(template_GEFS_initial.shape[1]),
-                        S = np.atleast_1d(pd.to_datetime(_date)),
-            
-                    ),
-                    attrs = dict(
-                        Description = 'Total daily precipitation GEFSv12. Daily average already computed. All ensembles and Ls in one file'),
-                )  
-            elif 'dlwrf' in var:
+
+            if 'dlwrf' in var:
                 GEFS_out = xr.Dataset(
                     data_vars = dict(
                         dlwrf = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
@@ -526,13 +511,44 @@ def merge_ensemble_members(var):
                     attrs = dict(
                         Description = 'Minimum Temperature. Daily average already computed. All ensembles and Ls in one file')
                 )
-                
-                
+            elif 'uflx' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        uas = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
+                    ),
+                    attrs = dict(
+                        Description = 'U component of wind. Daily average already computed. All ensembles and Ls in one file')
+                )
+            elif 'vflx' in var:
+                GEFS_out = xr.Dataset(
+                    data_vars = dict(
+                        vas = (['S','M','L','Y','X'], template_GEFS_initial[:,:,:,:,:]),
+                    ),
+                    coords = dict(
+                      
+                        X = open_d10.X.values,
+                        Y = open_d10.Y.values,
+                        L = julian_list,
+                        M = range(template_GEFS_initial.shape[1]),
+                        S = np.atleast_1d(pd.to_datetime(_date)),
+                    ),
+                    attrs = dict(
+                        Description = 'V component of wind. Daily average already computed. All ensembles and Ls in one file')
+                )
                 
             # GEFS_out.assign_coords(S=out_date_create)
         
             out_name1 = 'out_1.nc4'
             GEFS_out.to_netcdf(path = f"{home_dir}/{var}/{out_name1}")
+            GEFS_out.close()
             #Now compress
             os.system(f'ncks -O -4 -L 1 {home_dir}/{var}/{out_name1} {save_out_dir_GEFS}/{final_out_name}4')
             #Remove the old files
@@ -540,5 +556,5 @@ def merge_ensemble_members(var):
             
 #%%
 if __name__ == '__main__':
-    p=Pool(len(vars_to_process))
+    p=Pool(5)
     p.map(merge_ensemble_members,vars_to_process)

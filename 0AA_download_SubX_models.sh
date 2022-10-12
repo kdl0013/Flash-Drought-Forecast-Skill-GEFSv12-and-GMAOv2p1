@@ -16,43 +16,50 @@ outData=$data_d/SubX/fromCasper
 model_array=(GMAO ESRL RSMAS EMC)
 
 
+#Move data to HPC (easley)
+rsync -Pa  ~/Insync/OneDrive/NRT_CPC_Internship/ kdl0013@easley.auburn.edu:/home/kdl0013/NRT_CPC_Internship
+
+
 #Create wget scripts for each variable
 #TODO:Return netcdf file forecasts from GEFSv12 from EASLEY####################
 echo Mi
 return_easley_files () {
-rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/GEFSv12/* ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/EMC/raw_ensemble_files 
-
 #Return scripts for downloading and converting data
+rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/GEFSv12/* ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/*/raw_ensemble_files 
 rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/process_GEFS/* ~/Insync/OneDrive/NRT_CPC_Internship/Scripts/EASLEY_HPC/ && \
 rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/wget* ~/Insync/OneDrive/NRT_CPC_Internship/Scripts/EASLEY_HPC/
 }
 #Contains years 2020 - present from easley
-return_easley_files
+return_easley_files #for GEFSv12 only
 
+#maybe remove d35_dswrf_sfc_2018072500_p04.nc4          tmp_2m/d35_tmp_2m_2003031900_p08.nc4
 
 echo An
 #TODO:Return netcdf file forecasts from CASPER (all models, part of EMC)#######
 return_CASPER_SUBx_files () {
 mkdir -r $1
 mkdir -r $2
-rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/*/compress_resize/* $2
+rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/ECCC/compress_resize/* $2
 rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/S* $1
 rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/wget* $1
 }
 return_CASPER_SUBx_files $scripts $outData
 
+rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/ECCC/compress_resize/* /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/fromCasper/ECCC
+
+
+
+
 remove_s_dim () {
 #TODO: Remove s dimension for later processing
 rm -r $outData/S_dim_removed/*$1*
 #ncks operators don't like overwriting in python without needing input from user
-cat 01e_remove_S_dimsension_all_models.py | sed 's|model_name|'${1}'|g'> $data_s/$1_01e_remove_S_dimsension_all_models.py 
-
-python3 $data_s/$1_01e_remove_S_dimsension_all_models.py 
+cat 01e_remove_S_dimsension_all_models.py | sed 's|model_name|'${1}'|g'> $data_s/$1_01e_remove_S_dimsension_all_models.py && python3 $data_s/$1_01e_remove_S_dimsension_all_models.py 
 rm $outData/S_dim_removed/a_* $outData/S_dim_removed/b_*
 
 }
 
-remove_s_dim "GMAO"
+remove_s_dim "ECCC"
 
 
 
@@ -87,25 +94,35 @@ python3 $data_s/01d_select_RSMAS_dates.py
 
 
 #TODO: Move files into seperate directories
-model_array=(GMAO ESRL RSMAS EMC)
-model_array=(GMAO)
+model_array=(EMC)
 for model in "${model_array[@]}";
 do mkdir $subx/$model
 cp $outData/S_dim_removed/*$model*.nc4 $subx/$model/;
 done
 
+
+
+
 python3 $data_s/EMC0_day_average_GEFSv12_HPC.py
+python3 $data_s/EMC0_day_sum_GEFSv12_HPC.py
 python3 $data_s/EMC1_merge_3_soil_moisture_fields_GEFSv12.py
+mv $data_d/SubX/EMC/raw_ensemble_files /media/kdl/Seagate_1/CPC_project/raw_ensemble_files #to save on storage space
+mv $data_d/SubX/EMC/raw_ensemble_files /media/kdl/Seagate_1/CPC_project/raw_ensemble_files2/*
 
 
-make_ETo_Priestley () {
-python3 $data_s/ETo_reference_ET_GMAO_Priestley.py
-python3 $data_s/ETo_reference_ET_ESRL_Priestley.py
-python3 $data_s/ETo_reference_ET_RSMAS_Priestley.py
-python3 $data_s/ETo_reference_ET_EMC_Priestley.py
+make_ETo_Penman_single () {
+cat ETo_reference_ET_Penman.py | sed 's|model_name|'${1}'|g'> $data_s/"$1"_ETo_reference_ET_Penman.py && python3 $data_s/"$1"_ETo_reference_ET_Penman.py
 }
+make_ETo_Penman_single "GMAO"
 
-make_ETo_Priestley
+
+make_ETo_Penman () {
+model_array=$1
+for model in "${model_array[@]}";
+do cat ETo_reference_ET_Penman.py | sed 's|model_name|'${model}'|g'> $data_s/"$model"_ETo_reference_ET_Penman.py && python3 $data_s/"$model"_ETo_reference_ET_Penman.py;
+done
+}
+make_ETo_Penman $model_array
 
 
 #Make ETo mean 
@@ -154,6 +171,8 @@ cat $data_s/anomaly_correlation_RZSM.py | sed 's|model_name|'${1}'|g'  > $data_s
 
 
 }
+EMC_anomaly_mean "EMC" "Priestley"
+
 EMC_anomaly_mean () {
 #cat $data_s/ACC_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_ACC_skill_ETo_$2.py && python3 $data_s/$1_ACC_skill_ETo_$2.py
 #cat $data_s/ACC_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_ACC_skill_RZSM.py && python3 $data_s/$1_ACC_skill_RZSM.py
@@ -169,28 +188,7 @@ EMC_anomaly_mean "EMC" "Penman"
 
 
 
-
-
-
-
-make_anomaly_correlation_graph () {
-cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_correlation_$2.py && python3 $data_s/$1_anomaly_correlation_$2.py
-}
-make_anomaly_correlation_graph "GMAO" "Priestley"
-make_anomaly_correlation_graph "RSMAS" "Priestley"
-make_anomaly_correlation_graph "ESRL" "Priestley"
-make_anomaly_correlation_graph "EMC" "Priestley"
-#view correlation plots
-
-
-
-
-
-
-
-
-
-#TODO: Penman Monteith equation
+#TODO: Penman Monteith equation (make models individually at first)
 python3 $data_s/ETo_reference_ET_GMAO_Penman.py
 python3 $data_s/ETo_reference_ET_EMC_Penman.py
 
@@ -272,6 +270,12 @@ python3 $data_s/01b_merge_3_soil_moisture_fields_GEFSv12.py
 
 
 
+make_ETo_Priestley () {
+python3 $data_s/ETo_reference_ET_GMAO_Priestley.py
+python3 $data_s/ETo_reference_ET_ESRL_Priestley.py
+python3 $data_s/ETo_reference_ET_RSMAS_Priestley.py
+python3 $data_s/ETo_reference_ET_EMC_Priestley.py
+}
 
 
 

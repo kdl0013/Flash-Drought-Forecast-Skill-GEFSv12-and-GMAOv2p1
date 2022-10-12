@@ -43,8 +43,34 @@ cat $data_s/anomaly_mean_individual_variables_not_EMC.py | sed 's|model_name|'${
 
 }
 
-anomaly_by_variable "GMAO" "tasmin"
+GMAO_vars=("tasmin" "tasmax" "tdps" "srad" "windspeed" "pr")
+for var in "${GMAO_vars[@]}";
+do anomaly_by_variable "GMAO" "$var";done
+
+
+RSMAS_vars=("tasmin" "tasmax" "rad" "windspeed" "pr" "actual_vapor_pressure")
+for var in "${RSMAS_vars[@]}";
+do anomaly_by_variable "RSMAS" "$var";done
+
+
+
+
+
+
+
+
+
 anomaly_by_variable "GMAO" "tasmax"
+anomaly_by_variable "GMAO" "dswrf"
+anomaly_by_variable "GMAO" "dlwrf"
+anomaly_by_variable "GMAO" "uswrf"
+anomaly_by_variable "GMAO" "ulwrf"
+anomaly_by_variable "GMAO" "tdps"
+anomaly_by_variable "GMAO" "uas"
+anomaly_by_variable "GMAO" "vas"
+anomaly_by_variable "GMAO" "srad"
+
+
 
 ####### MERRA2 make anomalies
 python3 $data_s/OBS_make_anomalies_Penman.py

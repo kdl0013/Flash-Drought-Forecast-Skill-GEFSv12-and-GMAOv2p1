@@ -94,7 +94,7 @@ mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 obs_subx_eto_path = f'{dir1}/Data/MERRA2/RZSM_SubX_values/'
 
 #mean is needed for anomaly correlation coefficient calculation
-obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/RZSM_anomaly_MERRA.nc')
+obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/RZSM_1m_column.nc4')
 
 output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
 output_image_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}'

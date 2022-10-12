@@ -43,7 +43,7 @@ cdo -remapcon,$mask/CONUS_mask.grd -dayavg -mergetime $merra_dir/RZSM/*.nc4 $mer
 cdo -remapcon,$mask/CONUS_mask.grd -dayavg -mergetime $merra_dir/radiation/*.nc4 $merra_dir/radiation.nc4
 cdo -remapcon,$mask/CONUS_mask.grd -mergetime $merra_dir/temperature_min_mean_max/*.nc4 $merra_dir/temperature.nc4
 cdo -remapcon,$mask/CONUS_mask.grd -dayavg -mergetime $merra_dir/wind_humidity/*.nc4 $merra_dir/wind_humidity.nc4
-
+cdo -remapcon,$mask/CONUS_mask.grd -dayavg -mergetime $merra_dir/surface_RZSM/*.nc4 $merra_dir/surface_RZSM.nc4
 ############## Evaporative Demand Drought Index ##########################
 {
 echo "Working on EDDI pre-processing"

@@ -47,14 +47,25 @@ total_radiation = np.multiply((radiation.SWNETSRF + radiation.LWGNET).to_dataset
 
 
 radiation.close()
-temp = np.subtract(xr.open_dataset(f'{MERRA_dir}/temperature.nc4'),273.15) #open, convert to Celsius
-temp = temp * units.degC
+temp = np.subtract(xr.open_dataset(f'{MERRA_dir}/temperature.nc4'),273.15)* units.degC #open, convert to Celsius
 
-wind_humidity = xr.open_dataset(f'{MERRA_dir}/wind_humidity.nc4')
+
 elevation = xr.open_dataset(f'{dir1}/Data/elevation/elev_regrid.nc',decode_times=False)
 
 atm_pressure = (101.3 * ((293 - 0.0065 * elevation)/293)**5.26)*units.kPa # kPa --- LOOKS FINE AFTER INSPECTION
 
+
+wind_humidity = xr.open_dataset(f'{MERRA_dir}/wind_humidity.nc4')
+#QLML humidity MERRA2 is 
+'''Calculate dewpoint from specific humidity'''
+dewpoint = xr.zeros_like(wind_humidity.QLML)
+for day in range(wind_humidity.time.shape[0]):
+    dewpoint[day,:,:] = metpy.calc.dewpoint_from_specific_humidity(pressure=atm_pressure.data[0,:,:],
+                                                                       temperature = temp.T2MMEAN[day,:,:],
+                                                                      specific_humidity= wind_humidity.QLML[day,:,:])
+    
+dewpoint=dewpoint.to_dataset().rename(QLML='dewpoint')
+dewpoint.to_netcdf(f'{MERRA_dir}/dewpoint.nc4')    
 #%%
 '''Mixing ratio to calculate vapor pressure'''
 mixing_ratio = xr.zeros_like(wind_humidity.QLML)
@@ -225,6 +236,112 @@ def run_MERRA_ETo_anomaly():
         
         #Create anomaly file
         anomaly_create = np.subtract(open_eto.ETo, anomaly_e.ETo_mean).rename('ETo_anom').to_dataset()
+        anomaly_create.to_netcdf(fileOUT_MERRA_eto_anomaly, mode ='w', engine='scipy')
+        anomaly_create.close()
+            
+    return(0)
+
+#%%
+wind_humidity
+temp
+radiation
+
+def run_MERRA_var_anomaly(var):
+    vars_to_process = ['tasmax','tasmin','radiation','windspeed','dewpoint']
+    #eventually also precipitation and dewpoint
+    
+    #Create empty files rzsm
+    
+    fileOUT_MERRA = f'{MERRA_dir}/{var}_anomaly_MERRA_mean.nc'
+
+    try:
+        anomaly_e=xr.open_dataset(fileOUT_MERRA) #see if file is already created
+        print(f'Already created MERRA anomaly file into {MERRA_dir}.')
+    except FileNotFoundError:
+    
+        for lat in range(open_eto.Y.shape[0]):
+            print(f'Working on lat {lat} out of {np.max(range(open_eto.Y.shape[0]))} for ETo anomaly MERRA2.')
+            for lon in range(open_eto.X.shape[0]):
+                
+                #Only work on areas within CONUS mask
+                if CONUS_mask.CONUS_mask[0,lat,lon].values ==1:
+                    
+                    # all_values = open_f['ETo_gridmet'].isel(lat=lat,lon=lon)
+                    #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
+                    #Only need to look at 1 years worth of data because we are adding 
+                    for day in range(7,377):
+        
+                        #Calculate anomaly based on a 42 day window on both sides of the 
+                        #day (based on Julian day only)
+                        #find the date of the current step
+                        day_val=open_eto.time[day].to_numpy()
+                  
+                        yearly_average = {}
+                        new_day_val = day_val
+                        all_values = []
+        
+                        #Total of 22 years worth of data from SubX
+                        for year_ in np.arange(2000,2023):
+                            #Because we haven't taken a rolling mean yet, we need to here (only for anomaly - not day to day forecast comparisons)
+                            
+                            weekly_mean = np.nanmean(open_eto.ETo.isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
+                            #add to a list
+                            # all_values.append(weekly_mean)
+                            yearly_average[f'{day_val}']=weekly_mean
+                            #if leap year, add 1 year to loop through all years
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                        
+                        yearly_avg_list = [i for i in yearly_average.values()]
+                        #Now choose days 42 days on either side of each year and append to a single file
+                        day_val=open_eto.time[day].to_numpy()
+                        for year_ in np.arange(2000,2023):
+                            all_values.append(list(open_eto.ETo.sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
+
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                            # open_f.ETo_gridmet.sel(day=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(lat=lat,lon=lon).to_numpy()
+                        
+                        all_values.append(yearly_avg_list)
+                        #flatten the list of lists, find mean
+                        mean_ = np.nanmean([x for xs in all_values for x in xs])
+                        
+                        #Add the mean_ value to another dataset to use for the anomaly correlation coefficient
+                        
+                        
+                        #subtract mean from each file in yearly_average dictionary (anomaly)
+                        for date_ in yearly_average.keys():
+                            yearly_average[date_] = yearly_average[date_] - mean_
+           
+                        #Now add to the empty anomly_f file
+                        for i in yearly_average.keys():
+                            _date = pd.to_datetime(i)
+                            #find the index in anomaly_date_list
+                            try:
+                                index_val = anomaly_date_e_list.index(_date)
+                                anomaly_e.ETo[index_val, lat,lon] = yearly_average[i]
+                            except ValueError:
+                                #If outside of array, don't process
+                                pass
+                            
+                            try:
+                                index_val = anomaly_date_e_list.index(_date)
+                                anomaly_e.ETo[index_val, lat,lon] = mean_
+                            except ValueError:
+                                pass
+                            
+                            
+        anomaly_e = anomaly_e.rename(ETo = f'{var}_mean')
+        anomaly_e.ETo_mean[0:7,:,:] = anomaly_e.ETo_mean[0+366:7+366].values #account for the first year because I didn't have any values
+        anomaly_e.to_netcdf(path = fileOUT_MERRA, mode ='w', engine='scipy')
+        anomaly_e.close()
+        
+        #Create anomaly file
+        anomaly_create = np.subtract(open_eto.ETo, anomaly_e.ETo_mean).rename(f'{var}_anom').to_dataset()
         anomaly_create.to_netcdf(fileOUT_MERRA_eto_anomaly, mode ='w', engine='scipy')
         anomaly_create.close()
             

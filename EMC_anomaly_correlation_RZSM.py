@@ -134,15 +134,10 @@ conus_mask = xr.open_dataset(f'{mask_path}')
 HP_conus_mask = conus_mask['USDM-HP_mask']
 West_conus_mask = conus_mask['USDM-West_mask']
 
-if var == 'ETo':
-    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
-    sub_name = 'ETo_anom'
-    sub_name_MEM = 'ETo_anom_MEM'
 
-elif var == 'RZSM':
-    obs_name = 'RZSM_SubX_anomaly_*.nc4'
-    sub_name = 'RZSM_anom'
-    sub_name_MEM = 'RZSM_anom_MEM'
+obs_name = 'RZSM_SubX_anomaly_*.nc4'
+sub_name = 'RZSM_anom'
+sub_name_MEM = 'RZSM_anom_MEM'
 
 #Open files
 subx_files = xr.open_mfdataset(f'{var}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
@@ -203,27 +198,6 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
     #save outputs for each model, lead, season
     output_dictionary = {}
     for season in range(len(skill_subx)):
-        # if model_NAM1 == 'ESRL' and var=='ETo' and season != 0:
-            
-        # fall_subx[:,7,10,10,0].values
-        # fall_subx.shape
-        # fall_obs[:,7,10,10,0].values
-        # fall_obs.shape
-        '''testing to see why I have np.nan for skill, when there are values in all the datasets
-        The reason is becauase there are some infinity values'''
-        # subx_converted = (skill_subx[season].to_numpy().squeeze())
-        # subx_converted[subx_converted == inf] = np.nan
-        
-        # season,X,Y,model=2,10,10,2
-        # skill_subx[season][:,7,Y,X].values     #You can see infinity values here  
-        #skill_obs[season][:,model,7,Y,X].values     #No infinity values here  
-        
-        
-        # subx_converted[:,model,7,Y,X] #converted properly
-            
-        # #Because we don't need to slice anything, we can convert it to a numpy array
-        # #and use Numba for faster processing
-        # else:
         subx_converted = (skill_subx[season].to_numpy().squeeze()) #drop unneed dimension
         # subx_converted[:,:,10,10]
         subx_converted=subx_converted[:,::7,:,:]
@@ -244,9 +218,7 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
         var_OUT[:,:,:,:] = np.nan
         #Only want to save dim (lead x Y x X)
         var_OUT = var_OUT[0,:,:,:]
-        
-        
-        
+
         def season_anomaly_correlation_coefficient(var_OUT, subx_converted, obs_converted):
 
             '''I put this function into the loop (tried numba, didn't work well) 
@@ -352,12 +324,13 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
                         var_OUT[-1,Y,X] = ACC456
 
                     else:
-                        wk34=obs_converted[:, 2:, Y, X].mean(axis=1)
-                        bwk34=obs_converted[:, 2:, Y, X].mean(axis=1)
-
-                        '''There is a Zero division error that occurs, to fix this (because numba doesn't like it)
-                        just check and see if the two files have all 0s or np.nans'''
-
+                        obs_converted.shape
+                        wk34=obs_converted[:, 2:4, Y, X].mean(axis=1)
+                        bwk34=subx_converted[:, 2:4, Y, X].mean(axis=1)
+                        top34 = np.nanmean(wk34*bwk34)
+                        bottom34 = np.sqrt(np.nanmean(wk34**2)*np.nanmean(bwk34**2))
+                        ACC34 = top34/bottom34
+                        var_OUT[-1,Y,X] = ACC34
 
             return(var_OUT)
 
@@ -367,18 +340,26 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
         #Now add back to a dictionary for each model/lead week/weason
         for lead_week in range(seasonal_skill.shape[0]):
             seasonal_mod_skill = np.nanmean(seasonal_skill[lead_week,:,:])
-            if lead_week == 6:
-                lead_week_='3.4'
-            elif lead_week == 7:
-                lead_week_='3.5'
-            elif lead_week == 8:
-                lead_week_='3.6'
-            elif lead_week == 9:
-                lead_week_='4.6'
-            else:
-                lead_week_ = str(lead_week+ 1) 
-            # print(lead_week_)
-            output_dictionary[f'Lead_{lead_week_}_{season_name[season]}']= seasonal_mod_skill
+            if model_NAM1=='GMAO' or model_NAM1 == 'RSMAS':
+                if lead_week == 6:
+                    lead_week_='3.4'
+                elif lead_week == 7:
+                    lead_week_='3.5'
+                elif lead_week == 8:
+                    lead_week_='3.6'
+                elif lead_week == 9:
+                    lead_week_='4.6'
+                else:
+                    lead_week_ = str(lead_week+ 1) 
+                # print(lead_week_)
+                output_dictionary[f'Lead_{lead_week_}_{season_name[season]}']= seasonal_mod_skill
+            else :
+                if lead_week == 4:
+                    lead_week_='3.4'
+                else:
+                    lead_week_ = str(lead_week+ 1) 
+                # print(lead_week_)
+                output_dictionary[f'Lead_{lead_week_}_{season_name[season]}']= seasonal_mod_skill
     
 
     # all_cluster_acc_ETo[f'Cluster {clus_num}'] = output_dictionary

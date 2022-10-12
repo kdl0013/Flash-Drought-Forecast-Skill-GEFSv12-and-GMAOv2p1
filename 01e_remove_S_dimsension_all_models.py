@@ -47,7 +47,8 @@ os.chdir(subX_dir)
 # elif mod == 'EMC':
 #     variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tasmax','tasmin','dswrf'] 
 
-variables  = ['pr','soilw1','soilw2','soilw3','soilw4','tas','dswrf','dlwrf','rad','mrso','ulwrf','uswrf','tasmin','tasmax','tdps','uas','vas'] 
+variables  = ['huss','pr','soilw1','soilw2','soilw3','soilw4','tas','dswrf','dlwrf','rad','mrso','ulwrf','uswrf','tasmin','tasmax','tdps','uas','vas'] 
+# variables  = ['huss'] 
 
 #test GMAO var dlwrf, not writing correctly
 # var='dlwrf'
@@ -67,7 +68,21 @@ def remove_S_dim(var):
             xr.open_dataset(f'{out_dir}/{file}4')
             # xr.open_dataset(f'no_file.nc')
         except FileNotFoundError:
+        #%%    
+        # var='tasmin'
+        # sub1_dir = subX_dir
+        # var_name=var
+        # os.chdir(sub1_dir)
+        # for file in sorted(glob(f'{var}*{mod}*.nc')):
+
             open_f = xr.open_dataset(file)
+            
+            if var=='huss' and mod=='RSMAS':
+                #need to remove the P layer
+                open_f=open_f.drop('P')
+                open_f = open_f.huss[0,:,:,:,:].to_dataset()
+
+
             # out_test = np.empty_like(open_f.to_array()).squeeze()
             '''RSMAS - Both S dimensions have values with RSMAS
                        S[0] dim = initialized date (name of file) + 7 days
@@ -82,7 +97,13 @@ def remove_S_dim(var):
                ESRL  - Both S dimensions have values with ESRL
                       S[0] dim = initialized date (name of file) + 7 day
                       S[1] dim = initialized date (name of file) --- KEEP THIS DIM
-                      
+             
+               ECCC  - S[0] dim = day of file
+                      S[1] dim = initialized date (with data) (name of file) --- KEEP THIS DIM
+             
+               NRL - S[0] dim is the only dim
+             
+                
             '''
             def julian_date(open_f,file):
                 #Return julian date (doy) for anomaly calculation
@@ -112,7 +133,7 @@ def remove_S_dim(var):
             # os.system(f'rm a_{file}4')
 
             open_f.to_netcdf(f'{out_dir}/a_{file}')  #make a file, just do it
-            #%%
+            
             try:
                 # julian_list = julian_date(open_f,file)
                 
@@ -365,7 +386,7 @@ def remove_S_dim(var):
                             Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
                     )   
 
-                elif 'tdps' in file:
+                elif 'huss' in file:
                     var_OUT = xr.Dataset(
                         data_vars = dict(
                             tdps = (['S', 'M','L','Y','X'], open_f[list(open_f.keys())[0]].values),
@@ -386,7 +407,7 @@ def remove_S_dim(var):
 
 
                 #Flip the X,Y coordinates to match other datasets. 0,0 at top left corner
-                if ('GMAO' in file) or ('ESRL' in file) or ('RSMAS' in file):
+                if ('GMAO' in file) or ('ESRL' in file) or ('RSMAS' in file) or ('ECCC' in file):
                     os.system(f'ncpdq -O -a -Y,X {out_dir}/a_{file} {out_dir}/b_{file}') #rename out_dir file
                     os.system(f'ncks -4 -L 1 {out_dir}/b_{file} {out_dir}/{file}4')
                     os.system(f'rm {out_dir}/a_{file} {out_dir}/b_{file}')
