@@ -23,21 +23,20 @@ from numpy import inf
 # dir1 = 'main_dir'
 # start_ = int('start_init')
 # end_ = start_ + int('init_step')
-# model_NAM1 = 'model_name'
+# model_NAM1 = 'RSMAS'
 # var = 'variable_'  #for anomaly function
 
 # Test for 1 step size and model
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'model_name'
-var = 'var_name'
-if model_NAM1 != "EMC":
+model_NAM1 = 'RSMAS'
+var = 'tas'
+if model_NAM1 == 'GMAO':
+    n_processes = 3
+elif model_NAM1 == 'RSMAS':
     n_processes = 3
 else:
-    n_processes = 1
+    n_processes = 2
 
-if model_NAM1 == "NRL" and (var == 'tasmin' or var == 'tasmax'):
-    import sys
-    sys.exit()
 # model_NAM1 = 'GMAO'
 # var = 'tasmin'
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
@@ -205,7 +204,7 @@ def make_subX_anomaly(_date):
     
                 #This is for the mask of CONUS, don't do extra unneeded calculations
                 if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
-                    
+                    #%%
                     def weekly_mean_of_file():
                         #append 7-day average from each ensemble member of each lead week from single file
                         all_mean_var_mod = {}
@@ -248,7 +247,7 @@ def make_subX_anomaly(_date):
                     
                     all_mean_var_mod=weekly_mean_of_file()
                      
-                    
+                    #%%
                  
                     def find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr,anomaly_spread=42):
                         out_dict = {}
@@ -330,7 +329,6 @@ def make_subX_anomaly(_date):
                                     out_mean[mod].append({str(julian_d):mean_value})
                                     
                                 elif var == 'pr':
-                                    #7-day sum, not 7-day average
                                     if int(julian_d) < anomaly_spread:
                                         subtract_ = int(julian_d)-anomaly_spread #what to grabl from back of dataset
 
@@ -436,20 +434,15 @@ def make_subX_anomaly(_date):
                             out_template[list(out_template.keys())[0]][:,int(mod),:,i_Y,i_X] = out_array
                         return(out_template)
                     
-        out_template = add_mean_to_nc_file(model_mean_vals)
-        
-        print(len(np.unique(out_template[list(out_template.keys())[0]])))
+                    out_template = add_mean_to_nc_file(model_mean_vals)
+                    
+                        
         #After all coords have been done, save the file
-        out_template_test=np.nan_to_num(out_template[list(out_template.keys())[0]],posinf=np.nan,neginf=np.nan)
-        # print(len(np.unique(out_template_test[list(out_template_test.keys())[0]])))
-        
-        #just save a new name to get the keys
-        subx_out[list(subx_out.keys())[0]][:,:,:,:,:] = out_template_test
-        
+        out_template=out_template.where((out_template[list(out_template.keys())[0]] < 1000) & (out_template[list(out_template.keys())[0]] > -1000))
 
         var_OUT = xr.Dataset(
             data_vars = dict(
-                variable = (['S', 'M','L','Y','X'], subx_out[list(subx_out.keys())[0]].values),
+                variable = (['S', 'M','L','Y','X'], out_template[list(out_template.keys())[0]].values),
             ),
             coords = dict(
                 X = out_template.X.values,
@@ -460,13 +453,12 @@ def make_subX_anomaly(_date):
             ),
             attrs = dict(
                 Description = f'{var} mean from {anomaly_spread} day window',)
-        )
-        
+        )  
         
         var_OUT.to_netcdf(path = fileOut, mode ='w', engine='scipy')
         
         print(f'Completed date {_date} and saved into {new_dir_mean}.')
-    #%%
+        
     # #save the dates that were completed to not re-run
     # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_mean_for_anomaly_{model_NAM1}.txt')
     return(0)

@@ -27,11 +27,11 @@ from pyeto import fao
 
 # dir1 = 'main_dir'
 # num_processors = int('procs')
-# mod = 'RSMAS'
+# mod = 'ECCC'
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 num_processors = 7
-mod = 'RSMAS'
+mod = 'ECCC'
 var = 'ETo'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'

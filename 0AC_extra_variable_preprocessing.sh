@@ -1,4 +1,5 @@
 #!/bin/bash
+cas #load spyder and other packages
 main_directory='/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 processors=8
 
@@ -12,7 +13,7 @@ mask=$data_s/CONUS_mask
 #return from Cheyenne UCAR cluster
 scripts=$data_s/NCAR_scripts
 outData=$data_d/SubX/fromCasper
-model_array=(GMAO ESRL RSMAS EMC)
+model_array=(GMAO RSMAS EMC ECCC NRL ESRL)
 
 #Check latest dates downloaded
 for mod in "${model_array[@]}";do
@@ -43,12 +44,14 @@ cat $data_s/anomaly_mean_individual_variables_not_EMC.py | sed 's|model_name|'${
 
 }
 
-GMAO_vars=("tasmin" "tasmax" "tdps" "srad" "windspeed" "pr")
-for var in "${GMAO_vars[@]}";
-do anomaly_by_variable "GMAO" "$var";done
+
+vars=("pr" "tasmin" "tasmax" "tas" "actual_vapor_pressure" "srad" "windspeed")
+for model in "${model_array[@]}";do
+for var in "${vars[@]}";do 
+anomaly_by_variable "$model" "$var";done;done
 
 
-RSMAS_vars=("tasmin" "tasmax" "rad" "windspeed" "pr" "actual_vapor_pressure")
+RSMAS_vars=("tasmin" "tasmax" "tas" "srad" "windspeed" "pr" "actual_vapor_pressure")
 for var in "${RSMAS_vars[@]}";
 do anomaly_by_variable "RSMAS" "$var";done
 

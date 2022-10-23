@@ -31,9 +31,9 @@ dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'RSMAS'
 var = 'tasmin'
 if model_NAM1 == 'GMAO':
-    n_processes = 1
+    n_processes = 3
 elif model_NAM1 == 'RSMAS':
-    n_processes = 1
+    n_processes = 3
 else:
     n_processes = 2
 

@@ -26,7 +26,7 @@ from multiprocessing import Pool
 
 # dir1 = 'main_dir'
 # mod = 'ECCC'
-num_processors=8
+num_processors=9
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 mod='ECCC'
 subX_dir = f'{dir1}/Data/SubX/fromCasper'
@@ -68,6 +68,13 @@ def remove_S_dim(var):
             xr.open_dataset(f'{out_dir}/{file}4')
             # xr.open_dataset(f'no_file.nc')
         except FileNotFoundError:
+        #%%    
+        # var='tasmin'
+        # sub1_dir = subX_dir
+        # var_name=var
+        # os.chdir(sub1_dir)
+        # for file in sorted(glob(f'{var}*{mod}*.nc')):
+
             open_f = xr.open_dataset(file)
             
             if var=='huss' and mod=='RSMAS':
@@ -126,7 +133,7 @@ def remove_S_dim(var):
             # os.system(f'rm a_{file}4')
 
             open_f.to_netcdf(f'{out_dir}/a_{file}')  #make a file, just do it
-            #%%
+            
             try:
                 # julian_list = julian_date(open_f,file)
                 
@@ -400,13 +407,13 @@ def remove_S_dim(var):
 
 
                 #Flip the X,Y coordinates to match other datasets. 0,0 at top left corner
-                if ('GMAO' in file) or ('ESRL' in file) or ('RSMAS' in file):
-                    os.system(f'ncpdq -O -a -Y,X {out_dir}/a_{file} {out_dir}/b_{file}') #rename out_dir file
-                    os.system(f'ncks -4 -L 1 {out_dir}/b_{file} {out_dir}/{file}4')
-                    os.system(f'rm {out_dir}/a_{file} {out_dir}/b_{file}')
-                else:
-                    os.system(f'ncks -4 -L 1 {out_dir}/a_{file} {out_dir}/{file}4')
+                if ('GMAO' in file) or ('ESRL' in file) or ('RSMAS' in file) or ('ECCC' in file):
+                    os.system(f'ncpdq -O -a -Y,X {out_dir}/a_{file} {out_dir}/{file}4') #rename out_dir file
+                    # os.system(f'ncks -4 -L 1 {out_dir}/b_{file} {out_dir}/{file}4')
                     os.system(f'rm {out_dir}/a_{file}')
+                else:
+                    # os.system(f'ncks -4 -L 1 {out_dir}/a_{file} {out_dir}/{file}4')
+                    os.system(f'mv {out_dir}/a_{file} {out_dir}/{file}4')
                         
             except IndexError:
                 open_f.to_netcdf(f'{out_dir}/{file}4') #No data in files

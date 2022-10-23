@@ -19,16 +19,16 @@ from multiprocessing import Pool
 from numba import njit, prange
 
 
-# dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 # model_NAM1 = 'GMAO'
 # var = 'RZSM'
 # num_processors = int(2)
 
-dir1 = 'main_dir'
-model_NAM1 = 'model_name'
-num_processors = int('procs')
+# dir1 = 'main_dir'
+model_NAM1 = 'EMC'
+num_processors = 1
 
-subx_RZSM_dir = f'{dir1}/Data/SubX/{model_NAM1}/SM_converted_m3_m3'
+subx_RZSM_dir = f'{dir1}/Data/SubX/{model_NAM1}/'
 
 anom_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
 percentile_dir = f'{anom_dir}/percentiles_anom_RZSM' 
@@ -46,20 +46,20 @@ def get_files_and_data_setup(anom_dir,subx_RZSM_dir):
     file_list_anomaly = sorted(glob('RZSM_anomaly*.nc4'))
     # file=file_list_anomaly[0]
     print('Loading RZSM anomaly files')
-    all_anom = xr.open_mfdataset(file_list_anomaly, concat_dim=['S'], combine='nested')
+    all_anom = xr.open_mfdataset(file_list_anomaly, concat_dim=['S'], combine='nested').isel(S=slice(1,20))
     
     global all_anomaly_numpy
     all_anomaly_numpy = all_anom.RZSM_anom.to_numpy()
     
     global file_list_RZSM
     os.chdir(f'{subx_RZSM_dir}')
-    file_list_RZSM = sorted(glob('SM_SubX_**.nc4'))
+    file_list_RZSM = sorted(glob('RZSM*.nc4'))
     
     print('Loading RZSM m3/m3 files')
     global all_rzsm
-    all_rzsm = xr.open_mfdataset(file_list_RZSM, concat_dim=['S'], combine='nested')
+    all_rzsm = xr.open_mfdataset(file_list_RZSM, concat_dim=['S'], combine='nested').isel(S=slice(1,20))
     global all_rzsm_numpy 
-    all_rzsm_numpy = all_rzsm.SM_SubX_m3_m3_value.to_numpy()
+    all_rzsm_numpy = all_rzsm.RZSM.to_numpy()
     
     return(file_list_anomaly,all_anomaly_numpy,file_list_RZSM,all_rzsm_numpy)
 #%%
@@ -77,7 +77,7 @@ def create_anomaly_percentiles_SubX(file):
         
         sm_input = open_f.RZSM_anom.to_numpy()
         sm_output = np.zeros_like(open_f.RZSM_anom)
-        sm_output = sm_output[:,:,0:7,:,:] #only want first 7 leads
+        sm_output = sm_output[:,:,0:4,:,:] #only want first 7 leads
         
         
         @njit
@@ -120,14 +120,14 @@ def create_anomaly_percentiles_SubX(file):
         #Create new dataset
         var_final = xr.Dataset(
             data_vars = dict(
-                Anomaly_percentile = (['S','model','lead','Y','X'], sm_output_percentile[:,:,0:7,:,:]),
+                anomaly_percentile = (['S','M','L','Y','X'], sm_output_percentile[:,:,:,:,:]),
             ),
             coords = dict(
                 X = open_f.X.values,
                 Y = open_f.Y.values,
-                lead = np.arange(0,7),
+                lead = np.arange(0,4),
                 S = open_f.S.values,
-                model = open_f.model.values
+                model = open_f.M.values
             ),
             attrs = dict(
                 Description = 'Soil Moisture RZSM percentiles from anomaly data.'),
@@ -152,9 +152,9 @@ def create_RZSM_percentiles_SubX(file):
         # file=file_list_anomaly[0]
         open_f = xr.open_dataset(file)
         
-        sm_input = open_f.SM_SubX_m3_m3_value.to_numpy()
+        sm_input = open_f.RZSM.to_numpy()
         sm_output = np.zeros_like(open_f.SM_SubX_m3_m3_value)
-        sm_output = sm_output[:,:,0:7,:,:] #only want first 7 leads
+        sm_output = sm_output[:,:,0:4,:,:] #only want first 7 leads
         # all_rzsm_numpy = all_rzsm.SM_SubX_m3_m3_value.to_numpy()
         
         # file_list_anomaly, all_anomaly_numpy, file_list_RZSM, all_rzsm_numpy ==get_files_and_data_setup(anom_dir,subx_RZSM_dir)
@@ -172,11 +172,10 @@ def create_RZSM_percentiles_SubX(file):
                         weekly_avg2 = np.nanmean(all_rzsm_numpy[:,model,7:14,Y,X],axis=1)
                         weekly_avg3 = np.nanmean(all_rzsm_numpy[:,model,14:21,Y,X],axis=1)
                         weekly_avg4 = np.nanmean(all_rzsm_numpy[:,model,21:28,Y,X],axis=1)
-                        weekly_avg5 = np.nanmean(all_rzsm_numpy[:,model,28:35,Y,X],axis=1)
-                        weekly_avg6 = np.nanmean(all_rzsm_numpy[:,model,35:42,Y,X],axis=1)
+                        # weekly_avg5 = np.nanmean(all_rzsm_numpy[:,model,28:35,Y,X],axis=1)
+                        # weekly_avg6 = np.nanmean(all_rzsm_numpy[:,model,35:42,Y,X],axis=1)
                         
-                        all_values_index_more_than_0 = np.concatenate([weekly_avg1,weekly_avg2,weekly_avg3,weekly_avg4,weekly_avg5, \
-                                                     weekly_avg6])
+                        all_values_index_more_than_0 = np.concatenate([weekly_avg1,weekly_avg2,weekly_avg3,weekly_avg4])
 
                         all_values_index_more_than_0 = sorted(all_values_index_more_than_0)
                         all_values_index_more_than_0 = [i for i in all_values_index_more_than_0 if i !=0.0]
@@ -218,14 +217,14 @@ def create_RZSM_percentiles_SubX(file):
         #Create new dataset
         var_final = xr.Dataset(
             data_vars = dict(
-                RZSM_percentile = (['S','model','lead','Y','X'], sm_output[:,:,:,:,:]),
+                RZSM_percentile = (['S','M','L','Y','X'], sm_output[:,:,:,:,:]),
             ),
             coords = dict(
                 X = open_f.X.values,
                 Y = open_f.Y.values,
-                lead = np.arange(0,7),
+                lead = np.arange(0,4),
                 S = open_f.S.values,
-                model = open_f.model.values
+                model = open_f.M.values
             ),
             attrs = dict(
                 Description = 'Soil Moisture RZSM percentiles from RZSM data.'),
@@ -306,14 +305,14 @@ def smpd_function_anomaly(file):
         #Create new dataset
         var_final = xr.Dataset(
             data_vars = dict(
-                SMPD_RZSM = (['S','model','lead','Y','X'], OUTPUT[:,:,:,:,:]),
+                SMPD_RZSM = (['S','M','L','Y','X'], OUTPUT[:,:,:,:,:]),
             ),
             coords = dict(
                 X = open_f.X.values,
                 Y = open_f.Y.values,
                 lead = open_f.lead.values,
                 S = open_f.S.values,
-                model = open_f.model.values
+                model = open_f.M.values
             ),
             attrs = dict(
                 Description = f'{desc}.'),
@@ -393,14 +392,14 @@ def smpd_function_RZSM(file):
         #Create new dataset
         var_final = xr.Dataset(
             data_vars = dict(
-                SMPD_RZSM = (['S','model','lead','Y','X'], OUTPUT[:,:,:,:,:]),
+                SMPD_RZSM = (['S','M','L','Y','X'], OUTPUT[:,:,:,:,:]),
             ),
             coords = dict(
-                X = open_f.X.values,create_RZSM_percentiles_SubX
+                X = open_f.X.values,
                 Y = open_f.Y.values,
-                lead = open_f.lead.values,
+                lead = open_f.L.values,
                 S = open_f.S.values,
-                model = open_f.model.values
+                model = open_f.M.values
             ),
             attrs = dict(
                 Description = f'{desc}.'),

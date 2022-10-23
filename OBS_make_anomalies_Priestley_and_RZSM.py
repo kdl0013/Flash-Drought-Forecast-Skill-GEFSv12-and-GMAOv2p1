@@ -16,7 +16,6 @@ from metpy.units import units
 import metpy.calc
 import os
 
-
 dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
 # dir1 = 'main_dir'
 MERRA_dir = f'{dir1}/Data/MERRA2'
@@ -36,6 +35,18 @@ fileOUT_MERRA_windspeed_anomaly = f'{MERRA_dir}/windspeed_anomaly_MERRA.nc'
 fileOUT_MERRA_radiation = f'{MERRA_dir}/radiation_anomaly_MERRA_mean.nc'
 fileOUT_MERRA_radiation_anomaly = f'{MERRA_dir}/radiation_anomaly_MERRA.nc'
 
+fileOUT_MERRA_tasmax = f'{MERRA_dir}/tasmax_anomaly_MERRA_mean.nc'
+fileOUT_MERRA_tasmax_anomaly = f'{MERRA_dir}/tasmax_anomaly_MERRA.nc'
+
+fileOUT_MERRA_tasmin = f'{MERRA_dir}/tasmin_anomaly_MERRA_mean.nc'
+fileOUT_MERRA_tasmin_anomaly = f'{MERRA_dir}/tasmin_anomaly_MERRA.nc'
+
+fileOUT_MERRA_tas = f'{MERRA_dir}/tas_anomaly_MERRA_mean.nc'
+fileOUT_MERRA_tas_anomaly = f'{MERRA_dir}/tas_anomaly_MERRA.nc'
+
+fileOUT_MERRA_actual_vapor_pressure = f'{MERRA_dir}/actual_vapor_pressure_anomaly_MERRA_mean.nc'
+fileOUT_MERRA_actual_vapor_pressure_anomaly = f'{MERRA_dir}/actual_vapor_pressure_anomaly_MERRA.nc'
+
 CONUS_mask = xr.open_dataset(f'{dir1}/Scripts/CONUS_mask/NCA-LDAS_masks_SubX.nc4')
 
 global anomaly_range
@@ -50,11 +61,13 @@ anomaly_range=42 #choose 42 days on either side of date to create anomaly
 # anomaly_date.index = pd.to_datetime(anomaly_date.iloc[:,0])
 # anomaly_date_list = list(anomaly_date.iloc[:,0])
 
-open_rzsm = xr.open_dataset(f'{MERRA_dir}/RZSM_1m_column.nc4')
+open_rzsm = xr.open_dataset(f'{MERRA_dir}/RZSM_1m_column.nc4') #1 meter column
 radiation = xr.open_dataset(f'{MERRA_dir}/radiation.nc4')
 temp = np.subtract(xr.open_dataset(f'{MERRA_dir}/temperature.nc4'),273.15) #open, convert to Celsius
 ptC = xr.open_dataset(f'{dir1}/Data/Priestley_Taylor_Makkink_evap_coeff_maps/pt_coeff_FINAL.nc') #priestley-taylor coefficient
 elevation = xr.open_dataset(f'{dir1}/Data/elevation/elev_regrid.nc',decode_times=False)
+vapor_pressure = xr.open_dataset(f'{MERRA_dir}/actual_vapor_pressure.nc4')
+
 
 anomaly_r = xr.zeros_like(open_rzsm) #OUTPUT
 #Get datesopen_f
@@ -340,7 +353,7 @@ def run_MERRA_windspeed(wind):
         check_mean_file=xr.open_dataset(fileOUT_MERRA_windspeed) #see if file is already created
         print(f'Already created MERRA windspeed anomaly file into {MERRA_dir}.')
     except FileNotFoundError:
-    #%%
+
         for lat in range(open_rzsm.Y.shape[0]):
             print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for windspeed anomaly MERRA2.')
             for lon in range(open_rzsm.X.shape[0]):
@@ -421,7 +434,7 @@ def run_MERRA_windspeed(wind):
                 anomaly_create.to_netcdf(fileOUT_MERRA_windspeed_anomaly, mode ='w', engine='scipy')
                 anomaly_create.close()
                     
-    #%%
+
     return(0)
 #%% Radiation
 def run_MERRA_radiation(radiation):
@@ -434,7 +447,7 @@ def run_MERRA_radiation(radiation):
         check_mean_file=xr.open_dataset(fileOUT_MERRA_radiation) #see if file is already created
         print(f'Already created MERRA radiation anomaly file into {MERRA_dir}.')
     except FileNotFoundError:
-    #%%
+
         for lat in range(open_rzsm.Y.shape[0]):
             print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for windspeed anomaly MERRA2.')
             for lon in range(open_rzsm.X.shape[0]):
@@ -514,7 +527,380 @@ def run_MERRA_radiation(radiation):
                 anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
                 anomaly_create.to_netcdf(fileOUT_MERRA_radiation_anomaly, mode ='w', engine='scipy')
                 anomaly_create.close()
+                
+#%% Temperature max
+def run_MERRA_tmax(temp):
+    
+    temp_ = temp.T2MMAX
+    anomaly_r = xr.zeros_like(temp_).to_dataset() #OUTPUT
+    
+    open_rzsm = temp_.to_dataset()#just rename
+    
+    try:
+        check_mean_file=xr.open_dataset(fileOUT_MERRA_tasmax) #see if file is already created
+        print(f'Already created MERRA radiation anomaly file into {MERRA_dir}.')
+    except FileNotFoundError:
+        for lat in range(open_rzsm.Y.shape[0]):
+            print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for tasmax anomaly MERRA2.')
+            for lon in range(open_rzsm.X.shape[0]):
+                
+                #Only work on areas within CONUS mask
+                if CONUS_mask.CONUS_mask[0,lat,lon].values ==1:
                     
+                    # all_values = open_f['ETo_gridmet'].isel(lat=lat,lon=lon)
+                    #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
+                    #Only need to look at 1 years worth of data because we are adding 
+                    for day in range(7,377):
+        
+                        #Calculate anomaly based on a 42 day window on both sides of the 
+                        #day (based on Julian day only)
+                        #find the date of the current step
+                        day_val=open_rzsm.time[day].to_numpy()
+                  
+                        yearly_average = {}
+                        new_day_val = day_val
+                        all_values = []
+        
+                        #Total of 22 years worth of data from SubX
+                        for year_ in np.arange(2000,2023):
+                            #Because we haven't taken a rolling mean yet, we need to here (only for anomaly - not day to day forecast comparisons)
+                            
+                            weekly_mean = np.nanmean(open_rzsm[name_1(open_rzsm)].isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
+                            #add to a list
+                            # all_values.append(weekly_mean)
+                            yearly_average[f'{day_val}']=weekly_mean
+                            #if leap year, add 1 year to loop through all years
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                        
+                        yearly_avg_list = [i for i in yearly_average.values()]
+                        #Now choose days 42 days on either side of each year and append to a single file
+                        day_val=open_rzsm.time[day].to_numpy()
+                        for year_ in np.arange(2000,2023):
+                            all_values.append(list(open_rzsm[name_1(open_rzsm)].sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
+
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                            # open_f.ETo_gridmet.sel(day=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(lat=lat,lon=lon).to_numpy()
+                        
+                        all_values.append(yearly_avg_list)
+                        #flatten the list of lists, find mean
+                        mean_ = np.nanmean([x for xs in all_values for x in xs])
+                        
+                        #Add the mean_ value to another dataset to use for the anomaly correlation coefficient
+           
+                        #Now add to the empty anomly_f file
+                        for i in yearly_average.keys():
+                            _date = pd.to_datetime(i)
+                            #find the index in anomaly_date_list
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = yearly_average[i]
+                            except ValueError:
+                                #If outside of array, don't process
+                                pass
+                            
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = mean_
+                            except ValueError:
+                                pass
+                            
+                
+                anomaly_r[name_1(anomaly_r)][0:7,:,:] = anomaly_r[name_1(anomaly_r)][0+366:7+366].values #account for the first year because I didn't have any values
+                anomaly_r.to_netcdf(path = fileOUT_MERRA_tasmax, mode ='w', engine='scipy')
+                anomaly_r.close()
+                
+                #Create anomaly file
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create.to_netcdf(fileOUT_MERRA_tasmax_anomaly, mode ='w', engine='scipy')
+                anomaly_create.close()
+#%% Temperature min
+def run_MERRA_tmin(temp):
+    f1 = fileOUT_MERRA_tasmin
+    f2 = fileOUT_MERRA_tasmin_anomaly
+    
+    temp_ = temp.T2MMIN
+    anomaly_r = xr.zeros_like(temp_).to_dataset() #OUTPUT
+    
+    open_rzsm = temp_.to_dataset()#just rename
+    
+    try:
+        check_mean_file=xr.open_dataset(f1) #see if file is already created
+        print(f'Already created MERRA radiation anomaly file into {MERRA_dir}.')
+    except FileNotFoundError:
+        for lat in range(open_rzsm.Y.shape[0]):
+            print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for tasmin anomaly MERRA2.')
+            for lon in range(open_rzsm.X.shape[0]):
+                
+                #Only work on areas within CONUS mask
+                if CONUS_mask.CONUS_mask[0,lat,lon].values ==1:
+                    
+                    # all_values = open_f['ETo_gridmet'].isel(lat=lat,lon=lon)
+                    #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
+                    #Only need to look at 1 years worth of data because we are adding 
+                    for day in range(7,377):
+        
+                        #Calculate anomaly based on a 42 day window on both sides of the 
+                        #day (based on Julian day only)
+                        #find the date of the current step
+                        day_val=open_rzsm.time[day].to_numpy()
+                  
+                        yearly_average = {}
+                        new_day_val = day_val
+                        all_values = []
+        
+                        #Total of 22 years worth of data from SubX
+                        for year_ in np.arange(2000,2023):
+                            #Because we haven't taken a rolling mean yet, we need to here (only for anomaly - not day to day forecast comparisons)
+                            
+                            weekly_mean = np.nanmean(open_rzsm[name_1(open_rzsm)].isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
+                            #add to a list
+                            # all_values.append(weekly_mean)
+                            yearly_average[f'{day_val}']=weekly_mean
+                            #if leap year, add 1 year to loop through all years
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                        
+                        yearly_avg_list = [i for i in yearly_average.values()]
+                        #Now choose days 42 days on either side of each year and append to a single file
+                        day_val=open_rzsm.time[day].to_numpy()
+                        for year_ in np.arange(2000,2023):
+                            all_values.append(list(open_rzsm[name_1(open_rzsm)].sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
+
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                            # open_f.ETo_gridmet.sel(day=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(lat=lat,lon=lon).to_numpy()
+                        
+                        all_values.append(yearly_avg_list)
+                        #flatten the list of lists, find mean
+                        mean_ = np.nanmean([x for xs in all_values for x in xs])
+                        
+                        #Add the mean_ value to another dataset to use for the anomaly correlation coefficient
+           
+                        #Now add to the empty anomly_f file
+                        for i in yearly_average.keys():
+                            _date = pd.to_datetime(i)
+                            #find the index in anomaly_date_list
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = yearly_average[i]
+                            except ValueError:
+                                #If outside of array, don't process
+                                pass
+                            
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = mean_
+                            except ValueError:
+                                pass
+                            
+                
+                anomaly_r[name_1(anomaly_r)][0:7,:,:] = anomaly_r[name_1(anomaly_r)][0+366:7+366].values #account for the first year because I didn't have any values
+                anomaly_r.to_netcdf(path = f1, mode ='w', engine='scipy')
+                anomaly_r.close()
+                
+                #Create anomaly file
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create.to_netcdf(f2, mode ='w', engine='scipy')
+                anomaly_create.close()
+
+#%% Temperature mean
+def run_MERRA_tavg(temp):
+    f1 = fileOUT_MERRA_tas
+    f2 = fileOUT_MERRA_tas_anomaly
+    
+    temp_ = temp.T2MMEAN
+    anomaly_r = xr.zeros_like(temp_).to_dataset() #OUTPUT
+    
+    open_rzsm = temp_.to_dataset()#just rename
+    
+    try:
+        check_mean_file=xr.open_dataset(f1) #see if file is already created
+        print(f'Already created MERRA radiation anomaly file into {MERRA_dir}.')
+    except FileNotFoundError:
+        for lat in range(open_rzsm.Y.shape[0]):
+            print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for tavg anomaly MERRA2.')
+            for lon in range(open_rzsm.X.shape[0]):
+                
+                #Only work on areas within CONUS mask
+                if CONUS_mask.CONUS_mask[0,lat,lon].values ==1:
+                    
+                    # all_values = open_f['ETo_gridmet'].isel(lat=lat,lon=lon)
+                    #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
+                    #Only need to look at 1 years worth of data because we are adding 
+                    for day in range(7,377):
+        
+                        #Calculate anomaly based on a 42 day window on both sides of the 
+                        #day (based on Julian day only)
+                        #find the date of the current step
+                        day_val=open_rzsm.time[day].to_numpy()
+                  
+                        yearly_average = {}
+                        new_day_val = day_val
+                        all_values = []
+        
+                        #Total of 22 years worth of data from SubX
+                        for year_ in np.arange(2000,2023):
+                            #Because we haven't taken a rolling mean yet, we need to here (only for anomaly - not day to day forecast comparisons)
+                            
+                            weekly_mean = np.nanmean(open_rzsm[name_1(open_rzsm)].isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
+                            #add to a list
+                            # all_values.append(weekly_mean)
+                            yearly_average[f'{day_val}']=weekly_mean
+                            #if leap year, add 1 year to loop through all years
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                        
+                        yearly_avg_list = [i for i in yearly_average.values()]
+                        #Now choose days 42 days on either side of each year and append to a single file
+                        day_val=open_rzsm.time[day].to_numpy()
+                        for year_ in np.arange(2000,2023):
+                            all_values.append(list(open_rzsm[name_1(open_rzsm)].sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
+
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                            # open_f.ETo_gridmet.sel(day=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(lat=lat,lon=lon).to_numpy()
+                        
+                        all_values.append(yearly_avg_list)
+                        #flatten the list of lists, find mean
+                        mean_ = np.nanmean([x for xs in all_values for x in xs])
+                        
+                        #Add the mean_ value to another dataset to use for the anomaly correlation coefficient
+           
+                        #Now add to the empty anomly_f file
+                        for i in yearly_average.keys():
+                            _date = pd.to_datetime(i)
+                            #find the index in anomaly_date_list
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = yearly_average[i]
+                            except ValueError:
+                                #If outside of array, don't process
+                                pass
+                            
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = mean_
+                            except ValueError:
+                                pass
+                            
+                
+                anomaly_r[name_1(anomaly_r)][0:7,:,:] = anomaly_r[name_1(anomaly_r)][0+366:7+366].values #account for the first year because I didn't have any values
+                anomaly_r.to_netcdf(path = f1, mode ='w', engine='scipy')
+                anomaly_r.close()
+                
+                #Create anomaly file
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create.to_netcdf(f2, mode ='w', engine='scipy')
+                anomaly_create.close()
+
+#%% Actual vapor pressure
+def run_MERRA_avp(vapor_pressure):
+    f1 = fileOUT_MERRA_actual_vapor_pressure
+    f2 = fileOUT_MERRA_actual_vapor_pressure_anomaly
+    
+    avp_ = vapor_pressure.vapor_pressure
+    anomaly_r = xr.zeros_like(avp_).to_dataset() #OUTPUT
+    
+    open_rzsm = avp_.to_dataset()#just rename
+    
+    try:
+        check_mean_file=xr.open_dataset(f1) #see if file is already created
+        print(f'Already created MERRA radiation anomaly file into {MERRA_dir}.')
+    except FileNotFoundError:
+        for lat in range(open_rzsm.Y.shape[0]):
+            print(f'Working on lat {lat} out of {np.max(range(open_rzsm.Y.shape[0]))} for actual vapor pressure anomaly MERRA2.')
+            for lon in range(open_rzsm.X.shape[0]):
+                
+                #Only work on areas within CONUS mask
+                if CONUS_mask.CONUS_mask[0,lat,lon].values ==1:
+                    
+                    # all_values = open_f['ETo_gridmet'].isel(lat=lat,lon=lon)
+                    #Choose the 7th day as a starting point because we need weekly data (start from 7, work backwards)
+                    #Only need to look at 1 years worth of data because we are adding 
+                    for day in range(7,377):
+        
+                        #Calculate anomaly based on a 42 day window on both sides of the 
+                        #day (based on Julian day only)
+                        #find the date of the current step
+                        day_val=open_rzsm.time[day].to_numpy()
+                  
+                        yearly_average = {}
+                        new_day_val = day_val
+                        all_values = []
+        
+                        #Total of 22 years worth of data from SubX
+                        for year_ in np.arange(2000,2023):
+                            #Because we haven't taken a rolling mean yet, we need to here (only for anomaly - not day to day forecast comparisons)
+                            
+                            weekly_mean = np.nanmean(open_rzsm[name_1(open_rzsm)].isel(Y=lat,X=lon).sel(time=slice(day_val-np.timedelta64(7,'D'),day_val)))
+                            #add to a list
+                            # all_values.append(weekly_mean)
+                            yearly_average[f'{day_val}']=weekly_mean
+                            #if leap year, add 1 year to loop through all years
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                        
+                        yearly_avg_list = [i for i in yearly_average.values()]
+                        #Now choose days 42 days on either side of each year and append to a single file
+                        day_val=open_rzsm.time[day].to_numpy()
+                        for year_ in np.arange(2000,2023):
+                            all_values.append(list(open_rzsm[name_1(open_rzsm)].sel(time=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(Y=lat,X=lon).to_numpy()))
+
+                            if pd.to_datetime(day_val).year % 4 ==0:
+                                day_val = day_val+np.timedelta64(366,'D')
+                            else:
+                                day_val = day_val+np.timedelta64(365,'D')
+                            # open_f.ETo_gridmet.sel(day=slice(day_val-np.timedelta64(anomaly_range, 'D'),day_val+np.timedelta64(anomaly_range, 'D'))).isel(lat=lat,lon=lon).to_numpy()
+                        
+                        all_values.append(yearly_avg_list)
+                        #flatten the list of lists, find mean
+                        mean_ = np.nanmean([x for xs in all_values for x in xs])
+                        
+                        #Add the mean_ value to another dataset to use for the anomaly correlation coefficient
+           
+                        #Now add to the empty anomly_f file
+                        for i in yearly_average.keys():
+                            _date = pd.to_datetime(i)
+                            #find the index in anomaly_date_list
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = yearly_average[i]
+                            except ValueError:
+                                #If outside of array, don't process
+                                pass
+                            
+                            try:
+                                index_val = anomaly_date_r_list.index(_date)
+                                anomaly_r[name_1(anomaly_r)][index_val, lat,lon] = mean_
+                            except ValueError:
+                                pass
+                            
+                
+                anomaly_r[name_1(anomaly_r)][0:7,:,:] = anomaly_r[name_1(anomaly_r)][0+366:7+366].values #account for the first year because I didn't have any values
+                anomaly_r.to_netcdf(path = f1, mode ='w', engine='scipy')
+                anomaly_r.close()
+                
+                #Create anomaly file
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create.to_netcdf(f2, mode ='w', engine='scipy')
+                anomaly_create.close()
+
 #%%
 if __name__ == '__main__':
     make_MERRA_ETo()
@@ -522,5 +908,9 @@ if __name__ == '__main__':
     run_MERRA_RZSM(open_rzsm)
     run_MERRA_windspeed(wind)
     run_MERRA_radiation(radiation)
+    run_MERRA_tmax(temp)
+    run_MERRA_tmin(temp)
+    run_MERRA_tavg(temp)
+    run_MERRA_avp(vapor_pressure)
     # run_GLEAM()
 

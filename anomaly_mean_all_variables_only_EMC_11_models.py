@@ -22,14 +22,14 @@ from multiprocessing import Pool
 # dir1 = 'main_dir'
 # start_ = int('start_init')
 # end_ = start_ + int('init_step')
-# model_NAM1 = 'GMAO'
+# model_NAM1 = 'model_name'
 # var = 'variable_'  #for anomaly function
 
 # Test for 1 step size and model
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'GMAO'
-var = 'ETo'
-n_processes = 2
+model_NAM1 = 'EMC'
+var = 'RZSM'
+n_processes = 1
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'
@@ -87,13 +87,12 @@ def make_subX_anomaly(_date):
     # i_X,i_Y=10,10
     # anomaly_spread=42
     #TODO: Change to penman or priestley for name
-    name_='Penman'  #or Penman
-    fileOut = "{}/{}_mean_{}_{}.nc4".format(new_dir_mean,var,name_,_date)
-
+    num_models='11'
+    
+    fileOut = "{}/{}_mean_{}_models_{}.nc4".format(new_dir_mean,var,num_models,_date)
     try:
         xr.open_dataset(f'{fileOut}',engine='netcdf4')
     except FileNotFoundError:
-            
     
         print(f'Calculating {var} mean on SubX for {_date} and saving as .nc4 in {new_dir_mean}.') 
         #Keep only files within a certain date (for faster processing of files instead of loading all of them into memory)
@@ -104,7 +103,7 @@ def make_subX_anomaly(_date):
             dates_to_keep = []
             
             '''if within 3 months, keep files'''
-            for file in sorted(glob(f'{home_dir}/{var}*{name_}*.nc4')):
+            for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
                 test_1 = month_start - pd.to_datetime(file[-14:-4]).month
                 test_2 = pd.to_datetime(file[-14:-4]).month - month_start
                 
@@ -117,70 +116,24 @@ def make_subX_anomaly(_date):
         
         dates_to_keep = limit_file_list(_date)
         
-        #Open all files for faster processing
-        if var == 'RZSM':
-            # subx_all = xr.open_mfdataset(f'{home_dir}/{var}_SubX*.nc4', concat_dim=['S'], combine='nested')
-            #Use subx_all to create the full distribution of all data
-            # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc4', combine='by_coords').persist()
-            # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc4', concat_dim=['S'], combine='nested').persist() #Load all into memory (really big)
-            # subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested', chunks={"S": 1},parallel='True').persist()
-    
-            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True') #load first
-            
-            #Get a file with the actual dates
-            new_list = [i[-5:] for i in init_date_list]
-            index_of_actual_date = new_list.index(_date[-5:])
-            use_date = init_date_list[index_of_actual_date]
-            #Process indivdual files for output
-            subx_out = xr.open_dataset(f'{home_dir}/{var}_{name_}_{model_NAM1}_{use_date}.nc4', engine='netcdf4')
+        subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True').isel(M=slice(0,11))
+        
+        #Get a file with the actual dates
+        new_list = [i[-5:] for i in init_date_list]
+        index_of_actual_date = new_list.index(_date[-5:])
+        use_date = init_date_list[index_of_actual_date]
+        #Process indivdual files for output
+        subx_out = xr.open_dataset(f'{home_dir}/{var}_{model_NAM1}_{use_date}.nc4', engine='netcdf4').isel(M=slice(0,11))
                         
-        elif var == 'ETo':
-            #Open all files for faster processing (for EDDI and ETo anomaly)
-            # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc', concat_dim=['S'], combine='nested')
-            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True')
-            # tt=subx_all.ETo[:,0,:,10,10].values
-            #Get a file with the actual dates
-            new_list = [i[-5:] for i in init_date_list]
-            index_of_actual_date = new_list.index(_date[-5:])
-            use_date = init_date_list[index_of_actual_date]
-            #Process indivdual files for output
-            subx_out = xr.open_dataset(f'{home_dir}/{var}_{name_}_{model_NAM1}_{use_date}.nc4')
-            
-            '''Fixed code with if statement if there are different number of models'''
-            if model_NAM1 == 'ESRL':
-                if subx_all.M.shape[0] != subx_out.M.shape[0]:
-                    subx_all = subx_all.sel(M=slice(1,5))
-            
-            
-        '''Test why date with ESRL 2000-03-01 produces 5 models when there are only 4'''
-        # os.chdir('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/ESRL')
-        # out_ = []
-        # for f in sorted(glob('ETo_Prie*')):
-        #     open_f = xr.open_dataset(f)
-        #     out_.append(open_f.M.shape[0])            
-        # np.unique(out_)
-        
-        # out_2 = []
-        # for f in dates_to_keep:
-        #     open_f = xr.open_dataset(f)
-        #     out_2.append(open_f.M.shape[0])            
-        # np.unique(out_2)
-        # '''All files have 4 models, not sure why a 5th model is introduced and messing up the code.
-        # Test to see what models have values'''
-        # #%%
-        # for moo in range(subx_all.M.shape[0]):
-        #     print(subx_all.ETo.isel(M=moo,Y=10,X=10,L=slice(4,10)).values)
-        # '''After testing, the 0th model has no values. Fix above code with if statement'''
-        
-            
-            
+    
+        ''' We cannot load it all into memory with 60GB. We are going to work through each model'''        
         #Save outputs into this file
         out_template = xr.zeros_like(subx_out)
-    
-        #convert to a numpy array for testing
+        # out_template.ETo.shape
+        # #convert to a numpy array for testing
         test_arr = subx_all[list(subx_all.keys())[0]].to_numpy()
-        # del test_arr        
-        test_arr.shape
+        
+        # test_arr.shape
         '''We can now select the values based on only the lead julian date values. Because
         files with nothing in the julian date for that day will have an np.nan
         
@@ -203,7 +156,6 @@ def make_subX_anomaly(_date):
         '''
         
         
-        
         for i_Y in range(subx_out.Y.shape[0]):
             for i_X in range(subx_out.X.shape[0]):
                 if _date == '2000-01-01':
@@ -221,6 +173,7 @@ def make_subX_anomaly(_date):
     
                         for mod in all_mean_var_mod.keys():
                             # print(mod)
+                            #Because 
                             for idx,julian_d in enumerate(subx_out.L.values):
                                 # print(idx)
                                 try:
@@ -237,21 +190,20 @@ def make_subX_anomaly(_date):
                                 except IndexError:
                                     pass                    
                                     #Index error exists because there is no data at the end of the file
-                                    #That meets the current idx restrictions
-                            
+    
                         return(all_mean_var_mod)
                     
                     all_mean_var_mod=weekly_mean_of_file()
                      
                     #%%
-                 
+    
                     def find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr,anomaly_spread=42):
+       
                         out_dict = {}
                         out_mean = {}
                         '''This will return all the data for each file for averages
                         because of day of year, we have to subset the +/- 42 days in 
                         a different way due to how the files day of year is setup'''
-                       
                         for mod in all_mean_var_mod.keys():
                             # print(mod)
                             
@@ -321,11 +273,15 @@ def make_subX_anomaly(_date):
                                         mean_value=bn.nanmean(sub_out)
     
                                 out_mean[mod].append({str(julian_d):mean_value})
-    
+                                
                         return(out_mean)
+                        
+                        
+                        
+                    model_mean_vals =find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr)
+                    # model_mean_vals
                     
-                    model_mean_vals =find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr,anomaly_spread=42)
-                    model_mean_vals
+                    #%%
                     def add_mean_to_nc_file(model_mean_vals):
                         for mod in model_mean_vals.keys():
                             # model_mean_vals[mod]
@@ -347,7 +303,7 @@ def make_subX_anomaly(_date):
     
         var_OUT = xr.Dataset(
             data_vars = dict(
-                ETo_mean = (['S', 'M','L','Y','X'], out_template[list(out_template.keys())[0]].values),
+                RZSM_mean = (['S', 'M','L','Y','X'], out_template[list(out_template.keys())[0]].values),
             ),
             coords = dict(
                 X = out_template.X.values,
@@ -357,12 +313,9 @@ def make_subX_anomaly(_date):
                 S = out_template.S.values,
             ),
             attrs = dict(
-                Description = f'ETo {name_} mean from 42 day window',)
+                Description = 'RZSM mean from 42 day window',)
         )  
         
-        #Can't ncview because of infinity
-        no_infinity = np.nan_to_num(var_OUT.ETo_mean, neginf=np.nan)
-        var_OUT.ETo_mean[:,:,:,:,:] = no_infinity
         var_OUT.to_netcdf(path = fileOut, mode ='w', engine='scipy')
         
         print(f'Completed date {_date} and saved into {new_dir_mean}.')

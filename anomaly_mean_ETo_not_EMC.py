@@ -360,6 +360,9 @@ def make_subX_anomaly(_date):
                 Description = f'ETo {name_} mean from 42 day window',)
         )  
         
+        #Can't ncview because of infinity
+        no_infinity = np.nan_to_num(var_OUT.ETo_mean, neginf=np.nan)
+        var_OUT.ETo_mean[:,:,:,:,:] = no_infinity
         var_OUT.to_netcdf(path = fileOut, mode ='w', engine='scipy')
         
         print(f'Completed date {_date} and saved into {new_dir_mean}.')

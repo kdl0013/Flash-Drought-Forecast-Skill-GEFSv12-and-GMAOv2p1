@@ -73,17 +73,42 @@ print(f" numpy {np.__version__}")  # numpy 1.17.3
 print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
 
-# dir1 = 'main_dir'
-
-
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'GMAO'
-name_ = 'Penman'
-# model_NAM1 = 'EMC'
-# name_='Priestley'
-#%%
-subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
+# dir1 = 'main_dir'
+# name_ = 'evap_equation'
+name_='Penman'
+var='ETo'
+# model_NAM1 = 'GMAO'
+
+#observations
+obs_subx_eto_path = f'{dir1}/Data/MERRA2/ETo_SubX_values/'
+
+
+if var == 'ETo':
+    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
+    sub_name = 'ETo_anom'
+    sub_name_MEM = 'ETo_anom_MEM'
+
+
+model_list = ['GMAO','ESRL','EMC','RSMAS','NRL','ECCC']
+
+all_obs_and_subx_by_model = {}
+for model_NAM1 in model_list:
+    subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly/MEM'
+    #Open files
+    subx_files = xr.open_mfdataset(f'{subX_dir}/{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30')) 
+    all_obs_and_subx_by_model[f'{model_NAM1}_subx'] = subx_files
+    obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
+
+if model_NAM1 == 'RSMAS':
+    all_dates = [i for i in obs_files.S.values]
+    subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
+    
+else:
+    subx_files = subx_files.sel(S=obs_files.S.values)
+
+
 os.chdir(f'{subX_dir}/MEM') #for multi ensemble mean
 
  #where subX model data lies 
@@ -91,8 +116,7 @@ os.chdir(f'{subX_dir}/MEM') #for multi ensemble mean
 subdir_for_mean = f'{subX_dir}/mean_for_ACC'
 mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 
-#observations
-obs_subx_eto_path = f'{dir1}/Data/MERRA2/ETo_SubX_values/'
+
 
 #mean is needed for anomaly correlation coefficient calculation
 obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/ETo_anomaly_{name_}_MERRA.nc')
@@ -135,14 +159,7 @@ conus_mask = xr.open_dataset(f'{mask_path}')
 HP_conus_mask = conus_mask['USDM-HP_mask']
 West_conus_mask = conus_mask['USDM-West_mask']
 
-if var == 'ETo':
-    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
-    sub_name = 'ETo_anom'
-    sub_name_MEM = 'ETo_anom_MEM'
 
-elif var == 'RZSM':
-    obs_name = 'SM_SubX_anomaly_*.nc4'
-    sub_name = 'RZSM_anom'
 
 #Open files
 subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
@@ -578,6 +595,10 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
                 s.set_title(f'ESRL FIMr1p1 \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
             elif model_NAM1 == 'EMC':
                 s.set_title(f'EMC GEFSv12 \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
+            elif model_NAM1 == 'NRL':
+                s.set_title(f'Navy Research Laboratory (NRL) \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
+            elif model_NAM1 == 'ECCC':
+                s.set_title(f'ECCC \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
 
     s.set_xlabel('Week Lead',fontsize=25)
     

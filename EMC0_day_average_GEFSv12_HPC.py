@@ -16,6 +16,7 @@ import xarray as xr
 from glob import glob
 import pandas as pd
 from multiprocessing import Pool
+import sys
 
 # seagate_GEFS_dir = '/media/kdl/Seagate_1/CPC_project/raw_ensemble_files'
 dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
@@ -35,12 +36,12 @@ vars_to_process= [i for i in os.listdir(home_dir)]
 def merge_ensemble_members(var):
 # for var in vars_to_process:
     # var=vars_to_process[0]
+    # var='uflx_sfc'
     print(f'Working on variable {var} to merge ensemble members.')
     
     soil_layer_depth=3 #0-100cm. Can do 0-2m if number =4
 
     os.chdir(f'{home_dir}/{var}')
-    
     #dates
     #GEFS long-term (multi-ensemble) forecasts are only initialized on Wednesdays
     start_date = dt.date(2000, 1, 1)
@@ -99,6 +100,7 @@ def merge_ensemble_members(var):
         # final_out_name= f"{var.split('_')[0]}_{out_date}.nc"
         try:
             xr.open_dataset(f"{path_out}/{final_out_name}4")
+            pass
             #uncomment below to recreate new files
             # t_name='test.nc'
             # xr.open_dataset(f'{t_name}')
@@ -107,7 +109,7 @@ def merge_ensemble_members(var):
             template_GEFS_initial[:,:,:,:,:] = np.nan
             # lead_day=0 #keeps up with which index is correct in template_GEFS_initial (resets with each date)
 
-            all_files_d10 = sorted(glob(f'{lead_splices[0]}_{var}_{_date.year}{_date.month:02}{_date.day:02}*.nc4'))
+            all_files_d10 = sorted(glob(f'{lead_splices[0]}_{var}_{_date.year}-{_date.month:02}-{_date.day:02}*.nc4'))
             all_files_d35 = sorted(glob(f'{lead_splices[1]}_{var}_{_date.year}{_date.month:02}{_date.day:02}*.nc4'))
 
             #some files have doubles (rsync error or from HPC when converting)
@@ -126,7 +128,12 @@ def merge_ensemble_members(var):
                     if var != 'soilw_bgrnd':
                         open_d10 = xr.open_dataset(files[0])
                         open_d35 = xr.open_dataset(files[1])
-                        var_name = [i for i in list(open_d10.keys()) if 'step' not in i][0]
+                        try:
+                            var_name = [i for i in list(open_d10.keys()) if 'step' not in i][0]
+                        except IndexError:
+                            pass
+                            
+                        
                     else:
                         open_d10= xr.open_dataset(files[0])
                         open_d35 = xr.open_dataset(files[1])
@@ -167,6 +174,7 @@ def merge_ensemble_members(var):
 
             #If all ensembles are missing, do nothing
             elif (len(all_files_d10) == 0 )and (len(all_files_d35) == 0):
+                print(_date)
                 pass
             
             #If there are a differnet number of ensembles between leads

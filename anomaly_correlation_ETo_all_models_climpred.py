@@ -65,51 +65,61 @@ import sys
 from numpy import inf
 from multiprocessing import Pool
 from os.path import exists
-from datetime import datetime
-from climpred import HindcastEnsemble
-from tqdm.auto import tqdm
-import bottleneck as bn
-import datetime as dt
+import datetime
+
 print(f"PYTHON: {sys.version}")  # PYTHON: 3.8.1 | packaged by conda-forge | (default, Jan 29 2020, 15:06:10) [Clang 9.0.1 ]
 print(f" xarray {xr.__version__}")  # xarray 0.14.1
 print(f" numpy {np.__version__}")  # numpy 1.17.3
 print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
 
-# dir1 = 'main_dir'
-
-
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'GMAO'
-name_ = 'Penman'
+# dir1 = 'main_dir'
+# name_ = 'evap_equation'
+name_='Penman'
+var='ETo'
 # model_NAM1 = 'GMAO'
-# name_='Priestley'
-#%%
-subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
-os.chdir(f'{subX_dir}') #for multi ensemble mean
+
+#observations
+obs_subx_eto_path = f'{dir1}/Data/MERRA2/ETo_SubX_values/'
+model_list = ['GMAO','ESRL','EMC','RSMAS','NRL','ECCC']
+
+all_obs_and_subx_by_model = {}
+for model_NAM1 in model_list:
+    # subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly/MEM'
+    #test
+    subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/'
+    #Open files
+    subx_files = xr.open_mfdataset(f'{subX_dir}/{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30')) 
+    all_obs_and_subx_by_model[f'{model_NAM1}_subx'] = subx_files
+    obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
+
+if model_NAM1 == 'RSMAS':
+    all_dates = [i for i in obs_files.S.values]
+    subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
+    
+else:
+    subx_files = subx_files.sel(S=obs_files.S.values)
+
+
+
+if var == 'ETo':
+    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
+    sub_name = 'ETo_anom'
+    sub_name_MEM = 'ETo_anom_MEM'
+    
+os.chdir(f'{subX_dir}/MEM') #for multi ensemble mean
 
  #where subX model data lies 
 
 subdir_for_mean = f'{subX_dir}/mean_for_ACC'
 mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 
-#observations
-obs_subx_eto_path = f'{dir1}/Data/MERRA2/ETo_SubX_values/'
+
 
 #mean is needed for anomaly correlation coefficient calculation
-obs_eto = xr.open_dataset(f'{dir1}/Data/MERRA2/ETo_anomaly_{name_}_MERRA.nc',chunks = {'time':1})
-dates_list = list(obs_eto.time.values)
-df = pd.DataFrame({'dates':dates_list})
-df['dates'] = pd.to_datetime(df['dates'])
-df['dates'] = df['dates'].dt.floor('d')
-
-new_date_list = np.array(df['dates'])
-
-obs_eto=obs_eto.assign_coords(time=new_date_list)
-
-obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/ETo_anomaly_{name_}_MERRA_mean.nc')
-
+obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/ETo_anomaly_{name_}_MERRA.nc')
 
 output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
 output_image_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}'
@@ -122,6 +132,22 @@ Read all files in at once with xr.open_mfdataset, then calculate the skill
 based only on weekly lead time. '''
 
 
+def return_cluster_name(cluster_num):
+    if cluster_num == 1:
+        out_name= 'West' 
+    elif cluster_num == 2:
+        out_name= 'Midwest'
+    elif cluster_num == 3:
+        out_name= 'HighPlains'        
+    elif cluster_num == 4:
+        out_name= 'South'      
+    elif cluster_num == 5:
+        out_name= 'Southeast'
+    elif cluster_num == 6:
+        out_name= 'Northeast'  
+    return(out_name)
+
+
 #Don't have to load into memory because I'm immediately converting them into a np.array
 '''ISSUE: I technically need more data from MERRA for the latest GMAO forecasts past June 20, 2022
 
@@ -129,16 +155,23 @@ For right now, just do through month of may'''
 
 var='ETo'
 
+conus_mask = xr.open_dataset(f'{mask_path}')  
+HP_conus_mask = conus_mask['USDM-HP_mask']
+West_conus_mask = conus_mask['USDM-West_mask']
 
-if var == 'ETo':
-    obs_name = f'ETo_SubX_anomaly_{name_}_{model_NAM1}*.nc4'
-    sub_name = 'ETo_anom'
 
-elif var == 'RZSM':
-    obs_name = 'SM_SubX_anomaly_*.nc4'
-    sub_name = 'RZSM_anom'
 
 #Open files
+subx_files = xr.open_mfdataset(f'{var}_{name_}_anomaly_MEM_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))   
+obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))    
+
+if model_NAM1 == 'RSMAS':
+    all_dates = [i for i in obs_files.S.values]
+    subx_files=subx_files.sel(S=~subx_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
+    
+else:
+    subx_files = subx_files.sel(S=obs_files.S.values)
+#%%
 
 def rename_subx_for_climpred(file):
     #https://climpred.readthedocs.io/en/stable/examples/subseasonal/daily-subx-example.html
@@ -155,7 +188,6 @@ def rename_obs_for_climpred(file):
     file = file.rename(X='lon')
     file = file.rename(Y='lat')
     return(file)
-
 
 if model_NAM1 == 'ESRL':
     # subx_files = subx_files.sel(S=obs_files.S.values)
@@ -192,24 +224,9 @@ verif=obs_eto.chunk({'time':-1})
 
 #MASKS
 conus_mask = xr.open_dataset(f'{mask_path}')  
-HP_conus_mask = rename_obs_for_climpred(conus_mask['USDM-HP_mask'])
+HP_conus_mask = rename_obs_for_climpred(conus_mask['USDM-HP_mask']).rename(time='init')
 West_conus_mask = rename_obs_for_climpred(conus_mask['USDM-West_mask']).rename(time='init')
 
-# #for GMAO and RSMAS
-# #Add a mask
-# for i in range(fcst.init.shape[0]):
-#     single_day = fcst.ETo_anom[i:i+1,:,:,:,:]
-#     single_day.where(West_conus_mask[0,:,:]==1)
-#     out_ = xr.concat(fcst.ETo_anom[i:i+1,:,:,:,:])
-#     print(i)
-# fcst.where(West_conus_mask==1)
-
-#%%
-# #ACC skill
-# skill = hindcast.verify(
-#     metric="acc", comparison="e2o", dim="init", alignment="maximize"
-# )
-# skill
 #%%
 #TODO: Add each region and save
 def return_cluster_name(cluster_num):
@@ -227,54 +244,50 @@ def return_cluster_name(cluster_num):
         out_name= 'Northeast'  
     return(out_name)
 
-
-def select_region(cluster_num,skillds):
-    
+#%%
+def select_region(cluster_num):
     output_dictionary = {}
-   
     #restrict season
     for season in ['JJA','SON','DJF','MAM']:
-
-        skill_season=skillds.sel(init=(skillds['init.season']==f'{season}'))
-    
-        # skillds.ETo_anom.shape
+     
+        # restrict to only a season first, then compute the ACC score
+        #for some reason climpred always removes the 
         if cluster_num == 1:
-            all_crpss_skill = skill_season.ETo_anom.where(West_conus_mask[0,:,:]== 1)
+            hindcast = HindcastEnsemble(fcst.ETo_anom.where(West_conus_mask[0,:,:]== 1).sel(init=(fcst['init.season']==f'{season}'))).add_observations(verif.ETo_anom.where(West_conus_mask[0,:,:]== 1))
+
             # bn.nanmean(all_crpss_skill)
         else:
-            all_crpss_skill = skill_season.ETo_anom.where(West_conus_mask[0,:,:] == cluster_num)
+            #Keep all seasons
+            hindcast = HindcastEnsemble(fcst.ETo_anom.where(HP_conus_mask[0,:,:]== cluster_num).sel(init=(fcst['init.season']==f'{season}'))).add_observations(verif.ETo_anom.where(West_conus_mask[0,:,:]== cluster_num))
         
-        #Keep only weekly leads
-        skill_lead=all_crpss_skill[::7,:,:,:]
-        skill_lead=skill_lead[1:,:,:,:].to_dataset()
+        skillACC = hindcast.verify(metric="pearson_r", comparison="e2o", dim="init", alignment="maximize")
+        # bn.nanmean(skillACC.ETo_anom)
+        skill_lead=skillACC.ETo_anom[::7,:,:]
+        skill_lead=skill_lead[1:,:,:].compute().to_dataset()
         
         #lead_vals = 
         for lead in range(skill_lead.lead.shape[0]):
-            
-            output_dictionary[f'Lead_{lead+1}_{season}']= skill_lead.ETo_anom[lead,:,:,:].mean().values
+            output_dictionary[f'Lead_{lead+1}_{season}']= skill_lead.ETo_anom[lead,:,:].mean().values
+
         
     return(output_dictionary)
-#%%
-#add all datasets together
-hindcast = HindcastEnsemble(fcst).add_observations(verif)
-skillds = hindcast.verify(metric="crpss", comparison="m2o", dim="member", alignment="maximize").load()
-#%%
 
-CRPSS_skill = {}
+
+ACC_skill  = {}
 for clus_num in np.arange(1,7):
-    CRPSS_skill[f'Cluster {clus_num}'] = select_region(cluster_num=clus_num,skillds=skillds)
-    #print(all_cluster_acc_ETo[f'Cluster {clus_num}'])
+    print(f'Working on Cluster {clus_num}')
+    ACC_skill[f'Cluster {clus_num}'] = select_region(cluster_num=clus_num)
 
 #%%
-def setup_plot_all_leads(CRPSS_skill,cluster_num):
+def setup_plot_all_leads(ACC_skill,cluster_num):
     #The goal of this function is to take our outputs from anomaly correlation 
     #coefficient, convert them to a dataframe by model, lead, season,
     #to set up for plot
-    col_names = ['Lead','Season','CRPSS']
+    col_names = ['Lead','Season',f'{metric}']
     
     df_OUT = pd.DataFrame(columns=col_names)
     
-    var_cluster = CRPSS_skill[f'Cluster {cluster_num}']
+    var_cluster = ACC_skill[f'Cluster {cluster_num}']
     
     for idx,k in enumerate(var_cluster.keys()):
         # if idx==1:
@@ -283,13 +296,13 @@ def setup_plot_all_leads(CRPSS_skill,cluster_num):
         split_ = k.split('_')
         
         df_OUT=df_OUT.append({'Lead':split_[1], \
-                             'Season': split_[-1],'CRPSS':var_cluster[k]},ignore_index=True)
+                             'Season': split_[-1],f'{metric}':var_cluster[k]},ignore_index=True)
 
     return(df_OUT)
 
 all_vals_setup = {}
 for clus_num in np.arange(1,7):
-    all_vals_setup[f'Cluster {clus_num}'] = setup_plot_all_leads(CRPSS_skill=CRPSS_skill,cluster_num=clus_num)
+    all_vals_setup[f'Cluster {clus_num}'] = setup_plot_all_leads(ACC_skill=ACC_skill,cluster_num=clus_num)
 
 #%%
 def plot_lead_week_season_model(all_vals_setup):
@@ -310,10 +323,10 @@ def plot_lead_week_season_model(all_vals_setup):
             length_of_leads = (all_vals_setup[list(all_vals_setup.keys())[0]]['Season'] == 'DJF').sum()
             var_OUT = np.zeros(shape = (4,length_of_leads))
             #Place names in this order for better visual
-            var_OUT[0,:] = subset_by_cluster[subset_by_cluster['Season']=='MAM']['CRPSS']
-            var_OUT[1,:] = subset_by_cluster[subset_by_cluster['Season']=='JJA']['CRPSS']
-            var_OUT[2,:] = subset_by_cluster[subset_by_cluster['Season']=='SON']['CRPSS']
-            var_OUT[3,:] = subset_by_cluster[subset_by_cluster['Season']=='DJF']['CRPSS']
+            var_OUT[0,:] = subset_by_cluster[subset_by_cluster['Season']=='MAM'][f'{metric}']
+            var_OUT[1,:] = subset_by_cluster[subset_by_cluster['Season']=='JJA'][f'{metric}']
+            var_OUT[2,:] = subset_by_cluster[subset_by_cluster['Season']=='SON'][f'{metric}']
+            var_OUT[3,:] = subset_by_cluster[subset_by_cluster['Season']=='DJF'][f'{metric}']
             
             #Set up for p_color mesh
             x=np.arange(1.5,var_OUT.shape[1]+2)
@@ -374,7 +387,7 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
  
     # create figure
  
-    cmap = mpl.colors.ListedColormap(plt.cm.RdPu(np.linspace(min_all, max_all, 7)))
+    cmap = mpl.colors.ListedColormap(plt.cm.Reds(np.linspace(min_all, max_all, 7)))
     # cmap.set_under((.8, .8, .8, 1.0))
  
     fig, ax = plt.subplots(6, 1, figsize=(29, 10), dpi=300)
@@ -403,16 +416,16 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
         ax[idx].set_ylabel(region_current)
         if idx==0:
             if model_NAM1 == 'RSMAS':
-                s.set_title(f'RSMAS CCSM4 \n ETo {name_} Continous Ranked Probability Skill Score',fontsize=25)
+                s.set_title(f'RSMAS CCSM4 \n ETo {name_} {metric}',fontsize=25)
             elif model_NAM1 == 'GMAO':
-                s.set_title(f'GMAO GEOS-5 \n ETo {name_} Continous Ranked Probability Skill Score',fontsize=25)
+                s.set_title(f'GMAO GEOS-5 \n ETo {name_} {metric}',fontsize=25)
             elif model_NAM1 == 'ESRL':
-                s.set_title(f'ESRL FIMr1p1 \n ETo {name_} Continous Ranked Probability Skill Score',fontsize=25)
+                s.set_title(f'ESRL FIMr1p1 \n ETo {name_} {metric}',fontsize=25)
             elif model_NAM1 == 'EMC':
-                s.set_title(f'EMC GEFSv12 \n ETo {name_} Continous Ranked Probability Skill Score',fontsize=25)
+                s.set_title(f'EMC GEFSv12 \n ETo {name_} {metric}',fontsize=25)
 
     s.set_xlabel('Week Lead',fontsize=25)
-    plt.savefig(f'{output_season_dir}/all_season_CRPSS_skill_{var}_{name_}.tif',dpi=300)
+    plt.savefig(f'{output_season_dir}/all_season_{metric}_skill_{var}_{name_}_climpred.tif',dpi=300)
         
     return(0)
 

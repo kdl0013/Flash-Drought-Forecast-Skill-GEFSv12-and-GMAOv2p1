@@ -23,13 +23,13 @@ from numpy import inf
 # dir1 = 'main_dir'
 # start_ = int('start_init')
 # end_ = start_ + int('init_step')
-# model_NAM1 = 'model_name'
+# model_NAM1 = 'GMAO'
 # var = 'variable_'  #for anomaly function
 
 # Test for 1 step size and model
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-model_NAM1 = 'model_name'
-var = 'var_name'
+model_NAM1 = 'GMAO'
+var = 'tas'
 if model_NAM1 != "EMC":
     n_processes = 3
 else:

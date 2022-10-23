@@ -30,11 +30,14 @@ from numpy import inf
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'GMAO'
 var = 'windspeed'
-if model_NAM1 == 'GMAO':
-    n_processes = 1
+if model_NAM1 != "EMC":
+    n_processes = 3
 else:
-    n_processes = 2
+    n_processes = 1
 
+if model_NAM1 == "NRL" and (var == 'tasmin' or var == 'tasmax'):
+    import sys
+    sys.exit()
 # model_NAM1 = 'GMAO'
 # var = 'tasmin'
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
