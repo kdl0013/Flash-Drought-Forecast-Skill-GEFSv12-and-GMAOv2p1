@@ -4,6 +4,7 @@ processors=8
 
 data_d=$main_directory/Data
 data_s=$main_directory/Scripts
+data_so=$data_s/model_scripts
 subx=$data_d/SubX
 mask=$data_s/CONUS_mask
 
@@ -18,9 +19,9 @@ model_array=(GMAO ESRL RSMAS ECCC NRL EMC)
 #Move data to HPC (easley)
 rsync -Pau --ignore-existing  ~/Insync/OneDrive/NRT_CPC_Internship/ kdl0013@easley.auburn.edu:/home/kdl0013/NRT_CPC_Internship/
 #Return data from HPC (easley)
-rsync -PaL kdl0013@easley.auburn.edu:/home/kdl0013/return_data_ETo/* ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/
+rsync -PaL --ignore-existing kdl0013@easley.auburn.edu:/home/kdl0013/return_data_ETo/* ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/
 #random sending to easley
-rsync -P ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/EMC/huss* kdl0013@easley.auburn.edu:/home/kdl0013/NRT_CPC_Internship/Data/SubX/EMC
+rsync -Pa --ignore-existing ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/ECCC kdl0013@easley.auburn.edu:/home/kdl0013/NRT_CPC_Internship/Data/SubX/
 
 ###################################### STEP 1 ###################################
 #Create wget scripts for each variable
@@ -37,35 +38,36 @@ return_easley_files #for GEFSv12 only
 
 #maybe remove d35_dswrf_sfc_2018072500_p04.nc4          tmp_2m/d35_tmp_2m_2003031900_p08.nc4
 
+ulimit -n 100000
 echo An
 #TODO:Return netcdf file forecasts from CASPER (all models, part of EMC)#######
 return_CASPER_SUBx_files () {
 mkdir -r $1
 mkdir -r $2
-rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/ESRL/compress_resize/* $2
-rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/S* $1
-rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/wget* $1
+rsync -Pa --ignore-existing klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/*/compress_resize/* $2
+rsync -Pa --ignore-existing klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/S* $1
+rsync -Pa --ignore-existing klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/wget* $1
 }
 return_CASPER_SUBx_files $scripts $outData
-
-rsync -Pa klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/ESRL/compress_resize/* /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/fromCasper
+#This works better as of this point. Too many files
+rsync -Pa --ignore-existing klesinger@cheyenne.ucar.edu:/glade/u/home/klesinger/SubX/ECCC/compress_resize/* /home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/fromCasper
 
 #TODO: Remove s dimension for later processing
 remove_s_dim () {
-rm -r $outData/S_dim_removed/*$1*
-#ncks operators don't like overwriting in python without needing input from user
-cat 01e_remove_S_dimsension_all_models.py | sed 's|model_name|'${1}'|g'> $data_s/$1_01e_remove_S_dimsension_all_models.py && python3 $data_s/$1_01e_remove_S_dimsension_all_models.py 
-rm $outData/S_dim_removed/a_* $outData/S_dim_removed/b_*
-
+#ncks operators don't like overwriting in python without needing input from user; so don't compress
+cat $data_s/01e_remove_S_dimsension_all_models.py | sed 's|model_name|'${1}'|g'> $data_so/$1_01e_remove_S_dimsension_all_models.py && python3 $data_so/$1_01e_remove_S_dimsension_all_models.py 
 }
-mkdir -p $data_d/NRL && mv $outData/*NRL* $data_d/NRL
-
-model_array=(ESRL)
+#model_array=(ESRL)
 for model in "${model_array[@]}";
 do remove_s_dim $model;done
 
 
+mkdir -p $data_d/NRL && mv $outData/*NRL* $data_d/NRL
+
+
+
 #TODO: Preprocess files sent from ESRL FIMr1p1 agency #########################
+{
 ESRL_dir=$data_d/SubX/ESRL/from_ESRL_agency_missing_days
 mkdir -p $ESRL_dir/keep_variables
 
@@ -83,21 +85,11 @@ cd $ESRL_dir/keep_variables
 for f in *.nc;do 
 cdo -f nc -remapcon,$mask/CONUS_mask.grd $f "$f"4;done
 
-#rename files
 python3 $data_s/ESRL1_rename_files.py
-
-
+}
 ###Preprocess data
 #TODO: Make a script to only get the correct days for RSMAS#####################
 python3 $data_s/01d_select_RSMAS_dates.py
-
-#TODO: Move files into seperate directories
-model_array=(EMC)
-for model in "${model_array[@]}";
-do mkdir $subx/$model
-cp $outData/S_dim_removed/*$model*.nc4 $subx/$model/;
-done
-
 #TODO: Create daily averages. Cannot do cdo operators because they split the files weirdly
 python3 $data_s/EMC0_day_average_GEFSv12_HPC.py
 python3 $data_s/EMC0_day_sum_GEFSv12_HPC.py
@@ -109,20 +101,13 @@ python3 $data_s/EMC1_merge_3_soil_moisture_fields_GEFSv12.py
 ########################## STEP 2 #############################################
 #FIRST SEND TO HPC, it is very costly because of the function
 make_ETo_Penman_single () {
-cat $data_s/ETo_reference_ET_Penman.py | sed 's|model_name|'${1}'|g'> $data_s/"$1"_ETo_reference_ET_Penman.py && python3 $data_s/"$1"_ETo_reference_ET_Penman.py
+cat $data_s/ETo_reference_ET_Penman.py | sed 's|model_name|'${1}'|g'> $data_so/"$1"_ETo_reference_ET_Penman.py && python3 $data_so/"$1"_ETo_reference_ET_Penman.py
 }
-make_ETo_Penman_single "EMC"
+make_ETo_Penman_single "ECCC"
 
+#####################
 
-make_ETo_Penman () {
-model_array=$1
-for model in "${model_array[@]}";
-do cat $data_s/ETo_reference_ET_Penman.py | sed 's|model_name|'${model}'|g'> $data_s/"$model"_ETo_reference_ET_Penman.py && python3 $data_s/"$model"_ETo_reference_ET_Penman.py;
-done
-}
-
-make_ETo_Penman $model_array
-
+#####################
 #create the mean file (to subtract and make anomaly)
 echo && echo && echo
 echo "Should we remove ETo $2 ... (yes/no)?"
@@ -135,26 +120,102 @@ fi
 
 #Make ETo mean 
 ETo_and_all_variables_anomaly_and_correlation () {
-
-cat $data_s/anomaly_mean_ETo_not_EMC.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_mean_$2_not_EMC.py && python3 $data_s/$1_anomaly_mean_$2_not_EMC.py
-#Make the observations in same format to go with anomaly correlation
-cat $data_s/MERRA0_reformat_to_SubX_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py
+var_list=("tasmin" "tasmax" "tas" "actual_vapor_pressure" "srad" "windspeed" "pr")
 #Create anomaly 
-cat $data_s/anomaly_compute_from_mean_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_compute_from_mean_ETo_$2.py && python3 $data_s/$1_anomaly_compute_from_mean_ETo_$2.py
-#Plot correlation
-#cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_correlation_$2.py && python3 $data_s/$1_anomaly_correlation_$2.py
-cat $data_s/CRPS_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_CRPS_skill_ETo_$2.py && python3 $data_s/$1_CRPS_skill_ETo_$2.py
-cat $data_s/ACC_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_ACC_skill_ETo_$2.py && python3 $data_s/$1_ACC_skill_ETo_$2.py
-#Make individual variable anomalies
-var_list=$3
 for var in "${var_list[@]}";do
-cat $data_s/anomaly_mean_individual_variables_not_EMC.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${var}'|g' > $data_s/$1_anomaly_mean_"$var"_not_EMC.py && python3 $data_s/$1_anomaly_mean_"$var"_not_EMC.py;done
+cat $data_s/anomaly_compute_from_mean_all_variables.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${var}'|g' > $data_so/$1_anomaly_compute_from_mean_$2.py && python3 $data_so/$1_anomaly_compute_from_mean_$2.py;done
 
 }
 
+
+model_array=(GMAO)
 for model in "${model_array[@]}";
-do ETo_and_all_variables_anomaly_and_correlation "$model" "Penman" '("tasmin" "tasmax" "tas" "actual_vapor_pressure" "srad" "windspeed" "pr")';
+do ETo_and_all_variables_anomaly_and_correlation "$model" "Penman";
 done
+
+for var in "${var_list[@]}";do
+cat $data_s/anomaly_correlation_all_other_variables.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${var}'|g' > $data_so/$1_anomaly_correlation_"$var".py && python3 $data_so/$1_anomaly_correlation_"$var".py;done
+
+
+
+
+#Make ETo mean 
+ETo_and_all_variables_anomaly_and_correlation () {
+cat $data_s/ETo_reference_ET_Penman.py | sed 's|model_name|'${1}'|g'> $data_so/"$1"_ETo_reference_ET_"{$2}".py && python3 $data_so/"$1"_ETo_reference_ET_"{$2}".py
+#Make ETo anomaly mean files
+cat $data_s/anomaly_mean_ETo_not_EMC.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_anomaly_mean_$2_not_EMC.py && python3 $data_so/$1_anomaly_mean_$2_not_EMC.py
+#Make the observations in same format to go with anomaly correlation
+cat $data_s/MERRA0_reformat_to_SubX_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_MERRA0_reformat_to_SubX_ETo_$2.py && python3 $data_so/$1_MERRA0_reformat_to_SubX_ETo_$2.py
+#Create anomaly 
+cat $data_s/anomaly_compute_from_mean_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_anomaly_compute_from_mean_ETo_$2.py && python3 $data_so/$1_anomaly_compute_from_mean_ETo_$2.py
+#Plot correlation
+cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_anomaly_correlation_$2.py && python3 $data_so/$1_anomaly_correlation_$2.py
+cat $data_s/CRPS_climpred_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_CRPS_climpred_skill_ETo_$2.py && python3 $data_so/$1_CRPS_climpred_skill_ETo_$2.py
+cat $data_s/ACC_climpred_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_ACC_climpred_skill_ETo_$2.py && python3 $data_so/$1_ACC_climpred_skill_ETo_$2.py
+}
+
+model_array=(NRL)
+for model in "${model_array[@]}";
+do ETo_and_all_variables_anomaly_and_correlation "$model" "Penman";
+done
+
+
+anomaly_all_other_variables() {
+#Create individual variable anomalies and correlation
+model_array=(NRL)
+#completed models (,
+
+for model in "${model_array[@]}";do
+
+var_list=("tas")
+
+for var in "${var_list[@]}";do
+
+cat $data_s/anomaly_mean_individual_variables_not_EMC.py | sed 's|model_name|'${model}'|g' | sed 's|var_name|'${var}'|g' > $data_so/"$model"_anomaly_mean_"$var"_not_EMC.py && python3 $data_so/"$model"_anomaly_mean_"$var"_not_EMC.py
+
+#cat $data_s/anomaly_mean_individual_variables_single_day_not_EMC.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${var}'|g' > $data_so/"$model"_anomaly_mean_"$var"_single_day_not_EMC.py && python3 $data_so/"$model"_anomaly_mean_"$var"_single_day_not_EMC.py;done
+
+#cat $data_s/MERRA0_reformat_to_SubX_all_variables.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${var}'|g' > $data_so/$1_MERRA0_reformat_to_SubX_"$var".py && python3 $data_so/$1_MERRA0_reformat_to_SubX_"$var".py
+
+#cat $data_s/anomaly_compute_from_mean_all_variables.py | sed 's|model_name|'${model}'|g' | sed 's|var_name|'${var}'|g' > $data_so/"$model"_anomaly_compute_from_mean_"$var".py && python3 $data_so/"$model"_anomaly_compute_from_mean_"$var".py
+
+#cat $data_s/ACC_climpred_skill_all_variables.py | sed 's|model_name|'${model}'|g' | sed 's|var_name|'${var}'|g' > $data_so/"$model"_ACC_climpred_skill_"$var".py && python3 $data_so/"$model"_ACC_climpred_skill_"$var".py;done;done
+
+}
+
+anomaly_all_other_variables
+
+
+
+"actual_vapor_pressure" "srad"  "windspeed" "tasmin" "tasmax"
+
+for model in "${model_array[@]}";
+do  "$model";
+done
+
+
+make_anomaly_corr_plots() {
+var_list=("tasmin" "tasmax" "actual_vapor_pressure" "srad" "windspeed" "tas")
+for var in "${var_list[@]}";do
+cat $data_s/ACC_climpred_skill_all_variables.py | sed 's|model_name|'${1}'|g' | sed 's|var_name|'${var}'|g' > $data_so/$1_ACC_climpred_skill_"$var".py && python3 $data_so/$1_ACC_climpred_skill_"$var".py;done
+
+}
+
+model_array=(GMAO ESRL RSMAS ECCC NRL)
+for model in "${model_array[@]}";
+do make_anomaly_corr_plots "$model";
+done
+
+
+#&& python3 $data_s/$1_MERRA0_reformat_to_SubX_"$var".py
+#var_list=("tasmin" "tasmax" "tas" "actual_vapor_pressure" "srad" "windspeed" "pr")
+var_list=("tasmin" "tasmax")
+test "ECCC" "Penman"
+
+
+'("tasmin" "tasmax" "tas" "actual_vapor_pressure" "srad" "windspeed" "pr")'
+
+
 
 #All models in 1 script for ACC correlation. This is my own special script for 
 #getting anomaly averages before the ACC score is computed
@@ -162,7 +223,7 @@ python3 $data_s/anomaly_correlation_ETo_all_models.py
 
 
 
-
+cat $data_s/MERRA0_reformat_to_SubX_all_variables.py | sed 's|var_list|'${3}'|g' | sed 's|model_name|'${}'|g' > $data_s/$
 
 
 
@@ -181,31 +242,31 @@ ETo_mean_anomaly_and_correlation "GMAO" "Priestley"
 
 EMC_anomaly_mean () {
 #Make ETo mean file
-cat $data_s/anomaly_mean_ETo_only_EMC_11_models.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_mean_ETo_$2_11_models.py && python3 $data_s/$1_anomaly_mean_ETo_$2_11_models.py
+cat $data_s/anomaly_mean_ETo_only_EMC_11_models.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_anomaly_mean_ETo_$2_11_models.py && python3 $data_so/$1_anomaly_mean_ETo_$2_11_models.py
 #Make RZSM mean file
-cat $data_s/anomaly_mean_RZSM_only_EMC_11_models.py | sed 's|model_name|'${1}'|g' > $data_s/$1_anomaly_mean_RZSM_11_models.py && python3 $data_s/$1_anomaly_mean_RZSM_11_models.py
+cat $data_s/anomaly_mean_RZSM_only_EMC_11_models.py | sed 's|model_name|'${1}'|g' > $data_so/$1_anomaly_mean_RZSM_11_models.py && python3 $data_so/$1_anomaly_mean_RZSM_11_models.py
 
 #ETo
-#cat $data_s/MERRA0_reformat_to_SubX_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_ETo_$2.py
-#cat $data_s/anomaly_compute_from_mean_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_compute_from_mean_ETo_$2.py && python3 $data_s/$1_anomaly_compute_from_mean_ETo_$2.py
+cat $data_s/MERRA0_reformat_to_SubX_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_MERRA0_reformat_to_SubX_ETo_$2.py && python3 $data_so/$1_MERRA0_reformat_to_SubX_ETo_$2.py
+cat $data_s/anomaly_compute_from_mean_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_anomaly_compute_from_mean_ETo_$2.py && python3 $data_so/$1_anomaly_compute_from_mean_ETo_$2.py
 
 #RZSM
-#cat $data_s/MERRA0_reformat_to_SubX_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_MERRA0_reformat_to_SubX_RZSM.py && python3 $data_s/$1_MERRA0_reformat_to_SubX_RZSM.py
-#cat $data_s/anomaly_compute_from_mean_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_anomaly_compute_from_mean_RZSM.py && python3 $data_s/$1_anomaly_compute_from_mean_RZSM.py
+cat $data_s/MERRA0_reformat_to_SubX_RZSM.py | sed 's|model_name|'${1}'|g' > $data_so/$1_MERRA0_reformat_to_SubX_RZSM.py && python3 $data_so/$1_MERRA0_reformat_to_SubX_RZSM.py
+cat $data_s/anomaly_compute_from_mean_RZSM.py | sed 's|model_name|'${1}'|g' > $data_so/$1_anomaly_compute_from_mean_RZSM.py && python3 $data_so/$1_anomaly_compute_from_mean_RZSM.py
 
-#cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_anomaly_correlation_$2.py && python3 $data_s/$1_anomaly_correlation_$2.py
+cat $data_s/anomaly_correlation_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_anomaly_correlation_$2.py && python3 $data_so/$1_anomaly_correlation_$2.py
 
-cat $data_s/anomaly_correlation_RZSM.py | sed 's|model_name|'${1}'|g'  > $data_s/$1_anomaly_correlation_RZSM.py && python3 $data_s/$1_anomaly_correlation_RZSM.py
+cat $data_s/anomaly_correlation_RZSM.py | sed 's|model_name|'${1}'|g'  > $data_so/$1_anomaly_correlation_RZSM.py && python3 $data_so/$1_anomaly_correlation_RZSM.py
 
 
 }
-EMC_anomaly_mean "EMC" "Priestley"
+EMC_anomaly_mean "EMC" "Penman"
 
 EMC_anomaly_mean () {
-#cat $data_s/ACC_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_ACC_skill_ETo_$2.py && python3 $data_s/$1_ACC_skill_ETo_$2.py
-#cat $data_s/ACC_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_ACC_skill_RZSM.py && python3 $data_s/$1_ACC_skill_RZSM.py
-#cat $data_s/CRPS_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_s/$1_CRPS_skill_ETo_$2.py && python3 $data_s/$1_CRPS_skill_ETo_$2.py
-cat $data_s/CRPS_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_s/$1_CRPS_skill_RZSM.py && python3 $data_s/$1_CRPS_skill_RZSM.py
+#cat $data_s/ACC_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_ACC_skill_ETo_$2.py && python3 $data_so/$1_ACC_skill_ETo_$2.py
+#cat $data_s/ACC_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_so/$1_ACC_skill_RZSM.py && python3 $data_so/$1_ACC_skill_RZSM.py
+#cat $data_s/CRPS_skill_ETo.py | sed 's|model_name|'${1}'|g' | sed 's|evap_equation|'${2}'|g' > $data_so/$1_CRPS_skill_ETo_$2.py && python3 $data_so/$1_CRPS_skill_ETo_$2.py
+cat $data_s/CRPS_skill_RZSM.py | sed 's|model_name|'${1}'|g' > $data_so/$1_CRPS_skill_RZSM.py && python3 $data_so/$1_CRPS_skill_RZSM.py
 }
 
 EMC_anomaly_mean "EMC" "Priestley"

@@ -84,6 +84,7 @@ def name_1(dict_):
 def name_2(dict_):
     return(list(dict_.keys())[1])
 
+
 #%% RZSM
 #RZSM anomalies
 def run_MERRA_RZSM(open_rzsm):
@@ -430,7 +431,7 @@ def run_MERRA_windspeed(wind):
                 anomaly_r.close()
                 
                 #Create anomaly file
-                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('windspeed_anom')
                 anomaly_create.to_netcdf(fileOUT_MERRA_windspeed_anomaly, mode ='w', engine='scipy')
                 anomaly_create.close()
                     
@@ -524,7 +525,7 @@ def run_MERRA_radiation(radiation):
                 anomaly_r.close()
                 
                 #Create anomaly file
-                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('radiation_anom')
                 anomaly_create.to_netcdf(fileOUT_MERRA_radiation_anomaly, mode ='w', engine='scipy')
                 anomaly_create.close()
                 
@@ -616,7 +617,7 @@ def run_MERRA_tmax(temp):
                 anomaly_r.close()
                 
                 #Create anomaly file
-                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('tasmax_anom')
                 anomaly_create.to_netcdf(fileOUT_MERRA_tasmax_anomaly, mode ='w', engine='scipy')
                 anomaly_create.close()
 #%% Temperature min
@@ -709,7 +710,7 @@ def run_MERRA_tmin(temp):
                 anomaly_r.close()
                 
                 #Create anomaly file
-                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('tasmin_anom')
                 anomaly_create.to_netcdf(f2, mode ='w', engine='scipy')
                 anomaly_create.close()
 
@@ -803,7 +804,7 @@ def run_MERRA_tavg(temp):
                 anomaly_r.close()
                 
                 #Create anomaly file
-                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('tas_anom')
                 anomaly_create.to_netcdf(f2, mode ='w', engine='scipy')
                 anomaly_create.close()
 
@@ -897,7 +898,7 @@ def run_MERRA_avp(vapor_pressure):
                 anomaly_r.close()
                 
                 #Create anomaly file
-                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('RZSM_anom')
+                anomaly_create = np.subtract(open_rzsm[name_1(open_rzsm)], anomaly_r[name_1(anomaly_r)]).rename('avp_anom')
                 anomaly_create.to_netcdf(f2, mode ='w', engine='scipy')
                 anomaly_create.close()
 

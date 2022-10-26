@@ -29,10 +29,18 @@ from numpy import inf
 # Test for 1 step size and model
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'model_name'
+#%%
 var = 'var_name'
-if model_NAM1 != "EMC":
+
+if model_NAM1 == 'NRL':
+    n_processes = 4
+elif model_NAM1 == "ECCC":
+    n_processes = 1
+elif model_NAM1 == "RSMAS":
+    n_processes=4
+elif model_NAM1 != "EMC":
     n_processes = 3
-else:
+elif model_NAM1 == 'EMC':
     n_processes = 1
 
 if model_NAM1 == "NRL" and (var == 'tasmin' or var == 'tasmax'):
@@ -70,11 +78,39 @@ file_list = os.listdir()
     
 def return_date_list(var):
     date_list = []
-    for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
+    '''Issue with tas having all the days for tas (too many days)'''
+    if model_NAM1 == 'RSMAS' and var == 'tas':
+        change_var = 'tasmax'
+    else:
+        change_var = var
+        
+    for file in sorted(glob(f'{home_dir}/{change_var}_*.nc4')):
         date_list.append(file[-14:-4])
     return(date_list)
-        
+
+global init_date_list
 init_date_list = return_date_list(var)    
+
+if model_NAM1 == 'RSMAS' and var == 'tas':
+    #Too many files were downloaded for some reason
+    correct_files = sorted(glob('tasmax_*.nc4'))
+    correct_files = [i[-14:-4] for i in correct_files] #get the dates
+    
+    all_tas_files = sorted(glob('tas_*.nc4'))
+    a_files =  [i[-14:-4] for i in all_tas_files] #get the dates
+    
+    bad_dates = []
+    for element in a_files:
+        if element not in correct_files:
+            bad_dates.append(element)
+    delete_files = []
+    for i in bad_dates:
+        out_ = f'{var}_{model_NAM1}_{i}.nc4'
+        delete_files.append(out_)
+    
+    for f in delete_files:
+        os.system(f'rm {f}')
+
 
 '''Steps for anomaly calculation. 
 1.) For each date:
@@ -91,14 +127,17 @@ init_date_list = return_date_list(var)
 reference evapotranspiration anomalies'''
 # def multiProcess_EDDI_SubX_TEST(_date):
 def make_subX_anomaly(_date):
+    
+
     def moving_average_cumsum(a, n) :
         ret = np.nancumsum(a, dtype=float)
         ret[n:] = ret[n:] - ret[:-n]
         return ret[n - 1:] / n
+    
     # _date=init_date_list[0]
     # i_X,i_Y=10,10
     # anomaly_spread=42
-    #TODO: Change to penman or priestley for name
+    # TODO: Change to penman or priestley for name
     fileOut = "{}/{}_mean_{}.nc4".format(new_dir_mean,var,_date)
 
     try:
@@ -114,7 +153,9 @@ def make_subX_anomaly(_date):
             dates_to_keep = []
             
             '''if within 3 months, keep files'''
-            for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
+            
+            
+            for file in sorted(glob(f'{home_dir}/{var}_*.nc4')):
                 test_1 = month_start - pd.to_datetime(file[-14:-4]).month
                 test_2 = pd.to_datetime(file[-14:-4]).month - month_start
                 
@@ -130,23 +171,71 @@ def make_subX_anomaly(_date):
         # elif var == 'ETo':
         #Open all files for faster processing (for EDDI and ETo anomaly)
         # subx_all = xr.open_mfdataset(f'{home_dir}/{var}*.nc', concat_dim=['S'], combine='nested')
-        subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True')
+        
+        try:
+            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True')
+            # print(len(np.unique(subx_all[list(subx_all.keys())[0]].values)))
+        except ValueError:
+            keep_dates = []
+            for f in dates_to_keep:
+                try:
+                    xr.open_dataset(f)
+                    keep_dates.append(f)
+                except ValueError:
+                    pass
+            subx_all = xr.open_mfdataset(keep_dates, concat_dim=['S'], combine='nested',parallel='True')
+            
+        #Issue with dates
+        if model_NAM1 == 'NRL':
+            print()
+            print()
+            print('Fixing the issue now.')
+            nrl_dates = subx_all.S.values
+            nrl_dates = [pd.to_datetime(i) for i in nrl_dates]
+            subx_all['S'] = nrl_dates
             
         # tt=subx_all.ETo[:,0,:,10,10].values
         #Get a file with the actual dates
         new_list = [i[-5:] for i in init_date_list]
+        '''Some files are empty and they make it look like there is an error, but there is no error'''
+        # all_possible_files = []
+        # for idx,val in enumerate(new_list):
+        #     if val == _date[-5:]:
+        #         all_possible_files.append(idx)
+        
         index_of_actual_date = new_list.index(_date[-5:])
         use_date = init_date_list[index_of_actual_date]
         #Process indivdual files for output
-        subx_out = xr.open_dataset(f'{home_dir}/{var}_{model_NAM1}_{use_date}.nc4')
         
+        if model_NAM1 == "NRL":
+            #Just change the dates
+            subx_out = xr.open_dataset(f'{home_dir}/{var}_{model_NAM1}_{use_date}.nc4')
+            #get name of file, and add back to lead dimension
+            init_d = pd.to_datetime(use_date)
+            add_back = []
+            # add_back[0].timetuple().tm_yday
+            for i in range(subx_out.L.shape[0]):
+                add_back.append(init_d + np.timedelta64(i,'D'))
+            add_back = [i.timetuple().tm_yday for i in add_back]
+            subx_out['L'] = add_back
+
+        else:
+            subx_out = xr.open_dataset(f'{home_dir}/{var}_{model_NAM1}_{use_date}.nc4')
+            len(np.unique(subx_out[list(subx_out.keys())[0]].values))
         '''Fixed code with if statement if there are different number of models'''
         if model_NAM1 == 'ESRL':
             if subx_all.M.shape[0] != subx_out.M.shape[0]:
                 subx_all = subx_all.sel(M=slice(1,5))
             
             
+        ''' We cannot load it all into memory with 60GB. We are going to work through each model'''        
+        #Save outputs into this file
+        out_template = xr.zeros_like(subx_out)
+        # out_template.ETo.shape
+        # #convert to a numpy array for testing
+        test_arr = subx_all[list(subx_all.keys())[0]].to_numpy()
         '''Test why date with ESRL 2000-03-01 produces 5 models when there are only 4'''
+        
         # os.chdir('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/ESRL')
         # out_ = []
         # for f in sorted(glob('ETo_Prie*')):
@@ -165,16 +254,7 @@ def make_subX_anomaly(_date):
         # for moo in range(subx_all.M.shape[0]):
         #     print(subx_all.ETo.isel(M=moo,Y=10,X=10,L=slice(4,10)).values)
         # '''After testing, the 0th model has no values. Fix above code with if statement'''
-        
-            
-            
-        #Save outputs into this file
-        out_template = xr.zeros_like(subx_out)
-    
-        #convert to a numpy array for testing
-        test_arr = subx_all[list(subx_all.keys())[0]].to_numpy()
-        # del test_arr        
-        test_arr.shape
+
         '''We can now select the values based on only the lead julian date values. Because
         files with nothing in the julian date for that day will have an np.nan
         
@@ -203,7 +283,6 @@ def make_subX_anomaly(_date):
                 if _date == '2000-01-01':
                     print(f'Working on lat {i_Y} and lon {i_X}')
     
-                #This is for the mask of CONUS, don't do extra unneeded calculations
                 if (HP_conus_mask.High_Plains[0,i_Y,i_X].values in np.arange(1,7)):
                     
                     def weekly_mean_of_file():
@@ -249,7 +328,6 @@ def make_subX_anomaly(_date):
                     all_mean_var_mod=weekly_mean_of_file()
                      
                     
-                 
                     def find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr,anomaly_spread=42):
                         out_dict = {}
                         out_mean = {}
@@ -263,8 +341,10 @@ def make_subX_anomaly(_date):
                             out_mean[mod] = []
                             out_dict[mod] = []
                             for k, julian_d in enumerate((all_mean_var_mod[mod])):
-                                
+                                # print(julian_d)
                                 julian_d = int(list(julian_d)[0])
+                                # print(julian_d)
+                                
                                 # if julian_d == 366:
                                 #     break
                                 '''Grab all days with 42 days of day of year, need
@@ -436,36 +516,33 @@ def make_subX_anomaly(_date):
                             out_template[list(out_template.keys())[0]][:,int(mod),:,i_Y,i_X] = out_array
                         return(out_template)
                     
-        out_template = add_mean_to_nc_file(model_mean_vals)
-        
-        print(len(np.unique(out_template[list(out_template.keys())[0]])))
-        #After all coords have been done, save the file
-        out_template_test=np.nan_to_num(out_template[list(out_template.keys())[0]],posinf=np.nan,neginf=np.nan)
-        # print(len(np.unique(out_template_test[list(out_template_test.keys())[0]])))
-        
-        #just save a new name to get the keys
-        subx_out[list(subx_out.keys())[0]][:,:,:,:,:] = out_template_test
-        
-
-        var_OUT = xr.Dataset(
-            data_vars = dict(
-                variable = (['S', 'M','L','Y','X'], subx_out[list(subx_out.keys())[0]].values),
-            ),
-            coords = dict(
-                X = out_template.X.values,
-                Y = out_template.Y.values,
-                L = np.arange(len(out_template.L.values)),
-                M = out_template.M.values,
-                S = out_template.S.values,
-            ),
-            attrs = dict(
-                Description = f'{var} mean from {anomaly_spread} day window',)
-        )
-        
-        
-        var_OUT.to_netcdf(path = fileOut, mode ='w', engine='scipy')
-        
-        print(f'Completed date {_date} and saved into {new_dir_mean}.')
+                    out_template = add_mean_to_nc_file(model_mean_vals)
+            
+    # print(len(np.unique(out_template[list(out_template.keys())[0]])))
+    #After all coords have been done, save the file
+    out_template_test=np.nan_to_num(out_template[list(out_template.keys())[0]],posinf=np.nan,neginf=np.nan)
+    # print(len(np.unique(out_template_test[list(out_template_test.keys())[0]])))
+    
+    #just save a new name to get the keys
+    subx_out[list(subx_out.keys())[0]][:,:,:,:,:] = out_template_test
+    
+    var_OUT = xr.Dataset(
+        data_vars = dict(
+            variable = (['S', 'M','L','Y','X'], subx_out[list(subx_out.keys())[0]].values),
+        ),
+        coords = dict(
+            X = out_template.X.values,
+            Y = out_template.Y.values,
+            L = np.arange(len(out_template.L.values)),
+            M = out_template.M.values,
+            S = out_template.S.values,
+        ),
+        attrs = dict(
+            Description = f'{var} mean from {anomaly_spread} day window',)
+    )
+    var_OUT.to_netcdf(path = fileOut, mode ='w', engine='scipy')
+    
+    print(f'Completed date {_date} and saved into {new_dir_mean}.')
     #%%
     # #save the dates that were completed to not re-run
     # os.system(f'echo Completed {_date} >> {script_dir}/{var}_completed_mean_for_anomaly_{model_NAM1}.txt')

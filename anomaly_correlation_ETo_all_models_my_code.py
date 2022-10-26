@@ -80,7 +80,7 @@ dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 name_='Penman'
 var='ETo'
 # model_NAM1 = 'GMAO'
-
+#%%
 #observations
 obs_subx_eto_path = f'{dir1}/Data/MERRA2/ETo_SubX_values/'
 

@@ -58,10 +58,13 @@ file_list = os.listdir()
 #For each date, open each file and compute ETref with et
 #All files have the same initialized days (part of the pre-processing that is 
 #completed)
-    
+
+name_='evap_equation'
+# name_="Penman"
+
 def return_date_list(var):
     date_list = []
-    for file in sorted(glob(f'{home_dir}/{var}*.nc4')):
+    for file in sorted(glob(f'{home_dir}/{var}_{name_}*.nc4')):
         date_list.append(file[-14:-4])
     return(date_list)
         
@@ -140,7 +143,19 @@ def make_subX_anomaly(_date):
             
             '''Because EMC has 31 models after 2020 for initialized data, only get the first
             11 models in this script to save on memory. Make another script for the other models'''
-            subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True').isel(M=slice(0,11))
+            try:
+                subx_all = xr.open_mfdataset(dates_to_keep, concat_dim=['S'], combine='nested',parallel='True',engine='netcdf4').isel(M=slice(0,11))
+            except OSError:
+                
+                new_keep_dates = []
+                for file in dates_to_keep:
+                    try:
+                        xr.open_dataset(file,engine='netcdf4')
+                        new_keep_dates.append(file)
+                    except OSError:
+                        pass
+                subx_all = xr.open_mfdataset(new_keep_dates, concat_dim=['S'], combine='nested',parallel='True',engine='netcdf4').isel(M=slice(0,11))
+
             # '''The models initialized after 2020 have 31 models.
             # Solution: '''
             # #Remove certain dates, some models shouldn't have most values.        

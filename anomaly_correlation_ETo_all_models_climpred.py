@@ -260,7 +260,7 @@ def select_region(cluster_num):
             #Keep all seasons
             hindcast = HindcastEnsemble(fcst.ETo_anom.where(HP_conus_mask[0,:,:]== cluster_num).sel(init=(fcst['init.season']==f'{season}'))).add_observations(verif.ETo_anom.where(West_conus_mask[0,:,:]== cluster_num))
         
-        skillACC = hindcast.verify(metric="pearson_r", comparison="e2o", dim="init", alignment="maximize")
+        skillACC = hindcast.verify(metric="acc", comparison="e2o", dim="init", alignment="maximize")
         # bn.nanmean(skillACC.ETo_anom)
         skill_lead=skillACC.ETo_anom[::7,:,:]
         skill_lead=skill_lead[1:,:,:].compute().to_dataset()

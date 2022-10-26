@@ -349,7 +349,7 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
         #Now add back to a dictionary for each model/lead week/weason
         for lead_week in range(seasonal_skill.shape[0]):
             seasonal_mod_skill = np.nanmean(seasonal_skill[lead_week,:,:])
-            if model_NAM1=='GMAO' or model_NAM1 == 'RSMAS':
+            if model_NAM1=='GMAO' or model_NAM1 == 'RSMAS' or model_NAM1 == 'NRL':
                 if lead_week == 6:
                     lead_week_='3.4'
                 elif lead_week == 7:
@@ -488,7 +488,7 @@ def plot_lead_week_season_model(all_vals_setup,obs_files,subx_files):
             # var_LEAD = var_LEAD[:,1:]
             
             Index = ['Spring', 'Summer', 'Fall', 'Winter']
-            if model_NAM1 == 'ESRL' or model_NAM1 == 'EMC':
+            if model_NAM1 == 'ESRL' or model_NAM1 == 'EMC' or model_NAM1 == 'ECCC':
                 Cols = ['1', '2', '3', '4','3.4']
             else:
                 Cols = ['1', '2', '3', '4', '5', '6','3.4','3.5','3.6','4.6']
@@ -578,7 +578,10 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
                 s.set_title(f'ESRL FIMr1p1 \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
             elif model_NAM1 == 'EMC':
                 s.set_title(f'EMC GEFSv12 \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
-
+            elif model_NAM1 == 'ECCC':
+                s.set_title(f'ECCC \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
+            elif model_NAM1 == 'NRL':
+                s.set_title(f'NRL \n ETo {name_} Anomaly Correlation Coefficient',fontsize=25)
     s.set_xlabel('Week Lead',fontsize=25)
     
     plt.savefig(f'{output_season_dir}/all_season_MEM_skill_{var}_{name_}.tif',dpi=300)

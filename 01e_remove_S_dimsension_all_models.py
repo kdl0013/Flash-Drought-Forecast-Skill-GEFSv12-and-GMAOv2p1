@@ -31,12 +31,11 @@ from multiprocessing import Pool
 
 # dir1 = 'main_dir'
 # mod = 'model_name'
-num_processors=9
+num_processors=7
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 mod='model_name'
 subX_dir = f'{dir1}/Data/SubX/fromCasper'
-out_dir = f'{subX_dir}/S_dim_removed'
-os.system(f'mkdir -p {out_dir}')
+out_dir = f'{dir1}/Data/SubX/{mod}'
 os.chdir(subX_dir)
 
 # cp_output = f'{dir1}/Data/SubX/{mod}
@@ -167,7 +166,7 @@ def remove_S_dim(var):
                 attrs = dict(
                     Description = f'{open_f[list(open_f.keys())[0]].long_name} {open_f[list(open_f.keys())[0]].level_type} {open_f[list(open_f.keys())[0]].units}.'),
             )   
-        elif 'tas' in file:
+        elif 'tas' in file and 'tasmax' not in file and 'tasmin' not in file:
             #Convert to an xarray object to save dates as 
             var_OUT = xr.Dataset(
                 data_vars = dict(
@@ -373,14 +372,12 @@ def remove_S_dim(var):
     
     
 #%%    
-    #Remove old file
-    os.system(f'rm {out_dir}/*.tmp')
-    for file in sorted(glob(f'{var}*{mod}*.nc')):
+    for file in sorted(glob(f'{var}_*{mod}*.nc')):
         try:
-            xr.open_dataset(f'{out_dir}/{file}4')
+            xr.open_dataset(f'{out_dir}/{file}4',engine='netcdf4')
             # xr.open_dataset(f'no_file.nc')
         except FileNotFoundError:
-        #%%
+    
         # var='tdps'
         # sub1_dir = subX_dir
         # var_name=var
@@ -398,8 +395,9 @@ def remove_S_dim(var):
                 open_f.to_netcdf(f'a_{file}') #save temp file, need to reorient
                 #Now reorient
                 os.system(f'ncpdq -O -a -Y,X a_{file} {out_dir}/{file}4') #rename out_dir file
+                os.system(f'rm a_{file}')
             else:
-                open_f = xr.open_dataset(file)
+                open_f = xr.open_dataset(file,engine='netcdf4')
 
                 if var=='huss':
                     #need to remove the P layer
@@ -424,9 +422,7 @@ def remove_S_dim(var):
                  
                    ECCC  - S[0] dim = day of file
                           S[1] dim = initialized date (with data) (name of file) --- KEEP THIS DIM
-                 
-                   NRL - S[0] dim is the only dim
-                 
+
                     
                 '''
 
@@ -450,9 +446,6 @@ def remove_S_dim(var):
                 
                 try:
                     # julian_list = julian_date(open_f,file)
-     
-    
-    
                     #Flip the X,Y coordinates to match other datasets. 0,0 at top left corner
                     if ('GMAO' in file) or ('ESRL' in file) or ('RSMAS' in file) or ('ECCC' in file):
                         os.system(f'ncpdq -O -a -Y,X {out_dir}/a_{file} {out_dir}/{file}4') #rename out_dir file
@@ -472,7 +465,8 @@ def remove_S_dim(var):
                 
                 #Flip the X,Y coordinates to match other datasets. 0,0 at top left corner
 
-
+#Remove files that are bad
+os.system(f'rm {out_dir}/*.tmp')
 
 #%%
 if __name__ == '__main__':

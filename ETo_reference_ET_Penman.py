@@ -30,8 +30,8 @@ from pyeto import fao
 # mod = 'model_name'
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors = 7
-mod = 'EMC'
+num_processors = 15
+mod = 'model_name'
 var = 'ETo'
 
 home_dir = f'{dir1}/Data/SubX/{mod}'
@@ -306,7 +306,6 @@ def multiProcess_Refet_SubX_GMAO(_date):
 '''Compute Reference ET for SubX data'''
 def multiProcess_Refet_SubX_EMC(_date):
     # _date=init_date_list[0]
-    #%%
 # for _date in init_date_list:
     # print(_date)
     fileOUT_name=f'ETo_Penman_{mod}_{_date}.nc4'
@@ -759,9 +758,11 @@ def multiProcess_Refet_SubX_RSMAS(_date):
             os.system(f'rm {home_dir}/ETo_{mod}_{_date}.nc')
             print(f'Saved {_date} into {home_dir}.')
 #%% ESRL and ECCC
-'''Compute Reference ET for SubX data'''
+'''Compute Reference ET for SubX data.
+ECCC has named all of their temperature (tas) files for some reason'''
 def multiProcess_Refet_SubX_ESRL_ECCC(_date):
     # _date=init_date_list[0]
+    #%%
 # for _date in init_date_list:
     # print(_date)
     fileOUT_name=f'ETo_Penman_{mod}_{_date}.nc4'
