@@ -20,7 +20,8 @@ echo $mod && sleep 1
 ls $outData/$mod/anomaly/skill_assessments/*
 echo
 ls $outData/$mod/anomaly/skill_assessments/* | wc -l 
-echo total vars completed out of 7-ish
+echo total vars completed out of 8 maximum
+echo "##########################################################"
 
 echo
 echo 'All vars "ETo" "tasmax" "actual_vapor_pressure" "srad" "windspeed" "tasmin" "tas"'

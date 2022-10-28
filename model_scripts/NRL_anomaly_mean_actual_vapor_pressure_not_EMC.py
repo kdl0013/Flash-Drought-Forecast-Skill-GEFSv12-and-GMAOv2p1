@@ -33,7 +33,7 @@ model_NAM1 = 'NRL'
 var = 'actual_vapor_pressure'
 
 if model_NAM1 == 'NRL':
-    n_processes = 4
+    n_processes = 2
 elif model_NAM1 == "ECCC":
     n_processes = 1
 elif model_NAM1 == "RSMAS":
@@ -213,9 +213,10 @@ def make_subX_anomaly(_date):
             #get name of file, and add back to lead dimension
             init_d = pd.to_datetime(use_date)
             add_back = []
+            # add_back[0].timetuple().tm_yday
             for i in range(subx_out.L.shape[0]):
                 add_back.append(init_d + np.timedelta64(i,'D'))
-            add_back = [i.date() for i in add_back]
+            add_back = [i.timetuple().tm_yday for i in add_back]
             subx_out['L'] = add_back
 
         else:
@@ -501,6 +502,7 @@ def make_subX_anomaly(_date):
                     
                     model_mean_vals,anomaly_spread =find_anomaly_with_weekly_mean(all_mean_var_mod,test_arr,anomaly_spread=42)
                     model_mean_vals
+                    
                     def add_mean_to_nc_file(model_mean_vals):
                         for mod in model_mean_vals.keys():
                             # model_mean_vals[mod]

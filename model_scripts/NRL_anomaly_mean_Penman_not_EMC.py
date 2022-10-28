@@ -18,7 +18,7 @@ import pandas as pd
 from glob import glob
 import bottleneck as bn
 from multiprocessing import Pool
-
+import sys
 # dir1 = 'main_dir'
 # start_ = int('start_init')
 # end_ = start_ + int('init_step')
@@ -28,6 +28,8 @@ from multiprocessing import Pool
 # Test for 1 step size and model
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'NRL'
+if model_NAM1 == 'EMC':
+    sys.exit(0)
 var = 'ETo'
 n_processes = 2
 

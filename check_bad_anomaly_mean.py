@@ -25,8 +25,8 @@ for model in model_array:
                 a=xr.open_dataset(file,engine='netcdf4')
                 a.close()
                 if len(np.unique(a[list(a.keys())[0]])) < 1000:
-                    output = f'{file}'
-                    missing_data.append(output)
+                    missing_data.append(file)
+                    os.system(f'rm {file}')
             except OSError:
                 missing_data.append(file)
             except FileNotFoundError:

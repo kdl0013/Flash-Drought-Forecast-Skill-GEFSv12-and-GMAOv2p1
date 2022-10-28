@@ -22,7 +22,6 @@ import os
 import pandas as pd
 from glob import glob
 import sys
-from numpy import inf
 from multiprocessing import Pool
 from os.path import exists
 import datetime
@@ -42,6 +41,9 @@ dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'model_name'
 var = 'var_name'
 # model_NAM1 = 'GMAO'
+
+if model_NAM1 == 'NRL' and (var == 'tasmin' or var == 'tasmax'):
+    sys.exit(0)
 
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}'
 os.chdir(f'{subX_dir}') #for multi ensemble mean
@@ -91,23 +93,37 @@ obs_name = f'{var}_SubX_{model_NAM1}*.nc4'
 sub_name = f'{var}'
 
 
+'''Issues
+NRL: Actual vapor preesure has bad L values
 
-# #Some days may be missing
 
+'''
+
+# #Some days may be missing and this messes up the loading process
 keep_files = []
 #Remove empty files from list
 for f in sorted(glob(f'{var}_*.nc4')):
     try:
         open_f = xr.open_dataset(f)
+        print(open_f.L.values)
         open_f.close()
         #Now change inf values
-        print(np.count_nonzero(np.isinf(open_f[name(open_f)].values)))
+        # print(np.count_nonzero(np.isinf(open_f[name(open_f)].values)))
         keep_files.append(f)
     except ValueError:
         pass
     
-
-pre_subx_files = xr.open_mfdataset(keep_files, concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))
+if model_NAM1 == 'NRL':
+    '''Some issue with the year 2000-01-01 with a KeyError. The file exists in directory
+    and has data, investigate further'''
+    pre_subx_files = xr.open_mfdataset(keep_files, concat_dim=['S'], combine='nested')
+    '''Issue is that 1 file has the actual leads values (0-44) and the rest of the files still have the values as leads.
+    Need to delete the one with leads'''
+    pre_subx_files['']
+    
+    
+else:
+    pre_subx_files = xr.open_mfdataset(keep_files, concat_dim=['S'], combine='nested').sel(S=slice('2000-01-01','2022-05-30'))
 
 obs_files = xr.open_mfdataset(f'{obs_subx_eto_path}/{obs_name}', concat_dim = ['S'], combine = 'nested').sel(S=slice('2000-01-01','2022-05-30'))
 # obs_files=obs_files.sel(S=~obs_files.get_index('S').duplicated()) #remove duplicate that was causing an issue
@@ -444,9 +460,9 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
             elif model_NAM1 == 'EMC':
                 s.set_title(f'EMC GEFSv12 \n {var} Anomaly Correlation Coefficient',fontsize=25)
             elif model_NAM1 == 'NRL':
-                s.set_title(f'NRL \n {var} Anomaly Correlation Coefficient',fontsize=25)
+                s.set_title(f'NRL NAVY \n {var} Anomaly Correlation Coefficient',fontsize=25)
             elif model_NAM1 == 'ECCC':
-                s.set_title(f'ECCC \n {var} Anomaly Correlation Coefficient',fontsize=25)    
+                s.set_title(f'ECCC ECMWF \n {var} Anomaly Correlation Coefficient',fontsize=25)    
     s.set_xlabel('Week Lead',fontsize=25)
     
     plt.savefig(f'{output_season_dir}/all_season_MEM_skill_{var}.tif',dpi=300)

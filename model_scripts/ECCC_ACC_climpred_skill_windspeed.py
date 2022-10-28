@@ -209,10 +209,10 @@ if model_NAM1 == 'ESRL':
 else:
     subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1}).sel(S=slice('2000-01-01','2022-05-30')))
     
-if var == 'tas':
-    #for some reason there is an issue with the dates, maybe try tasmax which already works
-    test_tasmax = rename_subx_for_climpred(xr.open_mfdataset(f'tasmax_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1}).sel(S=slice('2000-01-01','2022-05-30')))
-    subx_files['init'] = test_tasmax.init.values
+# if var == 'tas':
+#     #for some reason there is an issue with the dates, maybe try tasmax which already works
+#     test_tasmax = rename_subx_for_climpred(xr.open_mfdataset(f'tasmax_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1}).sel(S=slice('2000-01-01','2022-05-30')))
+#     subx_files['init'] = test_tasmax.init.values
 # subx_files=subx_files.chunk(dict(init=-1))
 obs_eto = rename_obs_for_climpred(obs_eto)
 # obs_eto = obs_eto.chunk(dict(time=-1))

@@ -234,7 +234,7 @@ def select_region(cluster_num,skillds):
             all_crpss_skill = skill_season.RZSM_anom.where(West_conus_mask[0,:,:]== 1)
             # bn.nanmean(all_crpss_skill)
         else:
-            all_crpss_skill = skill_season.RZSM_anom.where(West_conus_mask[0,:,:] == cluster_num)
+            all_crpss_skill = skill_season.RZSM_anom.where(HP_conus_mask[0,:,:] == cluster_num)
         
         #Keep only weekly leads
         skill_lead=all_crpss_skill[::7,:,:,:]

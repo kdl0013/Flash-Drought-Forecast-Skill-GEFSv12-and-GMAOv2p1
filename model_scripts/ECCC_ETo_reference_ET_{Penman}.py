@@ -30,7 +30,7 @@ from pyeto import fao
 # mod = 'ECCC'
 
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-num_processors = 15
+num_processors = 9
 mod = 'ECCC'
 var = 'ETo'
 

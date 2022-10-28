@@ -70,6 +70,7 @@ from climpred import HindcastEnsemble
 from tqdm.auto import tqdm
 import bottleneck as bn
 import datetime as dt
+import pickle
 print(f"PYTHON: {sys.version}")  # PYTHON: 3.8.1 | packaged by conda-forge | (default, Jan 29 2020, 15:06:10) [Clang 9.0.1 ]
 print(f" xarray {xr.__version__}")  # xarray 0.14.1
 print(f" numpy {np.__version__}")  # numpy 1.17.3
@@ -85,13 +86,23 @@ model_NAM1 = 'model_name'
 name_ = 'evap_equation'
 # model_NAM1 = 'GMAO'
 # name_='Priestley'
-#%%
+
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
 os.chdir(f'{subX_dir}') #for multi ensemble mean
 
- #where subX model data lies 
+output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
+os.system(f'mkdir -p {output_nc_dir}')
 
-subdir_for_mean = f'{subX_dir}/mean_for_ACC'
+file_name_out = f'{output_nc_dir}/{model_NAM1}_ETo_{name_}_anomaly_climpred_CRPSS.pkl'
+file_exists = exists(file_name_out)
+
+if file_exists:
+    print(f'Completed {model_NAM1} {name_}.')
+    sys.exit(0)
+#%%
+
+#where subX model data lies 
+zsubdir_for_mean = f'{subX_dir}/mean_for_ACC'
 mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
 
 #observations
@@ -110,8 +121,6 @@ obs_eto=obs_eto.assign_coords(time=new_date_list)
 
 obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/ETo_anomaly_{name_}_MERRA_mean.nc')
 
-
-output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
 output_image_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}'
 output_season_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}/seasonal_skill/'
 
@@ -242,7 +251,7 @@ def select_region(cluster_num,skillds):
             all_crpss_skill = skill_season.ETo_anom.where(West_conus_mask[0,:,:]== 1)
             # bn.nanmean(all_crpss_skill)
         else:
-            all_crpss_skill = skill_season.ETo_anom.where(West_conus_mask[0,:,:] == cluster_num)
+            all_crpss_skill = skill_season.ETo_anom.where(HP_conus_mask[0,:,:] == cluster_num)
         
         #Keep only weekly leads
         skill_lead=all_crpss_skill[::7,:,:,:]
@@ -420,5 +429,11 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
     return(0)
 
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=acc_values_to_plot,var=var,min_all=min_all,max_all=max_all)
+
+#%% Save data to not have to re-run
+acc_values_to_plot
+f = open(file_name_out,'wb')
+pickle.dump(acc_values_to_plot,f)
+f.close()
 
 

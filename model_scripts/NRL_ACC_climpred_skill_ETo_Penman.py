@@ -90,6 +90,7 @@ dask.config.set(**{'array.slicing.split_large_chunks': False})
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'NRL'
+print(model_NAM1)
 name_ = 'Penman'
 # model_NAM1 = 'ESRL'
 # name_='Priestley'
@@ -182,7 +183,7 @@ if model_NAM1 == 'ESRL':
     #     open_f=open_f.assign_coords(S=np.atleast_1d(pd.to_datetime(i.split('_')[-1].split('.')[0])))
     #     open_f.to_netcdf(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4')
         
-    subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1, 'L': 32})).isel(init=slice(1,-10))
+    subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1, 'L': 32})).isel(init=slice(1,-12))
     '''ISSUES with only this dataset. Have no idea why, it creates a duplicate. And 5 files (which I have checked have the right names,
     those five files will appear with dates of 0'''
     #Just create a new list of datetime dates

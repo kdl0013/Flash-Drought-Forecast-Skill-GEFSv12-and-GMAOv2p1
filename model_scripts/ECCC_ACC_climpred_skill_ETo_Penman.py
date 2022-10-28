@@ -72,26 +72,40 @@ import bottleneck as bn
 from climpred import metrics as cmet
 import dask.dataframe as dd
 import datetime as dt
+import dask
+from dask import array
+import pickle
+from os.path import exists
+
+
 print(f"PYTHON: {sys.version}")  # PYTHON: 3.8.1 | packaged by conda-forge | (default, Jan 29 2020, 15:06:10) [Clang 9.0.1 ]
 print(f" xarray {xr.__version__}")  # xarray 0.14.1
 print(f" numpy {np.__version__}")  # numpy 1.17.3
 print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
-
+dask.config.set(**{'array.slicing.split_large_chunks': False})
 # dir1 = 'main_dir'
 
 
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'ECCC'
+print(model_NAM1)
 name_ = 'Penman'
 # model_NAM1 = 'ESRL'
 # name_='Priestley'
-
-#%%
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
 os.chdir(f'{subX_dir}') #for multi ensemble mean
 
+output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
+
+file_exists = exists(f'{output_nc_dir}/{model_NAM1}_ETo_{name_}_anomaly_climpred_ACC.pkl')
+
+if file_exists:
+    print(f'Completed {model_NAM1} {name_}.')
+    sys.exit(0)
+
+#%%
  #where subX model data lies 
 
 subdir_for_mean = f'{subX_dir}/mean_for_ACC'
@@ -169,7 +183,7 @@ if model_NAM1 == 'ESRL':
     #     open_f=open_f.assign_coords(S=np.atleast_1d(pd.to_datetime(i.split('_')[-1].split('.')[0])))
     #     open_f.to_netcdf(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4')
         
-    subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1, 'L': 32})).isel(init=slice(1,-10))
+    subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1, 'L': 32})).isel(init=slice(1,-12))
     '''ISSUES with only this dataset. Have no idea why, it creates a duplicate. And 5 files (which I have checked have the right names,
     those five files will appear with dates of 0'''
     #Just create a new list of datetime dates
@@ -395,9 +409,9 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
             elif model_NAM1 == 'EMC':
                 s.set_title(f'EMC GEFSv12 \n ETo {name_} {metric}',fontsize=25)
             elif model_NAM1 == 'ECCC':
-                s.set_title(f'ESRL FIMr1p1 \n ETo {name_} {metric}',fontsize=25)
+                s.set_title(f'ECCC ECMWF \n ETo {name_} {metric}',fontsize=25)
             elif model_NAM1 == 'NRL':
-                s.set_title(f'EMC GEFSv12 \n ETo {name_} {metric}',fontsize=25)
+                s.set_title(f'NRL Navy \n ETo {name_} {metric}',fontsize=25)
 
     s.set_xlabel('Week Lead',fontsize=25)
     plt.savefig(f'{output_season_dir}/all_season_{metric}_skill_{var}_{name_}_climpred.tif',dpi=300)
@@ -406,4 +420,10 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
 
 make_save_plots_all_models_seasons_leads(acc_values_to_plot=acc_values_to_plot,var=var,min_all=min_all,max_all=max_all)
 
+#TODO save data in a file to not have to re-run anything
+os.system(f'mkdir -p {output_nc_dir}')
 
+acc_values_to_plot
+f = open(f'{output_nc_dir}/{model_NAM1}_ETo_{name_}_anomaly_climpred_ACC.pkl','wb')
+pickle.dump(acc_values_to_plot,f)
+f.close()

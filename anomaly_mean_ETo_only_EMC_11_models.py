@@ -18,7 +18,7 @@ import pandas as pd
 from glob import glob
 import bottleneck as bn
 from multiprocessing import Pool
-
+import sys
 # dir1 = 'main_dir'
 # start_ = int('start_init')
 # end_ = start_ + int('init_step')
@@ -30,6 +30,9 @@ dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'model_name'
 var = 'ETo'
 n_processes = 1
+
+if model_NAM1 != 'EMC':
+    sys.exit(0)
 
 # dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 home_dir = f'{dir1}/Data/SubX/{model_NAM1}'

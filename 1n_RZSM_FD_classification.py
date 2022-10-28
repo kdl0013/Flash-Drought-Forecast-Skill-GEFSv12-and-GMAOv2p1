@@ -23,24 +23,76 @@ from numba import njit, prange
 # model_NAM1 = 'GMAO'
 # var = 'RZSM'
 # num_processors = int(7)
+dir1='/home/kdl/Insync/OneDrive/NRT_CPC_Internship/'
+# dir1 = 'main_dir'
+MERRA_dir = f'{dir1}/Data/MERRA2'
 
-dir1 = 'main_dir'
-model_NAM1 = 'model_name'
-num_processors = int('procs')
+fileOUT_MERRA_root = f'{MERRA_dir}/SMPD_FD_MERRA.nc'
+fileOUT_MERRA_root_anomaly = f'{MERRA_dir}/RZSM_anomaly_MERRA.nc'
 
-subx_RZSM_dir = f'{dir1}/Data/SubX/{model_NAM1}/SM_converted_m3_m3'
+CONUS_mask = xr.open_dataset(f'{dir1}/Scripts/CONUS_mask/NCA-LDAS_masks_SubX.nc4')
+open_rzsm = xr.open_dataset(f'{MERRA_dir}/RZSM_anomaly_MERRA.nc')
 
-anom_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
-percentile_dir = f'{anom_dir}/percentiles_anom_RZSM' 
-smpd_dir = f'{anom_dir}/smpd_index'
+anomaly_r = xr.zeros_like(open_rzsm).rename(RZSM_anom='SMPD') #OUTPUT
+#Get datesopen_f
+anomaly_date_r = pd.DataFrame(open_rzsm[list(open_rzsm.keys())[0]].time)
+anomaly_date_r.index = pd.to_datetime(anomaly_date_r.iloc[:,0])
+anomaly_date_r_list = list(anomaly_date_r.iloc[:,0])
 
-os.system(f'mkdir -p {percentile_dir}')
-os.system(f'mkdir -p {smpd_dir}')
-var = 'RZSM'
+def name(file):
+    return(list(file.keys())[0])
+#%%
+
+def find_percentile_of_score(sm_input, sm_output):
+    #For MERRA2 specifically 
+    for Y in range(sm_input.shape[1]):
+        print(Y)
+        for X in range(sm_input.shape[2]):
+            all_values =sm_input[:,Y,X]
+            count=0
+            for day in range(sm_input.shape[0]):
+                #(subtract from 100 because the anomalies are high)
+                sm_output[day,Y,X] = pos(all_values,sm_input[day,Y,X])
+    return(sm_output)
+
+
+sm_output = find_percentile_of_score(sm_input=open_rzsm[name(open_rzsm)].values, sm_output=anomaly_r[name(anomaly_r)].values)
+#%%       
+            pos()
+            
+            
+            all_values2 = sorted(all_values)
+            #Remove 0.0. They shouldn't exist
+            all_values2 = [i for i in all_values2 if i !=0.0]
+                                    
+            score = sm_input[name(sm_input)][:,Y,X]
+                 
+            #construct percentiles with each day (percentile of score source code)
+            
+            a = np.asarray(all_values)
+            n = len(a)
+                if n == 0:
+                    pass
+                else:
+                    kind = 'rank' #from percentile of score function
+                    if kind == 'rank':
+                        left = np.count_nonzero(a < score)
+                        right = np.count_nonzero(a <= score)
+                        pct = (right + left + (1 if right > left else 0)) * 50.0/n
+    
+                        sm_output[0,model,lead,Y,X] = pct
+            
+            #Sort values
+            sm_output[name(sm_output)][lead,Y,X] = 100 - pos(all_values,sm_input[name(sm_input)][:,Y,X].values)
+        #if rzsm percentile is below the 20th: perform code else week is not in flash drought
+    return(sm_output)
+
+sm_output = find_percentile_of_score(sm_input, sm_output)
+
 
 #%% Create datasets for anomaly percentiles
 def get_files_and_data_setup(anom_dir,subx_RZSM_dir):
-    os.chdir(f'{anom_dir}') 
+
     
     global file_list_anomaly
     file_list_anomaly = sorted(glob('RZSM_anomaly*.nc4'))

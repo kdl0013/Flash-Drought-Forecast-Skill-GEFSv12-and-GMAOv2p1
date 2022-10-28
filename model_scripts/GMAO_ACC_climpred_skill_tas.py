@@ -261,7 +261,7 @@ def select_region(cluster_num):
             # bn.nanmean(all_crpss_skill)
         else:
             #Keep all seasons
-            hindcast = HindcastEnsemble(fcst[name(fcst)].where(HP_conus_mask[0,:,:]== cluster_num).sel(init=(fcst['init.season']==f'{season}'))).add_observations(verif[name(verif)].where(West_conus_mask[0,:,:]== cluster_num))
+            hindcast = HindcastEnsemble(fcst[name(fcst)].where(HP_conus_mask[0,:,:]== cluster_num).sel(init=(fcst['init.season']==f'{season}'))).add_observations(verif[name(verif)].where(HP_conus_mask[0,:,:]== cluster_num))
         
         skillACC = hindcast.verify(metric=f"{metric.lower()}", comparison="e2o", dim="init", alignment="maximize")
         # bn.nanmean(skillACC.ETo_anom)

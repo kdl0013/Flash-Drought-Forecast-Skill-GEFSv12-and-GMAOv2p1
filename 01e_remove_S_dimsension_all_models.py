@@ -33,7 +33,7 @@ from multiprocessing import Pool
 # mod = 'model_name'
 num_processors=7
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-mod='model_name'
+mod='NRL'
 subX_dir = f'{dir1}/Data/SubX/fromCasper'
 out_dir = f'{dir1}/Data/SubX/{mod}'
 os.chdir(subX_dir)
@@ -374,8 +374,8 @@ def remove_S_dim(var):
 #%%    
     for file in sorted(glob(f'{var}_*{mod}*.nc')):
         try:
-            xr.open_dataset(f'{out_dir}/{file}4',engine='netcdf4')
-            # xr.open_dataset(f'no_file.nc')
+            # xr.open_dataset(f'{out_dir}/{file}4',engine='netcdf4')
+            xr.open_dataset(f'no_file.nc')
         except FileNotFoundError:
     
         # var='tdps'
@@ -389,8 +389,8 @@ def remove_S_dim(var):
                 open_f = xr.open_dataset(file)
                 julian_list = julian_date(open_f,file)
                 open_f['L']= ("L",julian_list)
-                open_f['S'] = np.atleast_1d(file.split('.')[0].split('_')[-1])
-                
+                open_f['S'] = np.atleast_1d(np.datetime64(file.split('.')[0].split('_')[-1]))
+
                 open_f=name_and_return_files(file, open_f)
                 open_f.to_netcdf(f'a_{file}') #save temp file, need to reorient
                 #Now reorient

@@ -90,6 +90,7 @@ dask.config.set(**{'array.slicing.split_large_chunks': False})
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'model_name'
+print(model_NAM1)
 name_ = 'evap_equation'
 # model_NAM1 = 'ESRL'
 # name_='Priestley'
@@ -182,7 +183,7 @@ if model_NAM1 == 'ESRL':
     #     open_f=open_f.assign_coords(S=np.atleast_1d(pd.to_datetime(i.split('_')[-1].split('.')[0])))
     #     open_f.to_netcdf(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4')
         
-    subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1, 'L': 32})).isel(init=slice(1,-10))
+    subx_files = rename_subx_for_climpred(xr.open_mfdataset(f'{var}_{name_}_anomaly_{model_NAM1}_*.nc4', concat_dim=['S'], combine='nested',chunks={'S': 1, 'L': 32})).isel(init=slice(1,-12))
     '''ISSUES with only this dataset. Have no idea why, it creates a duplicate. And 5 files (which I have checked have the right names,
     those five files will appear with dates of 0'''
     #Just create a new list of datetime dates
@@ -244,7 +245,7 @@ def select_region(cluster_num):
             #Keep all seasons
             hindcast = HindcastEnsemble(fcst.ETo_anom.where(HP_conus_mask[0,:,:]== cluster_num).sel(init=(fcst['init.season']==f'{season}'))).add_observations(verif.ETo_anom.where(West_conus_mask[0,:,:]== cluster_num))
         
-        skillACC = hindcast.verify(metric="pearson_r", comparison="e2o", dim="init", alignment="maximize")
+        skillACC = hindcast.verify(metric="acc", comparison="e2o", dim="init", alignment="maximize")
         # bn.nanmean(skillACC.ETo_anom)
         skill_lead=skillACC.ETo_anom[::7,:,:]
         skill_lead=skill_lead[1:,:,:].compute().to_dataset()

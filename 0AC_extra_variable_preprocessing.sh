@@ -57,7 +57,9 @@ anomaly_by_variable "$model" "$var";done;done
 ####### MERRA2 make anomalies
 python3 $data_s/OBS_make_anomalies_Penman.py
 python3 $data_s/OBS_make_anomalies_Priestley_and_RZSM.py
-
+python $data_s/OBS_SMPD_binary_occurrence.py
+or
+python $data_s/1n_RZSM_FD_classification.py
 
 
 

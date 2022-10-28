@@ -66,6 +66,7 @@ from numpy import inf
 from multiprocessing import Pool
 from os.path import exists
 import datetime
+import pickle
 
 print(f"PYTHON: {sys.version}")  # PYTHON: 3.8.1 | packaged by conda-forge | (default, Jan 29 2020, 15:06:10) [Clang 9.0.1 ]
 print(f" xarray {xr.__version__}")  # xarray 0.14.1
@@ -74,19 +75,29 @@ print(f" matplotlib {mpl.__version__}")  # matplotlib 3.1.2
 
 
 # dir1 = 'main_dir'
-
-
 # TODO change later
 dir1 = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
 model_NAM1 = 'model_name'
 name_ = 'evap_equation'
 # model_NAM1 = 'EMC'
 # name_='Priestley'
-#%%
+
+
 subX_dir = f'{dir1}/Data/SubX/{model_NAM1}/anomaly'
 os.chdir(f'{subX_dir}/MEM') #for multi ensemble mean
 
- #where subX model data lies 
+output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
+os.system(f'mkdir -p {output_nc_dir}')
+
+file_name_out = f'{output_nc_dir}/{model_NAM1}_ETo_{name_}_anomaly_ACC_weekly_averages.pkl'
+file_exists = exists(file_name_out)
+
+if file_exists:
+    print(f'Completed {model_NAM1} {name_}.')
+    sys.exit(0)
+
+#%%
+#where subX model data lies 
 
 subdir_for_mean = f'{subX_dir}/mean_for_ACC'
 mask_path = f'{dir1}/Data/CONUS_mask/NCA-LDAS_masks_SubX.nc4'
@@ -98,7 +109,6 @@ obs_subx_eto_path = f'{dir1}/Data/MERRA2/ETo_SubX_values/'
 obs_eto_mean = xr.open_dataset(f'{dir1}/Data/MERRA2/ETo_anomaly_{name_}_MERRA.nc')
 
 output_nc_dir = f'{subX_dir}/skill_assessments/' #for skill assessment .nc4 files
-output_image_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}'
 output_season_dir = f'{dir1}/Outputs/anomaly_correlation/{model_NAM1}/seasonal_skill/'
 
 os.system(f'mkdir -p {output_season_dir}')
@@ -218,7 +228,7 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
         # obs_converted = obs_converted[:,0,:,:,:] #only need 1 set of observations because they are all the same
         
         #Make an empty file to store the fcluster_numinal outcomes
-        if model_NAM1 == "GMAO" or model_NAM1 == "RSMAS":
+        if model_NAM1 == "GMAO" or model_NAM1 == "RSMAS" or model_NAM1 == 'NRL':
             add_ = 4
         else:
             add_ = 1
@@ -298,7 +308,8 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
                 for X in range(var_OUT.shape[2]):
                     
                     #week 3-4
-                    if model_NAM1 == 'GMAO' or model_NAM1 == 'RSMAS':
+                    #TODO: If you add models here, makes sure to add the same models in below code
+                    if model_NAM1 == 'GMAO' or model_NAM1 == 'RSMAS' or model_NAM1 == 'NRL':
 
                         wk34=obs_converted[:, 2:4, Y, X].mean(axis=1)
                         wk345=obs_converted[:, 2:5, Y, X].mean(axis=1)
@@ -362,7 +373,7 @@ def all_season_mod_skill(cluster_num,obs_files,subx_files):
                     lead_week_ = str(lead_week+ 1) 
                 # print(lead_week_)
                 output_dictionary[f'Lead_{lead_week_}_{season_name[season]}']= seasonal_mod_skill
-            else :
+            else:
                 if lead_week == 4:
                     lead_week_='3.4'
                 else:
@@ -517,20 +528,20 @@ def plot_lead_week_season_model(all_vals_setup,obs_files,subx_files):
 '''min all and max all are for individual days in the first few leads. 
 Skill decreases dramatically'''
 # RZSM_acc_values_to_plot,max_all_rzsm, min_all_rzsm = plot_lead_week_season_model(all_vals_setup=all_vals_setup_RZSM)
-ETo_acc_values_to_plot= plot_lead_week_season_model(all_vals_setup=all_vals_setup_ETo,obs_files=obs_files,subx_files=subx_files)
+acc_values_to_plot= plot_lead_week_season_model(all_vals_setup=all_vals_setup_ETo,obs_files=obs_files,subx_files=subx_files)
     
-def get_max_and_min_all_clusters(ETo_acc_values_to_plot):
+def get_max_and_min_all_clusters(acc_values_to_plot):
     max_ = 0
     min_ = 1
     
-    for i in ETo_acc_values_to_plot.keys():
-        if np.max(ETo_acc_values_to_plot[i].values) > max_:
-            max_ = np.max(ETo_acc_values_to_plot[i].values)
-        if np.min(ETo_acc_values_to_plot[i].values) < min_:
-            min_ = np.min(ETo_acc_values_to_plot[i].values)
+    for i in acc_values_to_plot.keys():
+        if np.max(acc_values_to_plot[i].values) > max_:
+            max_ = np.max(acc_values_to_plot[i].values)
+        if np.min(acc_values_to_plot[i].values) < min_:
+            min_ = np.min(acc_values_to_plot[i].values)
     return(max_, min_)
 
-max_all, min_all = get_max_and_min_all_clusters(ETo_acc_values_to_plot)     
+max_all, min_all = get_max_and_min_all_clusters(acc_values_to_plot)     
 #%%
 def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_all):
 
@@ -587,13 +598,12 @@ def make_save_plots_all_models_seasons_leads(acc_values_to_plot,var,min_all,max_
     plt.savefig(f'{output_season_dir}/all_season_MEM_skill_{var}_{name_}.tif',dpi=300)
     return(0)
 
-make_save_plots_all_models_seasons_leads(acc_values_to_plot=ETo_acc_values_to_plot,var=var,min_all=min_all,max_all=max_all)
+make_save_plots_all_models_seasons_leads(acc_values_to_plot=acc_values_to_plot,var=var,min_all=min_all,max_all=max_all)
 
-
-
-
-
-
+acc_values_to_plot
+f = open(file_name_out,'wb')
+pickle.dump(acc_values_to_plot,f)
+f.close()
 
 
 #%% Old code that hasn't been changed to be for the new MEM
