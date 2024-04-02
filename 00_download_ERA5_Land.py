@@ -15,7 +15,8 @@ import numpy as np
 import xarray as xr
 
 n_processors = 31
-os.chdir('/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/ERA5_land/raw_data')
+home = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/ERA5_land/raw_data'
+os.chdir(home)
 
 c = cdsapi.Client()
 
@@ -34,7 +35,7 @@ def multiprocess(day):
         for month in month_range:   
             for var in var_list:
                 try:
-                    xr.open_dataset(f'/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/ERA5_land/raw_data/{var}_{year}-{month}-{day}.nc')
+                    xr.open_dataset(f'{home}/{var}_{year}-{month}-{day}.nc')
                 except FileNotFoundError:
                     c.retrieve(
                         'reanalysis-era5-land',
@@ -59,7 +60,7 @@ def multiprocess(day):
                             ],
                             'format': 'netcdf',
                         },
-                        f'/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/ERA5_land/raw_data/{var}_{year}-{month}-{day}.nc')
+                        f'{home}/{var}_{year}-{month}-{day}.nc')
                     os.system('sleep 1')
                 
     
