@@ -8,7 +8,15 @@ There are scripts which are for downloading data:
 
 wget_MERRA.sh
 wget_GMAO_2021.sh
+wget_MERRA_small.sh
 
+00_get_Priestley_Taylor_coefficients.py
 00_download_ERA5_Land.py
 00_download_MERRA2.py
 00_download_SubX.py
+00_create_wget_GEOS_2017_2021_years.py
+00_merge_GMAO_models_2017_2021.py
+
+01_combine_models_GEFSv12.py
+01a_day_average_GEFSv12_HPC.py
+01a_day_average_GEFSv12_soil_moisture_only.py
