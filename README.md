@@ -52,7 +52,12 @@ wget_MERRA_small.sh
 1c_make_anomaly_GMAO.py
 
 1d_EDDI.py
-
+1d_anomaly_ETo.py
+1e_EDDI.py
+1e_anomaly_RZSM.py
+1e_check_for_missing_data.py
+1f_anomaly_ETo.py
+1f_fix_individual_anomalies.py
 
 
 
