@@ -1,10 +1,11 @@
-This code was for a research project entitled "Subseasonal forecast skill of evaporative demand, soil moisture, and flash drought onset from two dynamic models over the contiguous United States". 
+# This code was for a research project entitled "Subseasonal forecast skill of evaporative demand, soil moisture, and flash drought onset from two dynamic models over the contiguous United States". 
 
-There are scripts which are for downloading data:
+## There are scripts which are for downloading data and located in directory [download_data] (https://github.com/kdl0013/Flash-Drought-Forecast-Skill-GEFSv12-and-GMAOv2p1/tree/main/download_data)
 0AA_download_SubX_models.sh
 0AB_download_observations.sh
 0A_download_data.sh
 0A_download_data_GEFSv12.sh
+0b_download_metdata_wget.sh
 
 wget_MERRA.sh
 wget_GMAO_2021.sh
@@ -22,3 +23,12 @@ wget_MERRA_small.sh
 01a_day_average_GEFSv12_soil_moisture_only.py
 01c_remove_S_dimension_GEFSv12.py
 01c_restrict_to_CONUS_GEFSv12.py
+01d_remove_S_dimension_GEFSv12.py
+01d_select_RSMAS_dates.py
+01e_remove_S_dimsension_all_models.py
+
+
+0a_download_SMERGE_RZSM.py
+0c_download_EDDI.py
+0c_download_EDDI_wget.sh
+0d_download_EDDI_wget.sh
