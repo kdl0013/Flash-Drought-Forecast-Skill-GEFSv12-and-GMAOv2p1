@@ -6,7 +6,7 @@ There are scripts which are for downloading data:
 0A_download_data.sh
 0A_download_data_GEFSv12.sh
 
-wget_MERRA.sh \n
+wget_MERRA.sh
 wget_GMAO_2021.sh
 wget_MERRA_small.sh
 
@@ -20,3 +20,5 @@ wget_MERRA_small.sh
 01_combine_models_GEFSv12.py
 01a_day_average_GEFSv12_HPC.py
 01a_day_average_GEFSv12_soil_moisture_only.py
+01c_remove_S_dimension_GEFSv12.py
+01c_restrict_to_CONUS_GEFSv12.py
