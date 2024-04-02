@@ -56,8 +56,31 @@ wget_MERRA_small.sh
 1e_EDDI.py
 1e_anomaly_RZSM.py
 1e_check_for_missing_data.py
+
 1f_anomaly_ETo.py
 1f_fix_individual_anomalies.py
+1f_fix_individual_anomalies_ETo.py
+1f_make_mean_for_ACC.py
+1f_make_observation_anomalies.py
+
+1g_Obs_reformatted_to_SubX.py
+1g_find_missing_datafiles.py
+1g_fix_individual_anomalies_RZSM.py
+1g_stitch_ETo_RZSM_EDDI_nc4.py
+1h2_make_gridMET_anomalies_fix_january.py
+1h_Obs_reformatted_to_SubX.py
+1h_make_gridMET_anomalies.py
+
+1i_Obs_reformatted_to_SubX.py
+1i_Obs_reformatted_to_SubX_GMAO.py
+1i_anomaly_correlation.py
+1j_Obs_reformatted_to_SubX.py
+1j_eto_variables_reformatted_to_SubX.py
+1j_eto_variables_reformatted_to_SubX_GMAO.py
+1j_find_missing_datafiles.py
+
+1k2_anomaly_correlation_MME.py
+
 
 
 
