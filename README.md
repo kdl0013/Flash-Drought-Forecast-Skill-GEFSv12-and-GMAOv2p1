@@ -80,9 +80,33 @@ wget_MERRA_small.sh
 1j_find_missing_datafiles.py
 
 1k2_anomaly_correlation_MME.py
+1k2_eto_variable_correlation.py
+1k_anomaly_correlation.py
+
+1n_RZSM_FD_classification.py
+1n_RZSM_FD_classification_SubX.py
+1o_RZSM_FD_classification_Observations.py
+1p_SMERGE_percentiles_reformatted_to_SubX.py
+
+2a_GMAO_FlashDrought_Identification.py
+3a_GMAO_compute_ET0_lagged_average.py
+3b_GMAO_compute_ET0_manually.py
+3b_GMAO_compute_ET0_refET_module.py
+4a_change_GLEAM_coord_names.txt
 
 
+ACC_climpred_skill_ETo.py
+ACC_climpred_skill_ETo_all_models.py
+ACC_climpred_skill_RZSM.py
+ACC_climpred_skill_all_variables.py
+ACC_skill_ETo.py
+ACC_skill_RZSM.py
 
+ALL_MODEL_ESRL_make_anomaly_mean.py
+ALL_MODEL_GMAO_make_anomaly_mean.py
+ALL_MODEL_RSMAS_make_anomaly_mean.py
+ALL_MODEL_make_anomaly_mean_Priestley.py
+ALL_MODEL_make_reference_ET.py
 
 
 
