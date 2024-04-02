@@ -20,8 +20,8 @@ import numpy as np
 from glob import glob
 
 
-username_IRIDL = "kdl0013"
-password_IRIDL = "Mi$$ionary098"
+username_IRIDL = ""
+password_IRIDL = ""
 
 
 home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Data/SubX'
