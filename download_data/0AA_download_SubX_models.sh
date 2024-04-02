@@ -26,7 +26,6 @@ rsync -Pa --ignore-existing ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/ECCC 
 ###################################### STEP 1 ###################################
 #Create wget scripts for each variable
 #TODO:Return netcdf file forecasts from GEFSv12 from EASLEY####################
-echo Mi
 return_easley_files () {
 #Return scripts for downloading and converting data
 rsync -Pa kdl0013@easley.auburn.edu:/home/kdl0013/download_process_GEFSv12/GEFSv12/* ~/Insync/OneDrive/NRT_CPC_Internship/Data/SubX/*/raw_ensemble_files 
