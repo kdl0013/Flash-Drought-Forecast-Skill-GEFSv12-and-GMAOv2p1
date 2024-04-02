@@ -4,16 +4,7 @@
 
 How to download:
 https://disc.gsfc.nasa.gov/data-access
-
-
-NOTES:
-    This script doesn't download the data as the correct 
-    1.) variable name
-
     
-SOLUTION:
-    Just merge files after they are downloaded. This will save future storage space.
-
 '''
 import os
 import datetime as dt
@@ -21,8 +12,12 @@ import numpy as np
 from glob import glob
 import pandas as pd
 
-home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
-script_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Scripts'
+# home_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship'
+# script_dir = '/home/kdl/Insync/OneDrive/NRT_CPC_Internship/Scripts'
+
+
+home_dir = ''
+script_dir = ''
 
 merra_dir = f'{home_dir}/Data/MERRA2'
 os.chdir(f'{merra_dir}')
