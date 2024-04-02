@@ -108,5 +108,5 @@ ALL_MODEL_RSMAS_make_anomaly_mean.py
 ALL_MODEL_make_anomaly_mean_Priestley.py
 ALL_MODEL_make_reference_ET.py
 
-
-
+CRPS_skill_ETo.py
+CRPS_skill_RZSM.py
