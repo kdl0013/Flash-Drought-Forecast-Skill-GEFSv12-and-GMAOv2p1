@@ -6,7 +6,7 @@ There are scripts which are for downloading data:
 0A_download_data.sh
 0A_download_data_GEFSv12.sh
 
-wget_MERRA.sh
+wget_MERRA.sh \n
 wget_GMAO_2021.sh
 wget_MERRA_small.sh
 
