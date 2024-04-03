@@ -128,6 +128,20 @@ EMC_anomaly_correlation_RZSM.py
 EMC_anomaly_mean_ETo_Priestley_11_models.py
 EMC_anomaly_mean_RZSM_11_models.py
 
+ETo_reference_ET_EMC_Penman.py
+ETo_reference_ET_GMAO.py
+ETo_reference_ET_GMAO_Penman.py
+ETo_reference_ET_GMAO_Priestley.py
+ETo_reference_ET_Penman.py
+
+GMAO0_convert_depth_dat_file.py
+GMAO0_remove_unnecessary_dates.py
+GMAO1_make_anomaly_from_mean.py
+
+
+
+
+
 
 
 
