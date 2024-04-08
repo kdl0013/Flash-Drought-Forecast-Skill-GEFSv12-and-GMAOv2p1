@@ -147,6 +147,34 @@ GMAO4_compute_anomaly_from_mean.py
 GMAO4_make_anomaly.py
 GMAO5_anomaly_correlation.py
 GMAO_01e_remove_S_dimsension_all_models.py
+GMAO_ACC_skill_ETo_Penman.py
+
+#Additional scripts
+check_bad_anomaly_mean.py 
+anomaly_mean_individual_variables_single_days.py 
+anomaly_mean_individual_variables_single_day_not_EMC.py 
+anomaly_mean_individual_variables_not_EMC.py 
+anomaly_mean_individual_variables.py 
+anomaly_mean_RZSM_only_EMC_11_models.py 
+anomaly_mean_all_variables_only_EMC_11_models.py 
+anomaly_mean_ETo_not_EMC.py 
+anomaly_mean_ETo_only_EMC_11_models.py 
+
+MERRA0_reformat_to_SubX.py 
+MERRA0_reformat_to_SubX_ETo.py 
+MERRA0_reformat_to_SubX_Penman.py 
+MERRA0_reformat_to_SubX_RZSM.py 
+MERRA0_reformat_to_SubX_all_variables.py 
+MERRA0_reformat_to_SubX_radiation.py 
+MERRA0_reformat_to_SubX_temperature.py 
+
+
+
+
+
+
+
+
 
 
 
