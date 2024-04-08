@@ -137,6 +137,16 @@ ETo_reference_ET_Penman.py
 GMAO0_convert_depth_dat_file.py
 GMAO0_remove_unnecessary_dates.py
 GMAO1_make_anomaly_from_mean.py
+GMAO1_make_anomaly_mean.py
+GMAO1_make_anomaly_mean_Penman.py
+GMAO1_make_anomaly_mean_Priestley.py
+GMAO1_remove_unnecessary_dates.py
+GMAO2_convert_RZSM_to_m3_m3.py
+GMAO3_make_reference_ET.py
+GMAO4_compute_anomaly_from_mean.py
+GMAO4_make_anomaly.py
+GMAO5_anomaly_correlation.py
+GMAO_01e_remove_S_dimsension_all_models.py
 
 
 
